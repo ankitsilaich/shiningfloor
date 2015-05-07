@@ -26,13 +26,26 @@ angular.module('app')
               })
               .state('app.dashboard-v1', {
                   url: '/dashboard-v1',
-                  templateUrl: 'tpl/app_dashboard_v1.html',
+                  templateUrl: 'tpl/app.html',
+
                   resolve: {
-                    deps: ['$ocLazyLoad',
-                      function( $ocLazyLoad ){
-                        return $ocLazyLoad.load(['js/controllers/chart.js']);
-                    }]
+                      deps: ['$ocLazyLoad', 'uiLoad',
+                        function( $ocLazyLoad, uiLoad ){
+                          return uiLoad.load(
+                            [
+                              'js/controllers/index.filterCtrl.js',
+                              'js/others/bootstrap.js'
+                              ]
+                          ).then(
+                            function(){
+                              return $ocLazyLoad.load('ui.calendar');
+                            }
+                          )
+                      }]
                   }
+                    
+                 
+                  
               })
               .state('app.dashboard-v2', {
                   url: '/dashboard-v2',
