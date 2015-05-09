@@ -1,0 +1,103 @@
+{
+    "categories": [{
+        "name" : "tiles",
+        "image": "images/prop/1-1.png",
+        "details": {
+            "type": "For Sale"
+        , 
+            "price": "sdsff",
+       
+
+            "address": "hhh",
+       
+            "title": "Tiles Collection",
+       
+            "rating": "abc"
+        }
+
+
+    }, {
+         "name" : "marble",
+        "image": "images/prop/2-1.png",
+        "details": {
+            "type": "For Sale"
+        , 
+            "price": "sdsff",
+       
+
+            "address": "hhh",
+       
+            "title": "Marble Collection",
+       
+            "rating": "abc"
+        }
+
+    }, {
+         "name" : "wood",
+        "image": "images/prop/3-1.png",
+         "details": {
+            "type": "For Sale"
+        , 
+            "price": "sdsff",
+       
+
+            "address": "hhh",
+       
+            "title": "Wood Collection",
+       
+            "rating": "abc"
+        }
+
+    }, {
+         "name" : "wallpaper",
+        "image": "images/prop/4-1.png",
+        "details": {
+            "type": "For Sale"
+        , 
+            "price": "sdsff",
+       
+
+            "address": "hhh",
+       
+            "title": "Wallpaper Collection",
+       
+            "rating": "abc"
+        }
+
+
+    }, {
+         "name" : "stone",
+        "image": "images/prop/5-1.png",
+        "details": {
+            "type": "For Sale"
+        , 
+            "price": "sdsff",
+       
+
+            "address": "hhh",
+       
+            "title": "Stone Collection",
+       
+            "rating": "abc"
+        }
+
+
+    }, {
+         "name" : "artificial",
+        "image": "images/prop/1-1.png",
+        "details": {
+            "type": "For BEEP"
+        , 
+            "price": "sdsff",
+       
+
+            "address": "hhh",
+       
+            "title": "Artificial Collection",
+       
+            "rating": "abc"
+        }
+
+
+    }]
+}
