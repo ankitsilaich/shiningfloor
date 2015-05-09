@@ -1,8 +1,41 @@
 
 
-            <div class="home-header">
-                <div class="home-logo osLight"><span class="fa fa-home"></span> ShiningFloor</div>
-                <a href="#" class="home-navHandler visible-xs"><span class="fa fa-bars"></span></a>
+            <div class="home-header" >
+                <div class="home-logo osLight" ><span class="fa fa-home"></span> ShiningFloor
+                    </div>
+                                        
+                        <div class="btn-group" ng-controller="PageCtrl">
+
+                            <button data-toggle="dropdown" class="btn btn-o btn-gray dropdown-toggle">
+                                <span class="dropdown-label"> {{selectedPage}} </span> <span class="caret"></span>
+                            </button>
+
+                             <ul class="dropdown-menu dropdown-select">
+
+                            <!-- ngRepeat: product in products -->
+                                <li class=" active">
+                                <a ui-sref="products.type({routeId : 'tiles'})" ng-click="selectPage(0)" > Tiles </a> </li>
+                                <li class=" active">
+                                <a ui-sref="products.type({routeId : 'marble'})" ng-click="selectPage(1)" > Marble </a> </li>
+                                <li class=" active">
+                                <a ui-sref="products.type({routeId : 'wood'})" ng-click="selectPage(2)" > Wood </a> </li>
+                                <li class=" active">
+                                <a ui-sref="products.type({routeId : 'wallpaper'})" ng-click="selectPage(3)" > Wallpaper </a> </li>
+                                <li class=" active">
+                                <a ui-sref="products.type({routeId : 'stone'})" ng-click="selectPage(4)"> Stone </a> </li>
+                                <li class=" active">
+                                <a ui-sref="products.type({routeId : 'artificial'})" ng-click="selectPage(5)"> Artificial </a> </li>
+                            </ul>
+                        </div>
+
+                       
+                       
+                    
+                    </div>
+                       
+
+                
+
                 <div class="home-nav">
                     <ul>
                         <li><a href="#" data-toggle="modal" data-target="#signup">Sign Up</a></li>

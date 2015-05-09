@@ -2,56 +2,30 @@ app.controller('categoryCtrl', ['$scope', '$http', '$filter', function($scope, $
   $http.get('js/controllers/tyle_filter.json').then(function (resp) {
 
     $scope.categories = resp.data.categories;
-        console.log($scope.categories);
+       // console.log($scope.categories);
 
-    console.log($scope.categories[0].details.type);
+   // console.log($scope.categories[0].details.type);
 
   });
 
+  // $http.get('js/controllers/productPage_data.json').then(function (resp) {
+
+  //    $scope.productPage_data = resp.data.productPage_data;
+  //    $scope.indx = -1; 
+  //    console.log($scope.productPage_data);
+
+  // });
+  
   $scope.budgets = [ 0 , 1 , 2 , 3, 4, 5];
 
 
-  $scope.filter = '';
-  $scope.groups = [
-    {name: 'Coworkers'}, 
-    {name: 'Family'}, 
-    {name: 'Friends'}, 
-    {name: 'Partners'}, 
-    {name: 'Group'}
-  ];
-
+ 
   $scope.dropdownHandle= function(){
     $('#dropdowndisplay').toggleClass('customClass');
    console.log('sfsfs');
   };
 
-  $scope.checkItem = function(obj, arr, key){
-    var i=0;
-    angular.forEach(arr, function(item) {
-      if(item[key].indexOf( obj[key] ) == 0){
-        var j = item[key].replace(obj[key], '').trim();
-        if(j){
-          i = Math.max(i, parseInt(j)+1);
-        }else{
-          i = 1;
-        }
-      }
-    });
-    return obj[key] + (i ? ' '+i : '');
-  };
-
-  $scope.deleteGroup = function(item){
-    $scope.groups.splice($scope.groups.indexOf(item), 1);
-  };
-
-  $scope.selectGroup = function(item){    
-    angular.forEach($scope.groups, function(item) {
-      item.selected = false;
-    });
-    $scope.group = item;
-    $scope.group.selected = true;
-    $scope.filter = item.name;
-  };
+  
 
   $scope.selectProduct = function(product){ 
     angular.forEach($scope.products, function(product_no) {
@@ -87,31 +61,7 @@ app.controller('categoryCtrl', ['$scope', '$http', '$filter', function($scope, $
   };
 
 
-  $scope.deleteItem = function(item){
-    $scope.items.splice($scope.items.indexOf(item), 1);
-    $scope.item = $filter('orderBy')($scope.items, 'first')[0];
-    if($scope.item) $scope.item.selected = true;
-  };
-
-  $scope.createItem = function(){
-    var item = {
-      group: 'Friends',
-      avatar:'img/a0.jpg'
-    };
-    $scope.items.push(item);
-    $scope.selectItem(item);
-    $scope.item.editing = true;
-  };
-
-  $scope.editItem = function(item){
-    if(item && item.selected){
-      item.editing = true;
-    }
-  };
-
-  $scope.doneEditing = function(item){
-    item.editing = false;
-  };
+ 
 
 }]);
 
@@ -123,8 +73,40 @@ app.controller('ScrollCtrl', ['$scope', '$http', '$filter', function($scope, $ht
       $('html, body').animate({
         scrollTop: $("#ourProducts").offset().top -65
       }, 2000);
-    
+    console.log("working");
   };
 
 
 }]);
+
+app.controller('PageCtrl', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
+
+  $scope.selectedPage = "Wood";
+
+  $scope.selectPage = function(pageid){
+    console.log("sada haq ete rakh");
+    if(pageid==0){
+      $scope.selectedPage = "Tiles";
+    }
+    if(pageid==1){
+      $scope.selectedPage = "Marble";      
+    }
+    if(pageid==2){
+      $scope.selectedPage = "Wood";
+    }
+    if(pageid==3){
+      $scope.selectedPage = "Wallpaper";
+    }
+    if(pageid==4){
+      $scope.selectedPage = "Stone";
+    }
+    if(pageid==5){
+      $scope.selectedPage = "Arificial";
+    }
+  };
+
+
+
+}]);
+
+
