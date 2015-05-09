@@ -7,8 +7,15 @@ angular.module('app')
   .run(
     [          '$rootScope', '$state', '$stateParams',
       function ($rootScope,   $state,   $stateParams) {
+        console.log("sadsada");
           $rootScope.$state = $state;
-          $rootScope.$stateParams = $stateParams;        
+          $rootScope.$stateParams = $stateParams;   
+          $rootScope.$on('$stateChangeSuccess',
+  function(event, toState, toParams, fromState, fromParams) {
+    console.log("fdsfdsfsf");
+    $rootScope.currentstate = toState;
+  }
+)         
       }
     ]
   )
@@ -17,16 +24,46 @@ angular.module('app')
       function ($stateProvider,   $urlRouterProvider) {
           
           $urlRouterProvider
-              .otherwise('/app/dashboard-v1');
+              .otherwise('/shiningFloor/home');
           $stateProvider
               .state('app', {
                   abstract: true,
-                  url: '/app',
+                  url: '/shiningFloor',
                   templateUrl: 'tpl/app.html'
               })
-              .state('app.dashboard-v1', {
-                  url: '/dashboard-v1',
+              .state('app.home', {
+                  url: '/home',
                   templateUrl: 'tpl/app.html',
+
+                  resolve: {
+                      deps: ['$ocLazyLoad', 'uiLoad',
+                        function( $ocLazyLoad, uiLoad ){
+                          return uiLoad.load(
+                            [ 'js/others/jquery-ui.min.js',
+                              'js/controllers/index.filterCtrl.js',
+                              'js/others/jquery.cookie.js',
+                              'js/others/jquery.slimscroll.min.js',
+                              'js/others/jquery.touchSwipe.min.js',
+                              'js/others/bootstrap.js',
+                              
+                             
+                              'js/others/app.js'
+                              ]
+                          ).then(
+                            function(){
+                              return $ocLazyLoad.load('ui.calendar');
+                            }
+                          )
+                      }]
+                  }
+                    
+                 
+                  
+              })
+              .state('products', {
+                 abstract: true,
+                  url: '/products',
+                  templateUrl: '',
 
                   resolve: {
                       deps: ['$ocLazyLoad', 'uiLoad',
@@ -34,6 +71,9 @@ angular.module('app')
                           return uiLoad.load(
                             [
                               'js/controllers/index.filterCtrl.js',
+                              'js/controllers/tiles.categoryCtrl.js',
+                              'js/controllers/productpage.tiles.js',
+
                               'js/others/bootstrap.js'
                               ]
                           ).then(
@@ -47,6 +87,56 @@ angular.module('app')
                  
                   
               })
+              .state('products.type', {
+                  url: '/:routeId',
+                  templateUrl: 'tpl/products.html',
+                 
+                  resolve: {
+                    
+                      deps: ['$ocLazyLoad', 'uiLoad',
+                        function( $ocLazyLoad, uiLoad ){
+                          return uiLoad.load(
+                            [
+                              'js/controllers/index.filterCtrl.js',
+                              'js/controllers/tiles.categoryCtrl.js'
+                              
+                              ]
+                          ).then(
+                            function(){
+                              return $ocLazyLoad.load('ui.calendar');
+                            }
+                          )
+                      }]
+                  }
+                    
+                 
+                  
+              })
+              .state('products.wood', {
+                  url: '/wood',
+                  templateUrl: 'tpl/wood.html',
+
+                  resolve: {
+                      deps: ['$ocLazyLoad', 'uiLoad',
+                        function( $ocLazyLoad, uiLoad ){
+                          return uiLoad.load(
+                            [
+                              'js/controllers/index.filterCtrl.js',
+                              'js/controllers/wood.categoryCtrl.js',
+                              'js/others/bootstrap.js'
+                              ]
+                          ).then(
+                            function(){
+                              return $ocLazyLoad.load('ui.calendar');
+                            }
+                          )
+                      }]
+                  }
+                    
+                 
+                  
+              })
+
               .state('app.dashboard-v2', {
                   url: '/dashboard-v2',
                   templateUrl: 'tpl/app_dashboard_v2.html',

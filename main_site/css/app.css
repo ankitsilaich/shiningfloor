@@ -1,3 +1,8 @@
+.customClass {
+display:block;
+
+
+}
 *:focus {
     outline: none;
 }
@@ -5577,3 +5582,104 @@ blockquote {
         font-size: 11px;
     }
 }
+
+.promo_bg {
+  background-image: url('../images/bg-2.jpg') !important;
+}
+
+.promo-wrapper {
+
+  margin: 0 auto;
+  padding: 0px 0px 40px 0px;
+}
+
+.promo-content {
+
+  height: auto;
+  position: relative;
+
+}
+
+.promo-content h2 {
+  margin: 0;
+  padding: 0 0 30px 0;
+  font-size: 22px;
+  line-height: 22px;
+  text-align: center;
+}
+
+
+.promotion {
+  background-attachment: fixed !important;
+  background-position: 50% 0;
+  background-repeat: no-repeat !important;
+}
+
+#offer-container {
+  background-color: #000;
+  height: 400px;
+  position: relative;
+}
+
+.promotion {
+  text-align: center;
+}
+
+
+
+.promotion .text_promotion {
+  color: #fff;
+  text-transform: uppercase;
+  width: 770px;
+  margin: 65px auto !important;
+  padding: 65px 0;
+  position: relative;
+}
+
+.promotion .text_promotion .content-promotion {
+  position: relative;
+  z-index: 999;
+}
+
+.promotion .text_medium {
+  font-size: 20px;
+  font-weight: 300;
+}
+
+.promotion .text_large {
+  font-size: 100px;
+  line-height: 110px;
+  font-family: "BebasNeue";
+  margin: 10px auto;
+  padding: 20px 16px;
+  letter-spacing: 0px;
+  -webkit-transition: all 0.5s ease 0s;
+  transition: all 0.5s ease 0s;
+}
+.text_large {
+
+  transition: all 0.5s ease 0s;
+}
+
+.promotion .text_medium {
+  font-size: 20px;
+  font-weight: 300;
+}
+/*
+.promotion .text_promotion:before {
+  border-right: none;
+  left: 0;
+}
+.promotion .text_promotion:after {
+  border-left: none;
+  right: 0;
+}
+.promotion .text_promotion:after, .promotion .text_promotion:before {
+  border: 10px solid #fff;
+  position: absolute;
+  top: 0;
+  width: 200px;
+  z-index: 99;
+  content: "";
+  height: 100%;
+}*/
