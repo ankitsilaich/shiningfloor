@@ -4,42 +4,40 @@
                 <div class="home-logo osLight" ><span class="fa fa-home"></span> ShiningFloor
                     </div>
                                         
-                        <div class="btn-group" ng-controller="PageCtrl">
+                        <div class="btn-group" style="margin-left:10px;">
 
-                            <button data-toggle="dropdown" class="btn btn-o btn-gray dropdown-toggle">
-                                <span class="dropdown-label"> {{selectedPage}} </span> <span class="caret"></span>
+                            <button data-toggle="dropdown" class="btn btn-o btn-white dropdown-toggle">
+                                <span class="dropdown-label"> {{currentpage}} </span> <span class="caret"></span>
                             </button>
 
                              <ul class="dropdown-menu dropdown-select">
 
                             <!-- ngRepeat: product in products -->
-                                <li class=" active">
-                                <a ui-sref="products.type({routeId : 'tiles'})" ng-click="selectPage(0)" > Tiles </a> </li>
-                                <li class=" active">
-                                <a ui-sref="products.type({routeId : 'marble'})" ng-click="selectPage(1)" > Marble </a> </li>
-                                <li class=" active">
-                                <a ui-sref="products.type({routeId : 'wood'})" ng-click="selectPage(2)" > Wood </a> </li>
-                                <li class=" active">
-                                <a ui-sref="products.type({routeId : 'wallpaper'})" ng-click="selectPage(3)" > Wallpaper </a> </li>
-                                <li class=" active">
-                                <a ui-sref="products.type({routeId : 'stone'})" ng-click="selectPage(4)"> Stone </a> </li>
-                                <li class=" active">
-                                <a ui-sref="products.type({routeId : 'artificial'})" ng-click="selectPage(5)"> Artificial </a> </li>
+                                <li ng-class="{active: currentpage == 'tiles'}">
+                                <a ui-sref="products.type({routeId : 'tiles'})" > Tiles </a> </li>
+                                <li ng-class="{active: currentpage == 'marble'}">
+                                <a ui-sref="products.type({routeId : 'marble'})" > Marble </a> </li>
+                                <li ng-class="{active: currentpage == 'wood'}">
+                                <a ui-sref="products.type({routeId : 'wood'})"  > Wood </a> </li>
+                                <li ng-class="{active: currentpage == 'wallpaper'}">
+                                <a ui-sref="products.type({routeId : 'wallpaper'})"  > Wallpaper </a> </li>
+                                <li ng-class="{active: currentpage == 'stone'}">
+                                <a ui-sref="products.type({routeId : 'stone'})" > Stone </a> </li>
+                                <li ng-class="{'active text-green': currentpage == 'artificial'}">
+                                <a ui-sref="products.type({routeId : 'artificial'})" > Artificial </a> </li>
                             </ul>
                         </div>
 
                        
                        
                     
-                    </div>
-                       
 
                 
 
                 <div class="home-nav">
                     <ul>
-                        <li><a href="#" data-toggle="modal" data-target="#signup">Sign Up</a></li>
-                        <li><a href="#" data-toggle="modal" data-target="#signin">Sign In</a></li>
+                        <li><a href data-toggle="modal" data-target="#signup">Sign Up</a></li>
+                        <li><a  href data-toggle="modal" data-target="#signin">Sign In</a></li>
                         <li><a href="add.html" class="btn btn-green isThemeBtn">List a Property</a></li>
                     </ul>
                 </div>

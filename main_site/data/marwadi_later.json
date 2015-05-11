@@ -1,0 +1,133 @@
+{
+    "categories": [{
+        "category_type": "johnson",
+        "designs": [{
+            "design": "Modern",
+            "types": [{
+                "type": "Mosaic",
+                    "surface_types": [{
+                        "surface_type": "Wall"
+                    }, {
+                        "surface_type": "Floor"
+                    }]
+                }, 
+                {
+                    "type": "Ceramic"
+                }]
+
+        }, {
+            "design": "Natural"
+        }, {
+            "design": "Textured"
+        }],
+      ,
+      
+      "surface_types": [{
+            "type": "Wall"
+        }, {
+            "type": "Floor"
+        }],
+       "finish_types": [{
+            "finish_type": "Glaze"
+        }],
+      "colors": [{
+            "color": "black"
+        }, {
+            "type": "red"
+        }],
+      
+    }, {
+        "cateogory_type": "Orient",
+        "designs": [{
+            "design": "Modern"
+        }, {
+            "design": "OldNatural"
+        }, {
+            "design": "Stone"
+        }],
+      "types": [{
+            "type": "Mosaic"
+        }, {
+            "type": "Digital"
+        }],
+      
+      "surface_types": [{
+            "type": "Wall"
+        }, {
+            "type": "Floor"
+        }],
+       "finish_types": [{
+            "finish_type": "Glaze"
+        }],
+      "colors": [{
+            "color": "black"
+        }, {
+            "type": "red"
+        }],
+      
+    },
+                   {
+        "cateogory_type": "Kajaria",
+        "designs": [{
+            "design": "Modern"
+        }, {
+            "design": "Natural"
+        }, {
+            "design": "Textured"
+        }, {
+            "design": "Stone"
+        }],
+      "types": [{
+            "type": "Mosaic"
+        }, {
+            "type": "Ceramic"
+        }],
+      
+      "surface_types": [{
+            "type": "Wall"
+        }, {
+            "type": "Floor"
+        }],
+       "finish_types": [{
+            "finish_type": "Glaze"
+        }],
+      "colors": [{
+            "color": "black"
+        }, {
+            "type": "red"
+        }],
+      
+    },
+                   {
+        "cateogory_type": "somany",
+        "designs": [{
+            "design": "Modern"
+        }, {
+            "design": "Natural"
+        }, {
+            "design": "Textured"
+        }, {
+            "design": "Stone"
+        }],
+      "types": [{
+            "type": "Mosaic"
+        }, {
+            "type": "Ceramic"
+        }],
+      
+      "surface_types": [{
+            "surface_type": "Wall"
+        }, {
+            "surface_type": "Floor"
+        }],
+       "finish_types": [{
+            "finish_type": "Glaze"
+        }],
+      "colors": [{
+            "color": "black"
+        }, {
+            "color": "red"
+        }]
+          
+    }]
+}

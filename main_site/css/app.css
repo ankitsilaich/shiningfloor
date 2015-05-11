@@ -4322,6 +4322,7 @@ body.black {
 }
 body.no-hidden {
     overflow: auto;
+    overflow-x: hidden; 
 }
 a.home-navHandler {
     display: block;

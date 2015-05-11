@@ -1,5 +1,5 @@
 app.controller('filterCtrl', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
-  $http.get('js/controllers/filter.json').then(function (resp) {
+  $http.get('data/filter.json').then(function (resp) {
 
     $scope.products = resp.data.products;
     $scope.product_no = $scope.products[0];
@@ -73,3 +73,25 @@ app.controller('filterCtrl', ['$scope', '$http', '$filter', function($scope, $ht
  
 
 }]);
+
+app.controller('ScrollCtrl', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
+    $scope.scrollToProducts = function(){
+       console.log('csada');
+      $('html, body').animate({
+        scrollTop: $("#ourProducts").offset().top -65
+      }, 2000);
+    
+  };
+
+ 
+ 
+ }]);
+app.controller('allcategoryCtrl', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
+    $http.get('data/allcategories.json').then(function (resp) {
+
+    $scope.categories = resp.data.categories;
+       console.log($scope.categories);});
+
+ //   console.log($scope.categories[0].details.type);
+
+  }]);

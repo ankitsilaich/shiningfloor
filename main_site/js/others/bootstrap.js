@@ -2112,3 +2112,12 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
   })
 
 }(jQuery);
+ $('.modal-su').click(function() {
+        $('#signin').modal('hide');
+        $('#signup').modal('show');
+    });
+
+    $('.modal-si').click(function() {
+        $('#signup').modal('hide');
+        $('#signin').modal('show');
+    });

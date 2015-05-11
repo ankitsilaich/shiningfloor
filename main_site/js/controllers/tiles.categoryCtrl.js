@@ -1,5 +1,5 @@
 app.controller('categoryCtrl', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
-  $http.get('js/controllers/tyle_filter.json').then(function (resp) {
+  $http.get('data/tyle_filter.json').then(function (resp) {
 
     $scope.categories = resp.data.categories;
        // console.log($scope.categories);
@@ -79,34 +79,5 @@ app.controller('ScrollCtrl', ['$scope', '$http', '$filter', function($scope, $ht
 
 }]);
 
-app.controller('PageCtrl', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
-
-  $scope.selectedPage = "Wood";
-
-  $scope.selectPage = function(pageid){
-    console.log("sada haq ete rakh");
-    if(pageid==0){
-      $scope.selectedPage = "Tiles";
-    }
-    if(pageid==1){
-      $scope.selectedPage = "Marble";      
-    }
-    if(pageid==2){
-      $scope.selectedPage = "Wood";
-    }
-    if(pageid==3){
-      $scope.selectedPage = "Wallpaper";
-    }
-    if(pageid==4){
-      $scope.selectedPage = "Stone";
-    }
-    if(pageid==5){
-      $scope.selectedPage = "Arificial";
-    }
-  };
-
-
-
-}]);
 
 

@@ -7,7 +7,7 @@ angular.module('app')
   .run(
     [          '$rootScope', '$state', '$stateParams',
       function ($rootScope,   $state,   $stateParams) {
-        console.log("sadsada");
+        
           $rootScope.$state = $state;
           $rootScope.$stateParams = $stateParams;   
           $rootScope.$on('$stateChangeSuccess',
@@ -70,9 +70,8 @@ angular.module('app')
                         function( $ocLazyLoad, uiLoad ){
                           return uiLoad.load(
                             [
-                              'js/controllers/index.filterCtrl.js',
-                              'js/controllers/tiles.categoryCtrl.js',
-                              'js/controllers/productpage.tiles.js',
+                              'js/controllers/index.filterCtrl.js',                              
+                              'js/controllers/productpageCtrl.js',
 
                               'js/others/bootstrap.js'
                               ]
@@ -98,7 +97,7 @@ angular.module('app')
                           return uiLoad.load(
                             [
                               'js/controllers/index.filterCtrl.js',
-                              'js/controllers/tiles.categoryCtrl.js'
+                              'js/controllers/productpageCtrl.js'
                               
                               ]
                           ).then(
