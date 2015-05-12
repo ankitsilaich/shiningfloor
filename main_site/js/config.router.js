@@ -39,7 +39,7 @@ angular.module('app')
                       deps: ['$ocLazyLoad', 'uiLoad',
                         function( $ocLazyLoad, uiLoad ){
                           return uiLoad.load(
-                            [ 'js/others/jquery-ui.min.js',
+                            [ 
                               'js/controllers/index.filterCtrl.js',
                               'js/others/jquery.cookie.js',
                               'js/others/jquery.slimscroll.min.js',

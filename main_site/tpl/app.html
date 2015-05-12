@@ -14,7 +14,7 @@
 
   </div>           
 
-            <div class="home-caption" ng-controller = "ScrollCtrl">
+            <div class="home-caption" >
                 <div class="home-title"> DESIGN YOUR DREAM HOME WITH US </div>
                 <div class="home-subtitle">  Discover unique looks and personalise home </div>
                 <a href class="btn btn-lg btn-green" ng-click="scrollToProducts()"> Start Exploring</a>
@@ -142,11 +142,11 @@
 
         <div class="home-wrapper" ng-controller="allcategoryCtrl">
             <div class="home-content">
-                <h2 class="osLight">Our Services</h2>
+                <h2 class="osLight">How It Works</h2>
                 <div class="row pb40">
                     <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 s-menu-item">
                         <a href="#">
-                            <span class="icon-pointer s-icon"></span>
+                            <span class="fa fa-search s-icon"></span>
                             <div class="s-content">
                                 <h2 class="s-main osLight">Find places anywhere in the world</h2>
                                 <h3 class="s-sub osLight">Lorem ipsum dolor sit amet, consectetur adipiscing elit</h3>
@@ -155,7 +155,7 @@
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 s-menu-item">
                         <a href="#">
-                            <span class="icon-users s-icon"></span>
+                            <span class="fa fa-filter s-icon"></span>
                             <div class="s-content">
                                 <h2 class="s-main osLight">We have agents with experience</h2>
                                 <h3 class="s-sub osLight">Nulla convallis egestas rhoncus consectetur adipiscing elit</h3>
@@ -164,7 +164,7 @@
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 s-menu-item">
                         <a href="#">
-                            <span class="icon-home s-icon"></span>
+                            <span class="fa fa-building-o s-icon"></span>
                             <div class="s-content">
                                 <h2 class="s-main osLight">Buy or rent beautiful properties</h2>
                                 <h3 class="s-sub osLight">Donec facilisis fermentum sem, ac viverra ante luctus vel</h3>
@@ -173,7 +173,7 @@
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 s-menu-item">
                         <a href="#">
-                            <span class="icon-cloud-upload s-icon"></span>
+                            <span class="fa  fa-shopping-cart s-icon"></span>
                             <div class="s-content">
                                 <h2 class="s-main osLight">With agent account you can list properties</h2>
                                 <h3 class="s-sub osLight">Lorem ipsum dolor sit amet, consectetur adipiscing elit</h3>
@@ -181,7 +181,7 @@
                         </a>
                     </div>
                 </div>
-                <h2 class="osLight" id = "ourProducts" >Recently Listed Properties</h2>
+                <h2 class="osLight" id = "ourProducts" >Explore Our Products</h2>
                  <div class="row pb40" >
                     <div ng-repeat="category in categories" class="{col-xs-12 col-sm-6 col-md-4 col-lg-4}">
                                     <a  ui-sref="products.type({routeId : category.name})"  class="propWidget-1">

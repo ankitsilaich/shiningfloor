@@ -73,4 +73,21 @@ angular.module('app')
           return (/iPhone|iPod|iPad|Silk|Android|BlackBerry|Opera Mini|IEMobile/).test(ua);
       }
 
+      $scope.scrollToProducts = function(){
+     
+      $('body,html').animate({
+        scrollTop: $("#ourProducts").offset().top-65
+      }, 1000);
+    
+    };
+
   }]);
+
+
+// app.controller('ScrollCtrl', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
+    
+
+ 
+ 
+ 
+//  }]);

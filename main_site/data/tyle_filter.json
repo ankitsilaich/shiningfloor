@@ -1,6 +1,6 @@
 {
     "categories": [{
-        "image": "images/prop/1-1.png",
+        "image": "images/prop/1-1.jpg",
         "details": {
             "type": "For Sale"
         , 
@@ -16,7 +16,7 @@
 
 
     }, {
-        "image": "images/prop/2-1.png",
+        "image": "images/prop/2-1.jpg",
         "details": {
             "type": "For Sale"
         , 
@@ -31,7 +31,7 @@
         }
 
     }, {
-        "image": "images/prop/3-1.png",
+        "image": "images/prop/3-1.jpg",
          "details": {
             "type": "For Sale"
         , 
@@ -46,7 +46,7 @@
         }
 
     }, {
-        "image": "images/prop/4-1.png",
+        "image": "images/prop/4-1.jpg",
         "details": {
             "type": "For Sale"
         , 
@@ -62,7 +62,7 @@
 
 
     }, {
-        "image": "images/prop/5-1.png",
+        "image": "images/prop/5-1.jpg",
         "details": {
             "type": "For Sale"
         , 
@@ -78,7 +78,7 @@
 
 
     }, {
-        "image": "images/prop/1-1.png",
+        "image": "images/prop/1-1.jpg",
         "details": {
             "type": "For BEEP"
         , 

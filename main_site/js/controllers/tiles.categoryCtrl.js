@@ -67,17 +67,17 @@ app.controller('categoryCtrl', ['$scope', '$http', '$filter', function($scope, $
 
 
 
-app.controller('ScrollCtrl', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
-    $scope.scrollToProducts = function(){
-       console.log('csada');
-      $('html, body').animate({
-        scrollTop: $("#ourProducts").offset().top -65
-      }, 2000);
-    console.log("working");
-  };
+// app.controller('ScrollCtrl', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
+//     $scope.scrollToProducts = function(){
+//        console.log('csada');
+//       $('html, body').animate({
+//         scrollTop: $("#ourProducts").offset().top -65
+//       }, 2000);
+//     console.log("working");
+//   };
 
 
-}]);
+// }]);
 
 
 

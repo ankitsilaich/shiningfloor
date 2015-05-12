@@ -1,7 +1,7 @@
 {
     "categories": [{
         "name" : "tiles",
-        "image": "images/prop/1-1.png",
+        "image": "images/prop/1-1.jpg",
         "details": {
             "type": "For Sale"
         , 
@@ -18,7 +18,7 @@
 
     }, {
          "name" : "marble",
-        "image": "images/prop/2-1.png",
+        "image": "images/prop/2-1.jpg",
         "details": {
             "type": "For Sale"
         , 
@@ -34,7 +34,7 @@
 
     }, {
          "name" : "wood",
-        "image": "images/prop/3-1.png",
+        "image": "images/prop/3-1.jpg",
          "details": {
             "type": "For Sale"
         , 
@@ -50,7 +50,7 @@
 
     }, {
          "name" : "wallpaper",
-        "image": "images/prop/4-1.png",
+        "image": "images/prop/4-1.jpg",
         "details": {
             "type": "For Sale"
         , 
@@ -67,7 +67,7 @@
 
     }, {
          "name" : "stone",
-        "image": "images/prop/5-1.png",
+        "image": "images/prop/5-1.jpg",
         "details": {
             "type": "For Sale"
         , 
@@ -84,7 +84,7 @@
 
     }, {
          "name" : "artificial",
-        "image": "images/prop/1-1.png",
+        "image": "images/prop/1-1.jpg",
         "details": {
             "type": "For BEEP"
         , 

@@ -51,6 +51,7 @@ app.controller('productPageCtrl', ['$scope', '$http','$stateParams', '$filter', 
     
   };
 
+
   });
 
  
@@ -128,7 +129,6 @@ app.controller('categoryCtrl', ['$scope', '$http', '$filter', function($scope, $
 }]);
 
 
-
 // app.controller('ScrollCtrl', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
 //     $scope.scrollToProducts = function(){
 //        console.log('csada');
@@ -140,6 +140,8 @@ app.controller('categoryCtrl', ['$scope', '$http', '$filter', function($scope, $
 
 
 // }]);
+
+
 
 
 

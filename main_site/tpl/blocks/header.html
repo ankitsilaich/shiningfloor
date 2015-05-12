@@ -1,10 +1,12 @@
 
 
-            <div class="home-header" >
-                <div class="home-logo osLight" ><span class="fa fa-home"></span> ShiningFloor
+            <div class="home-header"  >
+                <div class="home-logo osLight" > 
+                    <!-- <span class="fa fa-home"></span> -->
+                 ShiningFloor
                     </div>
                                         
-                        <div class="btn-group" style="margin-left:10px;">
+                        <div class="btn-group" style="margin-left:10px;"  >
 
                             <button data-toggle="dropdown" class="btn btn-o btn-white dropdown-toggle">
                                 <span class="dropdown-label"> {{currentpage}} </span> <span class="caret"></span>
@@ -36,9 +38,9 @@
 
                 <div class="home-nav">
                     <ul>
-                        <li><a href data-toggle="modal" data-target="#signup">Sign Up</a></li>
-                        <li><a  href data-toggle="modal" data-target="#signin">Sign In</a></li>
-                        <li><a href="add.html" class="btn btn-green isThemeBtn">List a Property</a></li>
+                        <li><a href data-toggle="modal" data-target="#signup" ng-click="scrollToAboutUs()" >About</a></li>
+                        <li><a  href data-toggle="modal" data-target="#signin" ng-click="scrollToHowItWorks()" >How It Works</a></li>
+                        <li><a href="add.html" class="btn btn-green isThemeBtn">Sign In</a></li>
                     </ul>
                 </div>
             </div>
