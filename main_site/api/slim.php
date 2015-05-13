@@ -29,29 +29,29 @@ $app->get('/products(/:id)', function($id=null) use ($app, $db){
             
             foreach ($p->products_usages() as $product_usages) {
 
-                $usages_area[] = array('usage_name' =>  $product_usages->usages['usage_name']); 
+                $usages_area[] = $product_usages->usages['usage_name']; 
             }
 
             foreach ($p->product_designs() as $product_designs) {
 
-                $designs[] = array('design_name' => $product_designs->designs['design_name']); 
+                $designs[] = $product_designs->designs['design_name']; 
             }
             foreach ($p->product_subtypes() as $product_subtypes) {
 
-                $subtypes[] = array('subtype_name' => $product_subtypes->subtypes['subtype_name']); 
+                $subtypes[] = $product_subtypes->subtypes['subtype_name']; 
             }
             
             foreach ($p->product_surface_types() as $product_surface_types) {
 
-                $surface_types[] =array('surface_type_name' => $product_surface_types->surface_types['surface_type_name']); 
+                $surface_types[] = $product_surface_types->surface_types['surface_type_name']; 
             }
             foreach ($p->product_colors() as $product_colors) {
 
-                $colors[] =array('color_name' => $product_colors->colors['color_name']); 
+                $colors[] = $product_colors->colors['color_name']; 
             }
             foreach ($p->product_features() as $product_features) {
 
-                $features[] = array('feature_name' => $product_features->features['feature_name']); 
+                $features[] = $product_features->features['feature_name']; 
             }
 
             // array_push($data,$usages_area);            
@@ -76,21 +76,78 @@ $app->get('/products(/:id)', function($id=null) use ($app, $db){
 
     } else {
         
+
         $data = null;
         
-        if($p = $db->products()->where('product_id', $id)->fetch()){
-            $data = array(
+
+        // if($p = $db->products()->where('product_id', $id)->fetch()){
+        //     $data = array(
+        //                     'product_brand' =>   $p['product_brand'],
+        //                     'product_name' => $p['product_name'],
+        //                     'product_desc' =>  $p['product_desc'],
+        //                     'product_img' =>  $p['product_img']
+        //                 );
+        // }
+
+        foreach($db->products()->where('id', $id) as $p){
+            $usages_area =array();
+            $designs = array();
+            $subtypes = array();
+            $surface_types = array();
+            $colors = array();
+            $features = array();
+            
+            foreach ($p->products_usages() as $product_usages) {
+
+                $usages_area[] = $product_usages->usages['usage_name']; 
+            }
+
+            foreach ($p->product_designs() as $product_designs) {
+
+                $designs[] = $product_designs->designs['design_name']; 
+            }
+            foreach ($p->product_subtypes() as $product_subtypes) {
+
+                $subtypes[] = $product_subtypes->subtypes['subtype_name']; 
+            }
+            
+            foreach ($p->product_surface_types() as $product_surface_types) {
+
+                $surface_types[] = $product_surface_types->surface_types['surface_type_name']; 
+            }
+            foreach ($p->product_colors() as $product_colors) {
+
+                $colors[] = $product_colors->colors['color_name']; 
+            }
+            foreach ($p->product_features() as $product_features) {
+
+                $features[] = $product_features->features['feature_name']; 
+            }
+
+            // array_push($data,$usages_area);            
+        //
+            $data[] = array(
                             'product_brand' =>   $p['product_brand'],
                             'product_name' => $p['product_name'],
                             'product_desc' =>  $p['product_desc'],
-                            'product_img' =>  $p['product_img']
+                            'product_img' =>  $p['product_img'],
+                            'product_usages'=> $usages_area,
+                            'product_designs'=> $designs,
+                            'product_subtypes'=> $subtypes,
+                            'product_surface_types'=> $surface_types,
+                            'product_colors'=> $colors,
+                            'product_features'=> $features
+                            
+                              
                         );
+            
+        
         }
     }
     
     $app->response()->header('content-type','application/json');
     
-    echo json_encode(array('products'=>$data));    
+    echo json_encode(array('product_data'=>$data));    
 });
 
 
