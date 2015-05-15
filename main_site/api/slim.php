@@ -150,7 +150,108 @@ $app->get('/products(/:id)', function($id=null) use ($app, $db){
     echo json_encode(array('product_data'=>$data));    
 });
 
+// FOr finding all products of type say tiles or marbles
 
+$app->get('/shiningfloor/products(/:type)', function($type=null) use ($app, $db){
+
+        $data = array();
+
+        $type_id = $db->types()->where('type_name',$type)->select('id');
+        $query = $db->products->where('type_id',$type_id);
+        if(isset($_GET['sortkey']) and isset($_GET['sortorder'])){
+            $query = $query->order($_GET['sortkey'].' '.$_GET['sortorder']);
+        }
+        if(isset($_GET['totalResults']) and isset($_GET['pageNo'])){
+              // echo json_encode( ((( int )$_GET['pageNo'] -1)*( int )$_GET['totalResults']));
+            $query = $query->limit($_GET['totalResults'],((( int )$_GET['pageNo'] -1)*( int )$_GET['totalResults']))  ;  
+        }
+        foreach($query as $p)
+        {
+            
+             $data[] = findAllProducts($p);
+
+        }
+
+        $app->response()->header('content-type','application/json');
+        echo json_encode(array('product_data'=>$data));    
+        // echo json_encode($_GET['sortkey']);
+
+    });
+
+// For finding all products of a given supplier
+
+$app->get('/shiningfloor/products/suppliers(/:supplierId)', function($supplierId=null) use ($app, $db){
+
+        $data = array();
+        if($supplierId!=null){
+        foreach($db->products->where('supplierID',$supplierId) as $p)
+        {
+            $data[] = findAllProducts($p);
+        }
+
+        $app->response()->header('content-type','application/json');
+        echo json_encode(array('supplier_products'=>$data));    
+    }
+});
+
+function findAllProducts($p){
+    $usages_area =array();
+            $designs = array();
+            $subtypes = array();
+            $surface_types = array();
+            $colors = array();
+            $features = array();
+            
+            foreach ($p->products_usages() as $product_usages) {
+
+                $usages_area[] = $product_usages->usages['usage_name']; 
+            }
+
+            foreach ($p->product_designs() as $product_designs) {
+
+                $designs[] = $product_designs->designs['design_name']; 
+            }
+            foreach ($p->product_subtypes() as $product_subtypes) {
+
+                $subtypes[] = $product_subtypes->subtypes['subtype_name']; 
+            }
+            
+            foreach ($p->product_surface_types() as $product_surface_types) {
+
+                $surface_types[] = $product_surface_types->surface_types['surface_type_name']; 
+            }
+            foreach ($p->product_colors() as $product_colors) {
+
+                $colors[] = $product_colors->colors['color_name']; 
+            }
+            foreach ($p->product_features() as $product_features) {
+
+                $features[] = $product_features->features['feature_name']; 
+            }
+
+            // array_push($data,$usages_area);            
+        //
+            return array(
+                            'product_brand' =>   $p['product_brand'],
+                            'product_name' => $p['product_name'],
+                            'product_type_id' => $p['type_id'],
+                            'product_desc' =>  $p['product_desc'],
+                            'product_img' =>  $p['product_img'],
+                            'product_usages'=> $usages_area,
+                            'product_designs'=> $designs,
+                            'product_subtypes'=> $subtypes,
+                            'product_surface_types'=> $surface_types,
+                            'product_colors'=> $colors,
+                            'product_features'=> $features,
+                            'product_price'=>$p['product_price'],
+                            'product_rating' => $p['product_rating'],
+                            'product_supllierID' => $p['supplierID'],
+                            'product_isDiscountAvailable' => $p['isDiscountAvailable'],
+                            'product_isProductAvailable' => $p['isProductAvailable']                              
+                        );
+            
+        
+}
 //Post method to insert data into database
 
 $app->post('/person', function() use ($app, $db){
