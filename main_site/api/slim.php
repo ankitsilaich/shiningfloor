@@ -242,43 +242,56 @@ $email_html_code2 =  '" style="background-color:#172838;color:#ffffff;display:in
 
 </body></html>
             ';
+    // $postdata = file_get_contents("php://input");
+    // $request = json_decode($postdata);
+    // @$email = $request->email;
+    // echo $email;
 
-$app->post("/email_verification", function () use ($app, $db) {
+$app->post("/shiningfloor/email_verification", function () use ($app, $db) {
+     // $request = $app->request();
+      $body =  json_decode(file_get_contents('php://input'));
 
-    $email_id = $app->request()->post('email');    
-    global $email_html_code1,$email_html_code2;
-    $email_fromr = "sahilsolanki07@gmail.com";    
-    $email_subjectr = "Thanks for registering with Shining floor";
-    $email_tor = $email_id;    
-    $user = $db->users()->where('email', $email_id);
-    $data ;
-    $count  = count($user);
+      // var_dump($body);
+    // $email_id = $app->request()->post('email'); 
+     echo $body;   
+    // $email_id='sahil@gmail.com';
+    // echo $email_id;
+    // global $email_html_code1,$email_html_code2;
+    // $email_fromr = "sahilsolanki07@gmail.com";    
+    // $email_subjectr = "Thanks for registering with Shining floor";
+    // $email_tor = $email_id;    
+    // $user = $db->users()->where('email', $email_id);
+    // $data ;
+    // $count  = count($user);
     
-    if($count==1){
-        $pwd_update_time = $user->fetch()['pwd_update_time'];
-        $send_url='http://localhost/shiningfloor/shiningfloor/main_site/change_pwd.php?';
-        $send_url .= 'email='.$email_id.'&token='.md5($email_id.md5($pwd_update_time));
+    // if($count==1){
+    //     $pwd_update_time = $user->fetch()['pwd_update_time'];
+    //     $send_url='http://localhost/shiningfloor/shiningfloor/main_site/change_pwd.php?';
+    //     $send_url .= 'email='.$email_id.'&token='.md5($email_id.md5($pwd_update_time));
 
-        //echo $send_url; 
-        // $headers3 = 'From:' .'Ankit Silaich'. " ".'<'.'support@eagleeye.com'.'>'."\r\n";     
-        // $headers3 .= 'Reply-To: '. $email_fromr. "\r\n";
-        // $headers3 .= "MIME-Version: 1.0\r\n";
-        // $headers3 .= "Content-Type: text/html; charset=ISO-8859-1\r\n";   
-        $body  = $email_html_code1. $send_url. $email_html_code2;
-        echo $body;
-        // $headersr = 'From: '.$email_fromr."\r\n".
-        // 'Reply-To: '.$email_fromr."\r\n" .
-        // 'X-Mailer: PHP/' . phpversion();
-        // mail($email_tor, $email_subjectr, $body . , $headers3);
-        // echo "sent";   
-        // $data = array("status"=> "success");
-    }
-    else{
-        $data =  array("status"=>"not registered");
-    }
+    //     //echo $send_url; 
+    //     // $headers3 = 'From:' .'Ankit Silaich'. " ".'<'.'support@eagleeye.com'.'>'."\r\n";     
+    //     // $headers3 .= 'Reply-To: '. $email_fromr. "\r\n";
+    //     // $headers3 .= "MIME-Version: 1.0\r\n";
+    //     // $headers3 .= "Content-Type: text/html; charset=ISO-8859-1\r\n";   
+    //     $body  = $email_html_code1. $send_url. $email_html_code2;
 
-       $app->response()->header('Content-Type', 'application/json');
-       echo json_encode($data);
+    //     // echo $body;
+    //     // $headersr = 'From: '.$email_fromr."\r\n".
+    //     // 'Reply-To: '.$email_fromr."\r\n" .
+    //     // 'X-Mailer: PHP/' . phpversion();
+    //     // mail($email_tor, $email_subjectr, $body , $headers3);
+    //     // echo "sent";   
+    //      $data = array("status"=> "email sent success");
+    // }
+    // else{
+    //     $data =  array("status"=>"not registered",
+    //                     "email" => $email_id
+    //       );
+    // }
+
+    //    $app->response()->header('Content-Type', 'application/json');
+    //    echo json_encode($data);
 });
 
 
@@ -358,7 +371,7 @@ $app->put('/users/:email', function ($email = null) use ($app, $db) {
            { 
             $updated_data = array(
              
-              "pwd" => $post['pwd'],
+              "pwd" => md5(md5($post['pwd'])),
               "pwd_update_time" => $time
                 );
             $result = $user->update($updated_data);
@@ -615,6 +628,26 @@ $app->get('/shiningfloor/products/suppliers(/:supplierId)', function($supplierId
         
 });
 
+// For finding all products of type say tiles or marbles
+$app->get('/shiningfloor/products(/:type)/usages', function($type) use ($app, $db){
+
+      $usages_area;
+      $type_id = $db->types()->where('type_name',$type)->select('id')->fetch();
+
+      // $query = $db->products->where('type_id',$type_id);
+      $query = $db->products_usages()->where('type_id',$type_id);
+            
+      foreach ($query as $p) 
+          $usages_area[] = $p->usages['usage_name'];
+                                  
+        $app->response()->header('content-type','application/json');
+        echo json_encode(array('products_name' => $type,
+                                  'locations'=>$usages_area));    
+        // echo json_encode($_GET['sortkey']);
+
+});
+
+
 // FOr finding all products of type say tiles or marbles
 $app->get('/shiningfloor/products(/:type)(/:usage_location)', function($type=null,$usage_location=null ) use ($app, $db){
 
@@ -647,7 +680,6 @@ $app->get('/shiningfloor/products(/:type)(/:usage_location)', function($type=nul
         // echo json_encode($_GET['sortkey']);
 
     });
-
 
 
 function findAllProducts($query,$usage_location){
@@ -716,7 +748,7 @@ function findAllProducts($query,$usage_location){
                         'product_features'=> $features,
                         'product_price'=>$p['product_price'],
                         'product_rating' => $p['product_rating'],
-                        'product_supllierID' => $p['supplierID'],
+                        'product_supplierID' => $p['supplierID'],
                         'product_isDiscountAvailable' => $p['isDiscountAvailable'],
                         'product_isProductAvailable' => $p['isProductAvailable']                              
                     );

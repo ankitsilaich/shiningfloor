@@ -21,6 +21,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
   // CSS TRANSITION SUPPORT (Shoutout: http://www.modernizr.com/)
   // ============================================================
 
+
   function transitionEnd() {
     var el = document.createElement('bootstrap')
 
@@ -39,7 +40,6 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
 
     return false // explicit for ie8 (  ._.)
   }
-
   // http://blog.alexmaccaw.com/css-transitions
   $.fn.emulateTransitionEnd = function (duration) {
     var called = false
@@ -2110,14 +2110,17 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
       Plugin.call($spy, data)
     })
   })
-
-}(jQuery);
- $('.modal-su').click(function() {
+    // console.log('clicked on modal-su');
+    $('.modal-su').click(function() {
+        console.log('clicked on modal-su');
         $('#signin').modal('hide');
-        $('#signup').modal('show');
+        $('#signup').modal('show');        
     });
 
     $('.modal-si').click(function() {
         $('#signup').modal('hide');
         $('#signin').modal('show');
     });
+     
+
+}(jQuery);

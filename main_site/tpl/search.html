@@ -1,0 +1,398 @@
+<div ng-controller="searchPageCtrl">
+
+         <!-- <div data-ng-include=" 'tpl/blocks/header.html' " ng-controller="searchCtrl" style="height:5em; background-color:#000;">
+        </div>
+ -->
+
+<!--         <div class="header" >                         
+            <form class="form-inline ng-pristine ng-valid ng-scope adjust-form" role="form" ng-controller = "filterCtrl">
+                <div class="form-group">
+                   <span > Refine Results: </span>
+                </div>
+                
+                <div class="form-group hidden-xs adv">
+                            
+                    <a href data-toggle="dropdown" class="btn btn-white dropdown-toggle">
+                        <span class="dropdown-label">{{selectedLocation}} </span> <span class="caret"></span>
+                        </a>
+
+                    <ul class="dropdown-menu dropdown-select" style="left: 7.5em;">
+                        <li ng-repeat="location in locations" ng-click="selectLocation(location)" ng-class="{'active' : location.selected}" >
+                            <a href> {{location.location}}</a> </li>
+                    </ul>
+                </div>
+
+                <div class="form-group hidden-xs adv">
+                            
+                    <a href data-toggle="dropdown" class="btn btn-white dropdown-toggle">
+                        <span class="dropdown-label"> Design </span> <span class="caret"></span>
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-select"  >
+                        <li ng-repeat="location in locations" ng-click="selectLocation(location)" ng-class="{'active' : location.selected}" >
+                            <a href> {{location.location}}</a> </li>
+                    </ul>
+                </div>
+
+
+                <div class="form-group hidden-xs adv">
+                            
+                    <a href data-toggle="dropdown" class="btn btn-white dropdown-toggle">
+                        <span class="dropdown-label"> SubType </span> <span class="caret"></span>
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-select" >
+                        <li ng-repeat="location in locations" ng-click="selectLocation(location)" ng-class="{'active' : location.selected}" >
+                            <a href> {{location.location}}</a> </li>
+                    </ul>
+                </div>
+
+
+                <div class="form-group">
+                    <span > Brand </span> 
+                    <input type="text" class="form-control" id="city" placeholder="Type a Brand" autocomplete="off">
+                </div>
+
+                <div class="form-group hidden-xs adv">
+                            
+                    <a href data-toggle="dropdown" class="btn btn-white dropdown-toggle">
+                        <span class="dropdown-label"> Finish Type </span> <span class="caret"></span>
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-select"  >
+                        <li ng-repeat="location in locations" ng-click="selectLocation(location)" ng-class="{'active' : location.selected}" >
+                            <a href> {{location.location}}</a> </li>
+                    </ul>
+                </div>
+
+
+
+                
+                <div class="form-group hidden-xs adv">
+                
+                </div>
+
+                <div class="form-group">
+                    <a href="explore.html" class="btn btn-green isThemeBtn">Search</a>
+                    <a href="#" class="btn btn-o btn-white pull-right visible-xs" id="advanced">Advanced Search <span class="fa fa-angle-up"></span>
+                    </a>
+                </div>
+            </form>
+                    
+        </div>
+
+        <div id="wrapper">
+            <div id="mapView"><div class="mapPlaceholder"><span class="fa fa-spin fa-spinner"></span> Loading map...</div></div>
+            
+            <div id="content" style="min-height:700px;">
+                <div class="sort filter form-inline" style="padding:8px;" ng-controller = "sortCtrl">
+                    
+                         
+                                <div class="form-group">
+                                   <span > Sort Results By: </span>
+                                </div>
+
+                                <div class="form-group hidden-xs adv ">       
+                                    <a href data-toggle="dropdown" class="btn btn-white dropdown-toggle">
+                                      <span class="dropdown-label">{{sortWith}} </span> <span class="caret"></span>
+                                     </a>
+
+                                    <ul class="dropdown-menu dropdown-select"
+                                        ><li class="active" >
+                                            <a href> Relavance </a> </li>
+                                        <li >
+                                            <a href>  Price per sq. ft. (Low to High) </a> </li>
+                                        <li  >
+                                            <a href> Price per sq. ft.  (High to Low)</a> </li>
+                                        <li >
+                                            <a href> Rating </a> </li>
+                                        <li  >
+                                            <a href> Users Rated </a> </li>
+
+                                    </ul>
+                               
+                            </div>
+                          
+                </div>
+
+                <div class="resultsList">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <a href="single.html" class="card">
+                                <div class="figure">
+                                    <img src="images/s1.jpg" alt="image">
+                                    <div class="figCaption">
+                                        <div>$1,550,000</div>
+                                        <span class="icon-eye"> 200</span>
+                                        <span class="icon-heart"> 54</span>
+                                        <span class="icon-bubble"> 13</span>
+                                    </div>
+                                    <div class="figView"><span class="icon-eye"></span></div>
+                                    <div class="figType">FOR SALE</div>
+                                </div>
+                                <h2>Modern Residence in New York</h2>
+                                <div class="cardAddress"><span class="icon-pointer"></span> 39 Remsen St, Brooklyn, NY 11201, USA</div>
+                                <div class="cardRating">
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star-o"></span>
+                                    (146)
+                                </div>
+                                <ul class="cardFeat">
+                                    <li><span class="fa fa-moon-o"></span> 3</li>
+                                    <li><span class="icon-drop"></span> 2</li>
+                                    <li><span class="icon-frame"></span> 3430 Sq Ft</li>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </a>
+                        </div>
+                        
+                        
+                    </div>
+                  
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div> -->
+
+
+                <div id="header">
+            <div class="logo">
+                <a ui-sref="app.home">
+                    <span class="fa fa-home marker"></span>
+                    <span class="logoText" >reales</span>
+                </a>
+            </div>
+            <a href="#" class="navHandler"><span class="fa fa-bars"></span></a>
+            <div class="search">
+                <span class="searchIcon icon-magnifier"></span>
+                <input type="text" placeholder="Search for houses, apartments...">
+            </div>
+            <div class="headerUserWraper">
+                <a href="#" class="userHandler dropdown-toggle" data-toggle="dropdown"><span class="icon-user"></span><span class="counter">5</span></a>
+                <a href="#" class="headerUser dropdown-toggle" data-toggle="dropdown">
+                    <img class="avatar headerAvatar pull-left" src="images/avatar-1.png" alt="avatar">
+                    <div class="userTop pull-left">
+                        <span class="headerUserName">John Smith</span> <span class="fa fa-angle-down"></span>
+                    </div>
+                    <div class="clearfix"></div>
+                </a>
+                <div class="dropdown-menu pull-right userMenu" role="menu">
+                    <div class="mobAvatar">
+                        <img class="avatar mobAvatarImg" src="images/avatar-1.png" alt="avatar">
+                        <div class="mobAvatarName">John Smith</div>
+                    </div>
+                    <ul>
+                        <li><a href="#"><span class="icon-settings"></span>Settings</a></li>
+                        <li><a href="profile.html"><span class="icon-user"></span>Profile</a></li>
+                        <li><a href="#"><span class="icon-bell"></span>Notifications <span class="badge pull-right bg-red">5</span></a></li>
+                        <li class="divider"></li>
+                        <li><a href="#"><span class="icon-power"></span>Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="headerNotifyWraper">
+                <a href="#" class="headerNotify dropdown-toggle" data-toggle="dropdown">
+                    <span class="notifyIcon icon-bell"></span>
+                    <span class="counter">5</span>
+                </a>
+                <div class="dropdown-menu pull-right notifyMenu" role="menu">
+                    <div class="notifyHeader">
+                        <span>Notifications</span>
+                        <a href="#" class="notifySettings icon-settings"></a>
+                        <div class="clearfix"></div>
+                    </div>
+                    <ul class="notifyList">
+                        <li>
+                            <a href="#">
+                                <img class="avatar pull-left" src="images/avatar-1.png" alt="avatar">
+                                <div class="pulse border-grey"></div>
+                                <div class="notify pull-left">
+                                    <div class="notifyName">Sed ut perspiciatis unde</div>
+                                    <div class="notifyTime">5 minutes ago</div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <div class="notifyRound notifyRound-red fa fa-envelope-o"></div>
+                                <div class="pulse border-red"></div>
+                                <div class="notify pull-left">
+                                    <div class="notifyName">Lorem Ipsum is simply dummy text</div>
+                                    <div class="notifyTime">20 minutes ago</div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <div class="notifyRound notifyRound-yellow fa fa-heart-o"></div>
+                                <div class="pulse border-yellow"></div>
+                                <div class="notify pull-left">
+                                    <div class="notifyName">It is a long established fact</div>
+                                    <div class="notifyTime">2 hours ago</div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <div class="notifyRound notifyRound-magenta fa fa-paper-plane-o"></div>
+                                <div class="pulse border-magenta"></div>
+                                <div class="notify pull-left">
+                                    <div class="notifyName">There are many variations</div>
+                                    <div class="notifyTime">1 day ago</div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </a>
+                        </li>
+                    </ul>
+                    <a href="#" class="notifyAll">See All</a>
+                </div>
+            </div>
+            <a href="#" class="mapHandler"><span class="icon-map"></span></a>
+            <div class="clearfix"></div>
+        </div>
+
+        <!-- Left Side Navigation -->
+
+        <div id="leftSide">
+            <nav class="leftNav scrollable">
+                <div class="search">
+                    <span class="searchIcon icon-magnifier"></span>
+                    <input type="text" placeholder="Search for houses, apartments...">
+                    <div class="clearfix"></div>
+                </div>
+                <ul>
+                    <li><a href="explore.html"><span class="navIcon icon-compass"></span><span class="navLabel">Explore</span></a></li>
+                    <li><a href="single.html"><span class="navIcon icon-home"></span><span class="navLabel">Single</span></a></li>
+                    <li><a href="add.html"><span class="navIcon icon-plus"></span><span class="navLabel">New</span></a></li>
+                    <li class="hasSub">
+                        <a href="#"><span class="navIcon icon-drop"></span><span class="navLabel">Colors</span><span class="fa fa-angle-left arrowRight"></span><span class="badge bg-yellow">5</span></a>
+                        <ul class="colors">
+                            <li><a href="#" data-style="css/app-red.css">Red <span class="fa fa-circle-o c-red icon-right"></span></a></li>
+                            <li><a href="#" data-style="css/app.css">Green <span class="fa fa-circle-o c-green icon-right"></span></a></li>
+                            <li><a href="#" data-style="css/app-blue.css">Blue <span class="fa fa-circle-o c-blue icon-right"></span></a></li>
+                            <li><a href="#" data-style="css/app-yellow.css">Yellow <span class="fa fa-circle-o c-yellow icon-right"></span></a></li>
+                            <li><a href="#" data-style="css/app-magenta.css">Magenta <span class="fa fa-circle-o c-magenta icon-right"></span></a></li>
+                        </ul>
+                    </li>
+                    <li class="hasSub">
+                        <a href="#"><span class="navIcon icon-layers"></span><span class="navLabel">Elements</span><span class="fa fa-angle-left arrowRight"></span></a>
+                        <ul>
+                            <li><a href="buttons.html">Buttons</a></li>
+                            <li><a href="icons.html">Icons <span class="badge pull-right bg-yellow">841</span></a></li>
+                            <li><a href="grid.html">Grid</a></li>
+                            <li><a href="widgets.html">Widgets</a></li>
+                            <li><a href="components.html">Components</a></li>
+                            <li><a href="lists.html">Lists</a></li>
+                            <li><a href="tables.html">Tables</a></li>
+                            <li><a href="form.html">Form</a></li>
+                        </ul>
+                    </li>
+                    <li class="hasSub">
+                        <a href="#"><span class="navIcon icon-link"></span><span class="navLabel">Pages</span><span class="fa fa-angle-left arrowRight"></span></a>
+                        <ul>
+                            <li><a href="signin.html">Sign In</a></li>
+                            <li><a href="signup.html">Sign Up</a></li>
+                            <li><a href="profile.html">Profile</a></li>
+                            <li><a href="index-2.html">Homepage Slideshow</a></li>
+                            <li><a href="index-map.html">Homepage Map</a></li>
+                            <li><a href="blog.html">Blog</a></li>
+                            <li><a href="blog-post.html">Blog Post</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <div class="leftUserWraper dropup">
+                <a href="#" class="avatarAction dropdown-toggle" data-toggle="dropdown">
+                    <img class="avatar" src="images/avatar-1.png" alt="avatar"><span class="counter">5</span>
+                    <div class="userBottom pull-left">
+                        <span class="bottomUserName">John Smith</span> <span class="fa fa-angle-up pull-right arrowUp"></span>
+                    </div>
+                    <div class="clearfix"></div>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#"><span class="icon-settings"></span>Settings</a></li>
+                    <li><a href="profile.html"><span class="icon-user"></span>Profile</a></li>
+                    <li><a href="#"><span class="icon-bell"></span>Notifications <span class="badge pull-right bg-red">5</span></a></li>
+                    <li class="divider"></li>
+                    <li><a href="#"><span class="icon-power"></span>Logout</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="closeLeftSide"></div>
+
+        <!-- Content -->
+
+        <div id="wrapper">
+            <div id="mapView"><div class="mapPlaceholder"><span class="fa fa-spin fa-spinner"></span> Loading map...</div></div>
+            <div id="content" >
+                <div class="filter">
+                    <h1 class="osLight">Filter your results </h1>
+                    <a href="#" class="handleFilter"><span class="icon-equalizer"></span></a>
+                    <div class="clearfix"></div>
+                    <form class="filterForm">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 formItem">
+                                <div class="formField">
+                                    <label>Property Type</label>
+                                    <a href data-toggle="dropdown" class="btn btn-gray dropdown-btn dropdown-toggle propTypeSelect">
+                                        <span class="dropdown-label">All</span>
+                                        <span class="fa fa-angle-down dsArrow"></span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-select full" role="menu">
+                                        <li class="active"><input type="radio" name="pType" checked="checked"><a ng-click="sortBy = '-product_price'; AscorDesc=false" > Price (high to low)</a></li>
+                                        <li><input type="radio" name="pType"><a ng-click="sortBy = 'product_price'; AscorDesc=false">Price (low to high)</a></li>
+                                        <li><input type="radio" name="pType"><a ng-click="sortBy = '-product_rating'; AscorDesc=false">Rating (high to low)</a></li>
+                                         <li><input type="radio" name="pType"><a ng-click="sortBy = 'product_rating'; AscorDesc=false">Rating (low to high)</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </form>
+                </div>
+                <div class="resultsList" >
+                    <div class="row">
+                        <div ng-repeat="product in searchResults | orderBy:sortBy:AscOrDesc" class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <a href="single.html" class="card">
+                                <div class="figure">
+                                    <img src="images/prop/1-1.jpg" alt="image">
+                                    <div class="figCaption">
+                                        <div>{{product.product_price}} </div>
+                                        <span class="icon-eye"> {{product.product_rating}} </span>
+                                        <span class="icon-heart"> 54</span>
+                                        <span class="icon-bubble"> 13</span>
+                                    </div>
+                                    <div class="figView"><span class="icon-eye"></span></div>
+                                    <div class="figType">FOR SALE</div>
+                                </div>
+                                <h2> {{product.product_name}}</h2>
+                                <div class="cardAddress"><span class="icon-pointer"></span> 39 Remsen St, Brooklyn, NY 11201, USA</div>
+                                <div class="cardRating">
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star-o"></span>
+                                    (146)
+                                </div>
+                                <ul class="cardFeat">
+                                    <li><span class="fa fa-moon-o"></span> 3</li>
+                                    <li><span class="icon-drop"></span> 2</li>
+                                    <li><span class="icon-frame"></span> 3430 Sq Ft</li>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </a>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>

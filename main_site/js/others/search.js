@@ -10,23 +10,24 @@ var map;
 
     // calculations for elements that changes size on window resize
     var windowResizeHandler = function() {
+        
         windowHeight = window.innerHeight;
         windowWidth = $(window).width();
         contentHeight = windowHeight - $('#header').height();
         contentWidth = $('#content').width();
-
-        $('#leftSide').height(contentHeight);
+        console.log(contentHeight);
+       
+        setTimeout(function() {
+             $('#leftSide').height(contentHeight);
         $('.closeLeftSide').height(contentHeight);
         $('#wrapper').height(contentHeight);
         $('#mapView').height(contentHeight);
         $('#content').height(contentHeight);
-        setTimeout(function() {
+         
             $('.commentsFormWrapper').width(contentWidth);
         }, 300);
 
-        if (map) {
-            google.maps.event.trigger(map, 'resize');
-        }
+        
 
         // Add custom scrollbar for left side navigation
         if(windowWidth > 767) {
@@ -51,18 +52,7 @@ var map;
             }
         }
 
-        setTimeout(function() {
-        // reposition of prices and area reange sliders tooltip
-        var priceSliderRangeLeft = parseInt($('.priceSlider .ui-slider-range').css('left'));
-        var priceSliderRangeWidth = $('.priceSlider .ui-slider-range').width();
-        var priceSliderLeft = priceSliderRangeLeft + ( priceSliderRangeWidth / 2 ) - ( $('.priceSlider .sliderTooltip').width() / 2 );
-        $('.priceSlider .sliderTooltip').css('left', priceSliderLeft);
-
-        var areaSliderRangeLeft = parseInt($('.areaSlider .ui-slider-range').css('left'));
-        var areaSliderRangeWidth = $('.areaSlider .ui-slider-range').width();
-        var areaSliderLeft = areaSliderRangeLeft + ( areaSliderRangeWidth / 2 ) - ( $('.areaSlider .sliderTooltip').width() / 2 );
-        $('.areaSlider .sliderTooltip').css('left', areaSliderLeft);
-        }, 300);
+       
     }
 
     windowResizeHandler();
@@ -77,12 +67,32 @@ var map;
 
    
 
-    // Custom options for map
+    
+  
+
+    // custom infowindow object
+    
+    // function that adds the markers on map
     
 
-   
- 
+    var repositionTooltip = function(e, ui) {
+        var div = $(ui.handle).data("bs.tooltip").$tip[0];
+        var pos = $.extend({}, $(ui.handle).offset(), { 
+                        width: $(ui.handle).get(0).offsetWidth,
+                        height: $(ui.handle).get(0).offsetHeight
+                    });
+        var actualWidth = div.offsetWidth;
 
+        var tp = {left: pos.left + pos.width / 2 - actualWidth / 2}
+        $(div).offset(tp);
+
+        $(div).find(".tooltip-inner").text( ui.value );
+    }
+   $(document).ready(function(){
+
+      windowResizeHandler();
+   });
+    
     $(window).resize(function() {
         windowResizeHandler();
     });
@@ -170,36 +180,6 @@ var map;
 
    
    
-    $('.volume .btn-round-right').click(function() {
-        var currentVal = parseInt($(this).siblings('input').val());
-        if (currentVal < 10) {
-            $(this).siblings('input').val(currentVal + 1);
-        }
-    });
-    $('.volume .btn-round-left').click(function() {
-        var currentVal = parseInt($(this).siblings('input').val());
-        if (currentVal > 1) {
-            $(this).siblings('input').val(currentVal - 1);
-        }
-    });
-
-    $('.handleFilter').click(function() {
-        $('.filterForm').slideToggle(200);
-    });
-
-    //Enable swiping
-    $(".carousel-inner").swipe( {
-        swipeLeft:function(event, direction, distance, duration, fingerCount) {
-            $(this).parent().carousel('next'); 
-        },
-        swipeRight: function() {
-            $(this).parent().carousel('prev');
-        }
-    });
-
-    $(".carousel-inner .card").click(function() {
-        window.open($(this).attr('data-linkto'), '_self');
-    });
 
     $('#content').scroll(function() {
         if ($('.comments').length > 0) {
@@ -218,20 +198,7 @@ var map;
         }
     });
 
-    $('.tabsWidget .tab-scroll').slimScroll({
-        height: '235px',
-        size: '5px',
-        position: 'right',
-        color: '#939393',
-        alwaysVisible: false,
-        distance: '5px',
-        railVisible: false,
-        railColor: '#222',
-        railOpacity: 0.3,
-        wheelStep: 10,
-        allowPageScroll: true,
-        disableFadeOut: false
-    });
+   
 
     $("ul.colors li a").click(function() {
         $("#app").attr("href",$(this).attr('data-style'));
@@ -240,35 +207,19 @@ var map;
         return false;
     });
 
-    $('.progress-bar[data-toggle="tooltip"]').tooltip();
-    $('.tooltipsContainer .btn').tooltip();
-
-
-    console.log('clicked on modal-su');
-    
-    $('.modal-su').click(function() {
-        $('#signin').modal('hide');
-        $('#signup').modal('show');
-        console.log('clicked on modal-su');
-    });
-
-    $('.modal-si').click(function() {
-        $('#signup').modal('hide');
-        $('#signin').modal('show');
-    });
-
+  
+  
    
-    $("#imageold").elevateZoom();
 
-   
+  
 
     
 
     $('.isThemeBtn').addClass("btn-" + themeColor.replace("css/app", "green"));
     $('.isThemeText').addClass("text-" + themeColor.replace("css/app", "green"));
 
+    // functionality for autocomplete address field
     
 
-    
-
+   
 })(jQuery);

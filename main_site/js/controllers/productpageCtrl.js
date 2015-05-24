@@ -3,27 +3,35 @@ app.controller('productPageCtrl', ['$scope', '$http','$stateParams', '$filter', 
   $http.get('data/productPage_data.json').then(function (resp) {
 
      $scope.productPage_data = resp.data.productPage_data;
-     $scope.indx = -1; 
+     $scope.indx = -1;
+     $scope.rID = ''; 
      console.log($scope.productPage_data);
 
   if($stateParams.routeId == 'tiles'){
-    $scope.indx = 0; 
+      $scope.indx = 0; 
+      $scope.rID = 'tiles'; 
+
   }
 
   if($stateParams.routeId == 'marble'){
     $scope.indx = 1; 
+    $scope.rID = 'marble';
   }
   if($stateParams.routeId == 'wood'){
     $scope.indx = 2; 
+    $scope.rID = 'wood';  
   }
   if($stateParams.routeId == 'wallpaper'){
     $scope.indx = 3; 
+    $scope.rID = 'wallpaper';
   }
   if($stateParams.routeId == 'stone'){
     $scope.indx = 4; 
+    $scope.rID = 'stone';
   }
   if($stateParams.routeId == 'artificial'){
     $scope.indx = 5; 
+    $scope.rID = 'artificial';
   }
 
     console.log($scope.productPage_data[1].routeId) ;
@@ -111,7 +119,7 @@ app.controller('categoryCtrl', ['$scope', '$http', '$filter', function($scope, $
   };
 
   $scope.selectLocation = function(location){ 
-
+  
     angular.forEach($scope.locations, function(location_no) {
       location_no.selected = false;
 
@@ -127,21 +135,3 @@ app.controller('categoryCtrl', ['$scope', '$http', '$filter', function($scope, $
  
 
 }]);
-
-
-// app.controller('ScrollCtrl', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
-//     $scope.scrollToProducts = function(){
-//        console.log('csada');
-//       $('html, body').animate({
-//         scrollTop: $("#ourProducts").offset().top -65
-//       }, 2000);
-//     console.log("working");
-//   };
-
-
-// }]);
-
-
-
-
-

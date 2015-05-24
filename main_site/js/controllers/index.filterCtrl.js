@@ -86,5 +86,54 @@ app.controller('allcategoryCtrl', ['$scope', '$http', '$filter', function($scope
 
   }]);
 
+// app.controller('emailConfirmCtrl', ['$scope', '$http', '$filter', '$templateCache', function($scope, $http, $filter, $templateCache) {
+// //     $http.post('api/slim.php/shiningfloor/email_verification', {email : 'sahil@gmail.com'}).then(function (resp) {
+
+// //     $scope.emailResponse = resp.data.categories;
+// //     console.log(resp.data);
+// //  //   console.log($scope.categories[0].details.type);
+// // });
+
+//   $http({
+//       method: 'POST',
+//       url: 'api/slim.php/shiningfloor/email_verification',
+//       data: $.param({'email' : 'sahil@gmail.com'}),
+//       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+//       cache: $templateCache
+//     }).
+//     success(function(response) {
+//         $scope.codeStatus = response.data;
+//     }).
+//     error(function(response) {
+//         $scope.codeStatus = response || "Request failed";
+//     });
+
+//   }]);
+
+
+app.controller('emailConfirmCtrl', function ($scope, $http) {
+/*
+* This method will be called on click event of button.
+* Here we will read the email and password value and call our PHP file.
+*/
+$scope.check_credentials = function () {
+
+
+var request = $http({
+    method: 'POST',
+    url: 'api/slim.php/shiningfloor/email_verification',
+    data: {
+        email: 'sahil@gmail.com'        
+    },
+    headers : {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8' }
+});
+
+/* Check whether the HTTP Request is successful or not. */
+request.success(function (data) {
+    console.log('email sent successfully');
+    console.log(data);
+});
+}
+});
 
 

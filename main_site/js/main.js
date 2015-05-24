@@ -80,6 +80,13 @@ angular.module('app')
       }, 1000);
     
     };
+    $scope.scrollToTop = function(){
+     
+      $('body,html').animate({
+        scrollTop: 0
+      }, 1500);
+    
+    };
 
   }]);
 

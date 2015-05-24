@@ -1,18 +1,18 @@
 <div ng-controller="productPageCtrl">
-<div id="hero-container">
-            <ul class="cb-slideshow">
-                <li><span></span></li>
-                <li><span></span></li>
-                <li><span></span></li>
-                <li><span></span></li>
-                <li><span></span></li>
-                <li><span></span></li>
-            </ul>
+        <div id="hero-container">
+                    <ul class="cb-slideshow">
+                        <li><span></span></li>
+                        <li><span></span></li>
+                        <li><span></span></li>
+                        <li><span></span></li>
+                        <li><span></span></li>
+                        <li><span></span></li>
+                    </ul>
 
 
- <div data-ng-include=" 'tpl/blocks/header.html' " ng-controller="pageCtrl">
+         <div data-ng-include=" 'tpl/blocks/header.html' " ng-controller="pageCtrl">
 
-  </div>           
+          </div>           
 
             <div class="home-caption" >
                 <div class="home-title">{{mainTagline}}</div>
@@ -77,8 +77,6 @@
 
                             <div class="input-group-addon"> ₹ </div>
                             <input   class="form-control price dropdown-label " type="text" placeholder="₹ {{budgets[0]}}K" ng-click="dropdownHandle()"></input>
-                                
-                           
                         
                                     <!--<a href class="btn btn-white dropdown-toggle">
                                        
@@ -90,8 +88,6 @@
                                         <li ng-repeat="budget in budgets" ng-click="selectbudget(budget)" ng-class="{'active' : budget.selected}" >
                                             <a href>₹ {{budget}}K </a> </li>
                                     </ul> 
-                           
-
                         </div>
 
                        
@@ -108,7 +104,8 @@
                         <div class="checkbox custom-checkbox"><label><input type="checkbox"><span class="fa fa-check"></span> For Sale</label></div>
                     </div>
                     <div class="form-group">
-                        <a href="explore.html" class="btn btn-green isThemeBtn">Search</a>
+
+                        <a ui-sref="app.search.type({routeId : rID})" class="btn btn-green isThemeBtn">Search  </a>
                         <a href="#" class="btn btn-o btn-white pull-right visible-xs" id="advanced">Advanced Search <span class="fa fa-angle-up"></span></a>
                     </div>
                 </form>
@@ -127,7 +124,7 @@
                 <div  ng-show="isRecentProductSection()">
                     <h2 class="osLight" id = "ourProducts" >Recently Listed Properties </h2>
 
-                    <div class="row pb40" ng-show="isRecentProductSection()" >
+                    <div class="row pb40" ng-show="isRecentProductSection()"  ng-click="scrollToTop()">
                         <div ng-repeat="category in categories" class="{col-xs-12 col-sm-6 col-md-4 col-lg-4}">
                             <a ui-sref="app.home" class="propWidget-2">
                                 <div class="fig">
@@ -180,7 +177,7 @@
             <div class="promo-wrapper">
                 <div class="promo-content">
 
-                <h2 class="osLight" id = "ourProducts" >Our Offers</h2>
+                <h2 class="osLight" >Our Offers</h2>
                 
                 <div class="wpb-container promotion hideen-sm hidden-xs promo_bg">
                     <div class="row" >
@@ -211,97 +208,98 @@
             </div>
         
 
-         <div data-ng-include=" 'tpl/blocks/footer.html' ">
+        <div data-ng-include=" 'tpl/blocks/footer.html' ">
 
-        <div class="modal fade" id="signin" role="dialog" aria-labelledby="signinLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="signinLabel">Sign In</h4>
+            <div class="modal fade" id="signin" role="dialog" aria-labelledby="signinLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="signinLabel">Sign In</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form">
+                                <div class="form-group">
+                                    <div class="btn-group-justified">
+                                        <a href="explore.html" class="btn btn-lg btn-facebook"><span class="fa fa-facebook pull-left"></span>Sign In with Facebook</a>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="btn-group-justified">
+                                        <a href="explore.html" class="btn btn-lg btn-google"><span class="fa fa-google-plus pull-left"></span>Sign In with Google</a>
+                                    </div>
+                                </div>
+                                <div class="signOr">OR</div>
+                                <div class="form-group">
+                                    <input type="text" placeholder="Email Address" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" placeholder="Password" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <div class="checkbox custom-checkbox"><label><input type="checkbox"><span class="fa fa-check"></span> Remember me</label></div>
+                                        </div>
+                                        <div class="col-xs-6 align-right">
+                                            <p class="help-block"><a href="#" class="text-green isThemeText">Forgot password?</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="btn-group-justified">
+                                        <a href="explore.html" class="btn btn-lg btn-green isThemeBtn">Sign In</a>
+                                    </div>
+                                </div>
+                                <p class="help-block">Don't have an account? <a href="#" class="modal-su text-green isThemeText">Sign Up</a></p>
+                            </form>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <form role="form">
-                            <div class="form-group">
-                                <div class="btn-group-justified">
-                                    <a href="explore.html" class="btn btn-lg btn-facebook"><span class="fa fa-facebook pull-left"></span>Sign In with Facebook</a>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="btn-group-justified">
-                                    <a href="explore.html" class="btn btn-lg btn-google"><span class="fa fa-google-plus pull-left"></span>Sign In with Google</a>
-                                </div>
-                            </div>
-                            <div class="signOr">OR</div>
-                            <div class="form-group">
-                                <input type="text" placeholder="Email Address" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <input type="password" placeholder="Password" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-xs-6">
-                                        <div class="checkbox custom-checkbox"><label><input type="checkbox"><span class="fa fa-check"></span> Remember me</label></div>
-                                    </div>
-                                    <div class="col-xs-6 align-right">
-                                        <p class="help-block"><a href="#" class="text-green isThemeText">Forgot password?</a></p>
+                </div>
+            </div>
+
+            <div class="modal fade" id="signup" role="dialog" aria-labelledby="signupLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="signupLabel">Sign Up</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form">
+                                <div class="form-group">
+                                    <div class="btn-group-justified">
+                                        <a href="explore.html" class="btn btn-lg btn-facebook"><span class="fa fa-facebook pull-left"></span>Sign Up with Facebook</a>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="btn-group-justified">
-                                    <a href="explore.html" class="btn btn-lg btn-green isThemeBtn">Sign In</a>
+                                <div class="form-group">
+                                    <div class="btn-group-justified">
+                                        <a href="explore.html" class="btn btn-lg btn-google"><span class="fa fa-google-plus pull-left"></span>Sign Up with Google</a>
+                                    </div>
                                 </div>
-                            </div>
-                            <p class="help-block">Don't have an account? <a href="#" class="modal-su text-green isThemeText">Sign Up</a></p>
-                        </form>
+                                <div class="signOr">OR</div>
+                                <div class="form-group">
+                                    <input type="text" placeholder="First Name" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" placeholder="Last Name" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" placeholder="Email Address" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" placeholder="Password" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" placeholder="Confirm Password" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <div class="btn-group-justified">
+                                        <a href="explore.html" class="btn btn-lg btn-green isThemeBtn">Sign Up</a>
+                                    </div>
+                                </div>
+                                <p class="help-block">Already a Reales member? <a href="#" class="modal-si text-green isThemeText">Sign In</a></p>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="modal fade" id="signup" role="dialog" aria-labelledby="signupLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="signupLabel">Sign Up</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form role="form">
-                            <div class="form-group">
-                                <div class="btn-group-justified">
-                                    <a href="explore.html" class="btn btn-lg btn-facebook"><span class="fa fa-facebook pull-left"></span>Sign Up with Facebook</a>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="btn-group-justified">
-                                    <a href="explore.html" class="btn btn-lg btn-google"><span class="fa fa-google-plus pull-left"></span>Sign Up with Google</a>
-                                </div>
-                            </div>
-                            <div class="signOr">OR</div>
-                            <div class="form-group">
-                                <input type="text" placeholder="First Name" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <input type="text" placeholder="Last Name" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <input type="text" placeholder="Email Address" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <input type="password" placeholder="Password" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <input type="password" placeholder="Confirm Password" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <div class="btn-group-justified">
-                                    <a href="explore.html" class="btn btn-lg btn-green isThemeBtn">Sign Up</a>
-                                </div>
-                            </div>
-                            <p class="help-block">Already a Reales member? <a href="#" class="modal-si text-green isThemeText">Sign In</a></p>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div></div>
