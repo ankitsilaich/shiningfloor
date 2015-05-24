@@ -212,7 +212,7 @@
                     <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
                         <div class="agent">
                             <a href="profile.html" class="agent-avatar">
-                                <img src="images/avatar-1.png" alt="John Smith">
+                                <img ng-elevate-zoom  src="images/avatar-1.png" alt="John Smith">
                                 <div class="ring"></div>
                             </a>
                             <div class="agent-name osLight">John Smith</div>
@@ -433,19 +433,29 @@
         </div>
 
 
-         <div class="modal fade" id="product-pop-up"  role="dialog" aria-labelledby="signupLabel" aria-hidden="true">
+         <div class="modal fade" id="product-pop-up"  role="dialog" aria-labelledby="signupLabel" aria-hidden="true" >
             <div class="modal-dialog modal-lg">
-                <div class="modal-content" ng-controller='emailConfirmCtrl'>
-                    
+                          
+
+                <div class="modal-content">
+             
                     <div class="modal-header">
                         <h4 class="modal-title" id="signupLabel">Email Verification</h4>
                     </div>
+              
+                        
+                  
                     <div class="modal-body">
                         <div class="product-page product-pop-up">
                             <div class="row">
                             <div class="col-md-6 col-sm-6 col-xs-3">
                               <div class="product-main-image">
-                                <img id="imageold" src="images/7.jpg" data-zoom-image="images/11.jpg" alt="Cool green dress with red bell" class="img-responsive">
+                                <img ng-elevate-zoom
+                                         ng-src="images/prop/3-1-thmb.png"
+                                         zoom-image="images/prop/3-1_old.png" alt="Cool green dress with red bell" class="img-responsive">
+                                                                
+
+
                               </div>
                               <div class="product-other-images">
                                 <a href="javascript:;" class="active"><img alt="Berry Lace Dress" src="images/7.jpg"></a>
@@ -504,3 +514,4 @@
             </div>
         </div>
 
+         

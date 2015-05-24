@@ -89,7 +89,40 @@ angular.module('app')
     };
 
   }]);
+app.directive('ngElevateZoom', function() {
+  return {
+    restrict: 'A',
+    link: function(scope, element, attrs) {
 
+      //Will watch for changes on the attribute
+      attrs.$observe('zoomImage',function(){
+        linkElevateZoom();
+      })
+
+      function linkElevateZoom(){
+        //Check if its not empty
+        if (!attrs.zoomImage) return;
+        element.attr('data-zoom-image',attrs.zoomImage);
+        $(element).elevateZoom();
+      }
+
+      linkElevateZoom();
+
+    }
+  };
+});
+app.directive('zoomContainer', function() {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            scope.$on('$routeChangeSuccess', function() {
+
+                var target = element.children('div.zoomContainer').remove();
+            })
+        }
+    }
+
+});
 
 // app.controller('ScrollCtrl', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
     

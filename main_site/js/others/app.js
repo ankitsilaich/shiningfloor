@@ -258,7 +258,12 @@ var map;
     });
 
    
-    $("#imageold").elevateZoom();
+    // $("#imageold").elevateZoom();
+
+$( document ).ready(function() {
+    console.log('in native');
+    $('#native').elevateZoom();
+});
 
    
 

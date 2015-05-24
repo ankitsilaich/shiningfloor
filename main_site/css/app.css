@@ -5906,3 +5906,6 @@ table .product-quantity .input-group {
     padding: 50px 13px 0;
 }
 
+
+.zoomContainer{ z-index: 9999;}
+    .zoomWindow{ z-index: 9999;}

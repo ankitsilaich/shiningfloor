@@ -36,10 +36,8 @@ angular.module('app')
                         function( $ocLazyLoad, uiLoad ){
                           return uiLoad.load(
                             [ 
-                              'js/others/jquery.zoom.min.js',
-                              'http://www.elevateweb.co.uk/wp-content/themes/radial/jquery.fancybox.css',
-                              'http://www.elevateweb.co.uk/wp-content/themes/radial/jquery.elevatezoom.min.js',
-                              'http://www.elevateweb.co.uk/wp-content/themes/radial/jquery.fancybox.pack.js',
+                              
+                              'js/others/jquery.elevatezoom.js',
 
                               'js/others/jquery.cookie.js',
                               'js/others/jquery.slimscroll.min.js',
