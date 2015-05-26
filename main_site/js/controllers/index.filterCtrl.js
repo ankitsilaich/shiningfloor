@@ -116,15 +116,13 @@ app.controller('emailConfirmCtrl', function ($scope, $http) {
 * This method will be called on click event of button.
 * Here we will read the email and password value and call our PHP file.
 */
-$scope.check_credentials = function () {
+$scope.check_credentials = function (email) {
 
 
 var request = $http({
     method: 'POST',
-    url: 'api/slim.php/shiningfloor/email_verification',
-    data: {
-        email: 'sahil@gmail.com'        
-    },
+    url: 'api/slim.php/shiningfloor/email_verification/'+email,
+   
     headers : {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8' }
 });
 
@@ -135,6 +133,4 @@ request.success(function (data) {
 });
 }
 });
-
-
 

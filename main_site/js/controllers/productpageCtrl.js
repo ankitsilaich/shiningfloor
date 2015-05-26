@@ -1,5 +1,5 @@
 
-app.controller('productPageCtrl', ['$scope', '$http','$stateParams', '$filter', function($scope, $http, $stateParams,$filter) {
+app.controller('productPageCtrl', ['$scope', '$http','$stateParams','ngCart', '$filter', function($scope, $http, $stateParams,ngCart,$filter) {
   $http.get('data/productPage_data.json').then(function (resp) {
 
      $scope.productPage_data = resp.data.productPage_data;
@@ -62,7 +62,17 @@ app.controller('productPageCtrl', ['$scope', '$http','$stateParams', '$filter', 
 
   });
 
+  $( document ).ready(function() {
+      $(".counter").html (ngCart.getTotalItems()) ;
+      console.log('counter:' + ngCart.getTotalItems());
+});
  
+  $scope.showCounter1 = function(){
+        
+      
+      console.log( 'sss' );
+
+      };
 
 }]);
 
@@ -132,6 +142,5 @@ app.controller('categoryCtrl', ['$scope', '$http', '$filter', function($scope, $
   };
 
 
- 
 
 }]);

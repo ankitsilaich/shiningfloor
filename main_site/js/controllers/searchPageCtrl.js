@@ -1,4 +1,4 @@
-app.controller('searchPageCtrl', ['$scope', '$http','$stateParams', '$filter', function($scope, $http, $stateParams,$filter) {
+app.controller('searchPageCtrl', ['$scope', '$http','$stateParams', 'ngCart', '$filter', function($scope, $http, $stateParams, ngCart, $filter) {
      console.log($stateParams.routeId);
 
   $http.get('data/productPage_data.json').then(function (resp) {
@@ -35,7 +35,8 @@ app.controller('searchPageCtrl', ['$scope', '$http','$stateParams', '$filter', f
 
 // console.log($state.current.name);
 
-
+  
+    
   });
 
 $http.get('api/slim.php/shiningfloor/products/'+ $stateParams.routeId).then(function (resp) {
@@ -47,18 +48,54 @@ $http.get('api/slim.php/shiningfloor/products/'+ $stateParams.routeId).then(func
 
 });
 
+
 $scope.test = function(){
 
 console.log('clicked');
 
  };
 
+  $( document ).ready(function() {
+      $(".counter").html (ngCart.getTotalItems()) ;
+
+});
+
+ $scope.showCounter1 = function(){
+        
+      
+      console.log( 'sss' );
+      // $(".counter").html (ngCart.getTotalItems()) ;
+
+      };
+
+
+}]);
+
+app.controller('productSearchCtrl', ['$scope', '$http','$stateParams', '$filter', function($scope, $http, $stateParams,$filter) {
+
+  $http.get('data/tyle_filter.json').then(function (resp) {
+
+    $scope.categories = resp.data.categories;
+    console.log('productSearchCtrl');
+   // console.log($scope.categories[0].details.type);
+
+  });
+  
+  // function fetchProductInfo(){
+  //     console.log('fetching each product info ');
+  //   //   $http.get('api/slim.php/shiningfloor/products/'+ $stateParams.routeId)+'/'+ product_id.then(function (resp) {
+  //   //   $scope.searchResults = resp.data.product_data;
+  //   //      console.log($scope.searchResults);
+  //   // });  
+  // }
 
 }]);
 
 app.controller('searchCtrl', ['$scope', '$http','$stateParams', '$filter', function($scope, $http, $stateParams,$filter) {
     $scope.currentpage = $stateParams.routeId;
 }]);
+
+
 
 
 // app.controller('sortCtrl', ['$scope','$stateParams', '$filter', function($scope,  $stateParams,$filter) {

@@ -3,8 +3,9 @@
 /* Controllers */
 
 angular.module('app')
-  .controller('AppCtrl', ['$scope', '$translate', '$localStorage', '$window', 
-    function(              $scope,   $translate,   $localStorage,   $window ) {
+
+  .controller('AppCtrl', ['$scope', '$rootScope', '$translate', 'ngCart', '$localStorage', '$window', 
+    function(              $scope, $rootScope,  $translate, ngCart,  $localStorage,   $window ) {
       // add 'ie' classes to html
       var isIE = !!navigator.userAgent.match(/MSIE/i);
       isIE && angular.element($window.document.body).addClass('ie');
@@ -80,6 +81,76 @@ angular.module('app')
       }, 1000);
     
     };
+   
+
+
+      $scope.showCounter = function(){
+        
+      $("#dropdown_cart").toggleClass('hidden dropdown');
+
+      console.log( ngCart.getTotalItems() );
+      $(".counter").html (ngCart.getTotalItems()) ;
+
+      };
+
+      $scope.showCounter1 = function(){
+     
+        console.log(' showcounter1' );
+
+      };
+
+     $scope.fetchProductInfo = function(product){
+       $scope.selected_product = product; 
+       $scope.selected_product_id =                        product.product_id;
+       $scope.selected_product_brand =                     product.product_brand;
+       $scope.selected_product_name =                      product.product_name;
+       $scope.selected_product_type_id =                   product.type_id;
+       $scope.selected_product_desc =                      product.product_desc;
+       $scope.selected_product_img =                       product.product_img;
+       $scope.selected_product_usage =                     product.usages_area;
+       $scope.selected_product_design =                    product.designs;
+       $scope.selected_product_subtype =                   product.subtypes;
+       $scope.selected_product_surface_type =              product.surface_types;
+       $scope.selected_product_color =                     product.colors;
+       $scope.selected_product_feature =                   product.features;
+       $scope.selected_product_price =                     product.product_price;
+       $scope.selected_product_rating =                    product.product_rating ;
+       $scope.selected_product_supplierID =                product.supplierID ;
+       $scope.selected_product_isDiscountAvailable =       product.isDiscountAvailable;
+       $scope.selected_product_isProductAvailable =        product.isProductAvailable;        
+
+    };
+     // format {total_items: 5 , Items: {{item1_info} , {item2_info}}}
+   
+    $scope.selectImg = function(id){
+      // if(id=='1')
+      //   $scope.selected_product_img = 'images/products/tiles/tile1.jpg';
+      // if(id=='2')
+      //   $scope.selected_product_img = 'images/products/tiles/tile2.jpg';
+      // if(id=='3')
+      //   $scope.selected_product_img = 'images/products/tiles/tile1.jpg';    
+
+ };
+
+    //   $rootScope.cartItems={
+    //       count : 0 ,
+    //       allCartItems: [],
+    //       AddItemToCart : function(selected_product){
+
+    //         var cartItem = {
+    //           'product_img' : selected_product.product_img,
+    //           'product_name' : selected_product.product_name,
+    //           'product_price' : selected_product.product_price,
+    //           'product_rating' : selected_product.product_rating        
+    //         };
+    //         this.allCartItems[this.count] = cartItem;   
+    //         this.count = this.count + 1;
+    //         console.log(cartItem);    
+    //       }
+    // };
+
+
+   
     $scope.scrollToTop = function(){
      
       $('body,html').animate({

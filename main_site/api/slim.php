@@ -247,51 +247,50 @@ $email_html_code2 =  '" style="background-color:#172838;color:#ffffff;display:in
     // @$email = $request->email;
     // echo $email;
 
-$app->post("/shiningfloor/email_verification", function () use ($app, $db) {
+$app->post("/shiningfloor/email_verification/:email", function ($email=null) use ($app, $db) {
      // $request = $app->request();
-      $body =  json_decode(file_get_contents('php://input'));
+      
 
       // var_dump($body);
     // $email_id = $app->request()->post('email'); 
-     echo $body;   
-    // $email_id='sahil@gmail.com';
-    // echo $email_id;
-    // global $email_html_code1,$email_html_code2;
-    // $email_fromr = "sahilsolanki07@gmail.com";    
-    // $email_subjectr = "Thanks for registering with Shining floor";
-    // $email_tor = $email_id;    
-    // $user = $db->users()->where('email', $email_id);
-    // $data ;
-    // $count  = count($user);
+     //echo $email;   
     
-    // if($count==1){
-    //     $pwd_update_time = $user->fetch()['pwd_update_time'];
-    //     $send_url='http://localhost/shiningfloor/shiningfloor/main_site/change_pwd.php?';
-    //     $send_url .= 'email='.$email_id.'&token='.md5($email_id.md5($pwd_update_time));
+     global $email_html_code1,$email_html_code2;
+     $email_fromr = "sahilsolanki07@gmail.com";    
+     $email_subjectr = "Follow link to change password";
+     $email_tor = $email;    
+     $user = $db->users()->where('email', $email);
+     $data ;
+     $count  = count($user);
+    
+     if($count==1){
+         $pwd_update_time = $user->fetch()['pwd_update_time'];
+         $send_url='http://ankitsilaich.in/shiningfloor-master/main_site/change_pwd.php?';
+         $send_url .= 'email='.$email.'&token='.md5($email.md5($pwd_update_time));
 
-    //     //echo $send_url; 
-    //     // $headers3 = 'From:' .'Ankit Silaich'. " ".'<'.'support@eagleeye.com'.'>'."\r\n";     
-    //     // $headers3 .= 'Reply-To: '. $email_fromr. "\r\n";
-    //     // $headers3 .= "MIME-Version: 1.0\r\n";
-    //     // $headers3 .= "Content-Type: text/html; charset=ISO-8859-1\r\n";   
-    //     $body  = $email_html_code1. $send_url. $email_html_code2;
+         //echo $send_url; 
+     $headers3 = 'From:' .'Shining Floor'. " ".'<'.'support@shiningfloor.com'.'>'."\r\n";     
+     $headers3 .= 'Reply-To: '. $email_fromr. "\r\n";
+    $headers3 .= "MIME-Version: 1.0\r\n";
+     $headers3 .= "Content-Type: text/html; charset=ISO-8859-1\r\n";   
+        $body  = $email_html_code1. $send_url. $email_html_code2;
 
     //     // echo $body;
-    //     // $headersr = 'From: '.$email_fromr."\r\n".
-    //     // 'Reply-To: '.$email_fromr."\r\n" .
-    //     // 'X-Mailer: PHP/' . phpversion();
-    //     // mail($email_tor, $email_subjectr, $body , $headers3);
+    $headersr = 'From: '.$email_fromr."\r\n".
+     'Reply-To: '.$email_fromr."\r\n" .
+     'X-Mailer: PHP/' . phpversion();
+     mail($email_tor, $email_subjectr, $body , $headers3);
     //     // echo "sent";   
-    //      $data = array("status"=> "email sent success");
-    // }
-    // else{
-    //     $data =  array("status"=>"not registered",
-    //                     "email" => $email_id
-    //       );
-    // }
+        $data = array("status"=> "email sent success");
+     }
+     else{
+         $data =  array("status"=>"not registered",
+                         "email" => $email
+           );
+     }
 
-    //    $app->response()->header('Content-Type', 'application/json');
-    //    echo json_encode($data);
+        $app->response()->header('Content-Type', 'application/json');
+    echo json_encode($data);
 });
 
 
@@ -735,6 +734,7 @@ function findAllProducts($query,$usage_location){
         // array_push($data,$usages_area);            
     //
         $data[] =  array(
+                         'product_id' => $p['id'],
                         'product_brand' =>   $p['product_brand'],
                         'product_name' => $p['product_name'],
                         'product_type_id' => $p['type_id'],

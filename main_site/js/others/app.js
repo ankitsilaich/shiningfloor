@@ -265,8 +265,6 @@ $( document ).ready(function() {
     $('#native').elevateZoom();
 });
 
-   
-
     
 
     $('.isThemeBtn').addClass("btn-" + themeColor.replace("css/app", "green"));
