@@ -1,11 +1,19 @@
 app.controller('searchPageCtrl', ['$scope', '$http','$stateParams', 'ngCart', '$filter', function($scope, $http, $stateParams, ngCart, $filter) {
-     console.log($stateParams.routeId);
+     
+      $scope.windowHeight = window.innerHeight;
+      $scope.windowWidth = $(window).width();
+      $scope.contentHeight = $scope.windowHeight - $('#header').height();
+      $scope.contentWidth = $('#content').width();
+      console.log($scope.contentHeight);
 
+    console.log('type = '+ $stateParams.routeId + 'query = '+  $stateParams.query);
+//    if($stateParams.query === '') console.log('empty');
+    $scope.rId = $stateParams.routeId ;
   $http.get('data/productPage_data.json').then(function (resp) {
 
      $scope.productPage_data = resp.data.productPage_data;
      $scope.indx = -1; 
-     console.log('adada');
+  //   console.log('adada');
      console.log($stateParams.routeId);
 
   if($stateParams.routeId == 'tiles'){
@@ -39,14 +47,38 @@ app.controller('searchPageCtrl', ['$scope', '$http','$stateParams', 'ngCart', '$
     
   });
 
-$http.get('api/slim.php/shiningfloor/products/'+ $stateParams.routeId).then(function (resp) {
-  $scope.searchResults = resp.data.product_data;
-          
-//      $scope.indx = -1; 
-     console.log($scope.searchResults);
-     $scope.sortBy ='-product_price';
+$scope.searchQuery = {
+        text: '',
+        word: /^\s*\w*\s*$/
+      };
 
-});
+if($stateParams.query === '' & $scope.searchQuery.text ===''){
+ 
+  $http.get('api/slim.php/shiningfloor/products/'+ $stateParams.routeId).then(function (resp) {
+          
+          $scope.searchResults = resp.data.product_data;
+          $scope.sortBy ='-product_price';
+      });
+
+}
+else{
+
+    $http.get('api/slim.php/shiningfloor/products/'+ $stateParams.routeId+'/search/'+$stateParams.query).then(function (resp) {
+       $scope.searchResults = resp.data.product_data;
+         console.log('search data ' + resp.data);
+       // $('#search-items').addClass('hidden');
+       // $scope.searchQuery.text = '';   
+  });
+}
+
+$scope.showSuggestions = function(){
+
+  $('#search-items').removeClass('hidden');
+  if($scope.searchQuery.text=='')
+        $('#search-items').addClass('hidden');
+ };
+
+
 
 
 $scope.test = function(){
@@ -60,13 +92,6 @@ console.log('clicked');
 
 });
 
- $scope.showCounter1 = function(){
-        
-      
-      console.log( 'sss' );
-      // $(".counter").html (ngCart.getTotalItems()) ;
-
-      };
 
 
 }]);
@@ -96,43 +121,3 @@ app.controller('searchCtrl', ['$scope', '$http','$stateParams', '$filter', funct
 }]);
 
 
-
-
-// app.controller('sortCtrl', ['$scope','$stateParams', '$filter', function($scope,  $stateParams,$filter) {
-
-// }]);
-
-
-
-// app.controller('sortCtrl', ['$scope',  '$filter', function($scope,  $filter) {
-
-//   $scope.sortTypes = [ 1 , 2 , 3, 4, 5];
-
-
- 
-//   $scope.dropdownHandle= function(){
-//     $('#dropdowndisplay').toggleClass('customClass');
-//    // console.log('sfsfs');
-//   };
-  
-//   $scope.selectSortType = function(location){ 
-
-//     // $scope.sortWith= "Relevance";
-
-//   };
-
-
- 
-
-// }]);
-
-
-
-// app.controller('productResultCtrl', ['$scope', '$http','$stateParams', '$filter', function($scope, $http, $stateParams,$filter) {
-
-//      // console.log($stateParams.routeId);
-
- 
- 
-
-// }]);

@@ -67,12 +67,7 @@ app.controller('productPageCtrl', ['$scope', '$http','$stateParams','ngCart', '$
       console.log('counter:' + ngCart.getTotalItems());
 });
  
-  $scope.showCounter1 = function(){
-        
-      
-      console.log( 'sss' );
 
-      };
 
 }]);
 
@@ -103,7 +98,7 @@ app.controller('categoryCtrl', ['$scope', '$http', '$filter', function($scope, $
  
   $scope.dropdownHandle= function(){
     $('#dropdowndisplay').toggleClass('customClass');
-   console.log('sfsfs');
+  // console.log('sfsfs');
   };
 
   

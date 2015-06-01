@@ -11,7 +11,7 @@
                         <div ng-show="$index < 3">
                         <a href >
 
-                            <img class="avatar pull-left" src="{{item.getData().product_img}}" alt="avatar">
+                            <img class="avatar pull-left" src="{{item.getData().product_img}}" alt="avatar" style="border-radius: 10%;">
                             <a class="remove-cart " ng-click="ngCart.removeItemById(item.getData().product_id); showCounter1();"  ></a>
 
                             <div class="pulse border-grey"></div>
@@ -45,20 +45,10 @@
                         
                     </li>
 
-                    <li class="alert-warning cart-summary"style="padding-left:10px;">
-                         <a href>
-                             
-                                View Cart in Detail >>
-                             
-                            
-                              
+                    <li class="alert-warning cart-summary"style="padding-top: 5px;  margin-bottom: -3px;">
+                         <a href data-toggle="modal" data-target="#my-cart">                             
+                                View Cart in Detail >>                                                         
                         </a>
-
-                        
                     </li>
-
- 
-                    
                 </ul>
                 
-         

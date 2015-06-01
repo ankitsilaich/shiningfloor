@@ -446,6 +446,7 @@ $app->put('/users/:email', function ($email) use ($app, $db) {
 /*************************************    Products data retrivel  **********************************/
 //Get Method to get the data from database
 
+
 $app->get('/products(/:id)', function($id=null) use ($app, $db){
     
     if($id == null){
@@ -581,6 +582,24 @@ $app->get('/products(/:id)', function($id=null) use ($app, $db){
     echo json_encode(array('product_data'=>$data));    
 });
 
+/****** AutoSuggest Get call for products *******/
+
+$app->get('/shiningfloor/autosuggest/products(/:input)', function($input=null) use ($app, $db){
+
+  // if($input==null){
+  //   $query= '';
+  // }
+  // else
+  {
+    // echo "'%'$input'%'";
+    $query = $db->products->where('product_name LIKE ?' ,"%".$input."%")->order('product_rating');
+    $data = findAllProducts($query,'');
+  }
+
+  $app->response()->header('content-type','application/json');
+  echo json_encode(array('result_data'=>$data));  
+});
+
 
 
 // For finding all products of a given supplier
@@ -627,7 +646,7 @@ $app->get('/shiningfloor/products/suppliers(/:supplierId)', function($supplierId
         
 });
 
-// For finding all products of type say tiles or marbles
+// For finding usages of given type say tiles or marbles
 $app->get('/shiningfloor/products(/:type)/usages', function($type) use ($app, $db){
 
       $usages_area;
@@ -646,8 +665,32 @@ $app->get('/shiningfloor/products(/:type)/usages', function($type) use ($app, $d
 
 });
 
+$app->get('/shiningfloor/products(/:type)/search(/:input)', function($type=null,$input=null ) use ($app, $db){
 
-// FOr finding all products of type say tiles or marbles
+        $data = array();
+        $type_id = $db->types()->where('type_name',$type)->select('id');
+        if($type==null)
+        {
+            $query = $db->products();
+        }
+        else{
+            $query = $db->products->where('type_id',$type_id);
+        }        
+        if($input!=null)
+        {
+          $query = $query->where('product_name LIKE ?' ,"%".$input."%");
+        }
+
+        $data = findAllProducts($query,'');
+
+        $app->response()->header('content-type','application/json');
+         echo json_encode(array('product_data'=>$data));    
+       
+});
+
+
+
+// For finding all products of type say tiles or marbles
 $app->get('/shiningfloor/products(/:type)(/:usage_location)', function($type=null,$usage_location=null ) use ($app, $db){
 
         $data = array();
@@ -662,6 +705,11 @@ $app->get('/shiningfloor/products(/:type)(/:usage_location)', function($type=nul
         if(isset($_GET['sortkey']) and isset($_GET['sortorder'])){
             $query = $query->order($_GET['sortkey'].' '.$_GET['sortorder']);
         }
+        // if(isset($_GET['q']) ){
+        //   if($_GET['q']!='')
+        //     $query = $query->where('product_name LIKE ?' ,"%".$_GET['q']."%") ;
+        //   // echo $query;
+        // }
         // if(isset($_GET['totalResults']) and isset($_GET['pageNo'])){
         //     //echo json_encode(((( int )$_GET['pageNo'] -1)*( int )$_GET['totalResults']));
         //     //$_GET['totalResults']

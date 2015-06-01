@@ -141,9 +141,9 @@ angular.module('app')
               })
 
               .state('app.search.type', {
-                  url: '/:routeId',
+                  url: '/:routeId/:query',
                   templateUrl : 'tpl/search.html',
-                
+                  
                  
                   resolve: {
                     
@@ -159,8 +159,6 @@ angular.module('app')
                       }]
                   }                  
               })
-
-
               
       }
     ]

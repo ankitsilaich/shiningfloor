@@ -88,17 +88,12 @@ angular.module('app')
         
       $("#dropdown_cart").toggleClass('hidden dropdown');
 
-      console.log( ngCart.getTotalItems() );
+    //  console.log( ngCart.getTotalItems() );
       $(".counter").html (ngCart.getTotalItems()) ;
 
       };
 
-      $scope.showCounter1 = function(){
-     
-        console.log(' showcounter1' );
-
-      };
-
+      
      $scope.fetchProductInfo = function(product){
        $scope.selected_product = product; 
        $scope.selected_product_id =                        product.product_id;
@@ -123,32 +118,10 @@ angular.module('app')
      // format {total_items: 5 , Items: {{item1_info} , {item2_info}}}
    
     $scope.selectImg = function(id){
-      // if(id=='1')
-      //   $scope.selected_product_img = 'images/products/tiles/tile1.jpg';
-      // if(id=='2')
-      //   $scope.selected_product_img = 'images/products/tiles/tile2.jpg';
-      // if(id=='3')
-      //   $scope.selected_product_img = 'images/products/tiles/tile1.jpg';    
-
+        $scope.selected_product_img = 'images/products/tiles/tile'+id+ '.jpg';
  };
 
-    //   $rootScope.cartItems={
-    //       count : 0 ,
-    //       allCartItems: [],
-    //       AddItemToCart : function(selected_product){
-
-    //         var cartItem = {
-    //           'product_img' : selected_product.product_img,
-    //           'product_name' : selected_product.product_name,
-    //           'product_price' : selected_product.product_price,
-    //           'product_rating' : selected_product.product_rating        
-    //         };
-    //         this.allCartItems[this.count] = cartItem;   
-    //         this.count = this.count + 1;
-    //         console.log(cartItem);    
-    //       }
-    // };
-
+   $scope.types=['tiles','wood','marble','stone','wallpaper','artificial']
 
    
     $scope.scrollToTop = function(){

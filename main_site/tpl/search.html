@@ -10,14 +10,23 @@
         <a href="#" class="navHandler"><span class="fa fa-bars"></span></a>
         <div class="search">
             <span class="searchIcon icon-magnifier"></span>
-            <input type="text" placeholder="Search for houses, apartments...">
+            <input type="text" placeholder="Search for tiles, marbles..." ng-keyup="showSuggestions()" ng-model="searchQuery.text" >
+
+                <div class="hidden search-data" id="search-items" >
+                     <ul>                                                                                
+                       <li ng-repeat="type in types"> <a ui-sref="app.search.type({routeId: type, query: searchQuery.text})" class='dropdown-toggle '> <span class="notifyIcon fa fa-search"></span> find {{searchQuery.text}} in {{type}} </a> </li>
+
+
+                    </ul>
+                </div>
+            
         </div>
         <div class="headerUserWraper">
             <a href="#" class="userHandler dropdown-toggle" data-toggle="dropdown"><span class="icon-user"></span><span class="counter">5</span></a>
             <a href="#" class="headerUser dropdown-toggle" data-toggle="dropdown">
                 <img class="avatar headerAvatar pull-left" src="images/avatar-1.png" alt="avatar">
                 <div class="userTop pull-left">
-                    <span class="headerUserName">John Smith</span> <span class="fa fa-angle-down"></span>
+                    <span class="headerUserName">John Smith </span> <span class="fa fa-angle-down"></span>
                 </div>
                 <div class="clearfix"></div>
             </a>
@@ -38,7 +47,7 @@
         <div class="headerNotifyWraper">
             <a href class="headerNotify dropdown-toggle" data-toggle="dropdown" ng-click="showCart()">
                 <span class="notifyIcon fa fa-shopping-cart"></span>
-                <span class="counter"> 0 </span>
+                <span class="counter" id="counter"> 0 </span>
             </a>
           
             <div class="dropdown-menu pull-right notifyMenu" role="menu">
@@ -52,7 +61,7 @@
 
         <!-- Left Side Navigation -->
 
-    <div id="leftSide">
+    <div id="leftSide" style='height:{{contentHeight}}px'>
         <nav class="leftNav scrollable">
             <div class="search">
                 <span class="searchIcon icon-magnifier"></span>
@@ -122,8 +131,8 @@
         <!-- Content -->
 
         <div id="wrapper">
-            <div id="mapView"><div class="mapPlaceholder"><span class="fa fa-spin fa-spinner"></span> Loading map...</div></div>
-            <div id="content" >
+            <div id="mapView"></div>
+            <div id="content" style='height:{{contentHeight}}px'>
                 <div class="filter">
                     <h1 class="osLight">Filter your results </h1>
                       
@@ -268,9 +277,6 @@
                                 </div> -->
 
                                   
-                                <h3>Summary <span>(ngcart-summary)</span></h3>
-        
-                                  <ngcart-summary></ngcart-summary>
                                                                      
                                 <ngcart-addtocart id="{{selected_product_id}}" name="{{selected_product_name}}" price="{{selected_product_price}}" quantity="1" quantity-max="5" data="{ product_img: selected_product_img, product_id: selected_product_id }" ng-click ="showCounter()">Add to Cart 
                                     
@@ -291,4 +297,23 @@
         </div>
 
 
+
+<!--        CART WITH ALL DETAILS       -->
+
+
+         <div class="modal fade" id="my-cart"  role="dialog" aria-hidden="true" >
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id=""><span class="notifyIcon fa fa-shopping-cart"></span>
+                        <span class="counter">5</span> &nbsp;&nbsp;&nbsp;&nbsp; MY CART </h4>
+                    </div>
+                               
+                    <div class="modal-body">  
+                        <ngcart-mycart> </ngcart-mycart> 
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
 
