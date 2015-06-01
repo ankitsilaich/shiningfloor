@@ -133,10 +133,411 @@
                 </form>
             </div>
         </div>
-        <div class="highlight">
-            <div class="h-title osLight">Find your new place with Reales</div>
-            <div class="h-text osLight">Fusce risus metus, placerat in consectetur eu, porttitor a est sed sed dolor lorem cras adipiscing</div>
-        </div>
+       
+
+        <!-- Content -->
+<section class="banner-home-top container" ng-controller="allcategoryCtrl">
+     
+
+  <ul class="row" >
+    <li class="col-xs-4 wow fadeInUp" data-wow-delay="150ms" ng-repeat="category in categories">
+      <a ui-sref="app.products.type({routeId : category.name})" title="Editor’s Pick">
+        <img ng-src="{{category.image}}" alt="" />
+        
+          <h4>
+            <span style="
+              
+                  font-size: 13px;
+              
+               
+                  color: #ffffff;
+              "
+            >   
+                
+                {{category.details.title}}
+                
+            </span>
+          </h4>
+        
+      </a>
+    </li>
+   
+  </ul>
+</section>
+
+
+<section class="widget-new-product container">
+    <div class="widget-title wow fadeIn animated" style="visibility: visible; animation-name: fadeIn; -webkit-animation-name: fadeIn;">   
+      <fieldset class="box-title">
+        <legend align="center">
+          
+          New Arrivals
+          
+        </legend>
+      </fieldset>
+    </div>
+    <div class="widget-product">
+      <div class="products-grid">
+        
+     
+
+                <div class="  no_crop_image  grid-item product-item  on-sale wow fadeIn animated" data-wow-delay="0ms" id="product-392427195" style="visibility: visible; animation-delay: 0ms; -webkit-animation-delay: 0ms; animation-name: fadeIn; -webkit-animation-name: fadeIn;">
+
+                  
+                  <div class="product-top">
+                    <div class="product-image">
+                      <a href="/products/cras-in-nunc-non-ipsum-duo-cursus-ultrices" class="product-grid-image">
+                        <img src="//cdn.shopify.com/s/files/1/0675/0005/products/03_large.jpg?v=1415184744" alt="Cras in nunc non ipsum duo cursus ultrices est">
+                        <div class="hover"></div>
+                      </a>
+                    </div>
+                    
+                    
+                    <div class="product-label">
+                      
+                      <strong class="label">Sale</strong>
+                      
+                      
+                    </div>
+                    
+                    
+                    <div class="product-des">
+                      
+                  
+                  <a class="wishlist" href="/account/login" title="Add to wishlist"><span class="icon"></span><span>Add to wishlist</span></a>
+                  
+
+                      
+                      <div class="action">
+                        
+                        <form action="/cart/add" method="post" class="variants" id="product-actions-392427195" enctype="multipart/form-data" style="padding:0px;">    
+                          
+                          
+                          <input class="btn" type="button" onclick="window.location.href='/products/cras-in-nunc-non-ipsum-duo-cursus-ultrices'" value="Select options">
+                          
+                          
+                        </form>      
+                      </div>
+                      
+                      
+                      <div class="quickview-button">
+                        <a href data-toggle="modal" data-target="#product-pop-up"  id="cras-in-nunc-non-ipsum-duo-cursus-ultrices" title="Quick View">Quick view</a>
+                      </div>
+                      
+                    </div>
+                  </div>
+                  
+                  <div class="product-bottom">
+                    <a class="product-title" href="/products/cras-in-nunc-non-ipsum-duo-cursus-ultrices">Cras in nunc non ipsum duo cursus ultrices est</a>
+                      
+                    
+                    <span class="spr-badge" id="spr_badge_392427195" data-rating="3.8">
+                  
+                    <span class="spr-starrating spr-badge-starrating"><i class="spr-icon spr-icon-star" style=""></i><i class="spr-icon spr-icon-star" style=""></i><i class="spr-icon spr-icon-star" style=""></i><i class="spr-icon spr-icon-star" style=""></i><i class="spr-icon spr-icon-star-empty" style=""></i></span>
+                  
+
+                  <span class="spr-badge-caption">
+                  
+                    5 reviews
+                  
+                  </span>
+                </span>
+
+                    
+                    
+                    <div class="price-box">
+                      
+                      <p class="sale">
+                        <span class="old-price"><span class="money" data-currency-usd="$24.99">$24.99</span></span>
+                        <span class="special-price"><em>from </em><span class="money" data-currency-usd="$19.99">$19.99</span></span>
+                      </p>
+                      
+                    </div>
+                  </div>
+                </div>    
+           
+     </div> 
+      
+     
+
+     <div class="infinite-scrolling-homepage wow fadeIn animated" style="visibility: visible; animation-name: fadeIn; -webkit-animation-name: fadeIn;">
+        <a href="javascript:void(0)" title="">Show More</a>  
+     </div>
+
+     <script>
+      var productsToShow = 10;
+      var totalProducts = 15;
+      jQuery(".infinite-scrolling-homepage a").click(function() {
+        if (jQuery('.widget-new-product .products-grid .grid-item:hidden').length > 0) {
+          jQuery('.widget-new-product .products-grid .grid-item:hidden:lt('+productsToShow+')').each(function() {
+              jQuery(this).show();
+              
+              jQuery(this).find('img').css('height','auto');              
+              
+              if (window.product_image_resize) {
+                  jQuery(this).find('img').fakecrop({ 
+                      fill: window.images_size.is_crop,
+                      widthSelector: ".widget-new-product .products-grid .grid-item:first .product-image",
+                      ratioWrapper: window.images_size
+                  });
+              }
+          });        
+
+          jQuery("window" ).scroll();
+          if (jQuery('.widget-new-product .products-grid .grid-item:hidden').length == 0) {
+            //no more products
+            jQuery(".widget-new-product .infinite-scrolling-homepage a").text("No More Product").addClass('disabled');
+          }
+        }
+      });
+    </script>
+     
+  </div>
+  </section>
+
+
+<section class="banner wow fadeInUp animated" style="visibility: visible; animation-name: fadeInUp; -webkit-animation-name: fadeInUp;">
+  <img src="//cdn.shopify.com/s/files/1/0675/0005/t/16/assets/banner.jpg?15188819556756851746" alt="">
+  <div class="container">
+    <div class="inner">
+      <div class="content">
+        
+        <h2>Milancelos</h2>
+        <p class="line">&nbsp;</p>
+        
+        <p>
+          
+          Pellentesque posuere orci lobortis scelerisque blandit. Donec id tellus lacinia an, tincidunt risus ac, consequat velit. Quisquemos sodales suscipit tortor ditaemcos condimentum lacus meleifend menean viverra auctor blanditos comodous.
+          
+        </p>
+        
+        <a href="/collections/" title="Shop The Collection" class="btn">
+          Shop The Collection
+          <span class="arrow">arrow</span>
+        </a>        
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="widget-trending-product container">
+  <div class="widget-title wow fadeIn animated" style="visibility: visible; animation-name: fadeIn; -webkit-animation-name: fadeIn;">   
+    <fieldset class="box-title">
+      <legend align="center">
+        Trending Now
+        
+      </legend>
+    </fieldset>
+  </div>
+  <div class="widget-product">
+  
+      <div class="products-grid owl-carousel owl-theme" style="opacity: 1; display: block;">
+        
+                
+
+<div class="owl-wrapper-outer">
+    <div class="owl-wrapper" style="width: 4800px; left: 0px; display: block;">
+        <div class="owl-item" style="width: 240px;"><div class="  no_crop_image  grid-item product-item   wow fadeIn animated" data-wow-delay="0ms" id="product-392426687" style="visibility: visible; animation-delay: 0ms; -webkit-animation-delay: 0ms; animation-name: fadeIn; -webkit-animation-name: fadeIn;">
+          
+          <div class="product-top">
+            <div class="product-image">
+              <a href="/products/raesent-scelerisque-dan-sedom-molestime-lorem-3" class="product-grid-image">
+                <img src="//cdn.shopify.com/s/files/1/0675/0005/products/0ae65dee-618d-4c4d-90d7-62bd30dc59f0_0f5a6402-e853-480d-bfe4-1dcc846d0d27_large.jpeg?v=1414137728" alt="Raesent Scelerisque Dan Sedom Molestime Lorem">
+                <div class="hover"></div>
+              </a>
+            </div>
+            
+            
+            
+            <div class="product-des">
+              
+          
+          <a class="wishlist" href="/account/login" title="Add to wishlist"><span class="icon"></span><span>Add to wishlist</span></a>
+          
+
+              
+              <div class="action">
+                
+                <form action="/cart/add" method="post" class="variants" id="product-actions-392426687" enctype="multipart/form-data" style="padding:0px;">    
+                  
+                  
+                  <input type="hidden" name="id" value="919464451">      
+                  <input class="btn add-to-cart-btn" type="submit" value="Add to Cart">
+                  
+                  
+                </form>      
+              </div>
+              
+              
+              <div class="quickview-button">
+                <a href data-toggle="modal" data-target="#product-pop-up"  id="raesent-scelerisque-dan-sedom-molestime-lorem-3" title="Quick View">Quick view</a>
+              </div>
+              
+            </div>
+          </div>
+          
+          <div class="product-bottom">
+            <a class="product-title" href="/products/raesent-scelerisque-dan-sedom-molestime-lorem-3">Raesent Scelerisque Dan Sedom Molestime Lorem</a>
+              
+            
+            <span class="spr-badge" id="spr_badge_392426687" data-rating="0.0">
+          
+            <span class="spr-starrating spr-badge-starrating"><i class="spr-icon spr-icon-star-empty" style=""></i><i class="spr-icon spr-icon-star-empty" style=""></i><i class="spr-icon spr-icon-star-empty" style=""></i><i class="spr-icon spr-icon-star-empty" style=""></i><i class="spr-icon spr-icon-star-empty" style=""></i></span>
+          
+
+          <span class="spr-badge-caption">
+          
+            No reviews
+          
+          </span>
+        </span>
+
+            
+            
+            <div class="price-box">
+              
+              <p class="regular-product">
+              
+                <span><span class="money" data-currency-usd="$212.00">$212.00</span></span>
+              </p>
+            
+            </div>
+          </div>
+        </div></div>
+
+</div>  </div>
+<div class="owl-controls clickable"><div class="owl-pagination"><div class="owl-page active"><span class=""></span></div><div class="owl-page"><span class=""></span></div></div><div class="owl-buttons"><div class="owl-prev">prev</div><div class="owl-next">next</div></div></div>
+
+ </div></div>
+</section>
+
+<section class="banner-home-bottom container">
+  <div class="widget-title wow fadeIn animated" style="visibility: visible; animation-name: fadeIn; -webkit-animation-name: fadeIn;">   
+    <fieldset class="box-title">
+      <legend align="center">
+        #Featured On Ella
+        
+      </legend>
+    </fieldset>
+  </div>
+  <ul class="row">
+    <li class="col-xs-4 wow fadeInUp animated" data-wow-delay="150ms" style="visibility: visible; animation-delay: 150ms; -webkit-animation-delay: 150ms; animation-name: fadeInUp; -webkit-animation-name: fadeInUp;">
+      <a href="/collections" title="Lorem Et Dorus"><img src="//cdn.shopify.com/s/files/1/0675/0005/t/16/assets/banner-home-bottom-1.jpg?15188819556756851746" alt=""></a>
+      <div class="des">
+                    
+        
+        <h4 style="
+                   color: #000000;
+                   
+                   
+                   font-size: 20px;
+                    ">
+          <span>Lorem Et Dorus</span>
+        </h4>
+        
+        
+        
+        
+        <p style=" 
+                  color: #2d2d2d;
+                  
+                  
+                  font-size: 12px;
+                   ">
+          Nullam aliquet vestibulum augue non varius. Cras nec congue elitos. Duis tristique del ante nec aliquam. Praesent urna tellus laoreet an tellus ullamcorper fermentum facilisis eratum.
+        </p>
+        
+        
+        
+        
+        <a href="/collections" title="Shop Now" class="btn">
+          Shop Now
+          <span class="arrow">arrow</span>
+        </a>        
+        
+        
+      </div>
+    </li>
+    <li class="col-xs-4 wow fadeInUp animated" data-wow-delay="300ms" style="visibility: visible; animation-delay: 300ms; -webkit-animation-delay: 300ms; animation-name: fadeInUp; -webkit-animation-name: fadeInUp;">
+      <a href="/collections" title="Milancelos A Lanos"><img src="//cdn.shopify.com/s/files/1/0675/0005/t/16/assets/banner-home-bottom-2.jpg?15188819556756851746" alt=""></a>
+      <div class="des">
+        
+        
+        <h4 style=" 
+                   color: #000000;
+                   
+                   
+                   font-size: 20px;
+                    ">
+          <span>Milancelos A Lanos</span>
+        </h4>
+        
+        
+        
+        
+        <p style=" 
+                  color: #2d2d2d;
+                  
+                  
+                  font-size: 12px;
+                   ">
+          Nullam aliquet vestibulum augue non varius. Cras nec congue elitos. Duis tristique del ante nec aliquam. Praesent urna tellus laoreet an tellus ullamcorper fermentum facilisis eratum.
+        </p>
+        
+        
+        
+        
+        <a href="/collections" title="Shop Now" class="btn">
+          Shop Now
+          <span class="arrow">arrow</span>
+        </a>
+        
+        
+      </div>
+    </li>
+    <li class="col-xs-4 wow fadeInUp animated" data-wow-delay="450ms" style="visibility: visible; animation-delay: 450ms; -webkit-animation-delay: 450ms; animation-name: fadeInUp; -webkit-animation-name: fadeInUp;">
+      <a href="/collections" title="Comos De Milano"><img src="//cdn.shopify.com/s/files/1/0675/0005/t/16/assets/banner-home-bottom-3.jpg?15188819556756851746" alt=""></a>
+      <div class="des">
+        
+        
+        <h4 style=" 
+                   color: #000000;
+                   
+                   
+                   font-size: 20px;
+                    ">
+          <span>
+            Comos De Milano
+          </span>
+        </h4>
+        
+        
+        
+        
+        <p style=" 
+                  color: #2d2d2d;
+                  
+                  
+                  font-size: 12px;
+                   ">
+          Nullam aliquet vestibulum augue non varius. Cras nec congue elitos. Duis tristique del ante nec aliquam. Praesent urna tellus laoreet an tellus ullamcorper fermentum facilisis eratum.
+        </p>
+        
+        
+        
+        
+        <a href="/collections" title="Shop Now" class="btn">
+          Shop Now
+          <span class="arrow">arrow</span>
+        </a>
+        
+        
+      </div>
+    </li>
+  </ul>
+</section>
 
         <!-- Content -->
 
@@ -433,3 +834,99 @@
         </div>
 
          
+                 <div class="modal fade" id="product-pop-up"  role="dialog" aria-hidden="true" >
+            <div class="modal-dialog modal-lg">
+                          
+
+                <div class="modal-content">
+             
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="signupLabel">Product Id: {{selected_product_id}}   </h4>
+                    </div>
+              
+                        
+                  
+                    <div class="modal-body">
+                        <div class="product-page product-pop-up">
+                            <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xs-3">
+                              <div class="product-img-box col-xs-5">
+                                  <div class="quickview-featured-image product-photo-container"></div>
+                                  <div class="more-view-wrapper">
+                                    <ul class="product-photo-thumbs jcarousel-skin-tango  quickview-more-views-owlslider ">
+                                    </ul>
+                                  </div>
+                            </div>
+                              <div class="product-other-images">
+                                <a href ng-click="selectImg(1)" class="active"><img alt="Berry Lace Dress" src="{{selected_product_img}}"></a>
+                                <a href ng-click="selectImg(2)" ><img alt="Berry Lace Dress" src="images/products/tiles/tile2.jpg"></a>
+                                <a href ng-click="selectImg(3)" ><img alt="Berry Lace Dress" src="images/products/tiles/tile1.jpg"></a>
+                              </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-9">
+                              <h2> {{selected_product_name}}</h2>
+                              <div class="price-availability-block clearfix">
+                                <div class="price">
+                                  <strong><span>₹</span> {{selected_product_price}} <span>per sq. ft. </span></strong>
+                                  <!-- <em>$<span>62.00</span></em> -->
+                                </div>
+                                <div class="availability">
+                                  Availability: <strong>In Stock</strong>
+                                </div>
+                              </div>
+                              <div class="description" style="padding-top:0px;">
+                                <p>  {{selected_product_desc}}</p>
+                              </div>
+                              <div class="product-page-options">
+                                <div class="cardRating">
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star-o"></span>
+                                    ({{selected_product_rating}} )
+                                </div>
+
+                                <div class="pull-left">
+                                  <label class="control-label">Size:</label>
+                                  <select class="form-control input-sm" style="line-height:13px;">
+                                    <option>L</option>
+                                    <option>M</option>
+                                    <option>XL</option>
+                                  </select>
+                                </div>
+                                <div class="pull-left">
+                                  <label class="control-label">Color:</label>
+                                  <select class="form-control input-sm" style="line-height:13px;">
+                                    <option>Red</option>
+                                    <option>Blue</option>
+                                    <option>Black</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="product-page-cart">
+                                
+                                <!-- <div class="product-quantity">
+                                    <input id="product-quantity" type="text" value="1" readonly name="product-quantity" class="form-control input-sm">
+                                </div> -->
+
+                                  
+                                                                     
+                                <ngcart-addtocart id="{{selected_product_id}}" name="{{selected_product_name}}" price="{{selected_product_price}}" quantity="1" quantity-max="5" data="{ product_img: selected_product_img, product_id: selected_product_id }" ng-click ="showCounter()">Add to Cart 
+                                    
+                                    </ngcart-addtocart>
+
+                                <!-- <button class="btn btn-primary" type="submit" ng-click= "cartItems.AddItemToCart(selected_product)">Add to cart </button> -->
+                                <!-- <a ui-sref="app.home" class="btn btn-default">More details</a> -->
+                              </div>
+                            </div>
+
+                            <div class="sticker sticker-sale"></div>
+                          </div>    
+                                        
+                                </div>
+                            </div>
+                </div>
+            </div>
+        </div>
+
