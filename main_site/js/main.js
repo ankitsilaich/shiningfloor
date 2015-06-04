@@ -122,6 +122,8 @@ angular.module('app')
  };
 
    $scope.types=['tiles','wood','marble','stone','wallpaper','artificial']
+   // For search page left side navigation 
+
 
    
     $scope.scrollToTop = function(){

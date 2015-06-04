@@ -665,9 +665,11 @@ $app->get('/shiningfloor/products(/:type)/usages', function($type) use ($app, $d
 
 });
 
-$app->get('/shiningfloor/products(/:type)/search(/:input)', function($type=null,$input=null ) use ($app, $db){
+$app->get('/shiningfloor/products/search(/:type)/(:input)', function($type=null,$input=null ) use ($app, $db){
 
         $data = array();
+        $resultPerPage = 20;
+        $pageNo = 1;
         $type_id = $db->types()->where('type_name',$type)->select('id');
         if($type==null)
         {
@@ -681,18 +683,55 @@ $app->get('/shiningfloor/products(/:type)/search(/:input)', function($type=null,
           $query = $query->where('product_name LIKE ?' ,"%".$input."%");
         }
 
+        if(isset($_GET['pageNo'])){
+            $pageNo = ( int )$_GET['pageNo'] ;            
+        }
+
+        $query = $query->limit($resultPerPage,(($pageNo -1)*( int )$resultPerPage))  ;  
+            
+        if(isset($_GET['price_range'])){
+            
+           if($_GET['price_range'] == 'below-100'){
+              $query = $query->where('product_price < 100');
+           }
+           else if($_GET['price_range'] == '100-200'){
+              $query = $query->where('product_price < 200 and product_price>= 100');
+           }
+           else if($_GET['price_range'] == 'above-200'){
+              $query = $query->where('product_price >= 200');
+           }
+
+        }
+
+        if(isset($_GET['price_range'])){
+            
+           if($_GET['price_range'] == 'below-100'){
+              $query = $query->where('product_price < 100');
+           }
+           else if($_GET['price_range'] == '100-200'){
+              $query = $query->where('product_price < 200 and product_price>= 100');
+           }
+           else if($_GET['price_range'] == 'above-200'){
+              $query = $query->where('product_price >= 200');
+           }
+
+        }
+        // echo $query;
         $data = findAllProducts($query,'');
 
         $app->response()->header('content-type','application/json');
-         echo json_encode(array('product_data'=>$data));    
+        echo json_encode(array('product_data'=>$data));    
        
 });
 
 
 
 // For finding all products of type say tiles or marbles
-$app->get('/shiningfloor/products(/:type)(/:usage_location)', function($type=null,$usage_location=null ) use ($app, $db){
 
+
+$app->get('/shiningfloor/products(/:type)(/:usage_location)', function($type=null,$usage_location=null ) use ($app, $db){
+        $resultPerPage = 10 ;
+        $pageNo = 1 ;
         $data = array();
         $type_id = $db->types()->where('type_name',$type)->select('id');
         if($type==null)
@@ -705,17 +744,18 @@ $app->get('/shiningfloor/products(/:type)(/:usage_location)', function($type=nul
         if(isset($_GET['sortkey']) and isset($_GET['sortorder'])){
             $query = $query->order($_GET['sortkey'].' '.$_GET['sortorder']);
         }
+
         // if(isset($_GET['q']) ){
         //   if($_GET['q']!='')
         //     $query = $query->where('product_name LIKE ?' ,"%".$_GET['q']."%") ;
         //   // echo $query;
         // }
-        // if(isset($_GET['totalResults']) and isset($_GET['pageNo'])){
-        //     //echo json_encode(((( int )$_GET['pageNo'] -1)*( int )$_GET['totalResults']));
-        //     //$_GET['totalResults']
-        //     $query = $query->limit($_GET['totalResults'],((( int )$_GET['pageNo'] -1)*( int )$_GET['totalResults']))  ;  
-        //    // echo json_encode($query);
-        // }
+        
+        if(isset($_GET['pageNo'])){
+          $pageNo = ( int )$_GET['pageNo'];
+        }
+
+         $query = $query->limit($resultPerPage,(( $pageNo  -1)*( int )$resultPerPage))  ;  
         
         if($type==null)            
             $data = findAllProducts($query,'');
@@ -754,8 +794,9 @@ function findAllProducts($query,$usage_location){
                 $usages_area[] = $product_usages->usages['usage_name'];
             }
         }
+        
         if($usage_location!=null)
-            if(!$flag) continue; 
+            if(!$flag) continue;   
 
         foreach ($p->product_designs() as $product_designs) {
 
@@ -774,6 +815,20 @@ function findAllProducts($query,$usage_location){
 
             $colors[] = $product_colors->colors['color_name']; 
         }
+
+        // $flag = 0 ;
+        // if(isset($_GET['color']))
+        //     $colorName =  $_GET['color'] ;
+    
+        // foreach ($p->product_colors() as $product_colors) {
+
+        //     $colors[] = $product_colors->colors['color_name'];
+        //     if($colorName == $product_colors->colors['color_name'])
+        //         $flag = 1;
+        // }
+        // if(isset($_GET['color']))
+        //   if(!$flag) continue;
+        
         foreach ($p->product_features() as $product_features) {
 
             $features[] = $product_features->features['feature_name']; 
@@ -803,14 +858,14 @@ function findAllProducts($query,$usage_location){
     }
 
         // return $data;
-    if(isset($_GET['totalResults']) and isset($_GET['pageNo'])){                   
-        // echo ((( int )$_GET['pageNo'] -1)*( int )$_GET['totalResults']) . $_GET['pageNo'];
-        return array_slice($data,((( int )$_GET['pageNo'] -1)*( int )$_GET['totalResults']),( int )$_GET['totalResults']);
+    // if(isset($_GET['totalResults']) and isset($_GET['pageNo'])){                   
+    //     // echo ((( int )$_GET['pageNo'] -1)*( int )$_GET['totalResults']) . $_GET['pageNo'];
+    //     return array_slice($data,((( int )$_GET['pageNo'] -1)*( int )$_GET['totalResults']),( int )$_GET['totalResults']);
 
-    }
-    else{
+    // }
+    // else{
         return $data;
-    }
+    // }
 }
 
 function findSupplierDetails($query){
@@ -834,5 +889,19 @@ function findSupplierDetails($query){
         return $supplierData;
 }
 
+/* Get all colors */
+
+$app->get('/shiningfloor/colors', function() use ($app, $db){
+    
+    $colors = array();
+            
+    foreach ($db->product_colors() as $product_colors) {
+        $colors[] = $product_colors->colors['color_name']; 
+    }
+        
+    $data[] = array( 'product_colors'=> $colors  );                    
+    $app->response()->header('content-type','application/json');    
+    echo json_encode(array('colors'=>$data));    
+});
 
 $app->run();

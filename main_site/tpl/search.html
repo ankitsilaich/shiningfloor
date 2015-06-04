@@ -7,7 +7,7 @@
                 <span class="logoText" >reales</span>
             </a>
         </div>
-        <a href="#" class="navHandler"><span class="fa fa-bars"></span></a>
+        <a href   data-target="#leftSide" class="navHandler" ng-click="showLeftSideFilters()"><span class="fa fa-bars"></span></a>
         <div class="search">
             <span class="searchIcon icon-magnifier"></span>
             <input type="text" placeholder="Search for tiles, marbles..." ng-keyup="showSuggestions()" ng-model="searchQuery.text" >
@@ -61,13 +61,111 @@
 
         <!-- Left Side Navigation -->
 
-    <div id="leftSide" style='height:{{contentHeight}}px'>
-        <nav class="leftNav scrollable">
+    <div id="leftSide" style='height:{{contentHeight}}px; overflow-x: hidden; overflow-y: auto;' class='hidden'>
+        
+            <div class="refined-widgets">
+              <span>Refined By</span>
+              <a href="javascript:void(0)" class="clear-all"  style="display:none" >Clear all</a>
+              
+            </div>
+
+            <div class="sidebar-block">
+
+            <div class="sidebar-custom sidebar-tag color">
+              
+              <div class="widget-title">
+                <h3>
+                  <span ng-click="handleColors()">Color</span>
+                  <a href  class="clear" >Clear</a>
+                </h3>
+              </div>
+              <div class="widget-content hidden" id="colors" >
+                <ul>
+                  <li> <input type="checkbox" value="pink" /> <a href ui-sref="app.search.type({routeId:rId,  query: url })" ng-click="applyColorFilter('color=pink')" > <img src="images/colors/color-4.png" alt="" /></a></li>
+                  <li> <input type="checkbox" value="silver" /> <a href ui-sref="app.search.type({routeId:rId,  query: url })" ng-click="applyColorFilter('color=silver')"  > <img src="images/colors/color-5.png" alt="" /></a></li>
+                  <li> <input type="checkbox" value="gray" /> <a href ui-sref="app.search.type({routeId:rId,  query: url })" ng-click="applyColorFilter('color=blue')" > <img src="images/colors/color-6.png" alt="" /></a></li>
+                  <li> <input type="checkbox" value="black" /> <a href ui-sref="app.search.type({routeId:rId,  query: url })" ng-click="applyColorFilter('color=silver')"> <img src="images/colors/color-7.png" alt="" /></a></li>
+                  <li> <input type="checkbox" value="black" /> <a href ui-sref="app.search.type({routeId:rId,  query: url })" ng-click="applyColorFilter('color=silver')"> <img src="images/colors/color-7.png" alt="" /></a></li>
+                  <li> <input type="checkbox" value="black" /> <a href ui-sref="app.search.type({routeId:rId,  query: url })" ng-click="applyColorFilter('color=silver')"> <img src="images/colors/color-7.png" alt="" /></a></li>
+                  <li> <input type="checkbox" value="black" /> <a href ui-sref="app.search.type({routeId:rId,  query: url })" ng-click="applyColorFilter('color=silver')"> <img src="images/colors/color-7.png" alt="" /></a></li>
+                                    
+                </ul>
+              </div>
+            </div>
+
+            <div class="sidebar-custom sidebar-tag size">              
+              <div class="widget-title">
+                <h3>
+                  <span>Size</span>
+                  <a href  class="clear" >Clear</a>
+                </h3>
+              </div>
+              <div class="widget-content" id="sizes">
+                <ul>
+                    <li><input type="checkbox" value="xs"/><label>XS</label></li>
+                    <li><input type="checkbox" value="s"/><label>S</label></li>
+                    <li><input type="checkbox" value="m"/><label>M</label></li>
+                    <li><input type="checkbox" value="l"/><label>L</label></li>
+                     <li><input type="checkbox" value="xl"/><label>XL</label></li>
+                </ul>
+              </div>
+            </div>
+
+
+
+            <div class="sidebar-custom sidebar-tag">              
+              <div class="widget-title">
+                <h3>
+                  <span ng-click="handlePrices()">Price(per sq. ft.) </span>
+                  <a href  class="clear"  >Clear</a>
+                </h3>
+              </div>
+              <div class="widget-content" id="prices">
+                <ul>
+                     <li> <a href ui-sref="app.search.type({routeId:rId,  query: url })" ng-click="applyPriceFilter('price_range=below-100')"> <input type="checkbox" value="price_range=below 100" /><label>Under 100</label></a></li> 
+                    <li> <a href ui-sref="app.search.type({routeId:rId,  query: url  })" ng-click="applyPriceFilter('price_range=100-200')"> <input type="checkbox" value="price_range=100-200"/><label>100 - 200</label> </a> </li>
+                    <li> <a href ui-sref="app.search.type({routeId:rId,  query: url  })" ng-click="applyPriceFilter('price_range=above-200')"> <input type="checkbox" value="price_range=above-200"/><label>Above 200</label> </a> </li>
+                    
+                </ul>
+              </div>
+            </div>
+
+
+
+            <div class="sidebar-custom sidebar-tag">
+              
+              <div class="widget-title">
+                <h3>
+                  <span>Brand</span>
+                  <a href class="clear" style="display:none">Clear</a>
+                </h3>
+              </div>
+              <div class="widget-content">
+                <ul>
+                    
+                    <li><input type="checkbox" value="chanel"/><label>Chanel</label></li>
+                    
+                    <li><input type="checkbox" value="dior"/><label>Dior</label></li>
+                    
+                    <li><input type="checkbox" value="gap"/><label>Gap</label></li>
+                    <li><input type="checkbox" value="lucci"/><label>Lucci</label></li>
+                    
+                   <li><input type="checkbox" value="louis"/><label>Louis</label></li>
+                    
+                </ul>
+              </div>
+            </div>
+
+            </div>
+          
+        <!-- <nav class="leftNav scrollable">
             <div class="search">
                 <span class="searchIcon icon-magnifier"></span>
                 <input type="text" placeholder="Search for houses, apartments...">
                 <div class="clearfix"></div>
             </div>
+
+
             <ul>
                 <li><a href="explore.html"><span class="navIcon icon-compass"></span><span class="navLabel">Explore</span></a></li>
                 <li><a href="single.html"><span class="navIcon icon-home"></span><span class="navLabel">Single</span></a></li>
@@ -124,15 +222,18 @@
                 <li class="divider"></li>
                 <li><a href="#"><span class="icon-power"></span>Logout</a></li>
             </ul>
-        </div>
+        </div> -->
     </div>
     <div class="closeLeftSide"></div>
 
         <!-- Content -->
 
         <div id="wrapper">
-            <div id="mapView"></div>
-            <div id="content" style='height:{{contentHeight}}px'>
+            <div id="mapView"> 
+                
+
+            </div>
+            <div id="content" style='height:{{contentHeight}}px ;'>
                 <div class="filter">
                     <h1 class="osLight">Filter your results </h1>
                       
@@ -141,9 +242,9 @@
                         <div class="row">
                             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 formItem">
                                 <div class="formField">
-                                    <label>Property Type</label>
+                                    <label>Property Type</label> <label ng-click="pageSearchData(2)">2</label><label ng-click="pageSearchData(3)">3</label>
                                     <a href data-toggle="dropdown" class="btn btn-gray dropdown-btn dropdown-toggle propTypeSelect">
-                                        <span class="dropdown-label">All</span>
+                                        <span class="dropdown-label">All</span> 
                                         <span class="fa fa-angle-down dsArrow"></span>
                                     </a>
                                     <ul class="dropdown-menu dropdown-select full" role="menu">
@@ -158,9 +259,31 @@
                         
                     </form>
                 </div>
-                <div class="resultsList">
+<!--                 <div class="resultsList">
                     <div class="row">
-                        <div ng-repeat="product in searchResults | orderBy:sortBy:AscOrDesc" class="col-xs-12 col-sm-12 col-md-6 col-lg-6" >
+                
+ -->        
+                <div class="tab-content tab-scroll tabsWidget">
+                    <div class="tab-pane fade in active" id="properties">            
+                        <ul class="propList">
+                            <li ng-repeat="product in searchResults | orderBy:sortBy:AscOrDesc">
+                                <a href data-toggle="modal" data-target="#product-pop-up" class="card" ng-click="fetchProductInfo(product)">
+                                    <div class="image"><img src="{{product.product_img}}" alt="image"></div>
+                                    <div class="info text-nowrap">
+                                        <div class="name">{{product.product_name}}</div>
+                                        <div class="address">39 Remsen St, Brooklyn, NY 11201, USA</div>
+                                        <div class="price text-red">Rs. {{product.product_price}} per sq. ft. <span class="badge"> <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star-o"></span>
+                                            ({{product.product_rating}}) </span></div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </a>
+                            </li>
+                        </ul>                                                    
+                       <!--  <div ng-repeat="product in searchResults | orderBy:sortBy:AscOrDesc" class="col-xs-12 col-sm-12 col-md-6 col-lg-6" >
                             <a href data-toggle="modal" data-target="#product-pop-up" class="card" ng-click="fetchProductInfo(product)"> 
                                 <div class="figure">
                                     <img src="{{product.product_img}}" alt="image" style="height:150px;">
@@ -190,7 +313,7 @@
                                 </ul>
                                 <div class="clearfix"></div>
                             </a>
-                        </div>
+                        </div> -->
                         
                     </div>
                     
@@ -316,4 +439,6 @@
                 </div>
             </div>
         </div>
+
+
 
