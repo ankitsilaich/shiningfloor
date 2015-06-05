@@ -665,11 +665,14 @@ $app->get('/shiningfloor/products(/:type)/usages', function($type) use ($app, $d
 
 });
 
+$prev_id = 0;
+$pageNo = 1;
+$resultPerPage = 20;
 $app->get('/shiningfloor/products/search(/:type)/(:input)', function($type=null,$input=null ) use ($app, $db){
 
         $data = array();
-        $resultPerPage = 20;
-        $pageNo = 1;
+        global $resultPerPage , $pageNo ;
+        
         $type_id = $db->types()->where('type_name',$type)->select('id');
         if($type==null)
         {
@@ -687,7 +690,7 @@ $app->get('/shiningfloor/products/search(/:type)/(:input)', function($type=null,
             $pageNo = ( int )$_GET['pageNo'] ;            
         }
 
-        $query = $query->limit($resultPerPage,(($pageNo -1)*( int )$resultPerPage))  ;  
+        $query = $query->limit(count($query),(($pageNo -1)*( int )$resultPerPage))  ;  
             
         if(isset($_GET['price_range'])){
             
@@ -702,21 +705,21 @@ $app->get('/shiningfloor/products/search(/:type)/(:input)', function($type=null,
            }
 
         }
+         
 
-        if(isset($_GET['price_range'])){
-            
-           if($_GET['price_range'] == 'below-100'){
-              $query = $query->where('product_price < 100');
-           }
-           else if($_GET['price_range'] == '100-200'){
-              $query = $query->where('product_price < 200 and product_price>= 100');
-           }
-           else if($_GET['price_range'] == 'above-200'){
-              $query = $query->where('product_price >= 200');
-           }
-
+        if(isset($_GET['color'])){
+            $colorName =  $_GET['color'] ;
         }
+
+        // foreach ($p->product_colors() as $product_colors) {
+
+        //     $colors[] = $product_colors->colors['color_name'];
+        //     if($colorName == $product_colors->colors['color_name'])
+        //         $flag = 1;
+        // }
         // echo $query;
+
+
         $data = findAllProducts($query,'');
 
         $app->response()->header('content-type','application/json');
@@ -755,7 +758,9 @@ $app->get('/shiningfloor/products(/:type)(/:usage_location)', function($type=nul
           $pageNo = ( int )$_GET['pageNo'];
         }
 
-         $query = $query->limit($resultPerPage,(( $pageNo  -1)*( int )$resultPerPage))  ;  
+        // $query = $query->limit($resultPerPage,(($pageNo-1)*( int )$resultPerPage));  
+
+        $query = $query->limit($resultPerPage,(($pageNo-1)*( int )$resultPerPage));  
         
         if($type==null)            
             $data = findAllProducts($query,'');
@@ -771,9 +776,11 @@ $app->get('/shiningfloor/products(/:type)(/:usage_location)', function($type=nul
 
 function findAllProducts($query,$usage_location){
     $data = array();
+    global $resultPerPage;
+    $count = 0;    
     foreach($query as $p)
     {
-    
+               
         $usages_area =array();
         $designs = array();
         $subtypes = array();
@@ -811,24 +818,42 @@ function findAllProducts($query,$usage_location){
 
             $surface_types[] = $product_surface_types->surface_types['surface_type_name']; 
         }
-        foreach ($p->product_colors() as $product_colors) {
-
-            $colors[] = $product_colors->colors['color_name']; 
-        }
-
-        // $flag = 0 ;
-        // if(isset($_GET['color']))
-        //     $colorName =  $_GET['color'] ;
-    
         // foreach ($p->product_colors() as $product_colors) {
 
-        //     $colors[] = $product_colors->colors['color_name'];
-        //     if($colorName == $product_colors->colors['color_name'])
-        //         $flag = 1;
+        //   $colors[] = $product_colors->colors['color_name'];   
         // }
-        // if(isset($_GET['color']))
-        //   if(!$flag) continue;
-        
+
+        $flag = 0 ;
+        if(isset($_GET['color']))
+            $colorName =  $_GET['color'] ;
+    
+        foreach ($p->product_colors() as $product_colors) {
+            
+            $colors[] = $product_colors->colors['color_name'];  
+
+            if(isset($_GET['color'])){
+              if($colorName == $product_colors->colors['color_name']){
+                  $flag = 1;
+
+              }
+            }  
+        }
+
+        if(isset($_GET['color'])){
+          if(!$flag){ 
+              //$count--;
+              continue;
+             }
+          else
+          {
+            $count++;
+          }    
+        }
+        else $count++;
+
+        if($count==$resultPerPage+1)
+           break; 
+
         foreach ($p->product_features() as $product_features) {
 
             $features[] = $product_features->features['feature_name']; 
@@ -895,8 +920,8 @@ $app->get('/shiningfloor/colors', function() use ($app, $db){
     
     $colors = array();
             
-    foreach ($db->product_colors() as $product_colors) {
-        $colors[] = $product_colors->colors['color_name']; 
+    foreach ($db->colors() as $color) {
+        $colors[] = $color['color_name']; 
     }
         
     $data[] = array( 'product_colors'=> $colors  );                    

@@ -1,4 +1,4 @@
-app.controller('searchPageCtrl', ['$scope', '$http','$stateParams', 'ngCart', '$filter', function($scope, $http, $stateParams, ngCart, $filter) {
+app.controller('searchPageCtrl', ['$scope', '$http','$stateParams', 'ngCart', '$filter','$state', function($scope, $http, $stateParams, ngCart, $filter,$state) {
      
       $scope.windowHeight = window.innerHeight;
       $scope.windowWidth = $(window).width();
@@ -45,8 +45,8 @@ app.controller('searchPageCtrl', ['$scope', '$http','$stateParams', 'ngCart', '$
 
  $http.get('api/slim.php/shiningfloor/colors').then(function (resp) {
           
-          $scope.colors = resp.data.product_data;
-          
+          $scope.colors = resp.data.colors[0].product_colors;
+          console.log($scope.colors) ;
       });
 
 $scope.searchQuery = {
@@ -124,8 +124,10 @@ $scope.applyPriceFilter =  function(filter){
 //   });
 
 $scope.applyColorFilter =  function(filter){
-    
-    $scope.colorName = '&'+filter;
+  // event.preventDefault();
+  //   $('#colorId3').attr('src', 'images/colors/color-8.png');
+  //   console.log($('#colorId3').attr('src'));
+     $scope.colorName = '&'+filter;
     console.log('1st url = '+$scope.url);
     if(typeof $scope.url === 'undefined')
       $scope.url = '?pageNo=1' ;
@@ -148,21 +150,39 @@ $scope.applyColorFilter =  function(filter){
          // console.log($scope.url.replace($scope.url.substring(index1,$scope.url.length),filter));
 
         $scope.url = $scope.url.replace($scope.url.substring(index1,$scope.url.length),filter);
+        // $scope.url = $scope.url.substring(0,l)+ ','+ filter.substring(filter.indexOf('=')+1,filter.length);
+        
         console.log('cond2 true');
         }
       else{  
+
+         // console.log($scope.url.replace($scope.url.substring(index1,index2),filter));
+        
+
+
         index2 = index1 + $scope.url.substring(index1).indexOf('&');
          // console.log($scope.url.replace($scope.url.substring(index1,index2),filter));
-        $scope.url = $scope.url.replace($scope.url.substring(index1,index2),filter);
-        console.log('cond3 true');
+          var color =  $scope.url.substring(index1,index2);
+          var l = $scope.url.length;
+         // $scope.url = $scope.url.substring(0,index2)+ ','+ filter.substring(filter.indexOf('=')+1,filter.length)+ $scope.url.substring(index2,l);
+        // $scope.url = $scope.url.replace(color,filter);
+         $scope.url = $scope.url.replace($scope.url.substring(index1,index2),filter);
+        // console.log('cond3 true ' + $scope.url.substring(0,index2) + ' '+filter.substring(filter.indexOf('=')+1,filter.length));
       }          
     }
-
+    // $state.go('app.search.type({routeId:$scope.rId,  query: $scope.url })');
+  //  $state.go('app.search.type',{routeId:$scope.rId,  query: $scope.url });
+    
     console.log('url = '+ $scope.url);
+
+
+
 };
 
 $scope.showLeftSideFilters = function(){
-    
+    console.log(event);
+    console.log("sdsdsa");
+   
 if($('#leftSide').hasClass('expanded')){
    $("#leftSide").removeClass("expanded");
    $("#leftSide").addClass("hidden");
@@ -171,6 +191,8 @@ if($('#leftSide').hasClass('expanded')){
 else{
   if($('#leftSide').hasClass('hidden'))
        $("#leftSide").removeClass("hidden");
+
+
    $("#leftSide").addClass("expanded");
    $(".logo").addClass("expanded");
 

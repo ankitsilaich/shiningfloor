@@ -12,7 +12,7 @@ angular.module('app')
           $rootScope.$stateParams = $stateParams;   
           $rootScope.$on('$stateChangeSuccess',
   function(event, toState, toParams, fromState, fromParams) {
-    console.log("fdsfdsfsf");
+    console.log(event);
     $rootScope.currentstate = toState;
   }
 )         
@@ -143,7 +143,6 @@ angular.module('app')
               .state('app.search.type', {
                   url: '/:routeId/:query',
                   templateUrl : 'tpl/search.html',
-                  
                  
                   resolve: {
                     
@@ -151,8 +150,7 @@ angular.module('app')
                         function( $ocLazyLoad, uiLoad ){
                           return uiLoad.load(
                             [
-                            'js/controllers/index.filterCtrl.js'    ,
-                              'js/controllers/searchPageCtrl.js'
+                            'js/controllers/index.filterCtrl.js'
                               
                               ]
                           )

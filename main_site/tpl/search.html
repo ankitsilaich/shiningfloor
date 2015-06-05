@@ -1,12 +1,12 @@
 <div ng-controller="searchPageCtrl">
 
     <div id="header">
-        <div class="logo">
+        <!-- <div class="logo">
             <a ui-sref="app.home">
                 <span class="fa fa-home marker"></span>
                 <span class="logoText" >reales</span>
             </a>
-        </div>
+        </div> -->
         <a href   data-target="#leftSide" class="navHandler" ng-click="showLeftSideFilters()"><span class="fa fa-bars"></span></a>
         <div class="search">
             <span class="searchIcon icon-magnifier"></span>
@@ -14,7 +14,7 @@
 
                 <div class="hidden search-data" id="search-items" >
                      <ul>                                                                                
-                       <li ng-repeat="type in types"> <a ui-sref="app.search.type({routeId: type, query: searchQuery.text})" class='dropdown-toggle '> <span class="notifyIcon fa fa-search"></span> find {{searchQuery.text}} in {{type}} </a> </li>
+                       <li ng-repeat="type in types"> <a ui-sref="app.search.type({routeId: type, query: searchQuery.text+url})" class='dropdown-toggle '> <span class="notifyIcon fa fa-search"></span> find {{searchQuery.text}} in {{type}} </a> </li>
 
 
                     </ul>
@@ -79,15 +79,10 @@
                   <a href  class="clear" >Clear</a>
                 </h3>
               </div>
-              <div class="widget-content hidden" id="colors" >
+              <div class="widget-content" id="colors" >
                 <ul>
-                  <li> <input type="checkbox" value="pink" /> <a href ui-sref="app.search.type({routeId:rId,  query: url })" ng-click="applyColorFilter('color=pink')" > <img src="images/colors/color-4.png" alt="" /></a></li>
-                  <li> <input type="checkbox" value="silver" /> <a href ui-sref="app.search.type({routeId:rId,  query: url })" ng-click="applyColorFilter('color=silver')"  > <img src="images/colors/color-5.png" alt="" /></a></li>
-                  <li> <input type="checkbox" value="gray" /> <a href ui-sref="app.search.type({routeId:rId,  query: url })" ng-click="applyColorFilter('color=blue')" > <img src="images/colors/color-6.png" alt="" /></a></li>
-                  <li> <input type="checkbox" value="black" /> <a href ui-sref="app.search.type({routeId:rId,  query: url })" ng-click="applyColorFilter('color=silver')"> <img src="images/colors/color-7.png" alt="" /></a></li>
-                  <li> <input type="checkbox" value="black" /> <a href ui-sref="app.search.type({routeId:rId,  query: url })" ng-click="applyColorFilter('color=silver')"> <img src="images/colors/color-7.png" alt="" /></a></li>
-                  <li> <input type="checkbox" value="black" /> <a href ui-sref="app.search.type({routeId:rId,  query: url })" ng-click="applyColorFilter('color=silver')"> <img src="images/colors/color-7.png" alt="" /></a></li>
-                  <li> <input type="checkbox" value="black" /> <a href ui-sref="app.search.type({routeId:rId,  query: url })" ng-click="applyColorFilter('color=silver')"> <img src="images/colors/color-7.png" alt="" /></a></li>
+                  <li ng-repeat="color in colors"> <input type="checkbox" value="{{color}}" /> <a href ui-sref="app.search.type({routeId:rId,  query: url })" > <img id = "colorId{{$index+1}}" src="images/colors/color-{{$index+1}}.png" alt="" ng-click="applyColorFilter('color={{color}}')" /> </a></li>
+                  
                                     
                 </ul>
               </div>
@@ -157,7 +152,7 @@
             </div>
 
             </div>
-          
+    </div>      
         <!-- <nav class="leftNav scrollable">
             <div class="search">
                 <span class="searchIcon icon-magnifier"></span>
@@ -223,14 +218,14 @@
                 <li><a href="#"><span class="icon-power"></span>Logout</a></li>
             </ul>
         </div> -->
-    </div>
-    <div class="closeLeftSide"></div>
+    
+    <!-- <div class="closeLeftSide"></div> -->
 
         <!-- Content -->
 
         <div id="wrapper">
             <div id="mapView"> 
-                
+                444
 
             </div>
             <div id="content" style='height:{{contentHeight}}px ;'>

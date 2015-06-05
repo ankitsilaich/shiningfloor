@@ -123,33 +123,33 @@ var map;
     );
 
     // Exapnd left side navigation
-    var navExpanded = false;
-    $('.navHandler, .closeLeftSide').click(function() {
-        if(!navExpanded) {
-            $('.logo').addClass('expanded');
-            $('#leftSide').addClass('expanded');
-            if(windowWidth < 768) {
-                $('.closeLeftSide').show();
-            }
-            $('.hasSub').addClass('hasSubActive');
-            $('.leftNav').addClass('bigNav');
-            if(windowWidth > 767) {
-                $('.full').addClass('m-full');
-            }
-            windowResizeHandler();
-            navExpanded = true;
-        } else {
-            $('.logo').removeClass('expanded');
-            $('#leftSide').removeClass('expanded');
-            $('.closeLeftSide').hide();
-            $('.hasSub').removeClass('hasSubActive');
-            $('.bigNav').slimScroll({ destroy: true });
-            $('.leftNav').removeClass('bigNav');
-            $('.leftNav').css('overflow', 'visible');
-            $('.full').removeClass('m-full');
-            navExpanded = false;
-        }
-    });
+    // var navExpanded = false;
+    // $('.navHandler, .closeLeftSide').click(function() {
+    //     if(!navExpanded) {
+    //         $('.logo').addClass('expanded');
+    //         $('#leftSide').addClass('expanded');
+    //         if(windowWidth < 768) {
+    //             $('.closeLeftSide').show();
+    //         }
+    //         $('.hasSub').addClass('hasSubActive');
+    //         $('.leftNav').addClass('bigNav');
+    //         if(windowWidth > 767) {
+    //             $('.full').addClass('m-full');
+    //         }
+    //         windowResizeHandler();
+    //         navExpanded = true;
+    //     } else {
+    //         $('.logo').removeClass('expanded');
+    //         $('#leftSide').removeClass('expanded');
+    //         $('.closeLeftSide').hide();
+    //         $('.hasSub').removeClass('hasSubActive');
+    //         $('.bigNav').slimScroll({ destroy: true });
+    //         $('.leftNav').removeClass('bigNav');
+    //         $('.leftNav').css('overflow', 'visible');
+    //         $('.full').removeClass('m-full');
+    //         navExpanded = false;
+    //     }
+    // });
 
     // functionality for map manipulation icon on mobile devices
    
