@@ -1,52 +1,165 @@
-app.controller('searchPageCtrl', ['$scope', '$http','$stateParams', 'ngCart', '$filter','$state', function($scope, $http, $stateParams, ngCart, $filter,$state) {
+app.controller('searchPageCtrl', ['$scope', '$http','$stateParams', 'ngCart', '$filter','$state','$location', function($scope, $http, $stateParams, ngCart, $filter,$state,$location) {
      
       $scope.windowHeight = window.innerHeight;
       $scope.windowWidth = $(window).width();
       $scope.contentHeight = $scope.windowHeight - $('#header').height();
       $scope.contentWidth = $('#content').width();
-
-//    if($stateParams.query === '') console.log('empty');
       $scope.rId = $stateParams.routeId ;
-
-  $http.get('data/productPage_data.json').then(function (resp) {
-
-     $scope.productPage_data = resp.data.productPage_data;
-     $scope.indx = -1; 
-  //   console.log('adada');
-
-  if($stateParams.routeId == 'tiles'){
-    $scope.indx = 0; 
-  }
-
-  if($stateParams.routeId == 'marble'){
-    $scope.indx = 1; 
-  }
-  if($stateParams.routeId == 'wood'){
-    $scope.indx = 2; 
-  }
-  if($stateParams.routeId == 'wallpaper'){
-    $scope.indx = 3; 
-  }
-  if($stateParams.routeId == 'stone'){
-    $scope.indx = 4; 
-  }
-  if($stateParams.routeId == 'artificial'){
-    $scope.indx = 5; 
-  }
-
-   // console.log($scope.productPage_data[1].routeId) ;
-  // console.log($scope.productPage_data[0]);
-   $scope.mainTagline = $scope.productPage_data[$scope.indx].product_data.mainTagline;
-   $scope.subtitle = $scope.productPage_data[$scope.indx].product_data.subTitle;
-
-// console.log($state.current.name);
+      $scope.lastProductId = 0;
+      $scope.firstProductId = 0;
+      $scope.sortTypeLable = ['Price (high to low)','Price (low to high)','Rating (high to low)','Rating (low to high)'];
+      $scope.selectedSortType = $scope.sortTypeLable[0];
       
-  });
+$scope.priceFilters = ['below-100','100-200','200-above'];
+$scope.priceFiltersLabels = ['Below 100','100-200','Above 200'];
+
+// $scope.brandFilters = ['Makrana','Somany','M K Wood','Satyam Exports','Johnson'];
+$scope.brandFilters= ['Makrana','Somany','M K Wood','Satyam Exports','Johnson'];
 
  $http.get('api/slim.php/shiningfloor/colors').then(function (resp) {
+      // console.log(resp.data);          
+          $scope.colors = resp.data.colors[0].product_colors; 
+          $scope.totalColorsCount = $scope.colors.length;
+          // angular.forEach($scope.colors, function(color.selected) {
+          //   color.selected = false;
+
+          // });
+          $scope.applySelectedFilterClass =  function(urlString, filterName){
+
+          if(typeof urlString != 'undefined'){
+         
+              if( urlString.indexOf(filterName)!=-1){
+                var index1 =  urlString.indexOf(filterName);
+                var l = urlString.length;
+                if(urlString.substring(index1).indexOf('&')==-1)
+                     var index2 = urlString.length;
+                else
+                    var index2 = index1 +  urlString.substring(index1).indexOf('&');
+                var tmp = urlString.substring(index1,l).indexOf('=')+1; 
+                var oldFilters = urlString.substring(index1+tmp,index2).split(',');
+                
+                // console.log(oldColorFilters);
+
+                var len = oldFilters.length;
+                var i ,j; 
+                if(filterName=='color'){
+                   
+                  $scope.selectedColors = [];
+                  for(j=0;j<$scope.totalColorsCount;j++)
+                  {
+                    $scope.selectedColors[j] =  false;
+                  } 
+                  for(i=0;i<len;i++){
+                    for(j=0;j<$scope.totalColorsCount;j++)
+                    {
+                      
+                      if($scope.colors[j]==oldFilters[i]){
+                         
+                        $scope.selectedColors[j] =  true;
+                        break;
+                      }
+
+                    }                  
+                  }
+
+                }
+                else if(filterName == 'price_range'){                
+                  $scope.selectedPrices = [];
+                  for(j=0;j<3;j++)
+                  {
+                    $scope.selectedPrices[j] =  false;
+                  }
+
+                  for(i=0;i<len;i++){
+                      for(j=0;j<3;j++)
+                      {
+                         
+                         if($scope.priceFilters[j]== oldFilters[i]){                            
+                            $scope.selectedPrices[j] =  true;
+                            break; 
+                         }                     
+                      }                  
+                  }
+                }
+                else if(filterName=='brand_name'){
+                   
+                  $scope.selectedBrands = [];
+                  $scope.totalBrandsCount = $scope.brandFilters.length;
+                  for(j=0;j<$scope.totalBrandsCount;j++)
+                  {
+                    $scope.selectedBrands[j] =  false;
+                  }
+                   
+                  for(i=0;i<len;i++){
+                    for(j=0;j<$scope.totalBrandsCount;j++)
+                    {
+                      
+                      if($scope.brandFilters[j]==oldFilters[i]){
+                         
+                        $scope.selectedBrands[j] =  true;
+                        break;
+                      }
+
+                    }                  
+                  }
+
+                }                                   
+              }
+          }
+      };
+      
+      $scope.applySelectedFilterClass($scope.url,'color');
+      $scope.applySelectedFilterClass($scope.url,'price_range');
+      $scope.applySelectedFilterClass($scope.url,'brand_name');
+      $scope.pageNo = $scope.findpageNo();
+      console.log($scope.pageNo);
+      if($scope.pageNo != 1){
+          $scope.url = $scope.url.replace('pageNo='+$scope.pageNo , 'pageNo=1');        
+          $location.path('shiningFloor/search/'+ $stateParams.routeId +'/' + $scope.url);
+      }
+      $('#PrevPage').addClass("disabled");  
+             
+       
+
+      if($stateParams.query === '' && $scope.searchQuery.text ===''){
           
-          $scope.colors = resp.data.colors[0].product_colors;
-          console.log($scope.colors) ;
+          $location.path('shiningFloor/search/'+ $stateParams.routeId +'/' + '?pageNo=1');
+          $scope.url = '?pageNo=1';
+          $http.get('api/slim.php/shiningfloor/products/'+'search/'+ $stateParams.routeId + '/'  + '?pageNo=1').then(function (resp) {
+           
+                  $scope.searchResults = resp.data.product_data;
+                  $scope.lastProductId = $scope.searchResults[$scope.searchResults.length-1].product_id ;
+                  $scope.firstProductId = $scope.searchResults[0].product_id ;
+                  console.log($scope.lastProductId);
+                  $scope.sortBy ='product_price';
+              });
+
+        }
+        else{
+
+            $http.get('api/slim.php/shiningfloor/products/'+'search/'+ $stateParams.routeId + '/'+ $scope.url ).then(function (resp) {
+                $scope.searchResults = resp.data.product_data; 
+                $scope.lastProductId = $scope.searchResults[$scope.searchResults.length-1].product_id ;
+                $scope.firstProductId = $scope.searchResults[0].product_id ;
+                  console.log($scope.lastProductId);
+                  $scope.sortBy ='product_price';
+
+                  if($scope.searchResults.length!= 20){
+             
+                      if(!$('#NextPage').hasClass('disabled')){
+                                $('#NextPage').addClass("disabled");                              
+                            }                   
+                  }
+                  else{
+                    if($('#NextPage').hasClass('disabled')){
+                      $('#NextPage').removeClass("disabled");
+                    }
+                  }
+                 // $('#search-items').addClass('hidden');
+               // $scope.searchQuery.text = '';   
+          });
+        }
+
       });
 
 $scope.searchQuery = {
@@ -55,133 +168,238 @@ $scope.searchQuery = {
       };
       // url for changing product in search page. 
 
-if($stateParams.query === '' && $scope.searchQuery.text ===''){
- 
-  $http.get('api/slim.php/shiningfloor/products/'+ $stateParams.routeId).then(function (resp) {
-          console.log('first time result with no query');
-          $scope.searchResults = resp.data.product_data;
-          $scope.sortBy ='-product_price';
-      });
 
-}
-else{
+$scope.findpageNo = function(){
+       
+        var i = $scope.url.indexOf('pageNo=');
+        var pageNo = 1;
+        if(i!=-1)
+        {
+                   
+          var  l =  $scope.url.length;
+          var index1 = $scope.url.substring(i).indexOf('=')+1;       
+          var index2 = $scope.url.substring(index1).indexOf('&') ;
 
-    $http.get('api/slim.php/shiningfloor/products/'+'search/'+ $stateParams.routeId + '/'+ $stateParams.query).then(function (resp) {
-       $scope.searchResults = resp.data.product_data;
-       console.log(' result with some query = '+ $stateParams.query); 
-       // $('#search-items').addClass('hidden');
-       // $scope.searchQuery.text = '';   
+    
+          if(index2==-1)
+              pageNo =  $scope.url.substring(index1+1,l);
+          else
+              pageNo = $scope.url.substring(index1+1,index1+index2);    
+        }
+
+        return pageNo; 
+};
+
+$scope.fetchNextPageData = function(){
+
+    $scope.pageNo = $scope.findpageNo();
+             
+        if($('#PrevPage').hasClass('disabled'))            
+            $('#PrevPage').removeClass("disabled");                     
+    
+    $scope.url = $scope.url.replace('pageNo='+$scope.pageNo , 'pageNo='+(Number($scope.pageNo)+1));
+  //  console.log($scope.pageNo);
+    $location.path('shiningFloor/search/'+ $stateParams.routeId +'/' + $scope.url);
+    $http.get('api/slim.php/shiningfloor/products/'+'search/'+ $stateParams.routeId+ '/'+$scope.url + '&lastId='+$scope.lastProductId+ '&sortOrder=Asc').then(function (resp) {       
+        $scope.searchResults = resp.data.product_data;
+
+        $scope.lastProductId = $scope.searchResults[$scope.searchResults.length-1].product_id ;
+        $scope.firstProductId = $scope.searchResults[0].product_id ;
+        console.log($scope.lastProductId);
+         // console.log(resp.data);
+        if($scope.searchResults.length!= 20){
+             
+            if(!$('#NextPage').hasClass('disabled')){
+                      $('#NextPage').addClass("disabled");                              
+                  }                   
+        }
+        else{
+          if($('#NextPage').hasClass('disabled')){
+            $('#NextPage').removeClass("disabled");
+          }
+        }
+
   });
 }
-$scope.pageSearchData = function(pageNo){
-        
-       $addQuery = '/'+$stateParams.query+'?pageNo='+pageNo ;
-       $http.get('api/slim.php/shiningfloor/products/'+'search/'+ $stateParams.routeId + $addQuery).then(function (resp) {
-             $scope.searchResults = resp.data.product_data;
-               
-           });
-};
 
-$scope.url = $stateParams.query;
-$scope.applyPriceFilter =  function(filter){
-    $scope.priceRange = '&'+filter;
-    console.log('1st url = '+$scope.url);
-    if(typeof $scope.url === 'undefined')
-      $scope.url = '?pageNo=1' ;
-    else{
-      if($scope.url.indexOf('price_range')==-1 && $scope.url.indexOf('pageNo')==-1)
-        $scope.url = '?pageNo=1'  + $scope.url ;
-        console.log('cond1 true');
-    }   
+$scope.fetchPrevPageData = function(){
 
-    if($scope.url.indexOf('price_range')==-1){    
-      $scope.url += $scope.priceRange;
-    }  
-    else if($scope.url.indexOf('price_range')!=-1){
-      
-      index1 = $scope.url.indexOf('price_range');
+    $scope.pageNo = $scope.findpageNo();
+    console.log($scope.pageNo);
 
-      if($scope.url.substring(index1).indexOf('&')==-1){
-         // index2 = index1 + $scope.url.substring(index1).indexOf('');
-         
-        $scope.url = $scope.url.replace($scope.url.substring(index1,$scope.url.length),filter);
-        console.log('cond2 true');
-        }
-      else{  
-        index2 = index1 + $scope.url.substring(index1).indexOf('&');
-         
-        $scope.url = $scope.url.replace($scope.url.substring(index1,index2),filter);
-        console.log('cond3 true');
-      }          
-    }
-
-    console.log('url = '+ $scope.url); 
-};
-
-// $http.get('api/slim.php/shiningfloor/products/'+'search/'+ $stateParams.routeId+ '/'+$stateParams.query+$scope.url).then(function (resp) {       
-//          // $scope.searchResults = resp.data.product_data;
-//          console.log(resp.data);
-//   });
-
-$scope.applyColorFilter =  function(filter){
-  // event.preventDefault();
-  //   $('#colorId3').attr('src', 'images/colors/color-8.png');
-  //   console.log($('#colorId3').attr('src'));
-     $scope.colorName = '&'+filter;
-    console.log('1st url = '+$scope.url);
-    if(typeof $scope.url === 'undefined')
-      $scope.url = '?pageNo=1' ;
-    else{
-      if($scope.url.indexOf('color')==-1 && $scope.url.indexOf('pageNo')==-1)
-        $scope.url = '?pageNo=1'  + $scope.url ;
-
-    }  
-         
-    if($scope.url.indexOf('color')==-1){    
-      $scope.url += $scope.colorName;
-      console.log('cond1 true');
-    }  
-    else if($scope.url.indexOf('color')!=-1){
-      
-      index1 = $scope.url.indexOf('color');
-
-      if($scope.url.substring(index1).indexOf('&')==-1){
-         // index2 = index1 + $scope.url.substring(index1).indexOf('');
-         // console.log($scope.url.replace($scope.url.substring(index1,$scope.url.length),filter));
-
-        $scope.url = $scope.url.replace($scope.url.substring(index1,$scope.url.length),filter);
-        // $scope.url = $scope.url.substring(0,l)+ ','+ filter.substring(filter.indexOf('=')+1,filter.length);
-        
-        console.log('cond2 true');
-        }
-      else{  
-
-         // console.log($scope.url.replace($scope.url.substring(index1,index2),filter));
-        
-
-
-        index2 = index1 + $scope.url.substring(index1).indexOf('&');
-         // console.log($scope.url.replace($scope.url.substring(index1,index2),filter));
-          var color =  $scope.url.substring(index1,index2);
-          var l = $scope.url.length;
-         // $scope.url = $scope.url.substring(0,index2)+ ','+ filter.substring(filter.indexOf('=')+1,filter.length)+ $scope.url.substring(index2,l);
-        // $scope.url = $scope.url.replace(color,filter);
-         $scope.url = $scope.url.replace($scope.url.substring(index1,index2),filter);
-        // console.log('cond3 true ' + $scope.url.substring(0,index2) + ' '+filter.substring(filter.indexOf('=')+1,filter.length));
-      }          
-    }
-    // $state.go('app.search.type({routeId:$scope.rId,  query: $scope.url })');
-  //  $state.go('app.search.type',{routeId:$scope.rId,  query: $scope.url });
+          $scope.url = $scope.url.replace('pageNo='+$scope.pageNo , 'pageNo='+(Number($scope.pageNo)-1));
+        //  console.log($scope.pageNo);
+          $location.path('shiningFloor/search/'+ $stateParams.routeId +'/' + $scope.url);
+          $http.get('api/slim.php/shiningfloor/products/'+'search/'+ $stateParams.routeId+ '/'+$scope.url+ '&lastId='+$scope.firstProductId+ '&sortOrder=Desc').then(function (resp) {       
+              $scope.searchResults = resp.data.product_data;
+              $scope.firstProductId = $scope.searchResults[$scope.searchResults.length-1].product_id ;
+              $scope.lastProductId = $scope.searchResults[0].product_id ;
+              // console.log($scope.lastProductId);
+               // console.log(resp.data);
+              $scope.pageNo = $scope.findpageNo();
+              if($scope.pageNo == 1){
+                
+                  if(!$('#PrevPage').hasClass('disabled')){
+                           $('#PrevPage').addClass("disabled");                              
+                        }                  
+              }
+              else{
+                if($('#NextPage').hasClass('disabled')){
+                           $('#NextPage').removeClass("disabled");                              
+                        }   
+              } 
+        });
+            
     
-    console.log('url = '+ $scope.url);
+}
+$scope.url = $stateParams.query;
+  
+$scope.applySelectedFilter =  function(filter, filterIndex, filterType){    // filterType for type of filter like color, brand or price. 
+
+    $scope.filterUrl = '&'+filter;
+    $scope.filterName = filter.substring(filter.indexOf('=')+1, filter.length);
+    
+        if(typeof $scope.url === 'undefined')
+          $scope.url = '?pageNo=1' ;              // For first time landing on the page
+        else{
+          if($scope.url.indexOf(filterType)==-1 && $scope.url.indexOf('pageNo')==-1)
+            $scope.url = '?pageNo=1'  + $scope.url ;      // For first time click with no other filter present
+        }  
+
+        $scope.pageNo = $scope.findpageNo();
+        $scope.url = $scope.url.replace('pageNo='+$scope.pageNo , 'pageNo=1');
+        if(!$('#PrevPage').hasClass('disabled')){
+            $('#PrevPage').addClass("disabled");                              
+        }
+
+        if($scope.url.indexOf(filterType)==-1){    // check whether filter is price or color or price 
+          $scope.url += $scope.filterUrl;           
+        }  
+        else if($scope.url.indexOf(filterType)!=-1){
+          
+          index1 = $scope.url.indexOf(filterType);
+          var index2  = $scope.url.length ;
+          var l = $scope.url.length ; 
+            // If color is the last filter
+          if($scope.url.substring(index1).indexOf('&')==-1){              
+                $scope.url = updateUrl($scope.url,index1,index2,l,1,filterType)  ;                              
+          }    
+            // Other wise  
+          else{ 
+            index2 = index1 + $scope.url.substring(index1).indexOf('&');
+            $scope.url = updateUrl($scope.url,index1,index2,l,0,filterType) ;
+          }          
+        }
+
+        if(filterType=='color'){     
+          if($('#colorId'+filterIndex).hasClass('color-selected')){
+             $('#colorId'+filterIndex).removeClass("color-selected");                              
+          }
+          else
+           $('#colorId'+filterIndex).addClass("color-selected"); 
+        }
+        else if(filterType=='price_range'){
+                if($('#price'+filterIndex).hasClass('price-selected')){
+                   $('#price'+filterIndex).removeClass("price-selected");                              
+                }
+                else
+                   $('#price'+filterIndex).addClass("price-selected");
+        }
+        else if(filterType=='brand_name'){
+                if($('#brand'+filterIndex).hasClass('brand-selected')){
+                   $('#brand'+filterIndex).removeClass("brand-selected");                              
+                }
+                else
+                   $('#brand'+filterIndex).addClass("brand-selected");
+        }
+
+    //'/shiningFloor/search/tiles/'
+    $location.path('shiningFloor/search/'+ $stateParams.routeId +'/' + $scope.url);
+    $http.get('api/slim.php/shiningfloor/products/'+'search/'+ $stateParams.routeId+ '/'+$scope.url).then(function (resp) {       
+         $scope.searchResults = resp.data.product_data;
+         $scope.lastProductId = $scope.searchResults[$scope.searchResults.length-1].product_id ;
+         $scope.firstProductId = $scope.searchResults[0].product_id ;
+         console.log($scope.lastProductId);
+         // console.log(resp.data);
+         if($scope.searchResults.length!= 20){
+
+            if(!$('#NextPage').hasClass('disabled')){
+                     $('#NextPage').addClass("disabled");                              
+                  }            
+          }
+          else{
+            if($('#NextPage').hasClass('disabled')){
+                     $('#NextPage').removeClass("disabled");                              
+                  }  
+          }
 
 
-
+  });
+  
+  
 };
+
+updateUrl = function(urlString,index1,index2,l,isLastFilter,filterType){
+       // type variable for chosing whether color filter is last or not
+        var tmp = urlString.substring(index1,l).indexOf('=')+1;
+        var oldSelectedFilters = urlString.substring(index1+tmp,index2).split(',');
+        var countSelectedFilters = oldSelectedFilters.length;
+        // console.log(oldColorFilters[0]);
+        var i = 0, flag;
+        // console.log(urlString);
+        while(i<countSelectedFilters)
+        {
+          // console.log('old color='+oldColorFilters[i]+'new color='+$scope.colorName);
+          flag= 0
+          if(oldSelectedFilters[i]==$scope.filterName){
+            flag=1;
+            i++;
+            //console.log('old color found');
+            break;
+          }
+          i++;
+
+        }
+        if(flag){     
+            flag=0;
+            if(countSelectedFilters==1){
+              // if(filterType=='color')
+                urlString = urlString.replace('&'+filterType+'=','');
+              // else if(filterType=='price_range')
+              //   urlString = urlString.replace('&price_range=','');
+                
+              urlString = urlString.replace($scope.filterName , '');
+              // console.log($scope.url); // for single old color
+            }
+            else if(i ==1){                
+                urlString = urlString.replace($scope.filterName + ',', '');
+            } 
+
+            else{
+             urlString = urlString.replace(','+ $scope.filterName,''); 
+            }
+         }
+        else{
+
+            if(isLastFilter){
+              urlString = urlString.substring(0,l)+ ','+ $scope.filterName;  //filter.substring(filter.indexOf('=')+1,filter.length)              
+            }
+            else{
+                   
+                  var url1 = urlString.substring(0,index1);
+                  var url2 = urlString.substring(index1,index2);  
+                  var url3 = urlString.substring(index2,l);         
+                  urlString = url1 + url2+ ','+ $scope.filterName + url3 ;
+            }
+        }
+    return urlString;     
+};
+
+
 
 $scope.showLeftSideFilters = function(){
-    console.log(event);
-    console.log("sdsdsa");
+    // console.log(event);
+    // console.log("sdsdsa");
    
 if($('#leftSide').hasClass('expanded')){
    $("#leftSide").removeClass("expanded");
@@ -199,6 +417,7 @@ else{
 }
        
 };
+
 
 $scope.handleColors = function(){
    
@@ -243,20 +462,11 @@ app.controller('productSearchCtrl', ['$scope', '$http','$stateParams', '$filter'
 
   $http.get('data/tyle_filter.json').then(function (resp) {
 
-    $scope.categories = resp.data.categories;
-    console.log('productSearchCtrl');
+    $scope.categories = resp.data.categories; 
    // console.log($scope.categories[0].details.type);
 
   });
-  
-  // function fetchProductInfo(){
-  //     console.log('fetching each product info ');
-  //   //   $http.get('api/slim.php/shiningfloor/products/'+ $stateParams.routeId)+'/'+ product_id.then(function (resp) {
-  //   //   $scope.searchResults = resp.data.product_data;
-  //   //      console.log($scope.searchResults);
-  //   // });  
-  // }
-
+   
 }]);
 
 app.controller('searchCtrl', ['$scope', '$http','$stateParams', '$filter', function($scope, $http, $stateParams,$filter) {

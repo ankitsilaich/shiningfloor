@@ -143,7 +143,8 @@ angular.module('app')
               .state('app.search.type', {
                   url: '/:routeId/:query',
                   templateUrl : 'tpl/search.html',
-                 
+                  reloadOnSearch:false,
+                  
                   resolve: {
                     
                       deps: ['$ocLazyLoad', 'uiLoad',
@@ -151,7 +152,7 @@ angular.module('app')
                           return uiLoad.load(
                             [
                             'js/controllers/index.filterCtrl.js'
-                              
+                             ,'js/controllers/searchPageCtrl.js'   
                               ]
                           )
                       }]

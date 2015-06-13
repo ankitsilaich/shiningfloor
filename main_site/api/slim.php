@@ -668,9 +668,12 @@ $app->get('/shiningfloor/products(/:type)/usages', function($type) use ($app, $d
 $prev_id = 0;
 $pageNo = 1;
 $resultPerPage = 20;
+$colorFilters=[];
+$priceFilters = [];
+$brandFilters = [];
 $app->get('/shiningfloor/products/search(/:type)/(:input)', function($type=null,$input=null ) use ($app, $db){
-
-        $data = array();
+        global $colorFilters, $priceFilters, $brandFilters;
+        $data = array(); 
         global $resultPerPage , $pageNo ;
         
         $type_id = $db->types()->where('type_name',$type)->select('id');
@@ -690,35 +693,39 @@ $app->get('/shiningfloor/products/search(/:type)/(:input)', function($type=null,
             $pageNo = ( int )$_GET['pageNo'] ;            
         }
 
-        $query = $query->limit(count($query),(($pageNo -1)*( int )$resultPerPage))  ;  
-            
-        if(isset($_GET['price_range'])){
-            
-           if($_GET['price_range'] == 'below-100'){
-              $query = $query->where('product_price < 100');
-           }
-           else if($_GET['price_range'] == '100-200'){
-              $query = $query->where('product_price < 200 and product_price>= 100');
-           }
-           else if($_GET['price_range'] == 'above-200'){
-              $query = $query->where('product_price >= 200');
-           }
-
+        //$query = $query->limit(count($query),(($pageNo -1)*( int )$resultPerPage))  ;  
+        if(isset($_GET['lastId'])){
+            $lastId = ( int )$_GET['lastId'] ;
+            if(isset($_GET['sortOrder'])){
+                if($_GET['sortOrder']=='Asc')
+                {
+                  // echo "sahil";
+                    $query = $query->order('id' .' Asc');
+                    $query = $query->where('id > '.$lastId) ;
+                  }
+                else if($_GET['sortOrder']=='Desc')
+                {
+                  // echo "aadil";
+                    $query = $query->order('id' . ' Desc');
+                    $query = $query->where('id < '.$lastId) ;
+                }                
+            }
+            else
+                  $query = $query->order('id'. ' Asc');                        
         }
-         
-
+        else
+          $query = $query->order('id' . ' Asc');
         if(isset($_GET['color'])){
-            $colorName =  $_GET['color'] ;
+            $colorFilters =  explode(',', $_GET['color']);
         }
 
-        // foreach ($p->product_colors() as $product_colors) {
+        if(isset($_GET['price_range'])){        
+            $priceFilters = explode(',', $_GET['price_range']);
+        }
 
-        //     $colors[] = $product_colors->colors['color_name'];
-        //     if($colorName == $product_colors->colors['color_name'])
-        //         $flag = 1;
-        // }
-        // echo $query;
-
+        if(isset($_GET['brand_name'])){        
+            $brandFilters = explode(',', $_GET['brand_name']);
+        }
 
         $data = findAllProducts($query,'');
 
@@ -744,9 +751,9 @@ $app->get('/shiningfloor/products(/:type)(/:usage_location)', function($type=nul
         else{
             $query = $db->products->where('type_id',$type_id);
         }        
-        if(isset($_GET['sortkey']) and isset($_GET['sortorder'])){
-            $query = $query->order($_GET['sortkey'].' '.$_GET['sortorder']);
-        }
+        // if(isset($_GET['sortkey']) and isset($_GET['sortorder'])){
+        //     $query = $query->order($_GET['sortkey'].' '.$_GET['sortorder']);
+        // }
 
         // if(isset($_GET['q']) ){
         //   if($_GET['q']!='')
@@ -777,7 +784,10 @@ $app->get('/shiningfloor/products(/:type)(/:usage_location)', function($type=nul
 function findAllProducts($query,$usage_location){
     $data = array();
     global $resultPerPage;
-    $count = 0;    
+    global $priceFilters,$colorFilters,$brandFilters;
+    $count1 = 0;    // for counting color filter products
+    $count2= 0;     //  for counting price filter products
+    $count3= 0;    // for counting brand filter products
     foreach($query as $p)
     {
                
@@ -787,8 +797,98 @@ function findAllProducts($query,$usage_location){
         $surface_types = array();
         $colors = array();
         $features = array();
-        
+
+// Price filtering
         $flag = 0;
+        if(isset($_GET['price_range'])){
+            
+            for($i = 0 ; $i < sizeof($priceFilters); $i++){
+                  if($priceFilters[$i] == 'below-100'){
+                      if($p['product_price'] < 100){
+                          $flag = 1;
+                          break;
+                      } 
+                  }
+                 else if($priceFilters[$i] == '100-200'){
+                     if($p['product_price'] >= 100 and  $p['product_price'] < 200){
+                          $flag = 1;
+                          break;
+                      } 
+                 }
+                 else if($priceFilters[$i] == 'above-200'){
+                     if($p['product_price'] >= 200){
+                          $flag = 1;
+                          break;
+                      } 
+                 }
+
+            }
+            
+            if(!$flag)
+                  continue;   
+            else
+              $count2++;
+              
+          }
+          else
+            $count2++;
+        
+// Brand filtering
+        $flag = 0;
+                
+        if(isset($_GET['brand_name'])){
+            for($i = 0 ; $i < sizeof($brandFilters); $i++){
+                  // echo($p['product_brand'] . ' '. $brandFilters[$i])."\n";
+                 if($p['product_brand'] == $brandFilters[$i]){
+                      $flag = 1;
+                      // echo $p['id']."\n";
+                      break;
+                  }                     
+            }
+            if(!$flag){ 
+                continue;
+               }
+            else
+            {
+              $count3++;
+            }                                          
+        } 
+        else $count3++;
+
+// Color Filtering  ** Order of this filtering(due to join) is very very important *** 
+        $flag = 0 ;
+        foreach ($p->product_colors() as $product_colors) {              
+            $productColor =  $product_colors->colors['color_name']; 
+            $colors[] = $productColor;
+            if(isset($_GET['color'])){
+                if(!$flag){
+                  foreach ($colorFilters as $colorFilter ) {
+                    # code...
+                    if($colorFilter == $productColor){
+                      $flag = 1;
+                      }
+                  }
+                }
+            }  
+        }
+
+        if(isset($_GET['color'])){
+          if(!$flag){ 
+              //$count--;
+              continue;
+             }
+          else
+          {
+            $count1++;
+          }    
+        }
+        else $count1++;
+
+        
+        if($count1>=$resultPerPage+1 and $count2>=$resultPerPage+1 and $count3>=$resultPerPage+1)
+           break; 
+        // if($count==$resultPerPage+1)
+        //    break; 
         foreach ($p->products_usages() as $product_usages) {
             if($usage_location==null){   
                 $usages_area[] = $product_usages->usages['usage_name']; 
@@ -818,42 +918,7 @@ function findAllProducts($query,$usage_location){
 
             $surface_types[] = $product_surface_types->surface_types['surface_type_name']; 
         }
-        // foreach ($p->product_colors() as $product_colors) {
-
-        //   $colors[] = $product_colors->colors['color_name'];   
-        // }
-
-        $flag = 0 ;
-        if(isset($_GET['color']))
-            $colorName =  $_GET['color'] ;
-    
-        foreach ($p->product_colors() as $product_colors) {
-            
-            $colors[] = $product_colors->colors['color_name'];  
-
-            if(isset($_GET['color'])){
-              if($colorName == $product_colors->colors['color_name']){
-                  $flag = 1;
-
-              }
-            }  
-        }
-
-        if(isset($_GET['color'])){
-          if(!$flag){ 
-              //$count--;
-              continue;
-             }
-          else
-          {
-            $count++;
-          }    
-        }
-        else $count++;
-
-        if($count==$resultPerPage+1)
-           break; 
-
+         
         foreach ($p->product_features() as $product_features) {
 
             $features[] = $product_features->features['feature_name']; 

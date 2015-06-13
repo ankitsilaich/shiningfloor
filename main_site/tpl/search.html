@@ -26,7 +26,7 @@
             <a href="#" class="headerUser dropdown-toggle" data-toggle="dropdown">
                 <img class="avatar headerAvatar pull-left" src="images/avatar-1.png" alt="avatar">
                 <div class="userTop pull-left">
-                    <span class="headerUserName">John Smith </span> <span class="fa fa-angle-down"></span>
+                    <span class="headerUserName">John Smith{{$scope.url}} </span> <span class="fa fa-angle-down"></span>
                 </div>
                 <div class="clearfix"></div>
             </a>
@@ -81,33 +81,14 @@
               </div>
               <div class="widget-content" id="colors" >
                 <ul>
-                  <li ng-repeat="color in colors"> <input type="checkbox" value="{{color}}" /> <a href ui-sref="app.search.type({routeId:rId,  query: url })" > <img id = "colorId{{$index+1}}" src="images/colors/color-{{$index+1}}.png" alt="" ng-click="applyColorFilter('color={{color}}')" /> </a></li>
+                  <li ng-repeat="color in colors"> <input type="checkbox" value="{{color}}" /> <a href ui-sref="app.search.type({routeId:rId,  query: url })" > <img id = "colorId{{$index+1}}" src="images/colors/color-{{$index+1}}.png" alt="" ng-class="{'color-selected' : selectedColors[{{$index}}]}" ng-click="applySelectedFilter('color='+color,{{$index+1}},'color')"/> </a></li>
                   
                                     
                 </ul>
               </div>
             </div>
 
-            <div class="sidebar-custom sidebar-tag size">              
-              <div class="widget-title">
-                <h3>
-                  <span>Size</span>
-                  <a href  class="clear" >Clear</a>
-                </h3>
-              </div>
-              <div class="widget-content" id="sizes">
-                <ul>
-                    <li><input type="checkbox" value="xs"/><label>XS</label></li>
-                    <li><input type="checkbox" value="s"/><label>S</label></li>
-                    <li><input type="checkbox" value="m"/><label>M</label></li>
-                    <li><input type="checkbox" value="l"/><label>L</label></li>
-                     <li><input type="checkbox" value="xl"/><label>XL</label></li>
-                </ul>
-              </div>
-            </div>
-
-
-
+             
             <div class="sidebar-custom sidebar-tag">              
               <div class="widget-title">
                 <h3>
@@ -117,9 +98,8 @@
               </div>
               <div class="widget-content" id="prices">
                 <ul>
-                     <li> <a href ui-sref="app.search.type({routeId:rId,  query: url })" ng-click="applyPriceFilter('price_range=below-100')"> <input type="checkbox" value="price_range=below 100" /><label>Under 100</label></a></li> 
-                    <li> <a href ui-sref="app.search.type({routeId:rId,  query: url  })" ng-click="applyPriceFilter('price_range=100-200')"> <input type="checkbox" value="price_range=100-200"/><label>100 - 200</label> </a> </li>
-                    <li> <a href ui-sref="app.search.type({routeId:rId,  query: url  })" ng-click="applyPriceFilter('price_range=above-200')"> <input type="checkbox" value="price_range=above-200"/><label>Above 200</label> </a> </li>
+                     <li ng-repeat="price in priceFilters"> <a href ui-sref="app.search.type({routeId:rId,  query: url })" ng-click="applySelectedFilter('price_range='+price,{{$index}},'price_range')"> <input type="checkbox" value="price_range={{price}}" id="price{{$index}}"  ng-class="{'price-selected' : selectedPrices[{{$index}}]}"/><label> {{priceFiltersLabels[$index]}}       </label></a></li> 
+                     
                     
                 </ul>
               </div>
@@ -131,97 +111,20 @@
               
               <div class="widget-title">
                 <h3>
-                  <span>Brand</span>
-                  <a href class="clear" style="display:none">Clear</a>
+                  <span ng-click="handlePrices()">Brand Name</span>
+                  <a href class="clear" >Clear</a>
                 </h3>
               </div>
-              <div class="widget-content">
+              <div class="widget-content" id='brands'>
                 <ul>
-                    
-                    <li><input type="checkbox" value="chanel"/><label>Chanel</label></li>
-                    
-                    <li><input type="checkbox" value="dior"/><label>Dior</label></li>
-                    
-                    <li><input type="checkbox" value="gap"/><label>Gap</label></li>
-                    <li><input type="checkbox" value="lucci"/><label>Lucci</label></li>
-                    
-                   <li><input type="checkbox" value="louis"/><label>Louis</label></li>
-                    
+                      <li ng-repeat="brand in brandFilters"> <a href ui-sref="app.search.type({routeId:rId,  query: url })" ng-click="applySelectedFilter('brand_name='+brand,{{$index}},'brand_name')"> <input type="checkbox" value="brand_name={{brand}}" id="brand{{$index}}"  ng-class="{'brand-selected' : selectedBrands[{{$index}}]}"/><label> {{brandFilters[$index]}}       </label></a></li> 
+                                                            
                 </ul>
               </div>
             </div>
 
             </div>
-    </div>      
-        <!-- <nav class="leftNav scrollable">
-            <div class="search">
-                <span class="searchIcon icon-magnifier"></span>
-                <input type="text" placeholder="Search for houses, apartments...">
-                <div class="clearfix"></div>
-            </div>
-
-
-            <ul>
-                <li><a href="explore.html"><span class="navIcon icon-compass"></span><span class="navLabel">Explore</span></a></li>
-                <li><a href="single.html"><span class="navIcon icon-home"></span><span class="navLabel">Single</span></a></li>
-                <li><a href="add.html"><span class="navIcon icon-plus"></span><span class="navLabel">New</span></a></li>
-                <li class="hasSub">
-                    <a href="#"><span class="navIcon icon-drop"></span><span class="navLabel">Colors</span><span class="fa fa-angle-left arrowRight"></span><span class="badge bg-yellow">5</span></a>
-                    <ul class="colors">
-                        <li><a href="#" data-style="css/app-red.css">Red <span class="fa fa-circle-o c-red icon-right"></span></a></li>
-                        <li><a href="#" data-style="css/app.css">Green <span class="fa fa-circle-o c-green icon-right"></span></a></li>
-                        <li><a href="#" data-style="css/app-blue.css">Blue <span class="fa fa-circle-o c-blue icon-right"></span></a></li>
-                        <li><a href="#" data-style="css/app-yellow.css">Yellow <span class="fa fa-circle-o c-yellow icon-right"></span></a></li>
-                        <li><a href="#" data-style="css/app-magenta.css">Magenta <span class="fa fa-circle-o c-magenta icon-right"></span></a></li>
-                    </ul>
-                </li>
-                <li class="hasSub">
-                    <a href="#"><span class="navIcon icon-layers"></span><span class="navLabel">Elements</span><span class="fa fa-angle-left arrowRight"></span></a>
-                    <ul>
-                        <li><a href="buttons.html">Buttons</a></li>
-                        <li><a href="icons.html">Icons <span class="badge pull-right bg-yellow">841</span></a></li>
-                        <li><a href="grid.html">Grid</a></li>
-                        <li><a href="widgets.html">Widgets</a></li>
-                        <li><a href="components.html">Components</a></li>
-                        <li><a href="lists.html">Lists</a></li>
-                        <li><a href="tables.html">Tables</a></li>
-                        <li><a href="form.html">Form</a></li>
-                    </ul>
-                </li>
-                <li class="hasSub">
-                    <a href="#"><span class="navIcon icon-link"></span><span class="navLabel">Pages</span><span class="fa fa-angle-left arrowRight"></span></a>
-                    <ul>
-                        <li><a href="signin.html">Sign In</a></li>
-                        <li><a href="signup.html">Sign Up</a></li>
-                        <li><a href="profile.html">Profile</a></li>
-                        <li><a href="index-2.html">Homepage Slideshow</a></li>
-                        <li><a href="index-map.html">Homepage Map</a></li>
-                        <li><a href="blog.html">Blog</a></li>
-                        <li><a href="blog-post.html">Blog Post</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-        <div class="leftUserWraper dropup">
-            <a href="#" class="avatarAction dropdown-toggle" data-toggle="dropdown">
-                <img class="avatar" src="images/avatar-1.png" alt="avatar"><span class="counter">5</span>
-                <div class="userBottom pull-left">
-                    <span class="bottomUserName">John Smith</span> <span class="fa fa-angle-up pull-right arrowUp"></span>
-                </div>
-                <div class="clearfix"></div>
-            </a>
-            <ul class="dropdown-menu" role="menu">
-                <li><a href="#"><span class="icon-settings"></span>Settings</a></li>
-                <li><a href="profile.html"><span class="icon-user"></span>Profile</a></li>
-                <li><a href="#"><span class="icon-bell"></span>Notifications <span class="badge pull-right bg-red">5</span></a></li>
-                <li class="divider"></li>
-                <li><a href="#"><span class="icon-power"></span>Logout</a></li>
-            </ul>
-        </div> -->
-    
-    <!-- <div class="closeLeftSide"></div> -->
-
-        <!-- Content -->
+        </div>      
 
         <div id="wrapper">
             <div id="mapView"> 
@@ -230,24 +133,26 @@
             </div>
             <div id="content" style='height:{{contentHeight}}px ;'>
                 <div class="filter">
-                    <h1 class="osLight">Filter your results </h1>
-                      
+                     
                     <div class="clearfix"></div>
                     <form class="filterForm">
                         <div class="row">
-                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 formItem">
-                                <div class="formField">
-                                    <label>Property Type</label> <label ng-click="pageSearchData(2)">2</label><label ng-click="pageSearchData(3)">3</label>
-                                    <a href data-toggle="dropdown" class="btn btn-gray dropdown-btn dropdown-toggle propTypeSelect">
-                                        <span class="dropdown-label">All</span> 
+                            <div class="formItem" style='margin-top:20px;'>
+                                <div class="form-inline">
+                                  <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                                    <label>Sort Results</label> 
+                                  </div>
+                                  <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8" style='margin:-8px 0px 10px 0px;'>  <a href data-toggle="dropdown" class="btn btn-gray dropdown-btn dropdown-toggle propTypeSelect">
+                                        <span class="dropdown-label"> {{selectedSortType}}</span> 
                                         <span class="fa fa-angle-down dsArrow"></span>
                                     </a>
                                     <ul class="dropdown-menu dropdown-select full" role="menu">
-                                        <li class="active"><input type="radio" name="pType" checked="checked"><a ng-click="sortBy = '-product_price'; AscorDesc=false" > Price (high to low)</a></li>
-                                        <li><input type="radio" name="pType"><a ng-click="sortBy = 'product_price'; AscorDesc=false">Price (low to high)</a></li>
-                                        <li><input type="radio" name="pType"><a ng-click="sortBy = '-product_rating'; AscorDesc=false">Rating (high to low)</a></li>
-                                         <li><input type="radio" name="pType"><a ng-click="sortBy = 'product_rating'; AscorDesc=false">Rating (low to high)</a></li>
+                                        <li class="active"><input type="radio" name="pType" checked="checked"><a ng-click="" > {{sortTypeLable[0]}}</a></li>
+                                        <li><input type="radio" name="pType"><a ng-click="">{{sortTypeLable[1]}}</a></li>
+                                        <li><input type="radio" name="pType"><a ng-click="">{{sortTypeLable[2]}}</a></li>
+                                        <li><input type="radio" name="pType"><a ng-click=""> {{sortTypeLable[3]}}</a></li>
                                     </ul>
+                                   </div> 
                                 </div>
                             </div>
                         </div>
@@ -259,8 +164,24 @@
                 
  -->        
                 <div class="tab-content tab-scroll tabsWidget">
+                    
+                   <div  style='padding: 10px 0px 0px 15px;' class = 'row'>
+                      
+                      <div class= 'col-md-6'>
+                          <a herf ng-click='fetchPrevPageData()' class="btn btn-o btn-primary" id='PrevPage'>
+                            <span > < Prev </span>
+                          </a>
+                      </div>
+                      
+                      <div class= 'col-md-6'>    
+                        <a herf ng-click='fetchNextPageData()' class="btn btn-o btn-primary pull-right" style='margin-right:20px;' id='NextPage'>
+                          <span > Next > </span>
+                        </a>
+                      </div>
+                    </div>
+
                     <div class="tab-pane fade in active" id="properties">            
-                        <ul class="propList">
+                        <ul class="propList" style='background-color:#fff;'>
                             <li ng-repeat="product in searchResults | orderBy:sortBy:AscOrDesc">
                                 <a href data-toggle="modal" data-target="#product-pop-up" class="card" ng-click="fetchProductInfo(product)">
                                     <div class="image"><img src="{{product.product_img}}" alt="image"></div>
@@ -278,41 +199,10 @@
                                 </a>
                             </li>
                         </ul>                                                    
-                       <!--  <div ng-repeat="product in searchResults | orderBy:sortBy:AscOrDesc" class="col-xs-12 col-sm-12 col-md-6 col-lg-6" >
-                            <a href data-toggle="modal" data-target="#product-pop-up" class="card" ng-click="fetchProductInfo(product)"> 
-                                <div class="figure">
-                                    <img src="{{product.product_img}}" alt="image" style="height:150px;">
-                                    <div class="figCaption">
-                                        <div>{{product.product_price}} </div>
-                                        <span class="icon-eye"> {{product.product_rating}} </span>
-                                        <span class="icon-heart"> 54</span>
-                                        <span class="icon-bubble"> 13</span>
-                                    </div>
-                                    <div class="figView"><span class="icon-eye"></span></div>
-                                    <div class="figType">FOR SALE</div>
-                                </div>
-                                <h2> {{product.product_name}}</h2>
-                                <div class="cardAddress"><span class="icon-pointer"></span> Supplier: {{product.product_supplierID}} </div>
-                                <div class="cardRating">
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star-o"></span>
-                                    (146)
-                                </div>
-                                <ul class="cardFeat">
-                                    <li><span class="fa fa-moon-o"></span> 3</li>
-                                    <li><span class="icon-drop"></span> 2</li>
-                                    <li><span class="icon-frame"></span> 3430 Sq Ft</li>
-                                </ul>
-                                <div class="clearfix"></div>
-                            </a>
-                        </div> -->
                         
                     </div>
-                    
                 </div>
+
             </div>
             <div class="clearfix"></div>
         </div>
@@ -327,8 +217,6 @@
                         <h4 class="modal-title" id="signupLabel">Product Id: {{selected_product_id}}   </h4>
                     </div>
               
-                        
-                  
                     <div class="modal-body">
                         <div class="product-page product-pop-up">
                             <div class="row">
@@ -359,16 +247,18 @@
                                 </div>
                               </div>
                               <div class="description" style="padding-top:0px;">
-                                <p>  {{selected_product_desc}}</p>
+
+                                <p> <b>Product Description:</b>  {{selected_product_desc}}</p>
                               </div>
                               <div class="product-page-options">
                                 <div class="cardRating">
+                                  <b>Product Rating:</b>
                                     <span class="fa fa-star"></span>
                                     <span class="fa fa-star"></span>
                                     <span class="fa fa-star"></span>
                                     <span class="fa fa-star"></span>
                                     <span class="fa fa-star-o"></span>
-                                    ({{selected_product_rating}} )
+                                     ({{selected_product_rating}} )
                                 </div>
 
                                 <div class="pull-left">
@@ -395,7 +285,7 @@
                                 </div> -->
 
                                   
-                                                                     
+                                <b>Number of Items</b>                                     
                                 <ngcart-addtocart id="{{selected_product_id}}" name="{{selected_product_name}}" price="{{selected_product_price}}" quantity="1" quantity-max="5" data="{ product_img: selected_product_img, product_id: selected_product_id }" ng-click ="showCounter()">Add to Cart 
                                     
                                     </ngcart-addtocart>
