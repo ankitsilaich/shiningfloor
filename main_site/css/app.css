@@ -580,11 +580,11 @@ a.userHandler {
 .search input {
     background-color: #fff;
     color: #3a3a3a;
-    border: 0 none;
+    /*border: 0 none;*/
     font-size: 13px;
-    margin: 19px 0 0 5px;
-    width: 210px;
-    -webkit-appearance: none;
+    margin: 10px 0 0 5px;
+    /*width: 210px;*/
+    /*-webkit-appearance: none;*/
 }
 .headerNotifyWraper {
     position: relative;
@@ -6173,4 +6173,11 @@ input[type="checkbox"] {
 
 #NextPage, #PrevPage{  
     color: #000;
+}
+
+
+.search-icon.icon-magnifier{
+      position: fixed;
+      margin-left: -50px;
+      color: gray;
 }

@@ -5,14 +5,11 @@ app.controller('searchPageCtrl', ['$scope', '$http','$stateParams', 'ngCart', '$
       $scope.contentHeight = $scope.windowHeight - $('#header').height();
       $scope.contentWidth = $('#content').width();
       $scope.rId = $stateParams.routeId ;
-      $scope.lastProductId = 0;
-      $scope.firstProductId = 0;
       $scope.sortTypeLable = ['Price (high to low)','Price (low to high)','Rating (high to low)','Rating (low to high)'];
-      $scope.selectedSortType = $scope.sortTypeLable[0];
-      
-$scope.priceFilters = ['below-100','100-200','200-above'];
-$scope.priceFiltersLabels = ['Below 100','100-200','Above 200'];
-
+      $scope.selectedSortType = $scope.sortTypeLable[0];      
+      $scope.priceFilters = ['below-100','100-200','200-above'];
+      $scope.priceFiltersLabels = ['Below 100','100-200','Above 200'];
+      $scope.searchCategory = 'All products';
 // $scope.brandFilters = ['Makrana','Somany','M K Wood','Satyam Exports','Johnson'];
 $scope.brandFilters= ['Makrana','Somany','M K Wood','Satyam Exports','Johnson'];
 
@@ -20,11 +17,8 @@ $scope.brandFilters= ['Makrana','Somany','M K Wood','Satyam Exports','Johnson'];
       // console.log(resp.data);          
           $scope.colors = resp.data.colors[0].product_colors; 
           $scope.totalColorsCount = $scope.colors.length;
-          // angular.forEach($scope.colors, function(color.selected) {
-          //   color.selected = false;
-
-          // });
-          $scope.applySelectedFilterClass =  function(urlString, filterName){
+           
+    $scope.setInitialParameters =  function(urlString, filterName){
 
           if(typeof urlString != 'undefined'){
          
@@ -108,9 +102,9 @@ $scope.brandFilters= ['Makrana','Somany','M K Wood','Satyam Exports','Johnson'];
           }
       };
       
-      $scope.applySelectedFilterClass($scope.url,'color');
-      $scope.applySelectedFilterClass($scope.url,'price_range');
-      $scope.applySelectedFilterClass($scope.url,'brand_name');
+      $scope.setInitialParameters($scope.url,'color');
+      $scope.setInitialParameters($scope.url,'price_range');
+      $scope.setInitialParameters($scope.url,'brand_name');
       $scope.pageNo = $scope.findpageNo();
       console.log($scope.pageNo);
       if($scope.pageNo != 1){
@@ -128,9 +122,7 @@ $scope.brandFilters= ['Makrana','Somany','M K Wood','Satyam Exports','Johnson'];
           $http.get('api/slim.php/shiningfloor/products/'+'search/'+ $stateParams.routeId + '/'  + '?pageNo=1').then(function (resp) {
            
                   $scope.searchResults = resp.data.product_data;
-                  $scope.lastProductId = $scope.searchResults[$scope.searchResults.length-1].product_id ;
-                  $scope.firstProductId = $scope.searchResults[0].product_id ;
-                  console.log($scope.lastProductId);
+                   
                   $scope.sortBy ='product_price';
               });
 
@@ -139,9 +131,7 @@ $scope.brandFilters= ['Makrana','Somany','M K Wood','Satyam Exports','Johnson'];
 
             $http.get('api/slim.php/shiningfloor/products/'+'search/'+ $stateParams.routeId + '/'+ $scope.url ).then(function (resp) {
                 $scope.searchResults = resp.data.product_data; 
-                $scope.lastProductId = $scope.searchResults[$scope.searchResults.length-1].product_id ;
-                $scope.firstProductId = $scope.searchResults[0].product_id ;
-                  console.log($scope.lastProductId);
+                 
                   $scope.sortBy ='product_price';
 
                   if($scope.searchResults.length!= 20){
@@ -177,21 +167,31 @@ $scope.findpageNo = function(){
         {
                    
           var  l =  $scope.url.length;
-          var index1 = $scope.url.substring(i).indexOf('=')+1;       
-          var index2 = $scope.url.substring(index1).indexOf('&') ;
-
+          var tmp1 = $scope.url.substring(i,l);       
+          var tmpIndex1 =  tmp1.indexOf('=') ;
+          var tmp2 = tmp1.substring(tmpIndex1,l);
+          var tmpIndex2 =  tmp2.indexOf('&') ;
+          
+          //console.log(tmp1 +' ' + tmpIndex1 + ' '+ tmp2 +' ' + tmpIndex2);         
     
-          if(index2==-1)
-              pageNo =  $scope.url.substring(index1+1,l);
+           if(tmpIndex2 ==-1)
+               pageNo =  tmp2.substring(1,tmp2.length);
           else
-              pageNo = $scope.url.substring(index1+1,index1+index2);    
-        }
-
+              pageNo = tmp2.substring(1,tmpIndex2);
+        }        
         return pageNo; 
 };
 
 $scope.fetchNextPageData = function(){
 
+  console.log($scope.url);
+
+    if($stateParams.query.indexOf('?')==0){
+      query = '';
+    }
+    else{
+      query = $stateParams.query.replace(0,$stateParams.query.indexOf('?'));
+    }
     $scope.pageNo = $scope.findpageNo();
              
         if($('#PrevPage').hasClass('disabled'))            
@@ -199,14 +199,13 @@ $scope.fetchNextPageData = function(){
     
     $scope.url = $scope.url.replace('pageNo='+$scope.pageNo , 'pageNo='+(Number($scope.pageNo)+1));
   //  console.log($scope.pageNo);
-    $location.path('shiningFloor/search/'+ $stateParams.routeId +'/' + $scope.url);
-    $http.get('api/slim.php/shiningfloor/products/'+'search/'+ $stateParams.routeId+ '/'+$scope.url + '&lastId='+$scope.lastProductId+ '&sortOrder=Asc').then(function (resp) {       
+    console.log($scope.url);
+    $location.path('shiningFloor/search/'+ $stateParams.routeId +'/' +  $scope.url);
+    
+     
+    $http.get('api/slim.php/shiningfloor/products/'+'search/'+ $stateParams.routeId+ '/' + $scope.url ).then(function (resp) {       
         $scope.searchResults = resp.data.product_data;
-
-        $scope.lastProductId = $scope.searchResults[$scope.searchResults.length-1].product_id ;
-        $scope.firstProductId = $scope.searchResults[0].product_id ;
-        console.log($scope.lastProductId);
-         // console.log(resp.data);
+ 
         if($scope.searchResults.length!= 20){
              
             if(!$('#NextPage').hasClass('disabled')){
@@ -220,40 +219,88 @@ $scope.fetchNextPageData = function(){
         }
 
   });
+
 }
 
 $scope.fetchPrevPageData = function(){
 
     $scope.pageNo = $scope.findpageNo();
     console.log($scope.pageNo);
+    if($('#NextPage').hasClass('disabled')){
+      console.log('disabled');
+        $('#NextPage').removeClass("disabled");                              
+    }
 
           $scope.url = $scope.url.replace('pageNo='+$scope.pageNo , 'pageNo='+(Number($scope.pageNo)-1));
         //  console.log($scope.pageNo);
           $location.path('shiningFloor/search/'+ $stateParams.routeId +'/' + $scope.url);
-          $http.get('api/slim.php/shiningfloor/products/'+'search/'+ $stateParams.routeId+ '/'+$scope.url+ '&lastId='+$scope.firstProductId+ '&sortOrder=Desc').then(function (resp) {       
+          $http.get('api/slim.php/shiningfloor/products/'+'search/'+ $stateParams.routeId+ '/' + $scope.url).then(function (resp) {       
               $scope.searchResults = resp.data.product_data;
-              $scope.firstProductId = $scope.searchResults[$scope.searchResults.length-1].product_id ;
-              $scope.lastProductId = $scope.searchResults[0].product_id ;
-              // console.log($scope.lastProductId);
-               // console.log(resp.data);
+              
               $scope.pageNo = $scope.findpageNo();
               if($scope.pageNo == 1){
                 
                   if(!$('#PrevPage').hasClass('disabled')){
                            $('#PrevPage').addClass("disabled");                              
-                        }                  
+                        }                                          
               }
               else{
                 if($('#NextPage').hasClass('disabled')){
                            $('#NextPage').removeClass("disabled");                              
                         }   
-              } 
-        });
-            
+              }
+        });            
     
 }
+
 $scope.url = $stateParams.query;
-  
+//console.log($scope.url); 
+$scope.selectSearchCategory = function(searchType){
+    if(searchType == 'all')
+      $scope.searchCategory = 'All Products' ;
+    else if(searchType == 'tiles')
+      $scope.searchCategory = 'Tiles' ;
+    else if(searchType == 'marble')
+      $scope.searchCategory = 'Marbles' ;
+    else if(searchType == 'wood')
+      $scope.searchCategory = 'Woods' ;
+    else if(searchType == 'artificial')
+      $scope.searchCategory = 'Artificials' ;
+    else if(searchType == 'stone')
+      $scope.searchCategory = 'Stones' ;
+    else if(searchType == 'wallpaper')
+      $scope.searchCategory = 'Wallpapers' ;
+};
+
+$scope.searchProductResults = function(query , searchType){
+
+    $stateParams.routeId = searchType ;
+    queryStr= $scope.url.substring(0,$scope.url.indexOf('?')) ;
+    // console.log(queryStr);
+    $scope.selectSearchCategory(searchType);     
+    $scope.url = $scope.url.replace(queryStr, query);
+     
+    $location.path('shiningFloor/search/'+ searchType +'/'  +$scope.url);
+    $http.get('api/slim.php/shiningfloor/products/'+'search/'+ $stateParams.routeId+ '/' + $scope.url).then(function (resp) {       
+        $scope.searchResults = resp.data.product_data;
+
+        if($scope.searchResults.length!= 20){
+
+          if(!$('#NextPage').hasClass('disabled')){
+                   $('#NextPage').addClass("disabled");                              
+                }            
+        }
+        else{
+          if($('#NextPage').hasClass('disabled')){
+                   $('#NextPage').removeClass("disabled");                              
+                }  
+        }
+
+    });
+
+    $scope.searchQuery.text = '';
+
+}; 
 $scope.applySelectedFilter =  function(filter, filterIndex, filterType){    // filterType for type of filter like color, brand or price. 
 
     $scope.filterUrl = '&'+filter;
@@ -317,10 +364,7 @@ $scope.applySelectedFilter =  function(filter, filterIndex, filterType){    // f
     $location.path('shiningFloor/search/'+ $stateParams.routeId +'/' + $scope.url);
     $http.get('api/slim.php/shiningfloor/products/'+'search/'+ $stateParams.routeId+ '/'+$scope.url).then(function (resp) {       
          $scope.searchResults = resp.data.product_data;
-         $scope.lastProductId = $scope.searchResults[$scope.searchResults.length-1].product_id ;
-         $scope.firstProductId = $scope.searchResults[0].product_id ;
-         console.log($scope.lastProductId);
-         // console.log(resp.data);
+          
          if($scope.searchResults.length!= 20){
 
             if(!$('#NextPage').hasClass('disabled')){
@@ -472,5 +516,3 @@ app.controller('productSearchCtrl', ['$scope', '$http','$stateParams', '$filter'
 app.controller('searchCtrl', ['$scope', '$http','$stateParams', '$filter', function($scope, $http, $stateParams,$filter) {
     $scope.currentpage = $stateParams.routeId;
 }]);
-
-

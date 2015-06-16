@@ -15,5 +15,6 @@ angular.module('app', [
     'ui.validate',
     'oc.lazyLoad',
     'pascalprecht.translate',
+    'angular-loading-bar',
     'ngCart'
 ]);
