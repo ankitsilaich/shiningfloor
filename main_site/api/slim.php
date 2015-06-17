@@ -679,21 +679,13 @@ $app->get('/shiningfloor/products/search(/:type)/(:input)', function($type=null,
         global $resultPerPage , $pageNo ;
         
         $type_id = $db->types()->where('type_name',$type)->select('id');
-        if($type==null or $type == 'all')
-        {
-            $query = $db->products();
-        }
-        else{
-            $query = $db->products->where('type_id',$type_id);
-        }        
-        
+
         if(isset($_GET['pageNo'])){
             $pageNo = ( int )$_GET['pageNo'] ;            
         }
 
         if(isset($_GET['color'])){
-            $colorFilters =  explode(',', $_GET['color']);
-            
+            $colorFilters =  explode(',', $_GET['color']);            
         }
 
         if(isset($_GET['price_range'])){        
@@ -703,33 +695,33 @@ $app->get('/shiningfloor/products/search(/:type)/(:input)', function($type=null,
         if(isset($_GET['brand_name'])){        
             $brandFilters = explode(',', $_GET['brand_name']);
         }
+
+        $query ='';
+        if($type==null or $type == 'all')
+        {
+            $query = $db->products();
+        }
+//          SELECT o. * , m. * 
+// FROM (
+
+// SELECT * 
+// FROM products
+// WHERE product_brand =  "Kajaria"
+// ORDER BY id
+// )o
+// LEFT JOIN product_colors m ON m.products_id = o.id
+// WHERE colors_id =1
+
+        else{
+            $query = $db->products->where('type_id',$type_id);             
+        }        
+        
         if($input!=null)
                 {
                   $query = $query->where('product_name LIKE ?' ,"%".$input."%");
                 }
 
-        //$query = $query->limit(count($query),(($pageNo -1)*( int )$resultPerPage))  ;  
-        // if(isset($_GET['lastId'])){
-        //     $lastId = ( int )$_GET['lastId'] ;
-        //     if(isset($_GET['sortOrder'])){
-        //         if($_GET['sortOrder']=='Asc')
-        //         {
-        //           // echo "sahil";
-        //             $query = $query->order('id' .' Asc');
-        //             $query = $query->where('id > '.$lastId) ;
-        //           }
-        //         else if($_GET['sortOrder']=='Desc')
-        //         {
-        //           // echo "aadil";
-        //             $query = $query->order('id' . ' Desc');
-        //             $query = $query->where('id < '.$lastId) ;
-        //         }                
-        //     }
-        //     else
-        //           $query = $query->order('id'. ' Asc');                        
-        // }
-        // else
-        //  $query = $query->order('id' . ' Asc');
+     
         // Price filtering
         
 
@@ -768,13 +760,29 @@ $app->get('/shiningfloor/products/search(/:type)/(:input)', function($type=null,
           $query = $query->where($q);                                       
         } 
 
-        $query = $query->limit(count($query),(($pageNo -1)*( int )$resultPerPage)) ;  
+        if(isset($_GET['color'])){
+               
+            $p = '';
+            for($i = 0 ; $i < sizeof($colorFilters); $i++){
+                if($i>0)
+                    $p .= ' OR ' ;
+
+                $c_id = $db->colors->where('color_name = "' . $colorFilters[$i].'" ' );
+                $p .= ' colors_id = '. $c_id->fetch() . ' ' ;                  
+            }
+                
+               $q = $db->product_colors()->where($p)->select('products_id');
+               $query = $query->where('id', $q);            
+            }
+        $totalResults = count($query);
+             
+        $query = $query->limit(20,(($pageNo -1)*( int )$resultPerPage)) ;  
+        //echo $query;
         
         $data = findAllProducts($query,'');
               
         $app->response()->header('content-type','application/json');
-        echo json_encode(array('product_data'=>$data)); 
-         
+        echo json_encode(array( 'totalResults' => $totalResults , 'product_data'=>$data ));          
        
 });
 
@@ -799,38 +807,14 @@ function findAllProducts($query,$usage_location){
         $surface_types = array();
         $colors = array();
         $features = array();
-
-// Color Filtering  ** Order of this filtering(due to join) is very very important *** 
-        $flag = 0 ;
+ 
         foreach ($p->product_colors() as $product_colors) {              
-            $productColor =  $product_colors->colors['color_name']; 
-            $colors[] = $productColor;
-            if(isset($_GET['color'])){
-                if(!$flag){
-                  foreach ($colorFilters as $colorFilter ) {
-                    # code...
-                    if($colorFilter == $productColor){
-                      $flag = 1;
-                      }
-                  }
-                }
-            }  
+            
+            $colors[] = $product_colors->colors['color_name']; 
+           
         }
 
-        if(isset($_GET['color'])){
-          if(!$flag){ 
-              //$count--;
-              continue;
-             }
-          else
-          {
-            $count1++;
-          }    
-        }
-        else $count1++;
-
-        // if($count==$resultPerPage+1)
-        //    break; 
+       
           if($usage_location!='')  {
               foreach ($p->products_usages() as $product_usages) {
                 if($usage_location==null){   
@@ -846,9 +830,7 @@ function findAllProducts($query,$usage_location){
             }
           }
 
-        if($count1>=$resultPerPage+1 )
-           break; 
-
+         
         if($usage_location!=null)
             if(!$flag) continue;   
 

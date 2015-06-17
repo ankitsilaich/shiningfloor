@@ -11,7 +11,7 @@ app.controller('searchPageCtrl', ['$scope', '$http','$stateParams', 'ngCart', '$
       $scope.priceFiltersLabels = ['Below 100','100-200','Above 200'];
       $scope.searchCategory = 'All products';
 // $scope.brandFilters = ['Makrana','Somany','M K Wood','Satyam Exports','Johnson'];
-$scope.brandFilters= ['Makrana','Somany','M K Wood','Satyam Exports','Johnson'];
+$scope.brandFilters= ['Kajaria','Makrana','Somany','M K Wood','Satyam Exports','Johnson'];
 
  $http.get('api/slim.php/shiningfloor/colors').then(function (resp) {
       // console.log(resp.data);          
@@ -277,7 +277,12 @@ $scope.searchProductResults = function(query , searchType){
     $stateParams.routeId = searchType ;
     queryStr= $scope.url.substring(0,$scope.url.indexOf('?')) ;
     // console.log(queryStr);
-    $scope.selectSearchCategory(searchType);     
+    console.log($scope.url);
+    $scope.selectSearchCategory(searchType);
+    var tmpIndx = $scope.url.indexOf('&');
+    if(tmpIndx !=-1)
+        $scope.url = $scope.url.replace($scope.url.substring(tmpIndx, $scope.url.length) , '');
+
     $scope.url = $scope.url.replace(queryStr, query);
      
     $location.path('shiningFloor/search/'+ searchType +'/'  +$scope.url);
@@ -301,6 +306,7 @@ $scope.searchProductResults = function(query , searchType){
     $scope.searchQuery.text = '';
 
 }; 
+
 $scope.applySelectedFilter =  function(filter, filterIndex, filterType){    // filterType for type of filter like color, brand or price. 
 
     $scope.filterUrl = '&'+filter;
