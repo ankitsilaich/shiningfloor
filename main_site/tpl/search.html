@@ -85,7 +85,7 @@
         
             <div class="refined-widgets">
               <span>Refined By</span>
-              <a href="javascript:void(0)" class="clear-all"  style="display:none" >Clear all</a>
+              <a href  class="clear" ng-click='resetAllFilterData()'>Clear All</a>
               
             </div>
 
@@ -95,15 +95,14 @@
               
               <div class="widget-title">
                 <h3>
-                  <span ng-click="handleColors()">Color</span>
-                  <a href  class="clear" >Clear</a>
+                  <span ng-click="showHideColors()">Color</span>
+                  <a href  class="clear" ng-click='resetColorFilterData()'>Clear</a>
                 </h3>
               </div>
               <div class="widget-content" id="colors" >
                 <ul>
-                  <li ng-repeat="color in colors"> <input type="checkbox" value="{{color}}" /> <a href ui-sref="app.search.type({routeId:rId,  query: url })" > <img id = "colorId{{$index+1}}" src="images/colors/color-{{$index+1}}.png" alt="" ng-class="{'color-selected' : selectedColors[{{$index}}]}" ng-click="applySelectedFilter('color='+color,{{$index+1}},'color')"/> </a></li>
-                  
-                                    
+                  <li ng-repeat="color in colors"> <input type="checkbox" value="{{color}}" /> <a href ui-sref="app.search.type({routeId:rId,  query: url })" > <img id = "colorId{{$index}}" src="images/colors/color-{{$index+1}}.png" alt="" ng-class="{'color-selected' : selectedColors[{{$index}}]}" ng-click="applySelectedFilter('color='+color,{{$index}},'color')"/> </a></li>
+                                                      
                 </ul>
               </div>
             </div>
@@ -112,8 +111,8 @@
             <div class="sidebar-custom sidebar-tag">              
               <div class="widget-title">
                 <h3>
-                  <span ng-click="handlePrices()">Price(per sq. ft.) </span>
-                  <a href  class="clear"  >Clear</a>
+                  <span ng-click="showHidePrices()">Price(per sq. ft.) </span>
+                  <a href  class="clear"  ng-click='resetPriceFilterData()' >Clear</a>
                 </h3>
               </div>
               <div class="widget-content" id="prices">
@@ -131,8 +130,8 @@
               
               <div class="widget-title">
                 <h3>
-                  <span ng-click="handlePrices()">Brand Name</span>
-                  <a href class="clear" >Clear</a>
+                  <span ng-click="showHideBrands()">Brand Name</span>
+                  <a href class="clear" ng-click='resetBrandFilterData()'>Clear</a>
                 </h3>
               </div>
               <div class="widget-content" id='brands'>
@@ -200,6 +199,13 @@
                       </div>
                     </div>
 
+                    <div  style='padding: 10px 0px 0px 15px; color:#B60000;' class = 'row'>
+                      <div class= 'col-md-12 col-md-offset-2'>
+                           
+                            <span > showing <b>{{searchCategory}}</b> results {{firstResultIndex}}-{{lastResultIndex}} out of {{ totalResults }}. </span>
+                           
+                      </div>
+                    </div> 
                     
                      <!-- <div class='spinner' ng-show= 'loading'>
                         <div class="progress progress-sm progress-striped active">

@@ -775,7 +775,7 @@ $app->get('/shiningfloor/products/search(/:type)/(:input)', function($type=null,
                $query = $query->where('id', $q);            
             }
         $totalResults = count($query);
-             
+        $query = $query->order('product_price ASC');     
         $query = $query->limit(20,(($pageNo -1)*( int )$resultPerPage)) ;  
         //echo $query;
         
