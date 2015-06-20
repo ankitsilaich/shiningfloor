@@ -58,15 +58,18 @@ $scope.makeUrl = function(selected, original) {
  
     $scope.findandselect = function(allitems, filter, emptyitems, url) {
         //this function is used to select the already selected filters on refreshing the page
+      
         if (url[filter]) {
             var items = url[filter].split(',');
             angular.forEach(allitems, function(item, i) {
                 var index = items.indexOf(item);
                 if (index != -1)
-                    emptyitems[i] = false;
-                else emptyitems[i] = true;
+                    emptyitems[i] = true;
+                else emptyitems[i] = false;
             });
+         console.log(emptyitems)
         }
+      
     };
     
     $scope.findpageNo = function() {
@@ -76,7 +79,7 @@ $scope.makeUrl = function(selected, original) {
         }
     };
     $scope.FilterUrl = $location.search();
-    //console.log($scope.FilterUrl);
+    console.log($scope.FilterUrl);
     $scope.windowHeight = window.innerHeight;
     $scope.windowWidth = $(window).width();
     $scope.contentHeight = $scope.windowHeight - $('#header').height();
@@ -89,7 +92,7 @@ $scope.makeUrl = function(selected, original) {
     $scope.selectedColors = [false, false, false, false, false, false, false, false, false];
     $scope.selectedPrices = [false, false, false];
     $scope.selectedBrands = [false, false, false, false, false, false];
-    $scope.brandFilters = ['Kajaria', 'Makrana', 'Somany', 'M K Wood', 'Satyam Exports', 'Johnson'];
+    $scope.brandFilters = ['Kajaria', 'Somany', 'Nitco' , 'Hindware', 'Keromosa', 'Johnson'];
     $scope.colors = ["red", "black", "green", "white", "pink", "blue", "orange", "grey", "yellow"];
     $scope.findandselect($scope.brandFilters, 'brand_name', $scope.selectedBrands, $scope.FilterUrl);
     $scope.findandselect($scope.priceFilters, 'price_range', $scope.selectedPrices, $scope.FilterUrl);
@@ -97,10 +100,10 @@ $scope.makeUrl = function(selected, original) {
     $scope.pageNo = $scope.findpageNo();
      
     $scope.temp =  $scope.pageNo;
-    console.log($scope.temp)
+   
    
     if ($scope.pageNo == undefined) {
-         console.log("reched here");
+        
         $location.search('pageNo', '1');
     }
     $scope.requestToSearchAPI();
