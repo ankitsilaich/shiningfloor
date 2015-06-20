@@ -15,7 +15,7 @@ var map;
         windowWidth = $(window).width();
         contentHeight = windowHeight - $('#header').height();
         contentWidth = $('#content').width();
-        console.log(contentHeight);
+       // console.log(contentHeight);
        
         setTimeout(function() {
              $('#leftSide').height(contentHeight);

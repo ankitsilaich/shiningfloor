@@ -2,7 +2,8 @@
 
 require_once 'NotORM.php';
 
-$pdo = new PDO('mysql:dbname=shiningfloor;host=localhost', 'root', 'sahil');
+$pdo = new PDO('mysql:dbname=shiningfloor;host=localhost', 'shiningfloor', 'Shiningfloor');
+
 
 $db = new NotORM($pdo);
 
@@ -775,14 +776,19 @@ $app->get('/shiningfloor/products/search(/:type)/(:input)', function($type=null,
                $query = $query->where('id', $q);            
             }
         $totalResults = count($query);
+        $start = (($pageNo -1)*( int )$resultPerPage);
+        $last = $start + $resultPerPage;
+        if($last> $totalResults){
+        $last = $totalResults;
+        }
         $query = $query->order('product_price ASC');     
-        $query = $query->limit(20,(($pageNo -1)*( int )$resultPerPage)) ;  
+        $query = $query->limit(20,$start) ;  
         //echo $query;
         
         $data = findAllProducts($query,'');
               
         $app->response()->header('content-type','application/json');
-        echo json_encode(array( 'totalResults' => $totalResults , 'product_data'=>$data ));          
+        echo json_encode(array( 'totalResults' => $totalResults , 'start' => $start,'last' => $last  , 'product_data'=>$data ));          
        
 });
 
