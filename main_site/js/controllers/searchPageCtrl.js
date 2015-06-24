@@ -37,6 +37,7 @@ $scope.makeUrl = function(selected, original) {
     };
  $scope.updateUrlChanges = function() {
         $location.search("pageNo", '1');
+        console.log('fff');
         if ($scope.colorUrl = $scope.makeUrl($scope.selectedColors, $scope.colors)) {
             $location.search('color', $scope.colorUrl);
         } else $location.search('color', null);

@@ -1,0 +1,214 @@
+<div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h3"><i class="icon-magnifier i-sm m-r-sm"></i> Search</h1>
+</div>
+<div class="wrapper-md" ng-controller="hCtrl">
+
+    <form action="#" >
+
+
+        <div class = "sf-super-search col-md-2 col-xs-12"> 
+                <div class = "search-options" style='height:42px;'>
+                      
+               <!--  <input type="text" ng-model="query.name" class="form-control input-lg" placeholder="Type keyword"> -->
+                 <input type="text" ng-model="searchQuery" class="form-control input-lg" placeholder="Type keyword" ng-keyup="updateUrlChanges()" >
+                        </div>
+        </div>
+
+        <div class = "sf-super-search col-md-2 col-xs-12"> 
+                <div class = "search-options" ng-click="chooseDropdown(0)" >
+                    <span >Applications <i style='margin-left:5px' class='fa fa-caret-down'> </i></span> 
+                <div    class="ss-dropdown" tabindex="4" data-attr_value="61">
+                    <ul ng-show="selectedDropdown[0]" class="show-dropdown" style="top:-10px;padding:0px">
+                         
+                        <li ng-repeat="application in applicationFilters"  class="selected">
+                            <a class="ss-option" ng-click="selectedApplications[$index] = !selectedApplications[$index];updateUrlChanges()" href     data-attr_value="61">{{application}}</a><i ng-class="{'fa fa-check' : selectedApplications[$index]}"></i>
+                        </li>
+                         
+                    </ul>
+                 </div> 
+                        </div>
+        </div>
+        <div class = "sf-super-search col-md-2 col-xs-12"> 
+                <div class = "search-options" ng-click="chooseDropdown(1)">
+                    <span >Finish Types <i style='margin-left:5px' class='fa fa-caret-down'> </i></span>  
+                <div    class="ss-dropdown" tabindex="4" data-attr_value="61">
+                     <ul ng-show="selectedDropdown[1]" class="show-dropdown" style="top:-10px;padding:0px; height: 185px; overflow-y: scroll;">
+                        
+                        <li ng-repeat="finish_type in finishTypeFilters"  class="selected">
+                            <a class="ss-option" ng-click="selectedFinishTypes[$index] = !selectedFinishTypes[$index];updateUrlChanges()" href     data-attr_value="61">{{finish_type}}</a><i ng-class="{'fa fa-check' : selectedFinishTypes[$index]}"></i>
+                        </li>
+                         
+                    </ul>
+                 </div> 
+                        </div>
+        </div> 
+
+        <div class = "sf-super-search col-md-2 col-xs-12"> 
+                <div class = "search-options" ng-click="chooseDropdown(2)">
+                    <span > Colors <i style='margin-left:5px' class='fa fa-caret-down'> </i></span> 
+                <div    class="ss-dropdown" tabindex="4" data-attr_value="61">
+                    <ul ng-show="selectedDropdown[2]" class="show-dropdown" style="top:-10px; height: 185px;padding:0px; overflow-y: scroll;">
+                        
+                        <li ng-repeat="color in colors"  class="selected">
+                            <a class="ss-option" ng-click="selectedColors[$index] = !selectedColors[$index];updateUrlChanges()" href     data-attr_value="61">{{color}}</a><i ng-class="{'fa fa-check' : selectedColors[$index]}"></i>
+                        </li>
+                         
+                    </ul>
+                 </div> 
+                        </div>
+        </div>   
+        <div class = "sf-super-search col-md-2 col-xs-12"> 
+                <div class = "search-options" ng-click="chooseDropdown(3)"> 
+                     
+                    <span class="dropdown-label" ng-show="selectedCategory" > Category <i style='margin-left:5px' class='fa fa-caret-down'> </i></span> 
+
+                     <div    class="ss-dropdown" tabindex="4" data-attr_value="61">
+                    <ul ng-show="selectedDropdown[3]" class="show-dropdown" style="top:-10px;padding:0px">
+
+                 
+                    <li ng-repeat="category in categoryFilters" class="selected">
+                            <a class="ss-option"  ng-click="selectedcategory($index); updateUrlChanges()" href     data-attr_value="61">{{category}}</a><i ng-class="{'fa fa-check' : selectedCategory[$index] }"></i>
+ 
+                        </li>
+
+                        </ul>
+            </div></div></div>
+           
+
+
+        <div class = "sf-super-search col-md-2 col-xs-12"> 
+                <div class = "search-options"  ng-click="chooseDropdown(4)">
+                    <span>Brands <i style='margin-left:5px' class='fa fa-caret-down'> </i> </span>  
+                <div    class="ss-dropdown" tabindex="4" data-attr_value="61">
+                    <ul ng-show="selectedDropdown[4]" class="show-dropdown" style="top:-10px;padding:0px">
+                        
+                        <li ng-repeat="brand in brandFilters"  class="selected">
+                            <a class="ss-option" ng-click="selectedBrands[$index] = !selectedBrands[$index];updateUrlChanges()" href     data-attr_value="61">{{brand}}</a><i ng-class="{'fa fa-check' : selectedBrands[$index]}"></i>
+                        </li>
+                         
+                    </ul>
+                 </div> 
+                        </div>
+        </div>
+
+           
+
+        <!-- <div class=" col-md-2">
+          <span class="input-group-btn ">
+        <button class="btn btn-lg btn-default" ng-click="search(query)" type="button">Search</button>
+      </span>
+    </div> -->
+ 
+
+
+
+                      
+
+    
+    </form>
+    <p class="m-b-md m-l-md"><strong>{{bigTotalItems}}</strong> Results found for: <strong>{{searchQuery}}</strong> <strong>{{categoryHTML}}</strong>  <strong>{{brandHTML}}</strong> <strong>{{applicationHTML}}</strong><strong>{{finishTypeHTML}}</strong><strong>{{colorHTML}}</strong>  <span ng-click='resetAll()'> reset Filters</span></p>
+
+    <div class="wrapper-md">
+        <div class="row">
+            <h4 class="m-t-xs text-center">All products</h4>
+            <div class="col-md-4" ng-repeat="product in products = (product | filter:querydsfd)">
+                <div class="panel b-a">
+                    <div class="panel-heading no-border bg-black lter">
+                        <span class="h4 text-lt text-u-c">{{product.product_name}}</span>
+                    </div>
+                    <div class="item m-l-n-xxs m-r-n-xxs">
+                        <div ng-init="x = 3" class="top text-right padder m-t-xs w-full">
+
+                        </div>
+                        <div class="center text-center w-full" style="margin-top:-60px">
+                            <div ui-jq="easyPieChart" ui-refresh="x" ui-options="{
+                percent: 0,
+                lineWidth: 60,
+                trackColor: 'rgba(255,255,255,0)',
+                barColor: 'rgba(35,183,229,0.7)',
+                scaleColor: false,
+                size: 120,
+                lineCap: 'butt',
+                rotate: 0,
+                animate: 1000
+              }" class="inline easyPieChart" style="width: 120px; height: 120px; line-height: 120px;">
+                                <canvas width="120" height="120"></canvas>
+                            </div>
+                        </div>
+                        <div class="bottom wrapper w-full bg-gd-dk text-white">
+                            <div class="h3 m-b-sm text-white-lter">{{product.product_brand}}</div>
+                            <div>{{product.product_application}}- {{product.product_category}}</div>
+                            <div>{{product.product_finish_type}}- {{product.product_size}}</div>
+                        </div>
+                        <img ng-src="{{product.product_img}}" class="img-full" width=350 height=197>
+                    </div>
+                    <!-- <div class="hbox text-center b-b b-light text-sm">          
+          <a href="" class="col padder-v text-muted b-r b-light">
+            <i class="icon-call-end block m-b-xs fa-2x"></i>
+            <span>Call</span>
+          </a>
+          <a href="" class="col padder-v text-muted b-r b-light">
+            <i class="icon-pointer block m-b-xs fa-2x"></i>
+            <span>Location</span>
+          </a>
+          <a href="" class="col padder-v text-muted">
+            <i class="icon-cursor block m-b-xs fa-2x"></i>
+            <span>Direction</span>
+          </a>
+        </div> -->
+                    <div class="panel-footer bg-light lter wrapper" style="min-height: 100px;
+max-height: 100px;">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <small class="text-muted block">Application</small>
+                                <span class="text-md">{{product.product_application}}</span>
+                            </div>
+                            <div class="col-xs-4">
+                                <small class="text-muted block">Finish</small>
+                                <span class="text-md">{{product.product_finish_type}}</span>
+                            </div>
+                            <div class="col-xs-4">
+                                <small class="text-muted block">Size</small>
+                                <span class="text-md">{{product.product_size}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="hbox text-center text-sm">
+                        <a href="" class="col padder-v text-muted b-r b-light">
+                            <i class="icon-plus block m-b-xs fa-2x"></i>
+                            <span>Select</span>
+                        </a>
+                        <a href="" class="col padder-v text-muted b-r b-light">
+                            <i class="icon-like block m-b-xs fa-2x"></i>
+                            <span>Like it</span>
+                        </a>
+                        <a href="{{product.product_url}}" target="_blank" class="col padder-v text-muted">
+                            <i class="icon-link block m-b-xs fa-2x"></i>
+                            <span>Website</span>
+                        </a>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+     <div class="text-center">
+       
+       <!--  <pagination total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()" class="m-t-none m-b"></pagination> -->
+        <!-- <pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm m-t-none m-b" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+        <pagination direction-links="false" boundary-links="true" total-items="totalItems" ng-model="currentPage" class="m-t-none m-b"></pagination>
+        <pagination direction-links="false" total-items="totalItems" ng-model="currentPage" num-pages="smallnumPages" class="m-t-none m-b"></pagination> -->
+       <!--  <div>
+          <span class="m-r">The selected page no: <strong>{{currentPage}}</strong></span>
+          <button class="btn btn-default" ng-click="setPage(3)">Set current page to: 3</button>
+        </div> -->
+        <!-- <h4>Pager</h4>
+        <pager total-items="totalItems" ng-model="currentPage"></pager> -->
+        <h4>Limit the maximum visible buttons <span class="text-sm">(Page: {{bigCurrentPage}} / {{numPages}})</span></h4>
+        <pagination total-items="bigTotalItems" items-per-page="30" ui-scroll="app" ng-model="bigCurrentPage" max-size="maxSize" class="pagination-lg m-t-sm m-b" boundary-links="true" ng-change="pagechange(bigCurrentPage)" num-pages="numPages" ></pagination>
+
+                     
+       <!--  <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm m-t-none m-b" boundary-links="true" rotate="false" ></pagination> -->
+      </div>
+
+</div>

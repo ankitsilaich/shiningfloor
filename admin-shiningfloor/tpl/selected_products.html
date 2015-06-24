@@ -1,0 +1,162 @@
+<div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h3"><i class="icon-magnifier i-sm m-r-sm"></i> Search</h1>
+</div>
+<div class="wrapper-md" ng-controller="selectedCtrl">
+    <form action="#" class="m-b-md">
+        <div class=" col-md-3">
+            <input type="text" ng-model="querynew" class="form-control input-lg" placeholder="Type keyword">
+     
+           
+        </div>
+        <div class="col-md-4">
+           <select ui-jq="chosen" class="w-lg">
+                <optgroup >
+                     <option value="Floor">Please Select Application area</option>
+                   
+                    <option value="Floor">Floor</option>
+                    <option value="Wall">Wall</option>
+                </optgroup>
+                
+            </select>
+     
+           
+        </div>
+         <div class="col-md-3">
+           <select ui-jq="chosen" data-placeholder="Pick one of these" class="w-lg">
+                <optgroup >
+                     <option value="Floor">Please Select finish type</option>
+                   <option value="Floor">Roto Matt</option>
+<option value="Floor">Satin</option>
+<option value="Floor">Stone</option>
+<option value="Floor">Sugar Hone</option>
+<option value="Floor">Polished</option>
+<option value="Floor">Rustic</option>
+<option value="Floor">Satin / Rustic</option>
+<option value="Floor">Satin / Rustic / Metal</option>
+<option value="Floor">Polished Wood</option>
+<option value="Floor">Real Wood</option>
+<option value="Floor">Wood</option>
+<option value="Floor">Lappato</option>
+<option value="Floor">Matt</option>
+<option value="Floor">Satin Matt</option>
+
+<option value="Floor">Glossy</option>
+<option value="Floor">Natural</option>
+
+<option value="Floor">Marble</option>
+<option value="Floor">Super Glossy</option>
+                </optgroup>
+                
+            </select>
+     
+           
+        </div>
+        <div class=" col-md-2">
+          <span class="input-group-btn ">
+        <button class="btn btn-lg btn-default" ng-click="search(querynew)" type="button">Search</button>
+      </span>
+    </div>
+    </form>
+    <p class="m-b-md m-l-md"><strong>{{bigTotalItems}}</strong> Results found for: <strong>{{query}}</strong></p>
+
+    <div class="wrapper-md">
+        <div class="row">
+            <h4 class="m-t-xs text-center">All products</h4>
+            <div class="col-md-4" ng-repeat="product in products = (product | filter:query)">
+                <div class="panel b-a">
+                    <div class="panel-heading no-border bg-black lter">
+                        <span class="h4 text-lt text-u-c">{{product.product_name}}</span>
+                    </div>
+                    <div class="item m-l-n-xxs m-r-n-xxs">
+                        <div ng-init="x = 3" class="top text-right padder m-t-xs w-full">
+
+                        </div>
+                        <div class="center text-center w-full" style="margin-top:-60px">
+                            <div ui-jq="easyPieChart" ui-refresh="x" ui-options="{
+                percent: 0,
+                lineWidth: 60,
+                trackColor: 'rgba(255,255,255,0)',
+                barColor: 'rgba(35,183,229,0.7)',
+                scaleColor: false,
+                size: 120,
+                lineCap: 'butt',
+                rotate: 0,
+                animate: 1000
+              }" class="inline easyPieChart" style="width: 120px; height: 120px; line-height: 120px;">
+                                <canvas width="120" height="120"></canvas>
+                            </div>
+                        </div>
+                        <div class="bottom wrapper w-full bg-gd-dk text-white">
+                            <div class="h3 m-b-sm text-white-lter">{{product.product_brand}}</div>
+                            <div>{{product.product_applicationarea}}- {{product.product_category}}</div>
+                            <div>{{product.product_price}}- {{product.product_comments}}</div>
+                        </div>
+                        <img ng-src="{{product.product_image}}" class="img-full" width=350 height=197>
+                    </div>
+                    <!-- <div class="hbox text-center b-b b-light text-sm">          
+          <a href="" class="col padder-v text-muted b-r b-light">
+            <i class="icon-call-end block m-b-xs fa-2x"></i>
+            <span>Call</span>
+          </a>
+          <a href="" class="col padder-v text-muted b-r b-light">
+            <i class="icon-pointer block m-b-xs fa-2x"></i>
+            <span>Location</span>
+          </a>
+          <a href="" class="col padder-v text-muted">
+            <i class="icon-cursor block m-b-xs fa-2x"></i>
+            <span>Direction</span>
+          </a>
+        </div> -->
+                    <div class="panel-footer bg-light lter wrapper">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <small class="text-muted block">Application</small>
+                                <span class="text-md">{{product.product_applicationarea}}</span>
+                            </div>
+                            <div class="col-xs-4">
+                                <small class="text-muted block">Finish</small>
+                                <span class="text-md">{{product.product_finish}}</span>
+                            </div>
+                            <div class="col-xs-4">
+                                <small class="text-muted block">Size</small>
+                                <span class="text-md">{{product.product_size}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="hbox text-center text-sm">
+                        <a href="" class="col padder-v text-muted b-r b-light">
+                            <i class="icon-plus block m-b-xs fa-2x"></i>
+                            <span>Select</span>
+                        </a>
+                        <a href="" class="col padder-v text-muted b-r b-light">
+                            <i class="icon-like block m-b-xs fa-2x"></i>
+                            <span>Like it</span>
+                        </a>
+                        <a href="{{product.product_url}}" target="_blank" class="col padder-v text-muted">
+                            <i class="icon-link block m-b-xs fa-2x"></i>
+                            <span>Website</span>
+                        </a>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+     <div class="text-center">
+       
+       <!--  <pagination total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()" class="m-t-none m-b"></pagination> -->
+        <!-- <pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm m-t-none m-b" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+        <pagination direction-links="false" boundary-links="true" total-items="totalItems" ng-model="currentPage" class="m-t-none m-b"></pagination>
+        <pagination direction-links="false" total-items="totalItems" ng-model="currentPage" num-pages="smallnumPages" class="m-t-none m-b"></pagination> -->
+       <!--  <div>
+          <span class="m-r">The selected page no: <strong>{{currentPage}}</strong></span>
+          <button class="btn btn-default" ng-click="setPage(3)">Set current page to: 3</button>
+        </div> -->
+        <!-- <h4>Pager</h4>
+        <pager total-items="totalItems" ng-model="currentPage"></pager> -->
+        <h4>Limit the maximum visible buttons <span class="text-sm">(Page: {{bigCurrentPage}} / {{numPages}})</span></h4>
+        <pagination total-items="bigTotalItems" ui-scroll="app" ng-model="bigCurrentPage" max-size="maxSize" class="pagination-lg m-t-sm m-b" boundary-links="true" ng-change="pageChanged()" num-pages="numPages"></pagination>
+       <!--  <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm m-t-none m-b" boundary-links="true" rotate="false" ></pagination> -->
+      </div>
+
+</div>
