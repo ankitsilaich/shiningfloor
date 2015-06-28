@@ -1,11 +1,11 @@
 // config
 
-var app =  
+var app =
 angular.module('app')
   .config(
     [        '$controllerProvider', '$compileProvider', '$filterProvider', '$provide',
     function ($controllerProvider,   $compileProvider,   $filterProvider,   $provide) {
-        
+
         // lazy controller, directive and service
         app.controller = $controllerProvider.register;
         app.directive  = $compileProvider.directive;
@@ -38,35 +38,39 @@ return $resource('api/index.php/subject/:subject_id', null,
 .factory('LoginService', ['$http', '$location', '$rootScope', function($http,$location, $rootScope){
   return {
     login: function(user, scope){
-      //console.log(user);
+      // console.log(user);
       $rootScope.processGoingOn = true;
-      var $promise = $http.post('api/shiningfloor.php/auth/process/admin', user);  // send data to server to user.php
+      var $promise = $http.post('../main_site/api/slim.php/auth/process/admin', user);  // send data to server to user.php
       $promise.then(function(msg){
         var responseData = msg.data;
         console.log(responseData);
-        if(responseData['login_success'] == true){
-          
+        if(responseData['login_success'] == 'true'){
+         // console.log(responseData);
           $rootScope.isLoggedIn = true;
           $rootScope.processGoingOn = false;
-          $('#login-modal').modal('hide');
+//          $('#login-modal').modal('hide');
+          $location.path('/home');
         }
         else{
           $rootScope.isLoggedIn = false;
           $rootScope.processGoingOn = false;
-          alert(responseData['message']);
+//          alert(responseData['message']);
+          $location.path('/access/signin');
           scope.user = "";
         }
-        
+
       })
     },
     logout: function(){
-    //  var $promise = SessionService.destroy('userId');
-      //$promise.then(function(){
-        //$rootScope.isLoggedIn = false;
-      //});
+      console.log('logout me');
+     var $promise = SessionService.destroy('admin');
+      $promise.then(function(){
+        $rootScope.isLoggedIn = false;
+        $location.path('/access/signin');
+      });
     },
     isLoggedIn: function(){
-     var $checkSessionServer = $http.get('api/shiningfloor.php/auth/process/admin');
+     var $checkSessionServer = $http.get('../main_site/api/slim.php/auth/process/admin');
       return $checkSessionServer;
     }
   }

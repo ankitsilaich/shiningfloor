@@ -2,11 +2,11 @@
 
 require_once 'NotORM.php';
 
-$pdo = new PDO('mysql:dbname=shiningfloor;host=localhost', 'root', 'sahil');
+$pdo = new PDO('mysql:dbname=shiningfloor;host=localhost', 'root', '');
 
 
 $db = new NotORM($pdo);
-
+global $db;
 require 'Slim/Slim.php';
 
 \Slim\Slim::registerAutoloader();
@@ -133,7 +133,7 @@ $email_html_code1 = '
                       <center>
                         <br><br><table style="margin: 0 auto" cellpadding="0" cellspacing="0" class="force-width-80">
                           <tbody><tr>
-                            
+
                             <td class="mobile-resize" style="color:#172838; font-size: 20px; font-weight: 600; text-align: left; vertical-align: top;">
                               <span319db5>Activate your account now
                             </span319db5></td>
@@ -155,11 +155,11 @@ $email_html_code1 = '
                           <td style="text-align:center; margin:0 auto;">
                             <br>
                             <div>
-                              
+
                                   <a class="btn" href="' ;
 $email_html_code2 =  '" style="background-color:#172838;color:#ffffff;display:inline-block;font-family:"Source Sans Pro", Helvetica, Arial, sans-serif;font-size:18px;font-weight:400;line-height:45px;text-align:center;text-decoration:none;width:240px;-webkit-text-size-adjust:none;
                                     -webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;">Confirm Email Address</a>
-                                 
+
                             </div>
                             <br>
                           </td>
@@ -250,30 +250,30 @@ $email_html_code2 =  '" style="background-color:#172838;color:#ffffff;display:in
 
 $app->post("/shiningfloor/email_verification/:email", function ($email=null) use ($app, $db) {
      // $request = $app->request();
-      
+
 
       // var_dump($body);
-    // $email_id = $app->request()->post('email'); 
-     //echo $email;   
-    
+    // $email_id = $app->request()->post('email');
+     //echo $email;
+
      global $email_html_code1,$email_html_code2;
-     $email_fromr = "sahilsolanki07@gmail.com";    
+     $email_fromr = "sahilsolanki07@gmail.com";
      $email_subjectr = "Follow link to change password";
-     $email_tor = $email;    
+     $email_tor = $email;
      $user = $db->users()->where('email', $email);
      $data ;
      $count  = count($user);
-    
+
      if($count==1){
          $pwd_update_time = $user->fetch()['pwd_update_time'];
          $send_url='http://ankitsilaich.in/shiningfloor-master/main_site/change_pwd.php?';
          $send_url .= 'email='.$email.'&token='.md5($email.md5($pwd_update_time));
 
-         //echo $send_url; 
-     $headers3 = 'From:' .'Shining Floor'. " ".'<'.'support@shiningfloor.com'.'>'."\r\n";     
+         //echo $send_url;
+     $headers3 = 'From:' .'Shining Floor'. " ".'<'.'support@shiningfloor.com'.'>'."\r\n";
      $headers3 .= 'Reply-To: '. $email_fromr. "\r\n";
     $headers3 .= "MIME-Version: 1.0\r\n";
-     $headers3 .= "Content-Type: text/html; charset=ISO-8859-1\r\n";   
+     $headers3 .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
         $body  = $email_html_code1. $send_url. $email_html_code2;
 
     //     // echo $body;
@@ -281,7 +281,7 @@ $app->post("/shiningfloor/email_verification/:email", function ($email=null) use
      'Reply-To: '.$email_fromr."\r\n" .
      'X-Mailer: PHP/' . phpversion();
      mail($email_tor, $email_subjectr, $body , $headers3);
-    //     // echo "sent";   
+    //     // echo "sent";
         $data = array("status"=> "email sent success");
      }
      else{
@@ -306,7 +306,181 @@ $authenticate = function ($app) {
     };
 };
 
+$authenticate_seller = function ($app) {
+    return function () use ($app) {
+        if (!isset($_SESSION['seller'])) {
+            $app->redirect('/shiningfloor/admin-shiningfloor/#/access/signin');
+        }
+    };
+};
+$authenticate_admin = function ($app) {
+    return function () use ($app) {
+        if (!isset($_SESSION['admin'])) {
+            $app->redirect('/shiningfloor/admin-shiningfloor/#/access/signin');
+        }
+    };
+};
+
 session_start();
+$app->post("/auth/process/admin", function() use ($app, $db)
+{
+    $array    = (array) json_decode($app->request()->getBody());
+    $email    = $array['email'];
+    $password = $array['password'];
+    $person   = $db->admin()->where('email', $email)->where('password', $password);
+    $count    = count($person);
+//    print_r ($array);
+    if ($count == 1) {
+
+        $_SESSION['admin'] = $email;
+        $data             = array(
+            'login_success' => "true",
+            'login_attempt_by' => $email,
+            'message' => "Successfull sigin"
+        );
+
+    } else {
+        $data = array(
+            'login_success' => "false",
+            'login_attempt_by' => $email,
+            'message' => "please provide correct details"
+
+        );
+    }
+    $app->response()->header('Content-Type', 'application/json');
+    echo json_encode($data);
+});
+
+
+$app->post("/auth/process/seller", function() use ($app, $db)
+{
+    $array    = (array) json_decode($app->request()->getBody());
+    $email    = $array['email'];
+    $password = $array['password'];
+    $person   = $db->sellers()->where('email', $email)->where('password', $password);
+    $count    = count($person);
+
+    if ($count == 1) {
+        $_SESSION['seller'] = $email;
+        $data             = array(
+            'login_success' => "true",
+            'login_attempt_by' => $email,
+            'message' => "Successfull sigin"
+
+        );
+
+    } else {
+        $data = array(
+            'login_success' => "false",
+            'login_attempt_by' => $email,
+            'message' => "please provide correct details"
+
+        );
+    }
+    $app->response()->header('Content-Type', 'application/json');
+    echo json_encode($data);
+});
+
+$app->post("/auth/signup/admin", function() use ($app, $db)
+{
+    $array    = (array) json_decode($app->request()->getBody());
+    // $name    = $array['name'];
+    $email    = $array['email'];
+    // $password = $array['password'];
+    $q = $db->admin()->where('email',$email)->fetch('email');
+   // echo $q;
+
+    if($q){
+        $data = array(
+            'signup_success' => "false",
+            'message' => "Email already exists"
+        );
+    }
+    else
+    {
+      $db->admin()->insert($array);
+      $_SESSION['admin'] = $email;
+        $data             = array(
+            'signup_success' => "true",
+            'message' => "Successfull signup"
+        );
+    }
+    $app->response()->header('Content-Type', 'application/json');
+    echo json_encode($data);
+});
+
+$app->post("/auth/signup/seller", function() use ($app, $db)
+{
+
+    $array    = (array) json_decode($app->request()->getBody());
+    // $name    = $array['name'];
+    $email    = $array['email'];
+    // $password = $array['password'];
+    $q = $db->sellers()->where('email',$email);
+
+    if($q->fetch()){
+        $data = array(
+            'signup_success' => "false",
+            'message' => "please provide correct details"
+        );
+    }
+    else
+    {
+      $data = $db->sellers()->insert($array);
+//      echo $data;
+      $_SESSION['seller'] = $email;
+        $data             = array(
+            'signup_success' => "true",
+            'message' => "Successfull signup"
+        );
+    }
+    $app->response()->header('Content-Type', 'application/json');
+    echo json_encode($data);
+});
+
+
+$app->get('/auth/process/admin', function() use ($app)
+{
+
+    if (isset($_SESSION['admin'])) {
+        $data = $_SESSION['admin'];
+
+    } else {
+        $data = false;
+    }
+
+    $app->response()->header('Content-Type', 'application/json');
+    echo json_encode($data);
+});
+
+$app->get('/auth/process/seller', function() use ($app)
+{
+
+    if (isset($_SESSION['seller'])) {
+        $data = $_SESSION['seller'];
+    } else {
+        $data = false;
+    }
+
+    $app->response()->header('Content-Type', 'application/json');
+    echo json_encode($data);
+});
+
+
+$app->get("/auth/logout/admin", function() use ($app)
+{
+    unset($_SESSION['admin']);
+
+
+});
+
+$app->get("/auth/logout/seller", function() use ($app)
+{
+    unset($_SESSION['seller']);
+
+});
+
+
 $app->post("/auth/process", function () use ($app, $db) {
 
     $email = $app->request()->post('email');
@@ -314,22 +488,22 @@ $app->post("/auth/process", function () use ($app, $db) {
     $user = $db->users()->where('email', $email)->where('pwd',md5(md5($password)));
 
     $count = count($user);
-         
-    if($count == 1){     
+
+    if($count == 1){
      $_SESSION['user'] = $email;
      $data = array( "loginstatus" => "success",
                         'user' => $email
-                    );    
+                    );
      unset($_SESSION['loginAttempt']);
     }else{
 
         if(isset($_SESSION['loginAttempt'])){
             $_SESSION['loginAttempt']++;
-            $loginAttempt = (int)  $_SESSION['loginAttempt'];           
+            $loginAttempt = (int)  $_SESSION['loginAttempt'];
 
             $data[] = array( "loginstatus" => "fail",
                         'loginAttempt' => $loginAttempt
-                    );              
+                    );
             header('Refresh: 3; URL=http://localhost/shiningfloor/shiningfloor/main_site/login.html?loginstatus=fail&loginAttempt='.$loginAttempt);
         }
         else{
@@ -338,39 +512,39 @@ $app->post("/auth/process", function () use ($app, $db) {
                         'loginAttempt' => "1"
                     );
             $_SESSION['loginAttempt'] = 1;
-            
+
             header('Refresh: 3; URL=http://localhost/shiningfloor/shiningfloor/main_site/login.html?loginstatus=fail&loginAttempt=1');
         }
     }
-   
+
    $app->response()->header('Content-Type', 'application/json');
    echo json_encode($data);
-   
+
 });
 
 $app->get("/auth/logout", function () use ($app) {
    unset($_SESSION['user']);
-   
-   
+
+
 });
 
 /********************* pwd change info **********************************/
 
 $app->put('/users/:email', function ($email = null) use ($app, $db) {
-     $data = array(); 
+     $data = array();
      $app->response()->header("Content-Type", "application/json");
      $user = $db->users()->where("email", $email);
      if(count($user)==1){
           $time = (string) date("h:i:sa");
           // echo $time;
           $post = $app->request()->put();
-          // echo $_GET['token']; 
+          // echo $_GET['token'];
           $p = $user->fetch();
           // echo md5($email.md5($p['pwd_update_time']));
           if(md5($email.md5($p['pwd_update_time'])) == $_GET['token'])
-           { 
+           {
             $updated_data = array(
-             
+
               "pwd" => md5(md5($post['pwd'])),
               "pwd_update_time" => $time
                 );
@@ -388,7 +562,7 @@ $app->put('/users/:email', function ($email = null) use ($app, $db) {
                 "message" => "Do not act smart bro!!"
             );
           }
-        
+
     }
     else{
         $data = array(
@@ -406,15 +580,15 @@ $app->put('/users/:email', function ($email = null) use ($app, $db) {
 //Post method to insert data into database
 
 $app->post('/users', function() use ($app, $db){
-    
+
     $array = (array) json_decode($app->request()->getBody());
 
      $data = $db->users()->insert($array);
-     
+
      $app->response()->header('Content-Type', 'application/json');
- 
+
      echo json_encode($data['id']);
-     
+
 });
 
 
@@ -422,23 +596,23 @@ $app->post('/users', function() use ($app, $db){
 //Put method to update the data into database
 
 $app->put('/users/:email', function ($email) use ($app, $db) {
-    
+
 
     $user = $db->users()->where('email', $email);
     $data = null;
- 
+
     if ($user->fetch()) {
         /*
          * We are reading JSON object received in HTTP request body and converting it to array
          */
         $post = (array) json_decode($app->request()->getBody());
- 
+
         /*
          * Updating Person
          */
         $data = $user->update($post);
     }
- 
+
     $app->response()->header('Content-Type', 'application/json');
     echo json_encode($data);
 });
@@ -450,10 +624,10 @@ $app->put('/users/:email', function ($email) use ($app, $db) {
 
 
 $app->get('/products(/:id)', function($id=null) use ($app, $db){
-    
+
     if($id == null){
         $data = array();
-        
+
         foreach($db->products() as $p){
             $usages_area =array();
             $designs = array();
@@ -461,35 +635,35 @@ $app->get('/products(/:id)', function($id=null) use ($app, $db){
             $surface_types = array();
             $colors = array();
             $features = array();
-            
+
             foreach ($p->products_usages() as $product_usages) {
 
-                $usages_area[] = $product_usages->usages['usage_name']; 
+                $usages_area[] = $product_usages->usages['usage_name'];
             }
 
             foreach ($p->product_designs() as $product_designs) {
 
-                $designs[] = $product_designs->designs['design_name']; 
+                $designs[] = $product_designs->designs['design_name'];
             }
             foreach ($p->product_subtypes() as $product_subtypes) {
 
-                $subtypes[] = $product_subtypes->subtypes['subtype_name']; 
+                $subtypes[] = $product_subtypes->subtypes['subtype_name'];
             }
-            
+
             foreach ($p->product_surface_types() as $product_surface_types) {
 
-                $surface_types[] = $product_surface_types->surface_types['surface_type_name']; 
+                $surface_types[] = $product_surface_types->surface_types['surface_type_name'];
             }
             foreach ($p->product_colors() as $product_colors) {
 
-                $colors[] = $product_colors->colors['color_name']; 
+                $colors[] = $product_colors->colors['color_name'];
             }
             foreach ($p->product_features() as $product_features) {
 
-                $features[] = $product_features->features['feature_name']; 
+                $features[] = $product_features->features['feature_name'];
             }
 
-            // array_push($data,$usages_area);            
+            // array_push($data,$usages_area);
         //
             $data[] = array(
                             'product_brand' =>   $p['product_brand'],
@@ -502,27 +676,15 @@ $app->get('/products(/:id)', function($id=null) use ($app, $db){
                             'product_surface_types'=> $surface_types,
                             'product_colors'=> $colors,
                             'product_features'=> $features
-                            
-                              
+
                         );
-            
-        
+
         }
 
     } else {
-        
+
 
         $data = null;
-        
-
-        // if($p = $db->products()->where('product_id', $id)->fetch()){
-        //     $data = array(
-        //                     'product_brand' =>   $p['product_brand'],
-        //                     'product_name' => $p['product_name'],
-        //                     'product_desc' =>  $p['product_desc'],
-        //                     'product_img' =>  $p['product_img']
-        //                 );
-        // }
 
         foreach($db->products()->where('id', $id) as $p){
             $usages_area =array();
@@ -531,296 +693,800 @@ $app->get('/products(/:id)', function($id=null) use ($app, $db){
             $surface_types = array();
             $colors = array();
             $features = array();
-            
+
             foreach ($p->products_usages() as $product_usages) {
 
-                $usages_area[] = $product_usages->usages['usage_name']; 
+                $usages_area[] = $product_usages->usages['usage_name'];
             }
 
             foreach ($p->product_designs() as $product_designs) {
 
-                $designs[] = $product_designs->designs['design_name']; 
+                $designs[] = $product_designs->designs['design_name'];
             }
             foreach ($p->product_subtypes() as $product_subtypes) {
 
-                $subtypes[] = $product_subtypes->subtypes['subtype_name']; 
+                $subtypes[] = $product_subtypes->subtypes['subtype_name'];
             }
-            
+
             foreach ($p->product_surface_types() as $product_surface_types) {
 
-                $surface_types[] = $product_surface_types->surface_types['surface_type_name']; 
+                $surface_types[] = $product_surface_types->surface_types['surface_type_name'];
             }
             foreach ($p->product_colors() as $product_colors) {
 
-                $colors[] = $product_colors->colors['color_name']; 
+                $colors[] = $product_colors->colors['color_name'];
             }
             foreach ($p->product_features() as $product_features) {
 
-                $features[] = $product_features->features['feature_name']; 
+                $features[] = $product_features->features['feature_name'];
             }
 
-            // array_push($data,$usages_area);            
+            // array_push($data,$usages_area);
         //
             $data[] = array(
-                            'product_brand' =>   $p['product_brand'],
-                            'product_name' => $p['product_name'],
-                            'product_desc' =>  $p['product_desc'],
-                            'product_img' =>  $p['product_img'],
-                            'product_usages'=> $usages_area,
-                            'product_designs'=> $designs,
-                            'product_subtypes'=> $subtypes,
-                            'product_surface_types'=> $surface_types,
-                            'product_colors'=> $colors,
-                            'product_features'=> $features
-                            
-                              
-                        );
-            
+                    'product_brand' =>   $p['product_brand'],
+                    'product_name' => $p['product_name'],
+                    'product_desc' =>  $p['product_desc'],
+                    'product_img' =>  $p['product_img'],
+                    'product_usages'=> $usages_area,
+                    'product_designs'=> $designs,
+                    'product_subtypes'=> $subtypes,
+                    'product_surface_types'=> $surface_types,
+                    'product_colors'=> $colors,
+                    'product_features'=> $features
+                  );
         }
     }
-    
+
     $app->response()->header('content-type','application/json');
-    
-    echo json_encode(array('product_data'=>$data));    
+    echo json_encode(array('product_data'=>$data));
 });
 
-/****** AutoSuggest Get call for products *******/
-
-$app->get('/shiningfloor/autosuggest/products(/:input)', function($input=null) use ($app, $db){
-
-  // if($input==null){
-  //   $query= '';
-  // }
-  // else
-  {
-    // echo "'%'$input'%'";
-    $query = $db->products->where('product_name LIKE ?' ,"%".$input."%")->order('product_rating');
-    $data = findAllProducts($query,'');
-  }
-
-  $app->response()->header('content-type','application/json');
-  echo json_encode(array('result_data'=>$data));  
-});
-
-
-
-
-// For finding all products of a given supplier
-
-$app->get('/shiningfloor/products/suppliers(/:supplierId)', function($supplierId=null) use ($app, $db){
-    
-        $supplierData = array();
-        $productData = array();
-        $query='';
-        if($supplierId!=null){
-            if(isset($_GET['products_details']) and $_GET['products_details']=='true'){
-                $query = $db->products->where('supplierID',$supplierId);
-                $productData = findAllProducts($query,'');
-            }
-            $query2 = $db->suppliers->where('supplierID',$supplierId);
-            $supplierData = findSupplierDetails($query2);
-
-            
-            $data =  array_merge($supplierData,$productData);
-            $app->response()->header('content-type','application/json');
-            echo json_encode(array('supplier_details'=>$supplierData ,'supplier_products'=>$productData )); 
-            // echo json_encode(array('supplier_details'=>$supplierData)); 
-           // echo json_encode($data);  
-        }   
-        else{
-
-            if(isset($_GET['products_details']) and $_GET['products_details']=='true'){
-                $query = $db->products();
-                $productData = findAllProducts($query,'');
-            }
-            $supplierData = array();
-            $query2 = $db->suppliers();
-            foreach($query2 as $p){
-                $supplierData[] = findSupplierDetails($query2);
-            }
-
-            
-            $data =  array_merge($supplierData,$productData);
-            $app->response()->header('content-type','application/json');
-            echo json_encode(array('supplier_details'=>$supplierData ,'supplier_products'=>$productData )); 
-        }
-
-         
-        
-});
-
-// For finding usages of given type say tiles or marbles
-$app->get('/shiningfloor/products(/:type)/usages', function($type) use ($app, $db){
-
-      $usages_area;
-      $type_id = $db->types()->where('type_name',$type)->select('id')->fetch();
-
-      // $query = $db->products->where('type_id',$type_id);
-      $query = $db->products_usages()->where('type_id',$type_id);
-            
-      foreach ($query as $p) 
-          $usages_area[] = $p->usages['usage_name'];
-                                  
-        $app->response()->header('content-type','application/json');
-        echo json_encode(array('products_name' => $type,
-                                  'locations'=>$usages_area));    
-        // echo json_encode($_GET['sortkey']);
-
-});
 // --------------------------------------
-$app->get('/shiningfloor/chooseproducts(/:id)', function($id = null) use ($app, $db)
-{     
+$app->get('/shiningfloor/seller/chooseproducts', $authenticate_seller($app), function() use ($app, $db)
+{
         $data  = array();
-         //$query = $db->products();
-        
-        global $colorFilters, $priceFilters, $brandFilters;          
+        $email = $_SESSION['seller'];
+        $user_id = $db->sellers->where('email',$email)->fetch('id');
+
+    if($user_id){
+
+        global $colorFilters, $priceFilters, $brandFilters;
         global $resultPerPage , $pageNo ;
-         
 
         if(isset($_GET['pageNo'])){
-            $pageNo = ( int )$_GET['pageNo'] ;            
+            $pageNo = ( int )$_GET['pageNo'] ;
         }
 
         if(isset($_GET['color'])){
-            $colorFilters =  explode(',', $_GET['color']);            
+            $colorFilters =  explode(',', $_GET['color']);
         }
 
-        if(isset($_GET['price_range'])){        
+        if(isset($_GET['price_range'])){
             $priceFilters = explode(',', $_GET['price_range']);
         }
 
-        if(isset($_GET['brand_name'])){        
+        if(isset($_GET['brand_name'])){
             $brandFilters = explode(',', $_GET['brand_name']);
         }
         if(isset($_GET['finish_types'])){
-            $finishTypeFilters =  explode(',', $_GET['finish_types']);            
+            $finishTypeFilters =  explode(',', $_GET['finish_types']);
         }
         if(isset($_GET['applications'])){
-            $applicationFilters =  explode(',', $_GET['applications']);            
+            $applicationFilters =  explode(',', $_GET['applications']);
         }
 
         $query ='';
-        
-        $query = $db->products()->where("NOT id", $db->sellers_products()->where('sellers_id',$id )->select('products_id'));
-        
-      
-        // if($input!=null)
-        // {
-        //   $query = $query->where('product_name LIKE ?' ,"%".$input."%");
-        // }
 
-     
-        // Price filtering
-        
+        $query = $db->products()->where("NOT id", $db->sellers_products()->where('sellers_id',$user_id )->select('products_id'));
 
-        if(isset($_GET['price_range'])){
-            $q = '';
-            for($i = 0 ; $i < sizeof($priceFilters); $i++){
-                 
-                if($i>0)
-                  $q .= ' OR ' ;                  
-                if($priceFilters[$i] == 'below-100'){
-                      $q .= ' product_price < 100 ';
-                }
-                 else if($priceFilters[$i] == '100-200'){
-                      $q .= ' product_price >= 100 AND product_price <= 200 '; 
-                 }
-                 else if($priceFilters[$i] == '200-above'){
-                     $q .= ' product_price > 200 '; 
-                 }
+        if(isset($_GET['category']))
+            $query =  categoryFilteredQuery($_GET['category'],$query);
 
-            }
-            
-           $query = $query->where($q);                         
-          }
-          
-          // Brand filtering
-        
-        if(isset($_GET['brand_name'])){
-            $q = '';
-            for($i = 0 ; $i < sizeof($brandFilters); $i++){
-                 if($i>0)
-                    $q .= ' OR ' ;
+        if(isset($_GET['query']))
+            $query = $query->where('product_name LIKE ?' ,"%".$_GET['query']."%");
 
-                  $q .= ' product_brand = "'. $brandFilters[$i]. '" ' ;                  
-            }
-            
-          $query = $query->where($q);                                       
-        }
-          
-        if(isset($_GET['finish_types'])){
-            $q = '';
-            for($i = 0 ; $i < sizeof($finishTypeFilters); $i++){
-                 if($i>0)
-                    $q .= ' OR ' ;
+        if(isset($_GET['price_range']))
+            $query = priceFilteredQuery($applicationFilters,$query);
 
-                  $q .= ' product_finish_type = "'. $finishTypeFilters[$i]. '" ' ;                  
-            }
-            
-          $query = $query->where($q);                                       
-        }
+        if(isset($_GET['brand_name']))
+            $query = brandFilteredQuery($priceFilters,$query);
 
-        if(isset($_GET['applications'])){
-            $q = '';
-            for($i = 0 ; $i < sizeof($applicationFilters); $i++){
-                 if($i>0)
-                    $q .= ' OR ' ;
+        if(isset($_GET['finish_types']))
+            $query = finishTypeFilteredQuery($finishTypeFilters,$query);
 
-                  $q .= ' product_application = "'. $applicationFilters[$i]. '" ' ;                  
-            }
-            
-          $query = $query->where($q);                                       
-        }
-        if(isset($_GET['color'])){
-               
-            $p = '';
-            for($i = 0 ; $i < sizeof($colorFilters); $i++){
-                if($i>0)
-                    $p .= ' OR ' ;
+        if(isset($_GET['applications']))
+            $query = applicationFilteredQuery($applicationFilters,$query);
 
-                $c_id = $db->colors->where('color_name = "' . $colorFilters[$i].'" ' );
-                $p .= ' colors_id = '. $c_id->fetch() . ' ' ;                  
-            }
-                
-               $q = $db->product_colors()->where($p)->select('products_id');
-               $query = $query->where('id', $q);            
-            }
+        if(isset($_GET['color']))
+            $query = colorFilteredQuery($colorFilters,$query);
+
         $totalResults = count($query);
         $start = (($pageNo -1)*( int )$resultPerPage);
         $last = $start + $resultPerPage;
         if($last> $totalResults){
         $last = $totalResults;
         }
-        $query = $query->order('product_price ASC');     
-        $query = $query->limit(30,$start) ;  
+        $query = $query->order('product_price ASC');
+        $query = $query->limit(30,$start) ;
         //echo $query;
-        
+
         $data = findAllProducts($query,'');
-              
+
         $app->response()->header('content-type','application/json');
-        echo json_encode(array( 'totalResults' => $totalResults , 'start' => $start,'last' => $last  , 'product_data'=>$data ));          
-           
-       
-        
+        echo json_encode(array( 'totalResults' => $totalResults , 'start' => $start,'last' => $last  , 'product_data'=>$data ));
+
+    }
+    else
+    {
+        echo 'error';
+    }
+
+});
+
+$app->delete('/shiningfloor/admin/deleteproduct(/:seller_id)(/:product_id)', $authenticate_admin($app), function($seller_id, $product_id) use ($app, $db)
+{
+//echo 'ss';
+$data = null;
+  $p = $db->sellers_products()->where('sellers_id', $seller_id)->where('products_id',$product_id) ;
+    //  $product = $db->deposits()->where('id', $p['products_id']);
+   if ($p->fetch()) {
+        $data = $p->delete();
+    }
+  $app->response()->header('Content-Type', 'application/json');
+ echo json_encode($data);
+
+});
+
+$app->delete('/shiningfloor/admin/deleteseller(/:seller_id)', $authenticate_admin($app), function($seller_id) use ($app, $db)
+{
+  $data = null;
+
+  foreach( $db->sellers_products()->where('sellers_id', $seller_id) as $p)
+  {
+    if ($p->fetch()) {
+        $p->delete();
+     }
+  }
+    //  $product = $db->deposits()->where('id', $p['products_id']);
+   $data = $db->sellers->where('id',$seller_id)->delete();
+  $app->response()->header('Content-Type', 'application/json');
+  echo json_encode($data);
+
 });
 
 
 
-//   -------------------------- 
+$app->delete('/shiningfloor/seller/deletesproduct(/:product_id)', $authenticate_seller($app), function($product_id) use ($app, $db)
+{
+//echo 'ss';
+  $data = null;
+  $email = $_SESSION['seller'];
+  $seller_id = $db->sellers()->where('email', $email)->fetch()['id'];
+  $p = $db->sellers_products()->where('sellers_id', $seller_id)->where('products_id',$product_id) ;
+    //  $product = $db->deposits()->where('id', $p['products_id']);
+   if ($p->fetch()) {
+        $data = $p->delete();
+    }
+  $app->response()->header('Content-Type', 'application/json');
+ echo json_encode($data);
+
+});
+
+$app->get('/shiningfloor/admin/chooseproducts(/:id)', $authenticate_admin($app), function($id = null) use ($app, $db)
+{
+        $data  = array();
+        $user = $_SESSION['admin'];
+        global $colorFilters, $priceFilters, $brandFilters;
+        global $resultPerPage , $pageNo ;
+
+        if(isset($_GET['pageNo'])){
+            $pageNo = ( int )$_GET['pageNo'] ;
+        }
+
+        if(isset($_GET['color'])){
+            $colorFilters =  explode(',', $_GET['color']);
+        }
+
+        if(isset($_GET['price_range'])){
+            $priceFilters = explode(',', $_GET['price_range']);
+        }
+
+        if(isset($_GET['brand_name'])){
+            $brandFilters = explode(',', $_GET['brand_name']);
+        }
+        if(isset($_GET['finish_types'])){
+            $finishTypeFilters =  explode(',', $_GET['finish_types']);
+        }
+        if(isset($_GET['applications'])){
+            $applicationFilters =  explode(',', $_GET['applications']);
+        }
+
+        $query = $db->products()->where("NOT id", $db->sellers_products()->where('sellers_id',$id )->select('products_id'));
+
+        if(isset($_GET['category']))
+            $query =  categoryFilteredQuery($_GET['category'] , $query);
+
+        if(isset($_GET['query']))
+            $query = $query->where('product_name LIKE ?' ,"%".$_GET['query']."%");
+
+        if(isset($_GET['price_range']))
+            $query = priceFilteredQuery($priceFilters,$query);
+
+        if(isset($_GET['brand_name']))
+            $query = brandFilteredQuery($brandFilters,$query);
+
+        if(isset($_GET['finish_types']))
+            $query = finishTypeFilteredQuery($finishTypeFilters,$query);
+
+        if(isset($_GET['applications']))
+            $query = applicationFilteredQuery($applicationFilters,$query);
+
+        if(isset($_GET['color']))
+            $query = colorFilteredQuery($colorFilters,$query);
+
+        $totalResults = count($query);
+        $start = (($pageNo -1)*( int )$resultPerPage);
+        $last = $start + $resultPerPage;
+        if($last> $totalResults){
+        $last = $totalResults;
+        }
+        $query = $query->order('product_price ASC');
+        $query = $query->limit(30,$start) ;
+        //echo $query;
+
+        $data = findAllProducts($query,'');
+
+        $app->response()->header('content-type','application/json');
+        echo json_encode(array( 'totalResults' => $totalResults , 'start' => $start,'last' => $last  , 'product_data'=>$data ));
+
+});
+// --- GET METHOD TO FIND ALL PRODUCTS OF SELLER WITH ID
+
+$app->get('/shiningfloor/admin/selectedproducts(/:id)', $authenticate_admin($app),function($id = null) use ($app, $db)
+{
+
+        $user = $_SESSION['admin'];
+        $data  = array();
+         //$query = $db->products();
+
+        global $colorFilters, $priceFilters, $brandFilters;
+        global $resultPerPage , $pageNo ;
+
+
+        if(isset($_GET['pageNo'])){
+            $pageNo = ( int )$_GET['pageNo'] ;
+        }
+
+        if(isset($_GET['color'])){
+            $colorFilters =  explode(',', $_GET['color']);
+        }
+
+        if(isset($_GET['price_range'])){
+            $priceFilters = explode(',', $_GET['price_range']);
+        }
+
+        if(isset($_GET['brand_name'])){
+            $brandFilters = explode(',', $_GET['brand_name']);
+        }
+        if(isset($_GET['finish_types'])){
+            $finishTypeFilters =  explode(',', $_GET['finish_types']);
+        }
+        if(isset($_GET['applications'])){
+            $applicationFilters =  explode(',', $_GET['applications']);
+        }
+
+        $query ='';
+
+        $p = $db->sellers_products()->where('sellers_id',$id)->select('products_id');
+        $query = $db->products()->where('id',$p);
+
+        if(isset($_GET['category'])){
+            $type_id = $db->types()->where('type_name',$_GET['category'])->select('id');
+            $query = $query->where('type_id',$type_id);
+//            echo $query;
+       }
+
+        if(isset($_GET['query']))
+            $query = $query->where('product_name LIKE ?' ,"%".$_GET['query']."%");
+
+        if(isset($_GET['price_range']))
+          $query = priceFilteredQuery($priceFilters,$query);
+
+        if(isset($_GET['brand_name']))
+            $query = brandFilteredQuery($brandFilters,$query);
+
+        if(isset($_GET['finish_types']))
+            $query = finishTypeFilteredQuery($finishTypeFilters,$query);
+
+        if(isset($_GET['applications']))
+            $query = applicationFilteredQuery($applicationFilters,$query);
+
+        if(isset($_GET['color']))
+            $query = colorFilteredQuery($colorFilters,$query);
+
+        $totalResults = count($query);
+        $start = (($pageNo -1)*( int )$resultPerPage);
+        $last = $start + $resultPerPage;
+
+        if($last> $totalResults){
+          $last = $totalResults;
+        }
+
+        $query = $query->order('product_price ASC');
+        $query = $query->limit(30,$start) ;
+
+        foreach ($query as $p) {
+
+        $usages_area =array();
+        $designs = array();
+        $subtypes = array();
+        $surface_types = array();
+        $colors = array();
+        $features = array();
+
+        foreach ($p->product_colors() as $product_colors) {
+            $colors[] = $product_colors->colors['color_name'];
+        }
+
+        foreach ($p->products_usages() as $product_usages) {
+            $usages_area[] = $product_usages->usages['usage_name'];
+        }
+
+        foreach ($p->product_designs() as $product_designs) {
+            $designs[] = $product_designs->designs['design_name'];
+        }
+
+        foreach ($p->product_subtypes() as $product_subtypes) {
+            $subtypes[] = $product_subtypes->subtypes['subtype_name'];
+        }
+        foreach ($p->product_surface_types() as $product_surface_types) {
+            $surface_types[] = $product_surface_types->surface_types['surface_type_name'];
+        }
+
+        foreach ($p->product_features() as $product_features) {
+            $features[] = $product_features->features['feature_name'];
+        }
+
+        $product_category = '';
+        foreach ($db->types() as $product_type) {
+            if($product_type['id'] == $p['type_id'])
+              $product_category = $product_type['type_name'];
+        }
+
+        foreach ($p->sellers_products() as $q ) {
+
+            $seller_product_price = $q['price'];
+              $seller_product_comments = $q['comments'] ;
+              $seller_minimum_boxes = $q['minimum_boxes'] ;
+              $seller_product_code = $q['seller_product_code'] ;
+              $seller_items_per_box = $q['items_per_box'] ;
+
+         }
+
+          $data[] =  array(
+                         'product_id' => $p['id'],
+                        'product_brand' =>   $p['product_brand'],
+                        'product_name' => $p['product_name'],
+                        'product_category' => $product_category ,
+                        'product_type_id' => $p['type_id'],
+                        'product_desc' =>  $p['product_desc'],
+                        'product_img' =>  $p['product_img'],
+                        'product_url' =>  $p['product_url'],
+                        'product_material' =>  $p['product_material'],
+                        'product_size' =>  $p['product_size'],
+                        'product_application' =>  $p['product_application'],
+                        'product_look' =>  $p['product_look'],
+                        'product_finish_type'=> $p['product_finish_type'],
+                        'product_usages'=> $usages_area,
+                        'product_designs'=> $designs,
+                        'product_subtypes'=> $subtypes,
+                        'product_surface_types'=> $surface_types,
+                        'product_colors'=> $colors,
+                        'product_features'=> $features,
+                        'product_price'=>$p['product_price'],
+                        'product_rating' => $p['product_rating'],
+                        'product_supplierID' => $p['supplierID'],
+                        'product_isDiscountAvailable' => $p['isDiscountAvailable'],
+                        'product_isProductAvailable' => $p['isProductAvailable']   ,
+                        'seller_product_price' => $seller_product_price,
+                        'seller_product_comments' => $seller_product_comments,
+                        'seller_minimum_boxes' => $seller_minimum_boxes,
+                        'seller_product_code' => $seller_product_code,
+                        'seller_items_per_box' => $seller_items_per_box
+                    );
+      }
+    $app->response()->header('content-type','application/json');
+    echo json_encode(array( 'totalResults' => $totalResults , 'start' => $start,'last' => $last  , 'product_data'=>$data ));
+
+
+});
+
+$app->get('/shiningfloor/seller/selectedproducts', $authenticate_seller($app),function() use ($app, $db)
+{
+
+        $user = $_SESSION['seller'];
+        $user_id = $db->sellers->where('email',$user)->fetch();
+
+        if($user_id){
+
+        $data  = array();
+         //$query = $db->products();
+
+        global $colorFilters, $priceFilters, $brandFilters;
+        global $resultPerPage , $pageNo ;
+
+
+        if(isset($_GET['pageNo'])){
+            $pageNo = ( int )$_GET['pageNo'] ;
+        }
+
+        if(isset($_GET['color'])){
+            $colorFilters =  explode(',', $_GET['color']);
+        }
+
+        if(isset($_GET['price_range'])){
+            $priceFilters = explode(',', $_GET['price_range']);
+        }
+
+        if(isset($_GET['brand_name'])){
+            $brandFilters = explode(',', $_GET['brand_name']);
+        }
+        if(isset($_GET['finish_types'])){
+            $finishTypeFilters =  explode(',', $_GET['finish_types']);
+        }
+        if(isset($_GET['applications'])){
+            $applicationFilters =  explode(',', $_GET['applications']);
+        }
+
+        $query ='';
+
+        $p = $db->sellers_products()->where('sellers_id',$user_id)->select('products_id');
+        $query = $db->products()->where('id',$p);
+
+        if(isset($_GET['category'])){
+            $type_id = $db->types()->where('type_name',$_GET['category'])->select('id');
+            $query = $query->where('type_id',$type_id);
+//            echo $query;
+       }
+
+        if(isset($_GET['query']))
+            $query = $query->where('product_name LIKE ?' ,"%".$_GET['query']."%");
+
+        if(isset($_GET['price_range']))
+          $query = priceFilteredQuery($priceFilters,$query);
+
+        if(isset($_GET['brand_name']))
+            $query = brandFilteredQuery($brandFilters,$query);
+
+        if(isset($_GET['finish_types']))
+            $query = finishTypeFilteredQuery($finishTypeFilters,$query);
+
+        if(isset($_GET['applications']))
+            $query = applicationFilteredQuery($applicationFilters,$query);
+
+        if(isset($_GET['color']))
+            $query = colorFilteredQuery($colorFilters,$query);
+
+        $totalResults = count($query);
+        $start = (($pageNo -1)*( int )$resultPerPage);
+        $last = $start + $resultPerPage;
+
+        if($last> $totalResults){
+          $last = $totalResults;
+        }
+
+        $query = $query->order('product_price ASC');
+        $query = $query->limit(30,$start) ;
+
+        foreach ($query as $p) {
+
+        $usages_area =array();
+        $designs = array();
+        $subtypes = array();
+        $surface_types = array();
+        $colors = array();
+        $features = array();
+
+        foreach ($p->product_colors() as $product_colors) {
+            $colors[] = $product_colors->colors['color_name'];
+        }
+
+        foreach ($p->products_usages() as $product_usages) {
+            $usages_area[] = $product_usages->usages['usage_name'];
+        }
+
+        foreach ($p->product_designs() as $product_designs) {
+            $designs[] = $product_designs->designs['design_name'];
+        }
+
+        foreach ($p->product_subtypes() as $product_subtypes) {
+            $subtypes[] = $product_subtypes->subtypes['subtype_name'];
+        }
+        foreach ($p->product_surface_types() as $product_surface_types) {
+            $surface_types[] = $product_surface_types->surface_types['surface_type_name'];
+        }
+
+        foreach ($p->product_features() as $product_features) {
+            $features[] = $product_features->features['feature_name'];
+        }
+
+        $product_category = '';
+        foreach ($db->types() as $product_type) {
+            if($product_type['id'] == $p['type_id'])
+              $product_category = $product_type['type_name'];
+        }
+
+        foreach ($p->sellers_products() as $q ) {
+
+            $seller_product_price = $q['price'];
+              $seller_product_comments = $q['comments'] ;
+              $seller_minimum_boxes = $q['minimum_boxes'] ;
+              $seller_product_code = $q['seller_product_code'] ;
+              $seller_items_per_box = $q['items_per_box'] ;
+
+         }
+
+          $data[] =  array(
+                         'product_id' => $p['id'],
+                        'product_brand' =>   $p['product_brand'],
+                        'product_name' => $p['product_name'],
+                        'product_category' => $product_category ,
+                        'product_type_id' => $p['type_id'],
+                        'product_desc' =>  $p['product_desc'],
+                        'product_img' =>  $p['product_img'],
+                        'product_url' =>  $p['product_url'],
+                        'product_material' =>  $p['product_material'],
+                        'product_size' =>  $p['product_size'],
+                        'product_application' =>  $p['product_application'],
+                        'product_look' =>  $p['product_look'],
+                        'product_finish_type'=> $p['product_finish_type'],
+                        'product_usages'=> $usages_area,
+                        'product_designs'=> $designs,
+                        'product_subtypes'=> $subtypes,
+                        'product_surface_types'=> $surface_types,
+                        'product_colors'=> $colors,
+                        'product_features'=> $features,
+                        'product_price'=>$p['product_price'],
+                        'product_rating' => $p['product_rating'],
+                        'product_supplierID' => $p['supplierID'],
+                        'product_isDiscountAvailable' => $p['isDiscountAvailable'],
+                        'product_isProductAvailable' => $p['isProductAvailable']   ,
+                        'seller_product_price' => $seller_product_price,
+                        'seller_product_comments' => $seller_product_comments,
+                        'seller_minimum_boxes' => $seller_minimum_boxes,
+                        'seller_product_code' => $seller_product_code,
+                        'seller_items_per_box' => $seller_items_per_box
+                    );
+              }
+        $app->response()->header('content-type','application/json');
+        echo json_encode(array( 'totalResults' => $totalResults , 'start' => $start,'last' => $last  , 'product_data'=>$data ));
+    }
+    else
+    {
+      echo 'error';
+    }
+
+});
+
+// Admin Updating his information for products
+
+$app->put('/shiningfloor/sellers_products/update_product', function() use ($app, $db)
+{
+    $array = (array) json_decode($app->request()->getBody());
+    $data = $db->sellers_products()->where('products_id',$array['products_id'])->update($array);
+
+    $app->response()->header('Content-Type', 'application/json');
+    echo json_encode($data['id']);
+
+});
+
+// Seller Updating his information for products
+
+$app->put('/shiningfloor/sellers/products/update_product', function() use ($app, $db)
+{
+    $array = (array) json_decode($app->request()->getBody());
+    $data = $db->sellers_products()->where('products_id',$array['products_id'])->update($array);
+
+    $app->response()->header('Content-Type', 'application/json');
+    echo json_encode($data['id']);
+
+});
+
+//   --------------------------
 
 $app->post('/shiningfloor/sellers_products', function() use ($app, $db)
 {
-    
-    $array = (array) json_decode($app->request()->getBody());    
-    
+
+    $array = (array) json_decode($app->request()->getBody());
     $data = $db->sellers_products()->insert($array);
-    
+
     $app->response()->header('Content-Type', 'application/json');
-    
     echo json_encode($data['id']);
-    // echo json_encode($array);
-    
+
 });
+
+$app->post('/shiningfloor/seller/sellers_products', $authenticate_seller($app),function() use ($app, $db)
+{
+    $array = (array) json_decode($app->request()->getBody());
+    $email = $_SESSION['seller'] ;
+    $seller_id = $db->sellers()->where('email', $email)->fetch();
+    //echo $seller_id['id'];
+     $seller_products = array(
+          'sellers_id' =>  $seller_id['id'] ,
+          'products_id' =>  $array['products_id'] ,
+          'price' => $array['price'],
+         'items_per_box' => $array['items_per_box'],
+         'seller_product_code' => $array['seller_product_code'],
+         'comments'=> $array['comments'],
+         'minimum_boxes' => $array['minimum_boxes']
+        );
+
+    $data = $db->sellers_products()->insert($seller_products);
+
+    $app->response()->header('Content-Type', 'application/json');
+    echo json_encode($data['id']);
+
+});
+
+
+// --------- Seller Info -------------
+
+$app->get('/shiningfloor/sellers(/:id)', function($id = null) use ($app, $db)
+{
+
+    if ($id == null) {
+        $data  = array();
+        $count = 0;
+
+
+        foreach ($db->sellers() as $seller) {
+
+             $allp = $db->sellers_products()->where('sellers_id',$seller['id']);
+             $countall = count($allp);
+
+             $data[] = array(
+                'id' => $seller['id'],
+                'address' => $seller['address'],
+                'name' => $seller['name'],
+                'email' => $seller['email'],
+                'phone' => $seller['phone'],
+                'storename' => $seller['storename'],
+                'comments' => $seller['comments'],
+                 'noofproducts' => $countall
+
+            );
+        }
+    }
+     else {
+
+        $data = null;
+        if ($seller = $db->sellers()->where('id', $id)->fetch()) {
+             $allp = $db->sellers_products()->where('sellers_id',$id);
+             $countall = count($allp);
+
+            $data = array(
+                'id' => $seller['id'],
+                'address' => $seller['address'],
+                'name' => $seller['name'],
+                'email' => $seller['email'],
+                'phone' => $seller['phone'],
+                'storename' => $seller['storename'],
+                'comments' => $seller['comments'],
+                'noofproducts' => $countall
+
+            );
+        }
+    }
+    $seller = array(
+        'seller_data' => $data
+    );
+    $app->response()->header('content-type', 'application/json');
+    echo json_encode($seller);
+});
+
+$app->get('/shiningfloor/seller/info' ,function() use ($app, $db)
+{
+       $email = $_SESSION['seller'];
+       //$id = $db
+        $data = null;
+        if ($seller = $db->sellers()->where('email', $email)->fetch()) {
+             $allp = $db->sellers_products()->where('sellers_id',$seller['id']);
+             $countall = count($allp);
+
+            $data = array(
+                'id' => $seller['id'],
+                'address' => $seller['address'],
+                'name' => $seller['name'],
+                'email' => $seller['email'],
+                'phone' => $seller['phone'],
+                'storename' => $seller['storename'],
+                'comments' => $seller['comments'],
+                'noofproducts' => $countall
+
+            );
+        }
+
+    $seller = array(
+        'seller_data' => $data
+    );
+    $app->response()->header('content-type', 'application/json');
+    echo json_encode($seller);
+});
+
+$app->post('/shiningfloor/sellers', function() use ($app, $db)
+{
+    $array = (array) json_decode($app->request()->getBody());
+    $data = $db->sellers()->insert($array);
+    $app->response()->header('Content-Type', 'application/json');
+    echo json_encode($data['id']);
+
+});
+
+$app->put('/shiningfloor/updatesellers/:id', function($id = null) use ($app, $db)
+{
+
+    $seller = $db->sellers()->where('id', $id);
+    $app->response()->header('Content-Type', 'application/json');
+    $data = null;
+
+    if ($seller->fetch()) {
+
+       $post = (array) json_decode($app->request()->getBody());
+        $info = array(
+
+                'address' => $post['address'],
+                'name' => $post['name'],
+                'phone' => $post['phone'],
+                'storename' => $post['storename'],
+                'email' => $post['email'],
+                'comments' => $post['comments']
+
+
+        );
+
+        $data = $seller->update($info);
+    }
+
+    echo json_encode(array(
+        "status" => (bool) $post,
+        "message" => "data updated successfully"
+    ));
+
+});
+
+
+$app->put('/shiningfloor/sellers/update', $authenticate_seller($app),function() use ($app, $db)
+{
+
+    $email = $_SESSION['seller'] ;
+    $seller = $db->sellers()->where('email', $email);
+    $app->response()->header('Content-Type', 'application/json');
+    $data = null;
+
+    if ($seller->fetch()) {
+
+       $post = (array) json_decode($app->request()->getBody());
+        $info = array(
+
+                'address' => $post['address'],
+                'name' => $post['name'],
+                'phone' => $post['phone'],
+                'storename' => $post['storename'],
+                'email' => $post['email'],
+                'comments' => $post['comments']
+        );
+
+        $data = $seller->update($info);
+    }
+
+    echo json_encode(array(
+        "status" => (bool) $post,
+        "message" => "data updated successfully"
+    ));
+
+});
+
 // - --------------------
 $prev_id = 0;
 $pageNo = 1;
@@ -829,149 +1495,208 @@ $colorFilters=[];
 $priceFilters = [];
 $brandFilters = [];
 
-// Search data results 
+// Search data results
 $app->get('/shiningfloor/products/search(/:type)/(:input)', function($type=null,$input=null ) use ($app, $db){
         global $colorFilters, $priceFilters, $brandFilters;
-        $data = array(); 
+        $data = array();
         global $resultPerPage , $pageNo ;
-        
+
         $type_id = $db->types()->where('type_name',$type)->select('id');
 
         if(isset($_GET['pageNo'])){
-            $pageNo = ( int )$_GET['pageNo'] ;            
+            $pageNo = ( int )$_GET['pageNo'] ;
         }
 
         if(isset($_GET['color'])){
-            $colorFilters =  explode(',', $_GET['color']);            
+            $colorFilters =  explode(',', $_GET['color']);
         }
 
-        if(isset($_GET['price_range'])){        
+        if(isset($_GET['price_range'])){
             $priceFilters = explode(',', $_GET['price_range']);
         }
 
-        if(isset($_GET['brand_name'])){        
+        if(isset($_GET['brand_name'])){
             $brandFilters = explode(',', $_GET['brand_name']);
         }
         if(isset($_GET['finish_types'])){
-            $finishTypeFilters =  explode(',', $_GET['finish_types']);            
+            $finishTypeFilters =  explode(',', $_GET['finish_types']);
         }
         if(isset($_GET['applications'])){
-            $applicationFilters =  explode(',', $_GET['applications']);            
+            $applicationFilters =  explode(',', $_GET['applications']);
         }
 
         $query ='';
+
         if($type==null or $type == 'all')
-        {
             $query = $db->products();
-        } 
+        else
+            $query = $db->products->where('type_id',$type_id);
 
-        else{
-            $query = $db->products->where('type_id',$type_id);             
-        }        
-        
         if($input!=null)
-                {
-                  $query = $query->where('product_name LIKE ?' ,"%".$input."%");
-                }
-
-     
-        // Price filtering
-        
-
-        if(isset($_GET['price_range'])){
-            $q = '';
-            for($i = 0 ; $i < sizeof($priceFilters); $i++){
-                 
-                if($i>0)
-                  $q .= ' OR ' ;                  
-                if($priceFilters[$i] == 'below-100'){
-                      $q .= ' product_price < 100 ';
-                }
-                 else if($priceFilters[$i] == '100-200'){
-                      $q .= ' product_price >= 100 AND product_price <= 200 '; 
-                 }
-                 else if($priceFilters[$i] == '200-above'){
-                     $q .= ' product_price > 200 '; 
-                 }
-
-            }
-            
-           $query = $query->where($q);                         
-          }
-          
-          // Brand filtering
-        
-        if(isset($_GET['brand_name'])){
-            $q = '';
-            for($i = 0 ; $i < sizeof($brandFilters); $i++){
-                 if($i>0)
-                    $q .= ' OR ' ;
-
-                  $q .= ' product_brand = "'. $brandFilters[$i]. '" ' ;                  
-            }
-            
-          $query = $query->where($q);                                       
-        }
-          
-        if(isset($_GET['finish_types'])){
-            $q = '';
-            for($i = 0 ; $i < sizeof($finishTypeFilters); $i++){
-                 if($i>0)
-                    $q .= ' OR ' ;
-
-                  $q .= ' product_finish_type = "'. $finishTypeFilters[$i]. '" ' ;                  
-            }
-            
-          $query = $query->where($q);                                       
+        {
+            $query = $query->where('product_name LIKE ?' ,"%".$input."%");
         }
 
-        if(isset($_GET['applications'])){
-            $q = '';
-            for($i = 0 ; $i < sizeof($applicationFilters); $i++){
-                 if($i>0)
-                    $q .= ' OR ' ;
+        if(isset($_GET['price_range']))
+            $query = priceFilteredQuery($priceFilters,$query);
 
-                  $q .= ' product_application = "'. $applicationFilters[$i]. '" ' ;                  
-            }
-            
-          $query = $query->where($q);                                       
-        }
-        if(isset($_GET['color'])){
-               
-            $p = '';
-            for($i = 0 ; $i < sizeof($colorFilters); $i++){
-                if($i>0)
-                    $p .= ' OR ' ;
+        if(isset($_GET['brand_name']))
+            $query = brandFilteredQuery($brandFilters,$query);
 
-                $c_id = $db->colors->where('color_name = "' . $colorFilters[$i].'" ' );
-                $p .= ' colors_id = '. $c_id->fetch() . ' ' ;                  
-            }
-                
-               $q = $db->product_colors()->where($p)->select('products_id');
-               $query = $query->where('id', $q);            
-            }
+        if(isset($_GET['finish_types']))
+            $query = finishTypeFilteredQuery($finishTypeFilters,$query);
+
+        if(isset($_GET['applications']))
+            $query = applicationFilteredQuery($applicationFilters,$query);
+
+        if(isset($_GET['color']))
+            $query = colorFilteredQuery($colorFilters,$query);
+
+
         $totalResults = count($query);
         $start = (($pageNo -1)*( int )$resultPerPage);
         $last = $start + $resultPerPage;
         if($last> $totalResults){
         $last = $totalResults;
         }
-        $query = $query->order('product_price ASC');     
-        $query = $query->limit(30,$start) ;  
-        //echo $query;
-        
+        $query = $query->order('product_price ASC');
+        $query = $query->limit(30,$start) ;
         $data = findAllProducts($query,'');
-              
+
         $app->response()->header('content-type','application/json');
-        echo json_encode(array( 'totalResults' => $totalResults , 'start' => $start,'last' => $last  , 'product_data'=>$data ));          
-       
+        echo json_encode(array( 'totalResults' => $totalResults , 'start' => $start,'last' => $last  , 'product_data'=>$data ));
+
+});
+
+/* Get all colors */
+
+$app->get('/shiningfloor/colors', function() use ($app, $db){
+
+    $colors = array();
+    foreach ($db->colors() as $color) {
+        $colors[] = $color['color_name'];
+    }
+    $data[] = array( 'product_colors'=> $colors  );
+    $app->response()->header('content-type','application/json');
+    echo json_encode(array('colors'=>$data));
 });
 
 
+// For finding all products of a given supplier
+
+$app->get('/shiningfloor/products/allsellers(/:product_id)', function($product_id=null) use ($app, $db){
+    $data= array();
+    $minimum_price_per_item = 1000000000;
+    $minimum_price_seller = 0;
+    $minimum_bill = 0;
+    $sellers = array() ;
+    foreach ($db->sellers_products()->where('products_id',$product_id) as $p) {
+      # code...
+      $sellers[] = array(
+            'seller_id' => $p['sellers_id'],
+            'seller_price' => $p['price'],
+            'seller_items_per_box' => $p['items_per_box'],
+            'seller_minimum_boxes' => $p['minimum_boxes'],
+            'seller_price_per_item' => $p['price']/$p['items_per_box'],
+            'seller_minimum_accept_bill' => ($p['price'] * $p['minimum_boxes'])
+       );
+      if($p['price']/$p['items_per_box'] < $minimum_price_per_item){
+          $minimum_price_seller = $p['sellers_id'];
+          $minimum_price_per_item = ($p['price']/$p['items_per_box']);
+          $seller_minimum_accept_bill = ($p['price'] * $p['minimum_boxes']);
+      }
+    }
+
+    $app->response()->header('content-type','application/json');
+    echo json_encode( array(
+
+                        'minimum_price_seller_id' => $minimum_price_seller ,
+                       'minimum_price_per_item' => $minimum_price_per_item ,
+                        'seller_minimum_accept_bill'=> $seller_minimum_accept_bill ,
+                        'product_sellers' =>$sellers
+                       )
+                    );
+//    echo $minimum_price_seller .' '.$minimum_price_per_item;
+});
+
+/*  Functions starts here   */
+
+function categoryFilteredQuery($category, $query){
+    global $db;
+    $type_id = $db->types()->where('type_name', $category)->select('id');
+    return $query->where('type_id',$type_id);
+}
+function priceFilteredQuery($priceFilters , $query){
+    global $db;
+      $q = '';
+    for($i = 0 ; $i < sizeof($priceFilters); $i++){
+
+      if($i>0)
+          $q .= ' OR ' ;
+      if($priceFilters[$i] == 'below-100'){
+          $q .= ' product_price < 100 ';
+      }
+       else if($priceFilters[$i] == '100-200'){
+          $q .= ' product_price >= 100 AND product_price <= 200 ';
+       }
+       else if($priceFilters[$i] == '200-above'){
+          $q .= ' product_price > 200 ';
+       }
+    }
+    return $query->where($q);
+ }
+
+function brandFilteredQuery($brandFilters , $query){
+    global $db;
+    $q = '';
+    for($i = 0 ; $i < sizeof($brandFilters); $i++){
+
+        if($i>0)
+            $q .= ' OR ' ;
+        $q .= ' product_brand = "'. $brandFilters[$i]. '" ' ;
+    }
+  return $query->where($q);
+}
+function finishTypeFilteredQuery($finishTypeFilters , $query){
+    global $db;
+    $q = '';
+    for($i = 0 ; $i < sizeof($finishTypeFilters); $i++){
+         if($i>0)
+            $q .= ' OR ' ;
+
+          $q .= ' product_finish_type = "'. $finishTypeFilters[$i]. '" ' ;
+    }
+    return $query->where($q);
+}
+
+  function colorFilteredQuery($colorFilters , $query){
+    global $db;
+    $p = '';
+    for($i = 0 ; $i < sizeof($colorFilters); $i++){
+        if($i>0)
+            $p .= ' OR ' ;
+
+        $c_id = $db->colors->where('color_name = "' . $colorFilters[$i].'" ' );
+        $p .= ' colors_id = '. $c_id->fetch() . ' ' ;
+    }
+    $q = $db->product_colors()->where($p)->select('products_id');
+
+    return $query->where('id', $q);
+  }
+
+  function applicationFilteredQuery($applicationFilters , $query){
+    global $db;
+    $q = '';
+    for($i = 0 ; $i < sizeof($applicationFilters); $i++){
+         if($i>0)
+            $q .= ' OR ' ;
+
+          $q .= ' product_application = "'. $applicationFilters[$i]. '" ' ;
+    }
+    return $query->where($q);
+}
 
 // For finding all products of type say tiles or marbles Removed on 14 june 2015.
-
-
 function findAllProducts($query,$usage_location){
     $data = array();
     global $resultPerPage;
@@ -981,67 +1706,43 @@ function findAllProducts($query,$usage_location){
     $count3= 0;    // for counting brand filter products
     foreach($query as $p)
     {
-              
+
         $usages_area =array();
         $designs = array();
         $subtypes = array();
         $surface_types = array();
         $colors = array();
         $features = array();
- 
-        foreach ($p->product_colors() as $product_colors) {              
-            
-            $colors[] = $product_colors->colors['color_name']; 
-           
+
+        foreach ($p->product_colors() as $product_colors) {
+            $colors[] = $product_colors->colors['color_name'];
         }
-
-       
-          if($usage_location!='')  {
-              foreach ($p->products_usages() as $product_usages) {
-                if($usage_location==null){   
-                    $usages_area[] = $product_usages->usages['usage_name']; 
-                }
-                else{
-                   
-                    if($product_usages->usages['usage_name'] == $usage_location){
-                        $flag = 1;
-                    }
-                    $usages_area[] = $product_usages->usages['usage_name'];
-                }
-            }
-          }
-
-         
-        if($usage_location!=null)
-            if(!$flag) continue;   
 
         foreach ($p->product_designs() as $product_designs) {
 
-            $designs[] = $product_designs->designs['design_name']; 
+            $designs[] = $product_designs->designs['design_name'];
         }
         foreach ($p->product_subtypes() as $product_subtypes) {
 
-            $subtypes[] = $product_subtypes->subtypes['subtype_name']; 
+            $subtypes[] = $product_subtypes->subtypes['subtype_name'];
         }
-        
+
         foreach ($p->product_surface_types() as $product_surface_types) {
 
-            $surface_types[] = $product_surface_types->surface_types['surface_type_name']; 
+            $surface_types[] = $product_surface_types->surface_types['surface_type_name'];
         }
-         
+
         foreach ($p->product_features() as $product_features) {
 
-            $features[] = $product_features->features['feature_name']; 
+            $features[] = $product_features->features['feature_name'];
         }
-
+        global $db;
         $product_category = '';
-        foreach ($p->product_types() as $product_type) {
-
-            $product_category = $product_type->types['type_name']; 
+        foreach ($db->types() as $product_type) {
+            if($product_type['id'] == $p['type_id'])
+              $product_category = $product_type['type_name'];
         }
 
-        // array_push($data,$usages_area);            
-    //
         $data[] =  array(
                          'product_id' => $p['id'],
                         'product_brand' =>   $p['product_brand'],
@@ -1055,9 +1756,9 @@ function findAllProducts($query,$usage_location){
                         'product_size' =>  $p['product_size'],
                         'product_application' =>  $p['product_application'],
                         'product_look' =>  $p['product_look'],
-                                                
+
                         'product_finish_type'=> $p['product_finish_type'],
-                                               
+
                         'product_usages'=> $usages_area,
                         'product_designs'=> $designs,
                         'product_subtypes'=> $subtypes,
@@ -1068,47 +1769,11 @@ function findAllProducts($query,$usage_location){
                         'product_rating' => $p['product_rating'],
                         'product_supplierID' => $p['supplierID'],
                         'product_isDiscountAvailable' => $p['isDiscountAvailable'],
-                        'product_isProductAvailable' => $p['isProductAvailable']                              
+                        'product_isProductAvailable' => $p['isProductAvailable']
                     );
     }
 
   return $data;
 }
-
-function findSupplierDetails($query){
-        $supplierData = array();
-        $p =  $query->fetch();
-        
-        $supplierData[] =  array(
-                            'supplier_firstname' =>   $p['contactFirstName'],
-                            'supplier_lastname' => $p['contactLastName'],
-                            'supplier_titlename' => $p['contactTitle'],
-                            'supplier_address' =>  $p['address'],
-                            'supplier_city' =>  $p['city'],
-                            'supplier_postal_code' =>$p['postalcode'],
-                            'supplier_state'=> $p['state'],
-                            'supplier_country'=> $p['country'],
-                            'supplier_contact_no'=> $p['contactNo'],
-                            'supplier_email'=> $p['email'],
-                            'supplier_company_name'=> $p['companyName'],
-                            'supplier_payment_method' => $p['paymentMethods']                            
-                        );
-        return $supplierData;
-}
-
-/* Get all colors */
-
-$app->get('/shiningfloor/colors', function() use ($app, $db){
-    
-    $colors = array();
-            
-    foreach ($db->colors() as $color) {
-        $colors[] = $color['color_name']; 
-    }
-        
-    $data[] = array( 'product_colors'=> $colors  );                    
-    $app->response()->header('content-type','application/json');    
-    echo json_encode(array('colors'=>$data));    
-});
 
 $app->run();

@@ -1,5 +1,5 @@
 app.controller('hnewCtrl', ['$scope', '$http','$stateParams','$q','$state','$log','$location','toaster', function($scope, $http, $stateParams,$q,$state,$log,$location,toaster) {
-  
+  $scope.numPages = 5;
    var id = $stateParams.seller_id;
    $('#choosen').on('change', function(e) {
     // triggers when whole value changed
@@ -21,39 +21,21 @@ app.controller('hnewCtrl', ['$scope', '$http','$stateParams','$q','$state','$log
    });
    array.splice(indexno,1)
 };
-  $scope.showpricetextarea = function(product){
-     
-    if($('#pricetextarea'+product.product_id).hasClass('hidden')){
-      $('#pricetextarea'+product.product_id).removeClass('hidden');
-       $('#commenttextarea'+product.product_id).addClass('hidden')
-    }
-
-
-  };
-  $scope.showcommenttextarea = function(product){
-   
-    if($('#commenttextarea'+product.product_id).hasClass('hidden')){
-      $('#commenttextarea'+product.product_id).removeClass('hidden');
-       $('#pricetextarea'+product.product_id).addClass('hidden')
-    }
-
-
-  };
+ 
   $scope.selectproduct = function(product){
     //console.log($scope.product);
-    //console.log(product);
-//console.log($scope.bigCurrentPage);
+     
     var data = {
      sellers_id : id,
      products_id: product.product_id,
-     price: product.product_price,
-     items_per_box:items_per_box.product_items_per_box,
-     product_code :product.seller_product_code,      
+     price: product.price,
+     items_per_box: product.product_items_per_box,
+     seller_product_code :product.seller_product_code,      
      comments:product.product_comments,
-
+     minimum_boxes : product.minimum_boxes
 
     }
-   $http.post('../main_site/api/slim.php/sellers_products',data).then(function (resp) {
+   $http.post('../main_site/api/slim.php/shiningfloor/sellers_products',data).then(function (resp) {
      toaster.pop('success', 'Product Selected', 'Product added to Seller account');
      $scope.findAndRemove($scope.product, "product_id" ,product['product_id']);
    
@@ -61,97 +43,35 @@ app.controller('hnewCtrl', ['$scope', '$http','$stateParams','$q','$state','$log
      $scope.bigTotalItems--;
     // console.log($scope.bigCurrentPage);
     $scope.data = resp;
+//    console.log($scope.data);
 //console.log(resp);
 
 });
-    // if($('#commenttextarea'+product.product_id).hasClass('hidden')){
-    //   $('#commenttextarea'+product.product_id).removeClass('hidden');
-    //    $('#pricetextarea'+product.product_id).addClass('hidden')
-    // }
-
+     
 
   };
    $scope.bigCurrentPage = 1;
   
 var deferredAbort = $q.defer();
-$http.get('api/shiningfloor.php/sellers/'+id).then(function (resp) {
+$http.get('../main_site/api/slim.php/shiningfloor/sellers/'+id).then(function (resp) {
 $scope.seller = resp.data.aaData;
 
 });
     
      $scope.totalItems = 64;
-    
-
-    // $scope.setPage = function (pageNo) {
-    // 	console.log("dasda");
-    //   $scope.currentPage = pageNo;
-    // };
-
-  //   $scope.pageChanged = function(query) {
-  //      $('select').trigger("chosen:updated");
-  //     var url = '../main_site/api/slim.php/shiningfloor/chooseproducts/'+id+'?pageNo='+$scope.bigCurrentPage;
-  //     if(query){
-  //   if(query.name != undefined ) {
-  //    url = url + '&name='+query.name; 
-     
-  //   }
-  //   if(query.finish) {
-  //    url = url + '&finish='+query.finish; 
-     
-  //   }
-  //   if(query.application) {
-  //    url = url + '&applicaion='+query.application; 
-     
-  //   }}
-  //   	$http.get(url,{timeout : deferredAbort.promise}).
-  // then(function(response) {
-  //   $scope.product = response.data.aaData.data;
-  //   $scope.bigTotalItems = response.data.aaData.totalresults ;
-     
-  // });
-  //     $log.info('Page changed to: ' + $scope.bigCurrentPage);
-  //   };
+   
 
     $scope.maxSize = 10;
-   
-  //    $scope.search = function(query){
-  //   $('select').trigger("chosen:updated");
-  //  // console.log("clicked");
-  //   $scope.bigCurrentPage = 1;
-  //   var url = 'api/shiningfloor.php/chooseproducts/'+id+'?page='+$scope.bigCurrentPage;
-  //   if(query.name != undefined ) {
-  //    url = url + '&name='+query.name; 
-     
-  //   }
-  //   if(query.finish != undefined ) {
-  //    url = url + '&finish='+query.finish; 
-     
-  //   }
-  //   if(query.application != undefined ) {
-  //    url = url + '&application='+query.application; 
-     
-  //   }
-  //   $http.get(url).
-  // then(function(response) {
-  //   $scope.product = response.data.aaData.data;
-  //   $scope.bigTotalItems = response.data.aaData.totalresults ;
-  //   });
-   
-  //  }
-     $scope.bigCurrentPage = 1;
+    
+// $http.get('../main_site/api/slim.php/shiningfloor/chooseproducts/'+id+'?pageNo='+$scope.bigCurrentPage).
+//   then(function(resp) {
 
-// 'api/slim.php/shiningfloor/products/' + 'search/'
-// console.log($stateParams);
-$http.get('../main_site/api/slim.php/shiningfloor/chooseproducts/'+id+'?pageNo='+$scope.bigCurrentPage,{timeout : deferredAbort.promise}).
-  then(function(resp) {
-
-    $scope.product = resp.data.product_data;
-    $scope.bigTotalItems = resp.data.totalResults;
-    $scope.start = resp.data.start;
-    $scope.last = resp.data.last;  
-  });
-
- 
+//     $scope.product = resp.data.product_data;
+//     $scope.bigTotalItems = resp.data.totalResults;
+// // console.log($scope.bigTotalItems);
+//     $scope.start = resp.data.start;
+//     $scope.last = resp.data.last;  
+//   });
 
      $scope.totalItems = 64;
     
@@ -177,13 +97,16 @@ $http.get('../main_site/api/slim.php/shiningfloor/chooseproducts/'+id+'?pageNo='
 //        console.log(url);
         return url;
     };
-$scope.selectedcategory = function(value){
-  for(i=0;i<$scope.selectedCategory.length;i++)
-    $scope.selectedCategory[i] = false ;
-
-  $scope.selectedCategory[value] = true ;
     
-}
+      $scope.selectedcategory = function(value){
+        for(i=0;i<$scope.selectedCategory.length;i++){
+          console.log(i + ' ' + value);
+          if( i !=value)
+            $scope.selectedCategory[i] = false ;
+          }
+        $scope.selectedCategory[value] = !$scope.selectedCategory[value] ;
+          
+      }
 
      $scope.updateUrlChanges = function() {
        
@@ -238,25 +161,17 @@ $scope.selectedcategory = function(value){
        
  $scope.requestToSearchAPI = function() {
        final=''; 
-
-       if (typeof $location.search().query!= 'undefined') {
-
-            if(typeof $location.search().category == 'undefined')
-              final = 'all/'+ $location.search().query  ;
-            else
-              final = $location.search().category + '/' + $location.search().query ;             
-        }  
-        else {
-              if (typeof $location.search().category!= 'undefined')
-                  final =  $location.search().category + '/';             
-      }
+ 
 
         final += $location.url().replace($location.path(), '') ;
-        
+        console.log(final)
+//        
 //        console.log(final);
-        $http.get('../main_site/api/slim.php/shiningfloor/products/' + 'search/'   + final).then(function(resp) {
+      $http.get('../main_site/api/slim.php/shiningfloor/admin/chooseproducts/'+id+final).then(function(resp) {
             $scope.product = resp.data.product_data;
             $scope.bigTotalItems = resp.data.totalResults;
+            console.log($scope.bigTotalItems);
+            $scope.totalPages = resp.data.totalResults;
             $scope.start = resp.data.start;
             $scope.last = resp.data.last;         
 
@@ -321,11 +236,12 @@ $scope.selectedcategory = function(value){
     $scope.findandselect($scope.priceFilters, 'price_range', $scope.selectedPrices, $scope.FilterUrl);
     $scope.findandselect($scope.colors, 'color', $scope.selectedColors, $scope.FilterUrl)
     $scope.pageNo = $scope.findpageNo();
-    $scope.temp =  $scope.pageNo;
+    $scope.bigCurrentPage =  $scope.pageNo;
     if ($scope.pageNo == undefined) {
         
         $location.search('pageNo', '1');
     }
+
     $location.search('query',null);
     $scope.searchQuery='';
     $scope.requestToSearchAPI();

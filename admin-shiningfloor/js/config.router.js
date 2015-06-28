@@ -10,7 +10,7 @@ angular.module('app')
                 $rootScope.$state = $state;
 
                 $rootScope.$stateParams = $stateParams;
-
+                var routesPermission = ['/signup'];
                 $rootScope.isLoggedIn = false;
                 $rootScope.processGoingOn = false;
 
@@ -21,23 +21,24 @@ angular.module('app')
                     var connected = LoginService.isLoggedIn();
                     connected.then(function(msg) {
 
-
                         if (msg.data) {
                             //  user is logged in and it will also handle the page refresh
                             $rootScope.isLoggedIn = true;
+                            console.log(msg.data);
+                            // $location.path('/home');
                         } else {
 
-                            // user is not logged in and now check is the user is on login required page or not
-                            // if not, redirect him to the login page
-                            $location.path('/lockme');
-                            // if ((routesPermission.indexOf($state.current.name) != -1)) {
-                            //    
-                            // }
+                             if ($location.path().indexOf('access/signup') != 1) {
+                                console.log("not logged in");
+                               $location.path('/access/signin');
+
+                            }
 
                         }
                     })
 
                 });
+
                 $rootScope.$on('$stateChangeSuccess', function() {
 
                 });
@@ -55,6 +56,7 @@ angular.module('app')
                         abstract: true,
                         url: '/app',
                         templateUrl: 'tpl/app.html'
+
                     })
                     .state('app.dashboard-v1', {
                         url: '/dashboard-v1',
@@ -74,18 +76,22 @@ angular.module('app')
                     })
                     .state('app.seller.details', {
                         url: '/details/:seller_id',
-                        templateUrl: 'tpl/tenant_profile.html',
+                        templateUrl: 'tpl/seller_profile.html',
                         resolve: {
-                            deps: ['uiLoad',
-                                function(uiLoad) {
-                                    return uiLoad.load('js/controllers/tenant.js');
+                            deps: ['$ocLazyLoad', 'uiLoad',
+                                function($ocLazyLoad, uiLoad) {
+                                    return $ocLazyLoad.load('toaster').then(
+                                        function() {
+                                            return uiLoad.load(
+                                                ['http://www.appelsiini.net/projects/lazyload/jquery.lazyload.js?v=1.9.1',
+                                                'js/controllers/seller.js'])
+                                        }
+                                    );
                                 }
                             ]
                         }
+
                     })
-
-
-
 
                 // table
 
@@ -96,37 +102,31 @@ angular.module('app')
 
                 .state('app.all.houses', {
                         url: '/allproducts',
-                        templateUrl: 'tpl/all_houses.html',
+                        templateUrl: 'tpl/all_products.html',
                         resolve: {
                             deps: ['$ocLazyLoad',
                                 function($ocLazyLoad) {
-                                    return $ocLazyLoad.load(['js/controllers/allhouses.js']);
+                                    return $ocLazyLoad.load(['js/controllers/all_products.js']);
                                 }
                             ]
                         }
                     })
-                
-              //   .state('app.all.houses.type', {
-              //     url: '/:query',
-              //     templateUrl: 'tpl/all_houses.html',
-              //     reloadOnSearch:false,
-                  
-              //      resolve: {
-              //               deps: ['$ocLazyLoad',
-              //                   function($ocLazyLoad) {
-              //                       return $ocLazyLoad.load(['js/controllers/allhouses.js']);
-              //                   }
-              //               ]
-              //           }                  
-              // })
+
 
                 .state('app.all.selectedproducts', {
                         url: '/selectedproducts/:seller_id',
                         templateUrl: 'tpl/selected_products.html',
+
                         resolve: {
-                            deps: ['$ocLazyLoad',
-                                function($ocLazyLoad) {
-                                    return $ocLazyLoad.load(['js/controllers/selected_products.js']);
+                            deps: ['$ocLazyLoad', 'uiLoad',
+                                function($ocLazyLoad, uiLoad) {
+                                    return $ocLazyLoad.load('toaster').then(
+                                        function() {
+                                            return uiLoad.load(
+                                                ['http://www.appelsiini.net/projects/lazyload/jquery.lazyload.js?v=1.9.1',
+                                                'js/controllers/selected_products.js'])
+                                        }
+                                    );
                                 }
                             ]
                         }
@@ -147,16 +147,16 @@ angular.module('app')
                                 }
                             ]
                         }
-                        
+
                     })
 
                     .state('app.all.tenants', {
                         url: '/sellers',
-                        templateUrl: 'tpl/all_tenants.html',
+                        templateUrl: 'tpl/all_sellers.html',
                         resolve: {
                             deps: ['$ocLazyLoad',
                                 function($ocLazyLoad) {
-                                    return $ocLazyLoad.load(['js/controllers/alltenants.js']);
+                                    return $ocLazyLoad.load(['js/controllers/all_sellers.js']);
                                 }
                             ]
                         }
@@ -172,7 +172,7 @@ angular.module('app')
                                     return $ocLazyLoad.load('toaster').then(
                                         function() {
                                             return uiLoad.load(
-                                                'js/controllers/form.js')
+                                                'js/controllers/add_seller.js')
                                         }
                                     );
                                 }
@@ -180,6 +180,15 @@ angular.module('app')
                         }
 
                     })
+                 .state('app.add.tenants', {
+                        url: '/sellers',
+                        templateUrl: 'tpl/add_seller.html'
+                    })
+                 .state('app.add.houses', {
+                        url: '/houses',
+                        templateUrl: 'tpl/add_houses.html'
+                    })
+
                     .state('app.update', {
                         url: '/update',
                         template: '<div ui-view class="fade-in"></div>',
@@ -189,14 +198,14 @@ angular.module('app')
                     })
                     .state('app.update.tenants', {
                         url: '/sellers/:seller_id',
-                        templateUrl: 'tpl/update_tenants.html',
+                        templateUrl: 'tpl/update_sellers.html',
                         resolve: {
                             deps: ['$ocLazyLoad', 'uiLoad',
                                 function($ocLazyLoad, uiLoad) {
                                     return $ocLazyLoad.load('toaster').then(
                                         function() {
                                             return uiLoad.load(
-                                                'js/controllers/updatetenant.js')
+                                                'js/controllers/updateseller.js')
                                         }
                                     );
                                 }
@@ -235,14 +244,7 @@ angular.module('app')
                             ]
                         }
                     })
-                    .state('app.add.tenants', {
-                        url: '/sellers',
-                        templateUrl: 'tpl/add_tenants.html'
-                    })
-                    .state('app.add.houses', {
-                        url: '/houses',
-                        templateUrl: 'tpl/add_houses.html'
-                    })
+
                     // form
                     .state('app.form', {
                         url: '/form',
@@ -312,7 +314,7 @@ angular.module('app')
                 .state('app.verify.tenants', {
                         url: '/tenants',
                         templateUrl: 'tpl/verify_tenants.html'
-                        
+
                     })
                     .state('app.deadlines.tenants', {
                         url: '/tenants',
@@ -347,7 +349,7 @@ angular.module('app')
                     })
                     .state('access.signin', {
                         url: '/signin',
-                        templateUrl: 'tpl/page_signin.html',
+                        templateUrl: 'tpl/admin_signin.html',
                         resolve: {
                             deps: ['uiLoad',
                                 function(uiLoad) {
@@ -359,10 +361,16 @@ angular.module('app')
                     .state('access.signup', {
                         url: '/signup',
                         templateUrl: 'tpl/page_signup.html',
+
                         resolve: {
-                            deps: ['uiLoad',
-                                function(uiLoad) {
-                                    return uiLoad.load(['js/controllers/signup.js']);
+                            deps: ['$ocLazyLoad', 'uiLoad',
+                                function($ocLazyLoad, uiLoad) {
+                                    return $ocLazyLoad.load('toaster').then(
+                                        function() {
+                                            return uiLoad.load(
+                                                'js/controllers/signup.js')
+                                        }
+                                    );
                                 }
                             ]
                         }

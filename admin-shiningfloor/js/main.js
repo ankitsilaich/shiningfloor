@@ -3,8 +3,8 @@
 /* Controllers */
 
 angular.module('app')
-  .controller('AppCtrl', ['$scope', '$translate', '$localStorage', '$window','$http','$state', 
-    function(              $scope,   $translate,   $localStorage,   $window, $http ,$state ) {
+  .controller('AppCtrl', ['$scope', '$translate', '$localStorage', '$window','$http','$state','$rootScope', 
+    function(              $scope,   $translate,   $localStorage,   $window, $http ,$state,$rootScope ) {
       // add 'ie' classes to html
       var isIE = !!navigator.userAgent.match(/MSIE/i);
       isIE && angular.element($window.document.body).addClass('ie');
@@ -57,15 +57,16 @@ angular.module('app')
       $scope.lang = { isopen: false };
       $scope.langs = {en:'English', de_DE:'German', it_IT:'Italian',hi_HI:'Hindi'};
       $scope.selectLang = $scope.langs[$translate.proposedLanguage()] || "English";
+
       $scope.logout = function(){
-      $http.get('api/shiningfloor.php/auth/logout/admin').
+
+      $http.get('../main_site/api/slim.php/auth/logout/admin').
         success(function(data, status) {
-
-           $state.go('lockme');
-
-
+            
+            $rootScope.isLoggedIn = false;
+             
+           $state.go('access.signin');
         });
-
 
       }
       $scope.setLang = function(langKey, $event) {
