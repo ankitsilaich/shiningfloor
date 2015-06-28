@@ -17,7 +17,7 @@ app.controller('FormDemoCtrl', ['$scope','$http','toaster','$timeout' ,'$state',
               comments:""
           };
 
-   $http.post('../api/slim.php/shiningfloor/sellers',seller).
+   $http.post('../api/slim.php/shiningfloor/admin/addseller',seller).
         success(function(data, status) {
             toaster.pop('success', 'Successfully added', 'Redirecting to all sellers ...');
           $scope.status = status;
