@@ -1,7 +1,7 @@
 app.controller('tenantCtrl', ['$scope', '$http','$modal','$stateParams','$log','$filter','$state', function($scope, $http, $modal, $stateParams,$log,$filter,$state) {
 //    var id = $stateParams.seller_id;
 //    $scope.url = id;
-   $http.get('../main_site/api/slim.php/shiningfloor/seller/info').then(function (resp) {
+   $http.get('../api/slim.php/shiningfloor/seller/info').then(function (resp) {
 
   $scope.seller = resp.data.seller_data;
   

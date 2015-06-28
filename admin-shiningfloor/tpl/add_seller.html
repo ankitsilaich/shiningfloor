@@ -4,7 +4,7 @@
 </div>
 <div class="wrapper-md" ng-controller="FormDemoCtrl">
   <div class="row">
-    
+
     <div class="col-sm-12">
       <div class="panel panel-default">
         <div class="panel-heading font-bold">Fill All the Details</div>
@@ -26,12 +26,19 @@
             </div>
 
             <div class="form-group">
+              <label class="col-lg-2 control-label">Seller Password</label>
+              <div class="col-lg-10">
+                <input type="password" class="form-control" placeholder="password" ng-model="seller.password">
+              </div>
+            </div>
+
+            <div class="form-group">
               <label class="col-lg-2 control-label">Seller Address</label>
               <div class="col-lg-10">
                 <input type="text" class="form-control" placeholder="address" ng-model="seller.address">
               </div>
             </div>
-            
+
             <div class="form-group">
               <label class="col-lg-2 control-label">Seller Phone</label>
               <div class="col-lg-10">
@@ -50,10 +57,10 @@
                   <textarea class="form-control ng-pristine ng-valid ng-touched" rows="6" placeholder="Type additional information about seller here" ng-model="seller.comments"></textarea>
                 </div>
                 </div>
-             
 
-             
-            
+
+
+
             <div class="form-group">
               <div class="col-lg-offset-2 col-lg-10">
                 <div class="checkbox">
@@ -67,12 +74,12 @@
               <div class="col-lg-offset-2 col-lg-10">
                 <button type="submit" class="btn btn-sm btn-info" ng-click="submitform(seller)" >Add Seller</button>
               </div>
-            </div> 
+            </div>
           </form>
         </div>
       </div>
     </div>
   </div>
- 
-  
+
+
 </div>

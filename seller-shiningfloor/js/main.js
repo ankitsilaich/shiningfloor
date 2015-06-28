@@ -60,7 +60,7 @@ angular.module('app')
 
       $scope.logout = function(){
 
-      $http.get('../main_site/api/slim.php/auth/logout/seller').
+      $http.get('../api/slim.php/auth/logout/seller').
         success(function(data, status) {
             
             $rootScope.isLoggedIn = false;

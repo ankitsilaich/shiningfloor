@@ -1,7 +1,7 @@
 app.controller('houseCtrl', ['$scope', '$http','$stateParams', function($scope, $http, $stateParams) {
-//  $http.get('../main_site/api/slim.php/shiningfloor/sellers').
+//  $http.get('../api/slim.php/shiningfloor/sellers').
     
- $http.get('../main_site/api/slim.php/shiningfloor/sellers').
+ $http.get('../api/slim.php/shiningfloor/sellers').
   success(function(data, status, headers, config) {
     $scope.seller = data.seller_data;
     console.log("data loaded");

@@ -35,7 +35,7 @@ app.controller('hnewCtrl', ['$scope', '$http','$stateParams','$q','$state','$log
      minimum_boxes : product.minimum_boxes
 
     }
-   $http.post('../main_site/api/slim.php/shiningfloor/seller/sellers_products',data).then(function (resp) {
+   $http.post('../api/slim.php/shiningfloor/seller/sellers_products',data).then(function (resp) {
      toaster.pop('success', 'Product Selected', 'Product added to Seller account');
      $scope.findAndRemove($scope.product, "product_id" ,product['product_id']);
    
@@ -53,7 +53,7 @@ app.controller('hnewCtrl', ['$scope', '$http','$stateParams','$q','$state','$log
    $scope.bigCurrentPage = 1;
   
 var deferredAbort = $q.defer();
-$http.get('../main_site/api/slim.php/shiningfloor/seller/info').then(function (resp) {
+$http.get('../api/slim.php/shiningfloor/seller/info').then(function (resp) {
 $scope.seller = resp.data.seller_data;
 
 });
@@ -63,7 +63,7 @@ $scope.seller = resp.data.seller_data;
 
     $scope.maxSize = 10;
     
-// $http.get('../main_site/api/slim.php/shiningfloor/chooseproducts/'+id+'?pageNo='+$scope.bigCurrentPage).
+// $http.get('../api/slim.php/shiningfloor/chooseproducts/'+id+'?pageNo='+$scope.bigCurrentPage).
 //   then(function(resp) {
 
 //     $scope.product = resp.data.product_data;
@@ -167,7 +167,7 @@ $scope.seller = resp.data.seller_data;
         console.log(final)
 //        
 //        console.log(final);
-      $http.get('../main_site/api/slim.php/shiningfloor/seller/chooseproducts'+ final).then(function(resp) {
+      $http.get('../api/slim.php/shiningfloor/seller/chooseproducts'+ final).then(function(resp) {
             $scope.product = resp.data.product_data;
             $scope.bigTotalItems = resp.data.totalResults;
             console.log($scope.bigTotalItems);

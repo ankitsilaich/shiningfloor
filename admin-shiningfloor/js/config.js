@@ -40,7 +40,7 @@ return $resource('api/index.php/subject/:subject_id', null,
     login: function(user, scope){
       // console.log(user);
       $rootScope.processGoingOn = true;
-      var $promise = $http.post('../main_site/api/slim.php/auth/process/admin', user);  // send data to server to user.php
+      var $promise = $http.post('../api/slim.php/auth/process/admin', user);  // send data to server to user.php
       $promise.then(function(msg){
         var responseData = msg.data;
         console.log(responseData);
@@ -70,7 +70,7 @@ return $resource('api/index.php/subject/:subject_id', null,
       });
     },
     isLoggedIn: function(){
-     var $checkSessionServer = $http.get('../main_site/api/slim.php/auth/process/admin');
+     var $checkSessionServer = $http.get('../api/slim.php/auth/process/admin');
       return $checkSessionServer;
     }
   }

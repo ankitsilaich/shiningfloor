@@ -1332,7 +1332,7 @@ $app->post('/shiningfloor/seller/sellers_products', $authenticate_seller($app),f
 
 // --------- Seller Info -------------
 
-$app->get('/shiningfloor/sellers(/:id)', function($id = null) use ($app, $db)
+$app->get('/shiningfloor/sellers(/:id)', $authenticate_admin($app),function($id = null) use ($app, $db)
 {
 
     if ($id == null) {

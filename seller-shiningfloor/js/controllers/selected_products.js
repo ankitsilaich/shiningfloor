@@ -3,7 +3,7 @@ app.controller('selectedCtrl', ['$scope', '$http','$stateParams','$q','$state','
 
 //var id = $stateParams.seller_id;
 
-  //   $http.get('../main_site/api/slim.php/shiningfloor/selectedproducts/'+id+'?page='+$scope.bigCurrentPage).
+  //   $http.get('../api/slim.php/shiningfloor/selectedproducts/'+id+'?page='+$scope.bigCurrentPage).
   // then(function(response) {
   //   $scope.product =  response.data.product_data ;
 
@@ -25,7 +25,7 @@ app.controller('selectedCtrl', ['$scope', '$http','$stateParams','$q','$state','
       $scope.deleteproduct = function(id){
          //console.log($scope.product);
          console.log('sssss');
-        $http.delete('../main_site/api/slim.php/shiningfloor/seller/deleteproduct/'+id).then(function (resp) {
+        $http.delete('../api/slim.php/shiningfloor/seller/deleteproduct/'+id).then(function (resp) {
           toaster.pop('success', 'Product Deleted', 'Sellers Products Updated');
           $scope.findAndRemove($scope.product, "product_id" ,id);
           $scope.bigTotalItems--;
@@ -45,7 +45,7 @@ app.controller('selectedCtrl', ['$scope', '$http','$stateParams','$q','$state','
      minimum_boxes : product.seller_minimum_boxes
     }
 
-   $http.put('../main_site/api/slim.php/shiningfloor/sellers/products/update_product',data).then(function (resp) {
+   $http.put('../api/slim.php/shiningfloor/sellers/products/update_product',data).then(function (resp) {
      toaster.pop('success', 'Product Selected', 'Product Informaton Updated');
   //   $scope.findAndRemove($scope.product, "product_id" ,product['product_id']);
 
@@ -143,7 +143,7 @@ $scope.requestToSearchAPI = function() {
       final='';
       final += $location.url().replace($location.path(), '') ;
 
-      $http.get('../main_site/api/slim.php/shiningfloor/seller/selectedproducts'+final).then(function(resp) {
+      $http.get('../api/slim.php/shiningfloor/seller/selectedproducts'+final).then(function(resp) {
             $scope.product = resp.data.product_data;
             $scope.bigTotalItems = resp.data.totalResults;
             console.log($scope.bigTotalItems);

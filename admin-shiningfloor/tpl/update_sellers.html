@@ -1,13 +1,13 @@
 <div class="bg-light lter b-b wrapper-md">
   <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
-  <h1 class="m-n font-thin h3">Update Seller</h1> 
+  <h1 class="m-n font-thin h3">Update Seller</h1>
 </div>
 <div class="wrapper-md" ng-controller="FormDemoCtrl">
   <div class="row">
-    
+
     <div class="col-sm-12">
       <div class="panel panel-default">
-        <div class="panel-heading font-bold"> Update all details here</div> 
+        <div class="panel-heading font-bold"> Update all details here</div>
         <div class="panel-body">
           <form class="bs-example form-horizontal" name="addTenant">
             <div class="form-group">
@@ -17,7 +17,7 @@
                 <span class="help-block m-b-none">Add a seller name</span>
               </div>
             </div>
-            
+
             <div class="form-group">
               <label class="col-lg-2 control-label">Seller Email</label>
               <div class="col-lg-10">
@@ -25,13 +25,14 @@
               </div>
             </div>
 
+ 
             <div class="form-group">
               <label class="col-lg-2 control-label">Seller Address</label>
               <div class="col-lg-10">
                 <input type="text" class="form-control" placeholder="address" ng-model="seller.address">
               </div>
             </div>
-            
+
             <div class="form-group">
               <label class="col-lg-2 control-label">Seller Phone</label>
               <div class="col-lg-10">
@@ -50,10 +51,10 @@
                   <textarea class="form-control ng-pristine ng-valid ng-touched" rows="6" placeholder="Type additional information about seller here" ng-model="seller.comments"></textarea>
                 </div>
                 </div>
-             
 
-             
-            
+
+
+
             <div class="form-group">
               <div class="col-lg-offset-2 col-lg-10">
                 <div class="checkbox">
@@ -67,12 +68,12 @@
               <div class="col-lg-offset-2 col-lg-10">
                 <button type="submit" class="btn btn-sm btn-info" ng-click="update(seller)" >Update Seller</button>
               </div>
-            </div> 
+            </div>
           </form>
         </div>
       </div>
     </div>
   </div>
- 
-  
+
+
 </div>

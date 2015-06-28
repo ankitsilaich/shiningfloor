@@ -12,11 +12,12 @@ app.controller('FormDemoCtrl', ['$scope','$http','toaster','$timeout' ,'$state',
               address : "",
               phone: "",
               email: "",
+              password: "",
               storename :"",
               comments:""
           };
 
-   $http.post('../main_site/api/slim.php/shiningfloor/sellers',seller).
+   $http.post('../api/slim.php/shiningfloor/sellers',seller).
         success(function(data, status) {
             toaster.pop('success', 'Successfully added', 'Redirecting to all sellers ...');
           $scope.status = status;

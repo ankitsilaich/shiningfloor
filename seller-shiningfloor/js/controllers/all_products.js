@@ -3,7 +3,7 @@ app.controller('hCtrl', ['$scope', '$http','$stateParams','$q','$state','$locati
     $scope.numPages = 5;
 // 'api/slim.php/shiningfloor/products/' + 'search/'
 console.log($stateParams);
-    $http.get('../main_site/api/slim.php/shiningfloor/products/search/?pageNo='+$scope.bigCurrentPage).
+    $http.get('../api/slim.php/shiningfloor/products/search/?pageNo='+$scope.bigCurrentPage).
   then(function(response) {
   
       $scope.product =  response.data.product_data ; 
@@ -114,7 +114,7 @@ $scope.requestToSearchAPI = function() {
         final += $location.url().replace($location.path(), '') ;
         
 //        console.log(final);
-        $http.get('../main_site/api/slim.php/shiningfloor/products/' + 'search/'   + final).then(function(resp) {
+        $http.get('../api/slim.php/shiningfloor/products/' + 'search/'   + final).then(function(resp) {
             $scope.product = resp.data.product_data;
             $scope.bigTotalItems = resp.data.totalResults;
             $scope.start = resp.data.start;
