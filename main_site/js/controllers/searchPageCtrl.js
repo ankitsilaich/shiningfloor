@@ -1,4 +1,4 @@
-app.controller('searchPageCtrl', ['$scope', '$http', '$stateParams', 'ngCart', '$filter', '$state', '$location','$timeout','$location', function($scope, $http, $stateParams, ngCart, $filter, $state, $location,$timeout,$location) {
+app.controller('searchPageCtrl', ['$scope', '$http', '$stateParams', 'ngCart', '$filter', '$state', '$location', function($scope, $http, $stateParams, ngCart, $filter, $state, $location) {
 $scope.makeUrl = function(selected, original) {
         //this function is used to make the url
         //console.log(selected);
@@ -23,7 +23,7 @@ $scope.makeUrl = function(selected, original) {
         $scope.requestToSearchAPI();}
     };
      $scope.requestToSearchAPI = function() {
-
+       
         if ($stateParams.query) {
             final = $stateParams.query + $location.url().replace($location.path(), '');
         } else final = $location.url().replace($location.path(), '');
@@ -32,7 +32,7 @@ $scope.makeUrl = function(selected, original) {
             $scope.totalResults = resp.data.totalResults;
             $scope.start = resp.data.start;
             $scope.last = resp.data.last;
-
+            
         });
     };
  $scope.updateUrlChanges = function() {
@@ -48,18 +48,18 @@ $scope.makeUrl = function(selected, original) {
             $location.search('brand_name', $scope.brandUrl);
         } else $location.search('brand_name', null);
         $scope.requestToSearchAPI();
-    };
+    };   
   // $scope.pageChange = function(pageNo){
    //$location.search('pageNo',pageNo);
      //    $scope.updateUrlChanges();
        // $scope.requestToSearchAPI();
 
 
-  //}
-
+  //}  
+ 
     $scope.findandselect = function(allitems, filter, emptyitems, url) {
         //this function is used to select the already selected filters on refreshing the page
-
+      
         if (url[filter]) {
             var items = url[filter].split(',');
             angular.forEach(allitems, function(item, i) {
@@ -70,9 +70,9 @@ $scope.makeUrl = function(selected, original) {
             });
          console.log(emptyitems)
         }
-
+      
     };
-
+    
     $scope.findpageNo = function() {
         var params = $location.search();
         if (params['pageNo']) {
@@ -99,18 +99,18 @@ $scope.makeUrl = function(selected, original) {
     $scope.findandselect($scope.priceFilters, 'price_range', $scope.selectedPrices, $scope.FilterUrl);
     $scope.findandselect($scope.colors, 'color', $scope.selectedColors, $scope.FilterUrl)
     $scope.pageNo = $scope.findpageNo();
-
+     
     $scope.temp =  $scope.pageNo;
-
-
+   
+   
     if ($scope.pageNo == undefined) {
-
+        
         $location.search('pageNo', '1');
     }
     $scope.requestToSearchAPI();
-    // url for changing product in search page.
+    // url for changing product in search page. 
     $scope.url = $stateParams.query;
-    //console.log($scope.url);
+    //console.log($scope.url); 
     $scope.selectSearchCategory = function() {
         if ($stateParams.routeId == 'tiles')
             $scope.searchCategory = 'Tiles';
@@ -142,14 +142,14 @@ $scope.makeUrl = function(selected, original) {
         $scope.requestToSearchAPI();
         $scope.searchQuery.text = '';
     };
-
+   
     $scope.resetColors = function() {
         $scope.selectedColors = [false, false, false, false, false, false, false, false, false];
          $scope.updateUrlChanges();
         $scope.requestToSearchAPI();
     };
-
-
+  
+    
     $scope.resetPrices = function() {
         $scope.selectedPrices = [false, false, false];
         $scope.updateUrlChanges();
@@ -178,21 +178,6 @@ $scope.makeUrl = function(selected, original) {
             $("#leftSide").addClass("expanded");
             $(".logo").addClass("expanded");
         }
-    };
-    $scope.fetchProduct = function(product){
-
-          $scope.showLoader = false;
-          $scope.popupProduct = {}
-          $scope.showpopup = true;
-            $scope.popupProduct = product;
-      // $timeout(function(){
-      //     $scope.showLoader = false;
-      //
-      // }, 3000);
-
-
-
-
     };
     $scope.showHideColors = $scope.showHidePrices = $scope.showHideBrands = 1;
     $scope.showSuggestions = function() {

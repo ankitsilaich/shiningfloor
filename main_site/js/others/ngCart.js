@@ -39,7 +39,7 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         this.addItem = function (id, name, price, quantity, data) {
-console.log("called");
+
             var inCart = this.getItemById(id);
 
             if (typeof inCart === 'object'){
@@ -155,7 +155,7 @@ console.log("called");
         };
 
         this.empty = function () {
-
+            
             $rootScope.$broadcast('ngCart:change', {});
             this.$cart.items = [];
             localStorage.removeItem('cart');
@@ -258,10 +258,10 @@ console.log("called");
                     this._quantity  += quantityInt;
                       // console.log($("#counter").text()) ;
                      $(".counter").html(parseInt($("#counter").text())+quantity);
-
+                    
                 } else {
                     this._quantity = quantityInt;
-
+                   
                 }
                 if (this._quantity < 1) this._quantity = 1;
 
@@ -271,7 +271,7 @@ console.log("called");
             }
 
                     // ngCart.items.splice(index, 1);
-
+                    
                     // var count = 0, i = 0;
                     // for(i=0;i<ngCart.items.length;i++)
                     // {
@@ -292,7 +292,7 @@ console.log("called");
         };
 
         item.prototype.getData = function(){
-            if (this._data){
+            if (this._data){ 
                 return this._data;}
             else $log.info('This item has no data');
         };
@@ -423,15 +423,6 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
             scope: {},
             transclude: true,
             templateUrl: 'template/ngCart/mycart.html'
-        };
-    }])
-    .directive('ngcartSummarycart', [function(){
-        return {
-            restrict : 'E',
-            controller : 'CartController',
-            scope: {},
-            transclude: true,
-            templateUrl: 'template/ngCart/summarycart.html'
         };
     }])
     .directive('ngcartCheckout', [function(){

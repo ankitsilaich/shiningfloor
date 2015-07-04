@@ -2,7 +2,7 @@
 
 require_once 'NotORM.php';
 
-$pdo = new PDO('mysql:dbname=shiningfloor;host=localhost', 'root', '');
+$pdo = new PDO('mysql:dbname=shiningfloor;host=localhost', 'shiningfloor', 'Shiningfloor');
 
 
 $db = new NotORM($pdo);
