@@ -1,0 +1,97 @@
+{
+    "categories": [{
+        "image": "images/prop/1-1.jpg",
+        "details": {
+            "type": "For Sale"
+        , 
+            "price": "sdsff",
+       
+
+            "address": "hhh",
+       
+            "title": "abc",
+       
+            "rating": "abc"
+        }
+
+
+    }, {
+        "image": "images/prop/2-1.jpg",
+        "details": {
+            "type": "For Sale"
+        , 
+            "price": "sdsff",
+       
+
+            "address": "hhh",
+       
+            "title": "abc",
+       
+            "rating": "abc"
+        }
+
+    }, {
+        "image": "images/prop/3-1.jpg",
+         "details": {
+            "type": "For Sale"
+        , 
+            "price": "sdsff",
+       
+
+            "address": "hhh",
+       
+            "title": "abc",
+       
+            "rating": "abc"
+        }
+
+    }, {
+        "image": "images/prop/4-1.jpg",
+        "details": {
+            "type": "For Sale"
+        , 
+            "price": "sdsff",
+       
+
+            "address": "hhh",
+       
+            "title": "abc",
+       
+            "rating": "abc"
+        }
+
+
+    }, {
+        "image": "images/prop/5-1.jpg",
+        "details": {
+            "type": "For Sale"
+        , 
+            "price": "sdsff",
+       
+
+            "address": "hhh",
+       
+            "title": "abc",
+       
+            "rating": "abc"
+        }
+
+
+    }, {
+        "image": "images/prop/1-1.jpg",
+        "details": {
+            "type": "For BEEP"
+        , 
+            "price": "sdsff",
+       
+
+            "address": "hhh",
+       
+            "title": "abc",
+       
+            "rating": "abc"
+        }
+
+
+    }]
+}

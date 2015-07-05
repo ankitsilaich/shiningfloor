@@ -36,7 +36,15 @@ angular.module('app')
                           'vendor/jquery/jvectormap/jquery-jvectormap-us-aea-en.js',
                           'vendor/jquery/jvectormap/jquery-jvectormap.css'],
       footable:       ['vendor/jquery/footable/footable.all.min.js',
-                          'vendor/jquery/footable/footable.core.css']
+                          'vendor/jquery/footable/footable.core.css'],
+      revolution:       ['vendor/jquery/rs-plugin/js/jquery.themepunch.plugins.min.js',
+                          'vendor/jquery/rs-plugin/js/jquery.themepunch.revolution.min.js',
+                          'vendor/jquery/rs-plugin/css/settings.css'],
+      bxSlider: ['vendor/jquery/bxslider/jquery.bxslider.css',
+                 'vendor/jquery/bxslider/jquery.bxslider.min.js'],
+      owlCarousel: ['vendor/jquery/owl/owl.carousel.min.js','vendor/jquery/owl/owl.carousel.css','vendor/jquery/owl/owl.theme.css','vendor/jquery/owl/owl.transitions.css'],
+      lazyload : ['http://www.appelsiini.net/projects/lazyload/jquery.lazyload.js?v=1.9.1']                               
+      
       }
   )
   // oclazyload config

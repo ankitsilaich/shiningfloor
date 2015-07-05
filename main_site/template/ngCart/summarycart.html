@@ -1,0 +1,49 @@
+<div class="col-md-3 col-sm-4 col-xs-12">
+						<div class="checkout_right">
+												<h4>Review of Your Order</h4>
+
+																<div class="product_form_total">
+																				<div class="c_main_item">
+																									<p>Product</p>
+																										<span>Total</span>
+																				</div>
+																				<div class="c_single_item" ng-repeat="item in ngCart.getCart().items track by $index">
+																															<p>{{ item.getName() }} x {{ item.getQuantity() | number }}</p>
+																																			<span>Rs. {{ item.getTotal() }}</span>
+																				</div>
+																				<div class="c_single_item sp_single_item" >
+
+																											</div>
+
+																				<div class="c_single_item" >
+																												<p>subtotal</p>
+																												<span>Rs. {{ ngCart.totalCost()  }}</span>
+																											</div>
+
+
+																												<div class="c_single_item sp_single_item">
+																													<p>Shipping Charge</p>
+																													<span>Free</span>
+																												</div>
+																												<div class="c_total_item sp_single_item">
+																													<p>Order Total</p>
+																													<span>Rs. {{ ngCart.totalCost()  }}</span>
+																												</div>
+			<div class="c_payment">
+				<p>Select Payment Method</p>
+				<select class="selectpicker sel_state">
+					<option>Direct Bank Transfer</option>
+					<option>Wire Transfer</option>
+					<option>VISA</option>
+				</select>
+			</div>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox"> I have Read & Accept <span>Terms & Conditions</span>
+				</label>
+			</div>
+			<input type="submit" value="Place order now"/>
+		</div>
+	</div>
+</div>
+</div>

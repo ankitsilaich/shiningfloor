@@ -1,0 +1,5 @@
+[18-Jun-2015 13:18:13 UTC] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES)' in /home/iti13iti/public_html/ankitsilaich.in/main_site/api/slim.php:5
+Stack trace:
+#0 /home/iti13iti/public_html/ankitsilaich.in/main_site/api/slim.php(5): PDO->__construct('mysql:dbname=sh...', 'root', 'sahil')
+#1 {main}
+  thrown in /home/iti13iti/public_html/ankitsilaich.in/main_site/api/slim.php on line 5

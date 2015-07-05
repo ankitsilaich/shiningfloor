@@ -1,0 +1,305 @@
+<div ng-controller="productPageCtrl">
+        <div id="hero-container">
+                    <ul class="cb-slideshow">
+                        <li><span></span></li>
+                        <li><span></span></li>
+                        <li><span></span></li>
+                        <li><span></span></li>
+                        <li><span></span></li>
+                        <li><span></span></li>
+                    </ul>
+
+
+         <div data-ng-include=" 'tpl/blocks/header.html' " ng-controller="pageCtrl">
+
+          </div>           
+
+            <div class="home-caption" >
+                <div class="home-title">{{mainTagline}}</div>
+                <div class="home-subtitle">  {{subtitle}}</div>
+                <a href class="btn btn-lg btn-green" ng-click="scrollToProducts()"> Start Exploring</a>
+            </div>
+            <div class="search-panel">
+                <form class="form-inline" role="form" ng-controller = "filterCtrl">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="city" placeholder="City" autocomplete="off">
+                    </div>
+                    <div class="form-group hidden-xs adv">
+                        <a href data-toggle="dropdown" class="btn btn-white dropdown-toggle">
+                            <span class="dropdown-label">{{selectedProduct}}</span> <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-select">
+
+                            <li ng-repeat="product in products" ng-click="selectProduct(product)" ng-class="{'active' : product.selected}" >
+                                <a href> {{product.product_name}}</a> </li>
+
+                        </ul>
+                    </div>
+                    <div class="form-group hidden-xs adv">
+                        
+                        <a href data-toggle="dropdown" class="btn btn-white dropdown-toggle">
+                            <span class="dropdown-label">{{selectedLocation}} </span> <span class="caret"></span>
+                        </a>
+
+
+                        <ul class="dropdown-menu dropdown-select">
+
+                            <li ng-repeat="location in locations" ng-click="selectLocation(location)" ng-class="{'active' : location.selected}" >
+                                <a href> {{location.location}}</a> </li>
+
+                        </ul>
+                    </div>
+                    <div class="form-group hidden-xs adv">
+                        <div class="input-group">
+
+                            <div class="input-group-addon"> ₹ </div>
+                            <input data-toggle="dropdown"  class="form-control price dropdown-label " type="text" placeholder="₹ {{budgets[0]}}K"></input>
+                                
+                           
+                        
+                                    <!--<a href class="btn btn-white dropdown-toggle">
+                                       
+                                    </a>-->
+
+                                    <ul class="dropdown-menu dropdown-select">
+
+                                        <li ng-repeat="budget in budgets" ng-click="selectbudget(budget)" ng-class="{'active' : budget.selected}" >
+                                            <a href>₹ {{budget}}K </a> </li>
+                                    </ul>
+
+                            
+
+                        </div>
+                    </div>
+                    
+                    <div class="form-group hidden-xs adv">
+                   <div class="input-group">
+
+                            <div class="input-group-addon"> ₹ </div>
+                            <input   class="form-control price dropdown-label " type="text" placeholder="₹ {{budgets[0]}}K" ng-click="dropdownHandle()"></input>
+                        
+                                    <!--<a href class="btn btn-white dropdown-toggle">
+                                       
+                                    </a>-->
+
+                                     <ul class="dropdown-menu dropdown-select" id="dropdowndisplay">
+                                        
+
+                                        <li ng-repeat="budget in budgets" ng-click="selectbudget(budget)" ng-class="{'active' : budget.selected}" >
+                                            <a href>₹ {{budget}}K </a> </li>
+                                    </ul> 
+                        </div>
+
+                       
+
+
+                    </div>
+
+
+
+                    <div class="form-group hidden-xs adv">
+                        <div class="checkbox custom-checkbox"><label><input type="checkbox"><span class="fa fa-check"></span> For Rent</label></div>
+                    </div>
+                    <div class="form-group hidden-xs adv">
+                        <div class="checkbox custom-checkbox"><label><input type="checkbox"><span class="fa fa-check"></span> For Sale</label></div>
+                    </div>
+                    <div class="form-group">
+
+                        <a ui-sref="app.search.type({routeId : rID})" class="btn btn-green isThemeBtn">Search  </a>
+                        <a href="#" class="btn btn-o btn-white pull-right visible-xs" id="advanced">Advanced Search <span class="fa fa-angle-up"></span></a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="highlight">
+            <div class="h-title osLight">Find your new place with Reales</div>
+            <div class="h-text osLight">Fusce risus metus, placerat in consectetur eu, porttitor a est sed sed dolor lorem cras adipiscing</div>
+        </div>
+
+        <!-- Content -->
+
+        <div class="home-wrapper">
+            <div class="home-content"  ng-controller = "categoryCtrl">
+                
+                <div  ng-show="isRecentProductSection()">
+                    <h2 class="osLight" id = "ourProducts" >Recently Listed Properties </h2>
+
+                    <div class="row pb40" ng-show="isRecentProductSection()"  ng-click="scrollToTop()">
+                        <div ng-repeat="category in categories" class="{col-xs-12 col-sm-6 col-md-4 col-lg-4}">
+                            <a ui-sref="app.home" class="propWidget-2">
+                                <div class="fig">
+                                    <img ng-src="{{category.image}}">
+                                    <img class="blur" src="images/prop/1-1.png" alt="Modern Residence in New York">
+                                    <div class="opac"></div>
+                                    <div class="priceCap osLight"><span>{{category.details.price}}</span></div>
+                                    <div class="figType">{{category.details.type}}</div>
+                                    <h3 class="osLight">{{category.details.title}}</h3>
+                                    <div class="address">{{category.details.address}}</div>
+                                    <ul class="rating">
+                                        <li><span class="fa fa-star star-1"></span></li>
+                                        <li><span class="fa fa-star star-2"></span></li>
+                                        <li><span class="fa fa-star star-3"></span></li>
+                                        <li><span class="fa fa-star star-4"></span></li>
+                                        <li><span class="fa fa-star-o star-5"></span></li>
+                                    </ul>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div  ng-show="isTestimonialSection()" >
+                <h2 class="osLight">Testimonials</h2>
+                <div id="home-testimonials" class="carousel slide carousel-wb mb20" data-ride="carousel"   >
+                    <ol class="carousel-indicators">
+                        <li data-target="#home-testimonials" data-slide-to="0" class="active"></li>
+                        <li data-target="#home-testimonials" data-slide-to="1" class=""></li>
+                    </ol>
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            <img src="images/avatar-2.png" class="home-testim-avatar" alt="Jane Smith">
+                            <div class="home-testim">
+                                <div class="home-testim-text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words</div>
+                                <div class="home-testim-name">Jane Smith</div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <img src="images/avatar-3.png" class="home-testim-avatar" alt="Rust Cohle">
+                            <div class="home-testim">
+                                <div class="home-testim-text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words</div>
+                                <div class="home-testim-name">Rust Cohle</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+            <div class="promo-wrapper">
+                <div class="promo-content">
+
+                <h2 class="osLight" >Our Offers</h2>
+                
+                <div class="wpb-container promotion hideen-sm hidden-xs promo_bg">
+                    <div class="row" >
+                        <div class="col-sm-12">
+                            
+                                
+                                <div class="widget widget-text-column wpb_text_column wpb_content_element ">
+                                    <div class="widget-content wpb_text_column_content widget-text-column--content">
+                                        <div class="text_promotion">
+                                            <div class="content-promotion">
+                                            <p class="text_medium">end of season sale</p>
+                                            <p class="text_large">up to <span class="theme-color">50% off</span></p>
+                                            <p class="text_medium">Limited time only</p>
+                                            </div>
+                                        </div>
+
+                                    </div> 
+                                 
+                            </div> 
+                        </div> 
+                        </div>
+                            
+
+                    </div>                
+                   
+                </div>
+
+            </div>
+        
+
+        <div data-ng-include=" 'tpl/blocks/footer.html' ">
+
+            <div class="modal fade" id="signin" role="dialog" aria-labelledby="signinLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="signinLabel">Sign In</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form">
+                                <div class="form-group">
+                                    <div class="btn-group-justified">
+                                        <a href="explore.html" class="btn btn-lg btn-facebook"><span class="fa fa-facebook pull-left"></span>Sign In with Facebook</a>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="btn-group-justified">
+                                        <a href="explore.html" class="btn btn-lg btn-google"><span class="fa fa-google-plus pull-left"></span>Sign In with Google</a>
+                                    </div>
+                                </div>
+                                <div class="signOr">OR</div>
+                                <div class="form-group">
+                                    <input type="text" placeholder="Email Address" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" placeholder="Password" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <div class="checkbox custom-checkbox"><label><input type="checkbox"><span class="fa fa-check"></span> Remember me</label></div>
+                                        </div>
+                                        <div class="col-xs-6 align-right">
+                                            <p class="help-block"><a href="#" class="text-green isThemeText">Forgot password?</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="btn-group-justified">
+                                        <a href="explore.html" class="btn btn-lg btn-green isThemeBtn">Sign In</a>
+                                    </div>
+                                </div>
+                                <p class="help-block">Don't have an account? <a href="#" class="modal-su text-green isThemeText">Sign Up</a></p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="signup" role="dialog" aria-labelledby="signupLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="signupLabel">Sign Up</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form">
+                                <div class="form-group">
+                                    <div class="btn-group-justified">
+                                        <a href="explore.html" class="btn btn-lg btn-facebook"><span class="fa fa-facebook pull-left"></span>Sign Up with Facebook</a>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="btn-group-justified">
+                                        <a href="explore.html" class="btn btn-lg btn-google"><span class="fa fa-google-plus pull-left"></span>Sign Up with Google</a>
+                                    </div>
+                                </div>
+                                <div class="signOr">OR</div>
+                                <div class="form-group">
+                                    <input type="text" placeholder="First Name" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" placeholder="Last Name" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" placeholder="Email Address" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" placeholder="Password" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" placeholder="Confirm Password" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <div class="btn-group-justified">
+                                        <a href="explore.html" class="btn btn-lg btn-green isThemeBtn">Sign Up</a>
+                                    </div>
+                                </div>
+                                <p class="help-block">Already a Reales member? <a href="#" class="modal-si text-green isThemeText">Sign In</a></p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
