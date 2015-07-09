@@ -1,0 +1,42 @@
+
+<div class="cart_menu">
+
+  <div class="cart_items" ng-show="ngCart.getTotalItems() === 0">
+    <li class="alert alert-warning" role="alert" >
+        Your cart is empty
+    </li>
+  </div>
+
+  <div class="cart_items" ng-repeat="item in ngCart.getCart().items track by $index" ng-show="$index < 3">
+
+    <div class="c_item_img floatleft">
+      <a href="product-detail.html"><img src="{{item.getData().product_img}}" style="width:70px;height:70px" alt="90 79"/></a>
+    </div>
+    <div class="c_item_totals floatleft">
+      <div class="c_item_totals_detail floatleft">
+        <a href="product-detail.html"><h5>{{item.getName()}}</h5></a>
+        <span>{{item.getQuantity()}} x Rs {{item.getPrice()}}</span>
+      </div>
+      <div class="close_icon_cart floatleft" style="margin-top:20px" ng-click="ngCart.removeItemById(item.getData().product_id); showCounter1();">
+        <img src="images/close.png" alt="" />
+      </div>
+    </div>
+  </div>
+
+  <div class="cart_totals">
+    <div class="c_totals_left floatleft">
+      <p>Free shipping</p>
+    </div>
+    <div class="c_totals_right floatleft">
+      <p>total   $350</p>
+    </div>
+  </div>
+  <div class="cart_view_bottom">
+    <div class="c_totals_left floatleft">
+      <a ui-sref="app.home.cart">View Cart</a>
+    </div>
+    <div class="c_totals_right floatleft">
+      <a href="checkout.html">Check Out</a>
+    </div>
+  </div>
+</div>
