@@ -163,7 +163,7 @@ $scope.selectedUsages = [];
 for(var i =0; i<$scope.usagesLength;i++)
   $scope.selectedUsages[i]= false;
 
-$scope.applications=["Bedroom","Bathroom","Kitchen"];
+$scope.applications=["Bedroom Wall","Bedroom Floor","Bathroom Wall","Bathroom Floor","Kitchen Wall","Kitchen Floor","Living Room Wall","Living Room Floor","Outdoor"];
 $scope.applicationsLength= $scope.applications.length;
 $scope.selectedApplications = [];
 for(var i =0; i<$scope.applicationsLength;i++)
