@@ -3,7 +3,7 @@ include 'functions.php';
 require_once 'NotORM.php';
 
 $pdo = new PDO('mysql:dbname=shiningfloor;host=localhost', 'root', '');
-
+// $pdo = new PDO('mysql:dbname=shiningfloor;host=localhost', 'shiningfloor', 'Shiningfloor');
 
 $db = new NotORM($pdo);
 global $db;
@@ -381,124 +381,122 @@ $app->put('/users/:email', function ($email) use ($app, $db) {
 
 
 
-$app->get('/products(/:id)', function($id=null) use ($app, $db){
+// $app->get('/products(/:id)', function($id=null) use ($app, $db){
 
-    if($id == null){
-        $data = array();
+//     if($id == null){
+//         $data = array();
 
-        foreach($db->products() as $p){
-            $usages_area =array();
-            $designs = array();
-            $subtypes = array();
-            $surface_types = array();
-            $colors = array();
-            $features = array();
+//         foreach($db->products() as $p){
+//             $usages_area =array();
+//             $designs = array();
+//             $subtypes = array();
+//             $surface_types = array();
+//             $colors = array();
+//             $features = array();
 
-            foreach ($p->products_usages() as $product_usages) {
+//             foreach ($p->products_usages() as $product_usages) {
 
-                $usages_area[] = $product_usages->usages['usage_name'];
-            }
+//                 $usages_area[] = $product_usages->usages['usage_name'];
+//             }
 
-            foreach ($p->product_designs() as $product_designs) {
+//             foreach ($p->product_designs() as $product_designs) {
 
-                $designs[] = $product_designs->designs['design_name'];
-            }
-            foreach ($p->product_subtypes() as $product_subtypes) {
+//                 $designs[] = $product_designs->designs['design_name'];
+//             }
+//             foreach ($p->product_subtypes() as $product_subtypes) {
 
-                $subtypes[] = $product_subtypes->subtypes['subtype_name'];
-            }
+//                 $subtypes[] = $product_subtypes->subtypes['subtype_name'];
+//             }
 
-            foreach ($p->product_surface_types() as $product_surface_types) {
+//             foreach ($p->product_surface_types() as $product_surface_types) {
 
-                $surface_types[] = $product_surface_types->surface_types['surface_type_name'];
-            }
-            foreach ($p->product_colors() as $product_colors) {
+//                 $surface_types[] = $product_surface_types->surface_types['surface_type_name'];
+//             }
+//             foreach ($p->product_colors() as $product_colors) {
 
-                $colors[] = $product_colors->colors['color_name'];
-            }
-            foreach ($p->product_features() as $product_features) {
+//                 $colors[] = $product_colors->colors['color_name'];
+//             }
+//             foreach ($p->product_features() as $product_features) {
 
-                $features[] = $product_features->features['feature_name'];
-            }
+//                 $features[] = $product_features->features['feature_name'];
+//             }
 
-            // array_push($data,$usages_area);
-        //
-            $data[] = array(
-                            'product_brand' =>   $p['product_brand'],
-                            'product_name' => $p['product_name'],
-                            'product_desc' =>  $p['product_desc'],
-                            'product_img' =>  $p['product_img'],
-                            'product_usages'=> $usages_area,
-                            'product_designs'=> $designs,
-                            'product_subtypes'=> $subtypes,
-                            'product_surface_types'=> $surface_types,
-                            'product_colors'=> $colors,
-                            'product_features'=> $features
+//             // array_push($data,$usages_area);
+//         //
+//             $data[] = array(
+//                             'product_brand' =>   $p['product_brand'],
+//                             'product_name' => $p['product_name'],
+//                             'product_desc' =>  $p['product_desc'], 
+//                             'product_usages'=> $usages_area,
+//                             'product_designs'=> $designs,
+//                             'product_subtypes'=> $subtypes,
+//                             'product_surface_types'=> $surface_types,
+//                             'product_colors'=> $colors,
+//                             'product_features'=> $features
 
-                        );
+//                         );
 
-        }
+//         }
 
-    } else {
+//     } else {
 
 
-        $data = null;
+//         $data = null;
 
-        foreach($db->products()->where('id', $id) as $p){
-            $usages_area =array();
-            $designs = array();
-            $subtypes = array();
-            $surface_types = array();
-            $colors = array();
-            $features = array();
+//         foreach($db->products()->where('id', $id) as $p){
+//             $usages_area =array();
+//             $designs = array();
+//             $subtypes = array();
+//             $surface_types = array();
+//             $colors = array();
+//             $features = array();
 
-            foreach ($p->products_usages() as $product_usages) {
+//             foreach ($p->products_usages() as $product_usages) {
 
-                $usages_area[] = $product_usages->usages['usage_name'];
-            }
+//                 $usages_area[] = $product_usages->usages['usage_name'];
+//             }
 
-            foreach ($p->product_designs() as $product_designs) {
+//             foreach ($p->product_designs() as $product_designs) {
 
-                $designs[] = $product_designs->designs['design_name'];
-            }
-            foreach ($p->product_subtypes() as $product_subtypes) {
+//                 $designs[] = $product_designs->designs['design_name'];
+//             }
+//             foreach ($p->product_subtypes() as $product_subtypes) {
 
-                $subtypes[] = $product_subtypes->subtypes['subtype_name'];
-            }
+//                 $subtypes[] = $product_subtypes->subtypes['subtype_name'];
+//             }
 
-            foreach ($p->product_surface_types() as $product_surface_types) {
+//             foreach ($p->product_surface_types() as $product_surface_types) {
 
-                $surface_types[] = $product_surface_types->surface_types['surface_type_name'];
-            }
-            foreach ($p->product_colors() as $product_colors) {
+//                 $surface_types[] = $product_surface_types->surface_types['surface_type_name'];
+//             }
+//             foreach ($p->product_colors() as $product_colors) {
 
-                $colors[] = $product_colors->colors['color_name'];
-            }
-            foreach ($p->product_features() as $product_features) {
+//                 $colors[] = $product_colors->colors['color_name'];
+//             }
+//             foreach ($p->product_features() as $product_features) {
 
-                $features[] = $product_features->features['feature_name'];
-            }
+//                 $features[] = $product_features->features['feature_name'];
+//             }
 
-            // array_push($data,$usages_area);
-        //
-            $data[] = array(
-                    'product_brand' =>   $p['product_brand'],
-                    'product_name' => $p['product_name'],
-                    'product_desc' =>  $p['product_desc'],
-                    'product_img' =>  $p['product_img'],
-                    'product_usages'=> $usages_area,
-                    'product_designs'=> $designs,
-                    'product_subtypes'=> $subtypes,
-                    'product_surface_types'=> $surface_types,
-                    'product_colors'=> $colors,
-                    'product_features'=> $features
-                  );
-        }
-    }
+//             // array_push($data,$usages_area);
+//         //
+//             $data[] = array(
+//                     'product_brand' =>   $p['product_brand'],
+//                     'product_name' => $p['product_name'],
+//                     'product_desc' =>  $p['product_desc'], 
+//                     'product_usages'=> $usages_area,
+//                     'product_designs'=> $designs,
+//                     'product_subtypes'=> $subtypes,
+//                     'product_surface_types'=> $surface_types,
+//                     'product_colors'=> $colors,
+//                     'product_features'=> $features
+//                   );
+//         }
+//     }
 
-    $app->response()->header('content-type','application/json');
-    echo json_encode(array('product_data'=>$data));
-});
+//     $app->response()->header('content-type','application/json');
+//     echo json_encode(array('product_data'=>$data));
+// });
 
 // --------------------------------------
 $app->get('/shiningfloor/seller/chooseproducts', $authenticate_seller($app), function() use ($app, $db)
@@ -668,36 +666,29 @@ $app->get('/shiningfloor/admin/selectedproducts(/:id)', $authenticate_admin($app
 
         foreach ($query as $p) {
 
-        $usages_area =array();
-        $designs = array();
-        $subtypes = array();
-        $surface_types = array();
-        $colors = array();
-        $features = array();
+           $usages =array();
+            $applications = array();
+            $images = array();         
+            $colors = array(); 
 
-        foreach ($p->product_colors() as $product_colors) {
-            $colors[] = $product_colors->colors['color_name'];
-        }
+            foreach ($p->product_colors() as $product_colors) {
+                $colors[] = $product_colors['color_name'];
+            }
 
-        foreach ($p->products_usages() as $product_usages) {
-            $usages_area[] = $product_usages->usages['usage_name'];
-        }
+            foreach ($p->product_usages() as $product_usages) {
 
-        foreach ($p->product_designs() as $product_designs) {
-            $designs[] = $product_designs->designs['design_name'];
-        }
+                $usages[] = $product_usages['usage_name'];
+            }
 
-        foreach ($p->product_subtypes() as $product_subtypes) {
-            $subtypes[] = $product_subtypes->subtypes['subtype_name'];
-        }
-        foreach ($p->product_surface_types() as $product_surface_types) {
-            $surface_types[] = $product_surface_types->surface_types['surface_type_name'];
-        }
+            foreach ($p->product_applications() as $product_applications) {
 
-        foreach ($p->product_features() as $product_features) {
-            $features[] = $product_features->features['feature_name'];
-        }
+                $applications[] = $product_applications['application_name'];
+            }
+             
+            foreach ($p->product_images() as $product_images) {
 
+                $images[] = $product_images['image_name'];
+            }
         $product_category = '';
         foreach ($db->types() as $product_type) {
             if($product_type['id'] == $p['type_id'])
@@ -706,11 +697,12 @@ $app->get('/shiningfloor/admin/selectedproducts(/:id)', $authenticate_admin($app
 
         foreach ($p->sellers_products() as $q ) {
 
-            $seller_product_price = $q['price'];
+              $seller_product_price = $q['price'];
               $seller_product_comments = $q['comments'] ;
               $seller_minimum_boxes = $q['minimum_boxes'] ;
               $seller_product_code = $q['seller_product_code'] ;
               $seller_items_per_box = $q['items_per_box'] ;
+              $seller_total_quantity = $q['total_quantity'];
 
          }
 
@@ -720,30 +712,34 @@ $app->get('/shiningfloor/admin/selectedproducts(/:id)', $authenticate_admin($app
                         'product_name' => $p['product_name'],
                         'product_category' => $product_category ,
                         'product_type_id' => $p['type_id'],
-                        'product_desc' =>  $p['product_desc'],
-                        'product_img' =>  $p['product_img'],
-                        'product_url' =>  $p['product_url'],
+                        'product_desc' =>  $p['product_desc'], 
+                        'product_origin_country' => $p['product_origin_country'],
+                         'product_degree_of_variation' => $p['product_degree_of_variation'],
                         'product_material' =>  $p['product_material'],
-                        'product_size' =>  $p['product_size'],
-                        'product_application' =>  $p['product_application'],
+                        'product_width' =>  $p['product_width'],
+                        'product_height' =>  $p['product_height'],
+                        'product_thickness' =>  $p['product_thickness'],
+                        'product_unit' =>  $p['product_width_unit'],
+                        'product_shape' =>  $p['product_shape'],
+                        'product_application' =>  $applications,
                         'product_look' =>  $p['product_look'],
                         'product_finish_type'=> $p['product_finish_type'],
-                        'product_usages'=> $usages_area,
-                        'product_designs'=> $designs,
-                        'product_subtypes'=> $subtypes,
-                        'product_surface_types'=> $surface_types,
+                        'product_usages'=> $usages,
                         'product_colors'=> $colors,
-                        'product_features'=> $features,
+                        'product_img' =>  $images,
+                        'product_features'=> $p['product_desc'],
                         'product_price'=>$p['product_price'],
                         'product_rating' => $p['product_rating'],
                         'product_supplierID' => $p['supplierID'],
                         'product_isDiscountAvailable' => $p['isDiscountAvailable'],
-                        'product_isProductAvailable' => $p['isProductAvailable']   ,
+                        'product_isProductAvailable' => $p['isProductAvailable'],
                         'seller_product_price' => $seller_product_price,
                         'seller_product_comments' => $seller_product_comments,
                         'seller_minimum_boxes' => $seller_minimum_boxes,
                         'seller_product_code' => $seller_product_code,
-                        'seller_items_per_box' => $seller_items_per_box
+                        'seller_items_per_box' => $seller_items_per_box,
+                        'seller_total_quantity' => $seller_total_quantity
+
                     );
       }
     $app->response()->header('content-type','application/json');
@@ -792,35 +788,29 @@ $app->get('/shiningfloor/seller/selectedproducts', $authenticate_seller($app),fu
 
         foreach ($query as $p) {
 
-        $usages_area =array();
-        $designs = array();
-        $subtypes = array();
-        $surface_types = array();
-        $colors = array();
-        $features = array();
+            $usages =array();
+            $applications = array();
+            $images = array();         
+            $colors = array(); 
 
-        foreach ($p->product_colors() as $product_colors) {
-            $colors[] = $product_colors->colors['color_name'];
-        }
+            foreach ($p->product_colors() as $product_colors) {
+                $colors[] = $product_colors['color_name'];
+            }
 
-        foreach ($p->products_usages() as $product_usages) {
-            $usages_area[] = $product_usages->usages['usage_name'];
-        }
+            foreach ($p->product_usages() as $product_usages) {
 
-        foreach ($p->product_designs() as $product_designs) {
-            $designs[] = $product_designs->designs['design_name'];
-        }
+                $usages[] = $product_usages['usage_name'];
+            }
 
-        foreach ($p->product_subtypes() as $product_subtypes) {
-            $subtypes[] = $product_subtypes->subtypes['subtype_name'];
-        }
-        foreach ($p->product_surface_types() as $product_surface_types) {
-            $surface_types[] = $product_surface_types->surface_types['surface_type_name'];
-        }
+            foreach ($p->product_applications() as $product_applications) {
 
-        foreach ($p->product_features() as $product_features) {
-            $features[] = $product_features->features['feature_name'];
-        }
+                $applications[] = $product_applications['application_name'];
+            }
+             
+            foreach ($p->product_images() as $product_images) {
+
+                $images[] = $product_images['image_name'];
+            }
 
         $product_category = '';
         foreach ($db->types() as $product_type) {
@@ -830,11 +820,12 @@ $app->get('/shiningfloor/seller/selectedproducts', $authenticate_seller($app),fu
 
         foreach ($p->sellers_products() as $q ) {
 
-            $seller_product_price = $q['price'];
+              $seller_product_price = $q['price'];
               $seller_product_comments = $q['comments'] ;
               $seller_minimum_boxes = $q['minimum_boxes'] ;
               $seller_product_code = $q['seller_product_code'] ;
               $seller_items_per_box = $q['items_per_box'] ;
+              $seller_total_quantity = $q['total_quantity'];
 
          }
 
@@ -844,30 +835,34 @@ $app->get('/shiningfloor/seller/selectedproducts', $authenticate_seller($app),fu
                         'product_name' => $p['product_name'],
                         'product_category' => $product_category ,
                         'product_type_id' => $p['type_id'],
-                        'product_desc' =>  $p['product_desc'],
-                        'product_img' =>  $p['product_img'],
-                        'product_url' =>  $p['product_url'],
+                        'product_desc' =>  $p['product_desc'], 
+                        'product_origin_country' => $p['product_origin_country'],
+                         'product_degree_of_variation' => $p['product_degree_of_variation'],
                         'product_material' =>  $p['product_material'],
-                        'product_size' =>  $p['product_size'],
-                        'product_application' =>  $p['product_application'],
+                        'product_width' =>  $p['product_width'],
+                        'product_height' =>  $p['product_height'],
+                        'product_thickness' =>  $p['product_thickness'],
+                        'product_unit' =>  $p['product_width_unit'],
+                        'product_shape' =>  $p['product_shape'],
+                        'product_application' =>  $applications,
                         'product_look' =>  $p['product_look'],
                         'product_finish_type'=> $p['product_finish_type'],
-                        'product_usages'=> $usages_area,
-                        'product_designs'=> $designs,
-                        'product_subtypes'=> $subtypes,
-                        'product_surface_types'=> $surface_types,
+                        'product_usages'=> $usages,
                         'product_colors'=> $colors,
-                        'product_features'=> $features,
+                        'product_img' =>  $images,
+                        'product_features'=> $p['product_desc'],
                         'product_price'=>$p['product_price'],
                         'product_rating' => $p['product_rating'],
                         'product_supplierID' => $p['supplierID'],
                         'product_isDiscountAvailable' => $p['isDiscountAvailable'],
-                        'product_isProductAvailable' => $p['isProductAvailable']   ,
+                        'product_isProductAvailable' => $p['isProductAvailable'],
                         'seller_product_price' => $seller_product_price,
                         'seller_product_comments' => $seller_product_comments,
                         'seller_minimum_boxes' => $seller_minimum_boxes,
                         'seller_product_code' => $seller_product_code,
-                        'seller_items_per_box' => $seller_items_per_box
+                        'seller_items_per_box' => $seller_items_per_box,
+                        'seller_total_quantity' => $seller_total_quantity
+
                     );
               }
         $app->response()->header('content-type','application/json');
@@ -904,6 +899,7 @@ $app->put('/shiningfloor/sellers/products/update_product', function() use ($app,
 
 });
 
+
 //   --------------------------
 
 $app->post('/shiningfloor/sellers_products', function() use ($app, $db)
@@ -916,7 +912,111 @@ $app->post('/shiningfloor/sellers_products', function() use ($app, $db)
     echo json_encode($data['id']);
 
 });
+//----------------------------------------
+$app->post('/seller/uploadfile', function() use ($app,$db)
+{
 
+//echo sizeof($_FILES);
+  if ($last_product = $db->products()->select('id')->order('id desc')->limit(1,0)->fetch()) {
+      //echo $houses;
+     }
+     $last_id = $last_product['id'] ;
+     if ( !empty( $_FILES ) ) {
+     $tempPath = $_FILES[ 'file' ][ 'tmp_name' ];
+     $temp = explode(".",$_FILES["file"]["name"]);
+     print_r ($temp);
+     $i=1;
+     while(file_exists(dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '../uploads' . DIRECTORY_SEPARATOR .$last_id. '_'.$i.'.' .'jpg'))
+     {
+            $i++;
+     }
+     $newfilename = $last_id. '_'.$i.'.' .'jpg';
+     $uploadPath = dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '../uploads' . DIRECTORY_SEPARATOR .$newfilename;
+
+     move_uploaded_file( $tempPath, $uploadPath );
+     $answer = array( 'lastid' => $last_id,
+     'filename' => $newfilename);
+     $db->product_images->insert(array('image_name'=>  '../uploads' . DIRECTORY_SEPARATOR .$newfilename , 'products_id'=>$last_id));
+     $json = json_encode( $answer );
+     echo $json;
+    } else {
+     echo 'No files';
+    }
+
+});
+//------------------------------------------
+$app->post('/shiningfloor/seller/addproduct', $authenticate_seller($app),function() use ($app, $db)
+{
+    $array = (array) json_decode($app->request()->getBody());
+    $email = $_SESSION['seller'] ;
+    $seller_id = $db->sellers()->where('email', $email)->fetch();
+    $lastProduct = $db->products()->select('id')->order('id desc')->limit(1,0)->fetch();
+    $image_name = (string)($lastProduct['id'] + 1) ;
+    $image_name .=  '_1.' .'jpg';
+    //echo $image_name;
+    // echo($array['name']);
+
+    // //echo $seller_id['id'];
+     $product = array(
+        'supplierID' =>  $seller_id['id'] ,
+        'product_name' =>  $array['name'] ,
+        'product_price' => $array['price'],
+        'product_brand' => $array['brand'],
+        'product_finish_type' => $array['finish_type'],
+        'product_desc'=> $array['features'],
+        'product_shape' =>  $array['shape'],
+        'product_origin_country' => $array['origin_country'],
+        'product_degree_of_variation' => $array['variation'],
+        'type_id' => $array['type'],
+        'product_url' => $array['url'],
+        'product_material' => $array['material'],                   
+        'product_look' => $array['look'],
+        'product_width' => $array['width'],
+        'product_height' => $array['height'],
+        'product_thickness' => $array['thickness'],
+        'product_width_unit' => $array['unit'],
+        'product_height_unit' => $array['unit'],
+        'product_thickness_unit' => $array['unit']
+         
+        );
+
+    $data = $db->products()->insert($product);
+    $seller_products = array(
+         'sellers_id' =>  $seller_id['id'] ,
+         'products_id' =>  $data['id'] ,
+         'price' => $array['price'],
+        'items_per_box' => $array['items_per_box'],
+        'seller_product_code' => $array['seller_product_code'],
+        'comments'=> $array['comments'],
+        'minimum_boxes' => $array['minimum_boxes'],
+        'total_quantity' => $array['total_boxes']
+       );
+   $seller = $db->sellers_products()->insert($seller_products);
+
+   $colors = explode(",", $array['colors']);
+   for($i=0;$i<sizeof($colors);$i++)
+   {
+        if($colors[$i]!="")
+            $db->product_colors->insert(array('color_name'=> $colors[$i] , 'products_id'=>$data['id']));
+   }
+   $usages = explode(",", $array['usages']);
+   for($i=0;$i<sizeof($usages);$i++)
+   {
+        if($usages[$i]!="")
+            $db->product_usages->insert(array('usage_name'=> $usages[$i] , 'products_id'=>$data['id']));
+   }
+   $applications = explode(",", $array['applications']);
+   for($i=0;$i<sizeof($applications);$i++)
+   {
+        if($applications[$i]!="")
+            $db->product_applications->insert(array('application_name'=> $applications[$i] , 'products_id'=>$data['id']));
+   }
+    $app->response()->header('Content-Type', 'application/json');
+    echo json_encode($data['id']);
+
+});
+
+// -----------------------------------------
 $app->post('/shiningfloor/seller/sellers_products', $authenticate_seller($app),function() use ($app, $db)
 {
     $array = (array) json_decode($app->request()->getBody());
@@ -1150,13 +1250,84 @@ $app->get('/shiningfloor/colors', function() use ($app, $db){
     foreach ($db->colors() as $color) {
         $colors[] = $color['color_name'];
     }
-    $data[] = array( 'product_colors'=> $colors  );
     $app->response()->header('content-type','application/json');
-    echo json_encode(array('colors'=>$data));
+    echo json_encode(array('colors'=>$colors));
 });
 
+$app->get('/shiningfloor(/:type)/brands', function($type) use ($app, $db){
+    $type_id = $db->types()->where('type_name',$type)->select('id')->fetch();
+    $brands = array();
+    $query = $db->products()->where('type_id',$type_id)->group('product_brand');
+//    echo count($query);
+    foreach ($query as $product) {
+      if($product['product_brand']!="")
+        $brands[] = $product['product_brand'];
+    }
 
-// For finding all sellers for given product with minimum price seller
+    $app->response()->header('content-type','application/json');
+    echo json_encode(array('brands'=>$brands));
+});
+
+$app->get('/shiningfloor/finish_types', function() use ($app, $db){
+    // $type_id = $db->types()->where('type_name',$type)->select('id')->fetch();
+    $finish_types = array();
+    // $query = $db->products()->where('type_id',$type_id)->group('product_finish_type');
+      $query = $db->products()->group('product_finish_type');
+//    echo count($query);
+    foreach ($query as $product) {
+      if($product['product_finish_type']!="")
+        $finish_types[] = $product['product_finish_type'];
+    }
+    $app->response()->header('content-type','application/json');
+    echo json_encode(array('finish_types'=>$finish_types));
+});
+
+$app->get('/shiningfloor/applications', function() use ($app, $db){
+    $applications = array();
+    $query = $db->products()->group('product_application');
+    foreach ($query as $product) {
+      if($product['product_application']!="")
+        $applications[] = $product['product_application'];
+    }
+
+    $app->response()->header('content-type','application/json');
+    echo json_encode(array('applications'=>$applications));
+});
+
+$app->get('/shiningfloor/looks', function() use ($app, $db){
+    $looks = array();
+    $query = $db->products()->group('product_look');
+    foreach ($query as $product) {
+        if($product['product_look']!="")
+        $looks[] = $product['product_look'];
+    }
+
+    $app->response()->header('content-type','application/json');
+    echo json_encode(array('looks'=>$looks));
+});
+$app->get('/shiningfloor/materials', function() use ($app, $db){
+    $product_materials = array();
+    $query = $db->products()->group('product_material');
+    foreach ($query as $product) {
+        if($product['product_material']!="")
+        $product_materials[] = $product['product_material'];
+    }
+
+    $app->response()->header('content-type','application/json');
+    echo json_encode(array('materials'=>$product_materials));
+});
+
+$app->get('/shiningfloor/sizes', function() use ($app, $db){
+    $product_sizes = array();
+    $query = $db->products()->group('product_size');
+    foreach ($query as $product) {
+        if($product['product_size']!="")
+        $product_sizes[] = $product['product_size'];
+    }
+
+    $app->response()->header('content-type','application/json');
+    echo json_encode(array('sizes'=>$product_sizes));
+});
 
 $app->get('/shiningfloor/products/allsellers(/:product_id)', function($product_id=null) use ($app, $db){
     $data= array();

@@ -130,35 +130,34 @@ function findAllProducts($query,$usage_location){
     foreach($query as $p)
     {
 
-        $usages_area =array();
-        $designs = array();
-        $subtypes = array();
-        $surface_types = array();
-        $colors = array();
-        $features = array();
+        $usages =array();
+            $applications = array();
+            $images = array();         
+            $colors = array(); 
 
-        foreach ($p->product_colors() as $product_colors) {
-            $colors[] = $product_colors->colors['color_name'];
-        }
+            foreach ($p->product_colors() as $product_colors) {
+                $colors[] = $product_colors['color_name'];
+            }
 
-        foreach ($p->product_designs() as $product_designs) {
+            foreach ($p->product_usages() as $product_usages) {
 
-            $designs[] = $product_designs->designs['design_name'];
-        }
-        foreach ($p->product_subtypes() as $product_subtypes) {
+                $usages[] = $product_usages['usage_name'];
+            }
 
-            $subtypes[] = $product_subtypes->subtypes['subtype_name'];
-        }
+            foreach ($p->product_applications() as $product_applications) {
 
-        foreach ($p->product_surface_types() as $product_surface_types) {
+                $applications[] = $product_applications['application_name'];
+            }
+             
+            foreach ($p->product_images() as $product_images) {
 
-            $surface_types[] = $product_surface_types->surface_types['surface_type_name'];
-        }
+                $images[] = $product_images['image_name'];
+            }
 
-        foreach ($p->product_features() as $product_features) {
+        // foreach ($p->product_features() as $product_features) {
 
-            $features[] = $product_features->features['feature_name'];
-        }
+        //     $features[] = $product_features->features['feature_name'];
+        // }
         global $db;
         $product_category = '';
         foreach ($db->types() as $product_type) {
@@ -172,22 +171,22 @@ function findAllProducts($query,$usage_location){
                         'product_name' => $p['product_name'],
                         'product_category' => $product_category ,
                         'product_type_id' => $p['type_id'],
-                        'product_desc' =>  $p['product_desc'],
-                        'product_img' =>  $p['product_img'],
-                        'product_url' =>  $p['product_url'],
+                        'product_desc' =>  $p['product_desc'], 
+                        'product_origin_country' => $p['product_origin_country'],
+                         'product_degree_of_variation' => $p['product_degree_of_variation'],
                         'product_material' =>  $p['product_material'],
-                        'product_size' =>  $p['product_size'],
-                        'product_application' =>  $p['product_application'],
+                        'product_width' =>  $p['product_width'],
+                        'product_height' =>  $p['product_height'],
+                        'product_thickness' =>  $p['product_thickness'],
+                        'product_unit' =>  $p['product_width_unit'],
+                        'product_shape' =>  $p['product_shape'],
+                        'product_application' =>  $applications,
                         'product_look' =>  $p['product_look'],
-
                         'product_finish_type'=> $p['product_finish_type'],
-
-                        'product_usages'=> $usages_area,
-                        'product_designs'=> $designs,
-                        'product_subtypes'=> $subtypes,
-                        'product_surface_types'=> $surface_types,
+                        'product_usages'=> $usages,
                         'product_colors'=> $colors,
-                        'product_features'=> $features,
+                        // 'product_img' =>  $images,
+                        'product_features'=> $p['product_desc'],
                         'product_price'=>$p['product_price'],
                         'product_rating' => $p['product_rating'],
                         'product_supplierID' => $p['supplierID'],
