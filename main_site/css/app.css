@@ -1094,7 +1094,10 @@ text-transform: uppercase;
   color: #999;
   font-size: 42px;
   z-index: 2;
+    padding: 0px 8px! important;
+  font-size: 15px! important;
 }
+
 .owl-carousel .owl-next {
   position: absolute;
   right: 0;
@@ -1508,7 +1511,7 @@ padding-bottom: 20px;
   text-transform: inherit;
 }
 .view_post {
-  border: 2px solid #fd8585;
+  border: 2px solid #674ED6;
 margin-top: 60px;
 padding: 10px 20px;
 width: 121px;
@@ -1527,25 +1530,29 @@ width: 121px;
   text-decoration:none;
 }
 .carousel-control.left {
-background: none repeat scroll 0 0 #e4e5e5;
-height: 30px;
-left: 47%;
-opacity: 1;
-top: -37%;
-width: 30px;
-text-shadow: none;
+background: none repeat scroll 0 0 #FFFFFF;
+  height: 30px;
+  left: 47%;
+  opacity: 1;
+  top: -37%;
+  width: 30px;
+  text-shadow: none;
+  border: 1px solid #674ED6;
+    padding: 1px 2px;
 }
 .carousel-control.right {
-background: none repeat scroll 0 0 #e4e5e5;
+background: none repeat scroll 0 0 #FFFFFF;
 height: 30px;
 opacity: 1;
 right: 47%;
 top: -37%;
 width: 30px;
 text-shadow: none;
+  padding: 1px 2px;
+  border: 1px solid #674ED6;
 }
 .carousel-control:hover {
-background: none repeat scroll 0 0 #FD907B;
+background: none repeat scroll 0 0 #674ED6;
 color:#fff;
 }
 #blog-caro .carousel-control i {
@@ -3810,6 +3817,7 @@ float: left;
 margin-right: 20px;
 overflow: hidden;
 width: 34%;
+
 }
 .t_to_b_content {
   overflow: hidden;
@@ -5086,10 +5094,11 @@ text-decoration: none;
 .filterproducts-tab > ul{margin-bottom:27px;border-bottom:1px solid #ebebeb}
 .filterproducts-tab > ul > li{margin-right:12px;display:inline-block}
 .filterproducts-tab > ul > li > a{font-size:16px;line-height:22px;padding:15px 8px;display:block;font-weight:500;color:#a1a1a1}
-.filterproducts-tab > ul.lg > li > a{font-size:20px;line-height:24px}
+.filterproducts-tab > ul.lg > li > a{font-size:20px;line-height:24px; text-decoration: none;}
+.filterproducts-tab > ul.lg > li > a:hover{color:#000;}
 .filterproducts-tab > ul.tab-mini > li > a{font-weight:400;text-transform:uppercase}
 .filterproducts-tab > ul.tab-mini > li.active > a{font-weight:500}
-.filterproducts-tab > ul > li.active > a{font-weight:600;color:#2e2e2e;border-bottom:3px solid #c19f00;margin-bottom:-2px}
+.filterproducts-tab > ul > li.active > a{font-weight:600;color:#2e2e2e;border-bottom:3px solid #674ED6;;margin-bottom:-2px}
 .thumb-shadow {
   box-shadow: 0 8px 6px -7px #2d3134;
   padding:0!important;
@@ -5398,7 +5407,8 @@ border-color: #000000;
 
 
 .content-box {
-  background: #ecf1f5; url(../images/content-box-bg.jpg) center top repeat-x;
+  background: none repeat scroll 0 0 #F4F5F6;
+   url(../images/content-box-bg.jpg) center top repeat-x;
   padding: 0 0 20px 0;
 }
 @media (min-width: 320px) and (max-width: 767px) {
