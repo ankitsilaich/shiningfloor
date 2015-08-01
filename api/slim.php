@@ -968,7 +968,7 @@ $app->post('/shiningfloor/seller/addproduct', $authenticate_seller($app),functio
         'product_origin_country' => $array['origin_country'],
         'product_degree_of_variation' => $array['variation'],
         'type_id' => $array['type'],
-        'product_url' => $array['url'],
+         
         'product_material' => $array['material'],                   
         'product_look' => $array['look'],
         'product_width' => $array['width'],
@@ -978,8 +978,7 @@ $app->post('/shiningfloor/seller/addproduct', $authenticate_seller($app),functio
         'product_height_unit' => $array['unit'],
         'product_thickness_unit' => $array['unit']
          
-        );
-
+        ); 
     $data = $db->products()->insert($product);
     $seller_products = array(
          'sellers_id' =>  $seller_id['id'] ,

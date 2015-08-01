@@ -16,17 +16,17 @@ $scope.selectType =function(val){
     case "2":
       $scope.selectedType = 'wood';
       break;
-    case "3":
-      $scope.selectedType = 'marble';
+    case "7":
+      $scope.selectedType = 'mosiac';
       break;
-    case "4":
-      $scope.selectedType = 'stone';
+    case "8":
+      $scope.selectedType = 'vinyl-and-linoleum';
       break;
-    case "5":
-      $scope.selectedType = 'wallpaper';
+    case "9":
+      $scope.selectedType = 'carpet-and-rugs';
       break;
-    case "6":
-      $scope.selectedType = 'artificial';
+    case "10":
+      $scope.selectedType = 'accessories';
       break;
   }
   $http.get('../api/slim.php/shiningfloor/'+$scope.selectedType + '/brands').then(function(resp) {
@@ -77,7 +77,7 @@ $scope.selectType =function(val){
 $scope.selectedTypeValue = "1";
 $scope.selectedType = 'tiles';
 $scope.selectType();
-$scope.product_types = [{'value':'1','name':'Tile'},{'value':'2','name':'Wood'},{'value':'3','name':'Mosiac'},{'value':'4','name':'Vinyl & Linoleum'},{'value':'5','name':'Carpet & Rugs'},{'value': '6','name':'Accessories'}];
+$scope.product_types = [{'value':'1','name':'Tile'},{'value':'2','name':'Wood'},{'value':'7','name':'Mosiac'},{'value':'8','name':'Vinyl & Linoleum'},{'value':'9','name':'Carpet & Rugs'},{'value': '10','name':'Accessories'}];
 //$scope.product_types = [{'value':'1','name':'Tile'},{'value':'2','name':'Wood'},{'value':'3','name':'Marble'},{'value':'4','name':'Stone'},{'value':'5','name':'Wallpaper'},{'value': '6','name':'Artificial'}];
 
 
