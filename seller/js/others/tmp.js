@@ -9,10 +9,10 @@ angular.module('MassAutoComplete', [])
     template:
       '<span ng-transclude></span>' +
       '<div class="ac-container" ng-show="show_autocomplete && results.length > 0" style="position:absolute;">' +
-        '<ul class="ac-menu"> ' +
-          '<li ng-repeat="result in results" ng-if="$index > 0" ' +
+        '<ul class="ac-menu"> {{results}}' +
+          '<li ng-repeat="result1 in results" ng-if="$index > 0" ' +
             'class="ac-menu-item" ng-class="$index == selected_index ? \'ac-state-focus\': \'\'">' +
-            '<a href ng-click="apply_selection($index)" ng-bind-html="result.label"></a>' +
+            '<a href ng-click="apply_selectiona($index)" ng-bind-html="result.label"></a>' +
           '</li>' +
         '</ul>' +
       '</div>',
@@ -80,9 +80,9 @@ angular.module('MassAutoComplete', [])
             scrollLeft = $document[0].body.scrollLeft || $document[0].documentElement.scrollLeft || $window.pageXOffset,
             container = $scope.container[0];
 
-        // container.style.top = rect.top + rect.height + scrollTop + 'px';
-        // container.style.left = rect.left + scrollLeft + 'px';
-        // container.style.width = rect.width + 'px';
+        container.style.top = rect.top + rect.height + scrollTop + 'px';
+        container.style.left = rect.left + scrollLeft + 'px';
+        container.style.width = rect.width + 'px';
       }
       var position_autocomplete = debounce(_position_autocomplete, user_options.debounce_position);
 
@@ -129,8 +129,7 @@ angular.module('MassAutoComplete', [])
         $scope.selected_index = 0;
         $scope.waiting_for_suggestion = true;
 
-        // if (typeof(term) === 'string' && term.length > 0) {
-        if (1) {
+        if (typeof(term) === 'string' && term.length > 0) {
           $q.when(current_options.suggest(term),
             function suggest_succeeded(suggestions) {
               // Make sure the suggestion we are processing is of the current element.
@@ -164,7 +163,7 @@ angular.module('MassAutoComplete', [])
         }
       }
       var suggest = debounce(_suggest, user_options.debounce_suggest);
-      console.log(suggest);
+
       // Trigger end of editing and remove all attachments made by
       // this directive to the input element.
       that.detach = function () {
@@ -336,7 +335,6 @@ angular.module('MassAutoComplete', [])
 
       element.bind('focus', function () {
         var options = scope.massAutocompleteItem();
-        console.log(options);
         if (!options)
           throw "Invalid options";
         required[0].attach(required[1], element, options);

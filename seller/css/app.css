@@ -5439,3 +5439,6 @@ margin-right: 15px;
   background: none repeat scroll 0 0 #e4eaec;
   color: #58666E;
 }
+.size_info select{
+  background-color: #EBEBEB;
+}

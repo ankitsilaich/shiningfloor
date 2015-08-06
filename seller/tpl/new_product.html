@@ -6,9 +6,9 @@
     <div class="panel with-nav-tabs panel-default">
         <div class="panel-heading">
             <ul class="nav nav-tabs" ng-init="t1=1">
-                <li ng-class="{active: t1}"> <a href ng-click="t1=1;t2=0;t3=0;">General</a></li>
-                <li ng-class="{active: t2}"> <a ng-click="t1=0;t2=1;t3=0;">Seller Data</a></li>
-                <li ng-class="{active:t3}"> <a ng-click="t1=0;t2=0;t3=1;">Images</a></li>
+                <li ng-class="{active: t1}"> <a href ng-click="t1=1;t2=0;t3=0;"><span class="fa fa-home"> </span> General</a></li>
+                <li ng-class="{active: t2}"> <a ng-click="t1=0;t2=1;t3=0;"><span class="fa fa-edit"> </span> Seller Data</a></li>
+                <li ng-class="{active:t3}"> <a ng-click="t1=0;t2=0;t3=1;"><span class="fa fa-image"> </span> Images</a></li>
             </ul>
         </div>
         <div id="panel-collapse-1" class="collapse in">
@@ -36,16 +36,22 @@
                              
                                 <div class="form-group clearfix">
                                     <label class="col-lg-2 control-label" ng-click='alertMe()'>Product Brand</label>
+                                    
 
-                                    <div class="col-lg-8" mass-autocomplete>
-                                        <input placeholder='select a brand' class="form-control" ng-model="product.brand" mass-autocomplete-item="brand_options" ng-keyup="addNewBrandInList()">
+                                    <div class="col-lg-8" mass-autocomplete>                                        
+                                        <input placeholder='select a brand' class="form-control" ng-model="product.brand" mass-autocomplete-item="brand_options" ng-keyup="addNewBrandInList()" ng-focus='t=1' ng-blur="t=0">
+
+                                        <!-- <div ng-show="product.brand==''&&t==1" > <div class="ac-container"style="position: absolute;" >
+                                            <ul class="ac-menu" style='border:none'>
+                                                <li ng-repeat="brand_name in brands" class="ac-menu-item" ng-click="product.brand=brand_name"> <a href="" >{{brand_name}}</a> </li> </ul> </div>
+                                         </div> -->
                                     </div>
+
                                 </div>  
                                 <div class="form-group clearfix">
                                     <label class="col-lg-2 control-label">Product Usages</label>
                                     <div class="col-lg-8 form-inline">
                                          
-
                                         <div class="checkbox custom-checkbox form-group" ng-repeat="usage in usages"  ng-click="selectedUsages[$index] = !selectedUsages[$index];selectUsage($index);">
                                         <label >
                                             <input  type="checkbox" ng-model="selectedUsages[$index]" ng-checked="selectedUsages[$index]">
@@ -57,26 +63,56 @@
                                         
                                     </div>
                                 </div>  
-                                
+                                    <!-- <select  ui-jq="chosen" ui-refresh="chosen" class="w-md" ng-model="product.brand" ng-init="product.brand=''">
+                    <optgroup label="choose from brands <span ng-click='alertMe()'> click </span>" >
+                        <option ng-repeat="brand in brands" value="{{brand}}">{{brand}}</option>
+                     </optgroup>
+
+                </select> -->
                                 <div class="form-group clearfix">
-                                    <label class="col-lg-2 control-label">Product Size</label>
-                                    <div class="col-lg-8 form-inline">
-                                        
+                                    <label class="col-lg-2 control-label ">Product Size</label>
+                                    <div class="col-lg-8 form-inline size_info" style="padding:0px;">
+                                        <!-- 
                                         <input placeholder='width' class="form-control" ng-model="product.width">
                                             
-                                        <input placeholder='height' class="form-control" ng-model="product.height">
-                                    
-                                        <input placeholder='thickness' class="form-control" ng-model="product.thickness">
-                                                                              
-                                        <input placeholder='unit' class="form-control" ng-model="product.unit">
-                                           
+                                        <input placeholder='height' class="form-control" ng-model="product.height"> -->
+                                    <div class="col-lg-4 col-sm-12">
+                                         <div class="input-group">
+                                            <input placeholder='width' class="form-control" ng-model="product.width">
+                                        <div class="input-group-btn"> <select  class="form-control pull-right" ng-model ="product.w_unit" placeholder="unit">
+                                                <option  value="ft"> ft</option> <option  value="inch">inch</option> <option  value="cm">cm</option> <option  value="mm">mm</option>
+                                        </select> </div>
+                                         </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="input-group">    
+                                       <input placeholder='height' class="form-control" ng-model="product.height">
+                                       <div class="input-group-btn">
+                                         <select  class="form-control pull-right" ng-model ="product.w_unit" placeholder="unit">
+                                                <option  value="ft"> ft</option> <option  value="inch">inch</option> <option  value="cm">cm</option> <option  value="mm">mm</option>
+                                        </select>
+                                        </div>
+                                     </div>  
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="input-group">
+                                       <input placeholder='thickness' class="form-control" ng-model="product.thickness">
+                                       <div class="input-group-btn">
+                                           <select  class="form-control pull-right" ng-model ="product.t_unit" placeholder="unit">
+                                                <option  value="ft"> ft</option> <option  value="inch">inch</option> <option  value="cm">cm</option> <option  value="mm">mm</option>
+                                        </select>
+                                         </div>
+                                     </div>
+                                    </div> 
+                                            
+                                          
                                     </div>
                                   </div>
                                 <div class="form-group clearfix">
                                     <label class="col-lg-2 control-label">Product Shape</label>
                                     <div class="col-lg-8">
 
-                                        <div mass-autocomplete>
+                                        <div mass-autocomplete >
                                             <input placeholder='select a product shape' class="form-control" ng-model="product.shape" mass-autocomplete-item="shape_options">
                                         </div>
 
@@ -146,10 +182,12 @@
                                     <label class="col-lg-2 control-label">Origin Country</label>
                                      
                                         <div class="col-lg-8">
-
-                                        <div mass-autocomplete>
-                                            <input placeholder='origin country of product' class="form-control" ng-model="product.origin_country" mass-autocomplete-item="origin_options">
-                                        </div>
+                                            <div mass-autocomplete>
+                                              <input placeholder='origin country of product' class="form-control" ng-model="product.origin_country" mass-autocomplete-item="country_options">
+                                            </div>    
+                                        <!-- <div mass-autocomplete>
+                                            <input placeholder='origin country of product' class="form-control" ng-model="product.origin_country" mass-autocomplete-item="country_options">
+                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="form-group clearfix">
@@ -171,7 +209,7 @@
                                 </div>
                              
                              
-                            <!-- <div class="row">
+                        <!--     <div class="row">
                         <div class="form-group clearfix">
                               <label class="col-lg-2 control-label">Product Comment</label>
                                <div class="col-lg-3">

@@ -974,9 +974,9 @@ $app->post('/shiningfloor/seller/addproduct', $authenticate_seller($app),functio
         'product_width' => $array['width'],
         'product_height' => $array['height'],
         'product_thickness' => $array['thickness'],
-        'product_width_unit' => $array['unit'],
-        'product_height_unit' => $array['unit'],
-        'product_thickness_unit' => $array['unit']
+        'product_width_unit' => $array['w_unit'],
+        'product_height_unit' => $array['w_unit'],
+        'product_thickness_unit' => $array['t_unit']
          
         ); 
     $data = $db->products()->insert($product);

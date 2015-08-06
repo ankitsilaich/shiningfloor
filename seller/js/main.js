@@ -12,7 +12,7 @@ angular.module('app')
 
       // config
       $scope.app = {
-        name: 'ShiningFloor',
+        name: 'BuildCorner',
         version: '1.0.0',
         // for chart colors
         color: {
