@@ -128,7 +128,7 @@ angular.module('MassAutoComplete', [])
       function _suggest(term, target_element) {
         $scope.selected_index = 0;
         $scope.waiting_for_suggestion = true;
-
+        
         // if (typeof(term) === 'string' && term.length > 0) {
         if (1) {
           $q.when(current_options.suggest(term),
@@ -164,7 +164,7 @@ angular.module('MassAutoComplete', [])
         }
       }
       var suggest = debounce(_suggest, user_options.debounce_suggest);
-      console.log(suggest);
+      
       // Trigger end of editing and remove all attachments made by
       // this directive to the input element.
       that.detach = function () {

@@ -1,4 +1,4 @@
-<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="tenantCtrl">
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="sellerCtrl">
   <div class="col" >
      <script type="text/ng-template" id="myModalContent.html">
          <div ng-include="'tpl/modal.html'"></div>
@@ -7,20 +7,25 @@
       <div class="wrapper-lg bg-white-opacity">
         <div class="row m-t">
           <div class="col-sm-7">
-            <a href class="thumb-lg pull-left m-r">
-              <img src="img/a0.jpg" class="img-square">
-            </a>
+            <div   class="thumb-lg pull-left m-r seller-profile" >
+              <!-- <div class="edit_option" ng-class="{'hidden':!p}" style="background: url('img/a0.jpg')"> 
+                <span class='fa fa-camera'></span><br>
+                <small class="m-l">edit photo</small>  </div> -->
+                 <span class='fa fa-edit edit_icon center-align' ng-class="{'hidden': !p}" ng-mouseover="p=1" ng-click="showpopup=true"></span>  
+              <img ng-src="{{seller.img}}?{{getNewTimeStamp()}}" class="img-circle img-sm" ng-mouseover="p=1" ng-mouseleave="p=0" ng-class="{'op-m':p}"> 
+                
+            </div>
             <div class="clear m-b">
               <div class="m-b m-t-sm">
-                <span class="h3 text-black">{{seller.storename}}</span><br>
-                <small class="m-l">{{seller.name}}</small>
+                <span class="h3 text-black" > {{seller.storename}}</span><br>
+                <small class="m-s">{{seller.owner_name}}</small>
               </div>
               <p class="m-b">
                <!-- <a href class="btn btn-sm btn-bg btn-rounded btn-default btn-icon"><i class="fa fa-twitter"></i></a>
                 <a href class="btn btn-sm btn-bg btn-rounded btn-default btn-icon"><i class="fa fa-facebook"></i></a>
                 <a href class="btn btn-sm btn-bg btn-rounded btn-default btn-icon"><i class="fa fa-google-plus"></i></a>-->
               </p>
-               <!--<a  ng-click="open('sm')" class="btn btn-sm btn-info btn-rounded ">Pay bill</a> --><a ui-sref="app.update.tenants({seller_id : url})" class="btn btn-sm btn-success btn-rounded">update</a>
+               <!--<a  ng-click="open('sm')" class="btn btn-sm btn-info btn-rounded ">Pay bill</a> --><a ui-sref="app.update.seller" class="btn btn-sm btn-success btn-rounded">Update Info</a>
             </div>
           </div>
           <div class="col-sm-5">
@@ -48,17 +53,26 @@
 
       <div class="list-group">
         <a href="" class="list-group-item">
-          <span class="badge btn btn-xs btn-success m-t-xs">+91-{{seller.phone}}</span>
-          <i class="fa fa fa-phone fa-fw m-r-xs"></i> phone
+          <span class="badge btn btn-xs btn-success m-t-xs bg-info">+91-{{seller.name}}</span>
+          <i class="fa fa fa-user fa-fw m-r-xs"></i> Contact Person
+        </a>
+        <a href="" class="list-group-item">
+          <span class="badge btn btn-xs btn-success m-t-xs bg-success">+91-{{seller.phone}}</span>
+          <i class="fa fa fa-phone fa-fw m-r-xs"></i> Contact No
         </a>
         <a href="" class="list-group-item">
           <span class="badge btn btn-xs btn-success m-t-xs bg-info">{{seller.storename}}</span>
           <i class="fa fa-eye fa-fw m-r-xs"></i> Store name
         </a>
-        <a href="" class="list-group-item">
 
-          <span class="badge btn btn-xs btn-success m-t-xs bg-success">{{seller.comments}}</span>
-          <i class="fa fa-phone fa-fw m-r-xs"></i> Additional Info
+        <a href="" class="list-group-item">
+          <span class="badge btn btn-xs btn-success m-t-xs bg-success">{{seller.address}} ,{{seller.city}} , {{seller.state}},{{seller.pincode}}</span>
+          <i class="fa fa-send fa-fw m-r-xs"></i> Address
+        </a>
+
+        <a href="" class="list-group-item">
+          <span class="badge btn btn-xs btn-success m-t-xs bg-info">{{seller.comments}}</span>
+          <i class="fa fa-info-circle fa-fw m-r-xs"></i> Additional Info
         </a>
        <!--  <a href="" class="list-group-item">
 
@@ -126,7 +140,7 @@
 
             </ul>
             <div class="panel-footer">
-              <span class="pull-right badge badge-bg m-t-xs">32</span>
+              <!-- <span class="pull-right badge badge-bg m-t-xs">32</span> -->
               <button class="btn btn-primary btn-addon btn-sm" ui-sref="app.all.products({seller_id: seller.id})"><i class="fa fa-plus"></i>Selected More Products</button>
             </div>
           </div>
@@ -175,4 +189,53 @@
       </div>
     </div>
   </div>
+  <div class="clearfix quick-view " id="quickview-template" style="display:block" ng-show="showpopup">
+  <div class="overlay"></div>
+   
+   
+  <div class="content m-box clearfix">
+     <div class="wrapper-md" >
+   <div class="m-b">
+      Select an image file<br>
+    <div class="btn btn-sm btn-danger m-t-sm fileupload">                  
+                <small class="m-s"> <span class='fa fa-camera'></span> edit photo</small>  
+                <!-- <input type="file" id="fileInput" /> -->
+                <input type="file" id="fileInput" nv-file-select="" class='upload'uploader="uploader"/>
+    </div>
+
+  </div>
+  <div class="hbox hbox-auto-xs">
+    <div class="col">
+      <div class="wrapper-sm b-a bg-white m-r-xs m-b-xs">
+        <div class="bg-light" style="height:320px">
+          <img-crop 
+            image="myImage" 
+            result-image="myCroppedImage"
+            result-image-size="96"
+            area-type="{{cropType}}"
+          ></img-crop>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="inline bg-white wrapper-sm b-a">
+        <div class="bg-light">
+          <img class='img-circle'ng-src="{{myCroppedImage}}" />
+        </div>
+      </div> 
+
+      <div class='wrapper-xs '>
+          <button class="btn btn-sm btn-primary m-t-sm " ng-click='uploadProfilePhoto()'>                  
+                <small class="m-s"> <span class='fa fa-upload'></span> Upload photo</small>                 
+          </button>
+
+      </div>
+    </div>
+  </div>
+
+</div>  
+        <a ng-click="showpopup = !showpopup"  class="close-window">Close</a>
+   
+  </div>
 </div>
+

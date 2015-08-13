@@ -27,7 +27,7 @@ app.controller('SignupFormController', ['$scope', '$http', '$state', function($s
 //          $scope.authError = response;
           console.log('Error in signup');
         }else{
-          $state.go('access.signin');
+          $state.go('app.update.seller');
         }
       });
 

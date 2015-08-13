@@ -58,6 +58,18 @@ angular.module('app')
       $scope.langs = {en:'English', de_DE:'German', it_IT:'Italian',hi_HI:'Hindi'};
       $scope.selectLang = $scope.langs[$translate.proposedLanguage()] || "English";
 
+     $http.get('../api/slim.php/auth/process/seller').then(function(resp) {
+        $scope.user = resp.data;
+       // console.log(resp);
+      });
+// Info needed in whole app     
+      // $http.get('../api/slim.php/shiningfloor/seller/info').then(function (resp) {
+      //    $scope.seller = resp.data.seller_data;
+      //     console.log(resp.data);
+      //     if($scope.seller.img=='') 
+      //     $scope.seller.img = 'img/a0.jpg';   
+      // });
+      
       $scope.logout = function(){
 
       $http.get('../api/slim.php/auth/logout/seller').
@@ -70,7 +82,9 @@ angular.module('app')
 
       }
 
-
+      $scope.getNewTimeStamp = function(){
+        return new Date().getTime();
+      }
       $scope.setLang = function(langKey, $event) {
         // set the current lang
         $scope.selectLang = $scope.langs[langKey];
@@ -101,6 +115,7 @@ app.filter('adjustDatepicker', ['$filter', function($filter){
         return dateFilter(adjustedDate, 'MM/dd/yyyy');
     };
 }]);
+
 
 app.directive(
             "uiIf",

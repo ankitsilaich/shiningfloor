@@ -150,7 +150,6 @@ function findAllProducts($query,$usage_location){
             }
              
             foreach ($p->product_images() as $product_images) {
-
                 $images[] = $product_images['image_name'];
             }
 
@@ -173,12 +172,14 @@ function findAllProducts($query,$usage_location){
                         'product_type_id' => $p['type_id'],
                         'product_desc' =>  $p['product_desc'], 
                         'product_origin_country' => $p['product_origin_country'],
-                         'product_degree_of_variation' => $p['product_degree_of_variation'],
+                        'product_degree_of_variation' => $p['product_degree_of_variation'],
                         'product_material' =>  $p['product_material'],
                         'product_width' =>  $p['product_width'],
                         'product_height' =>  $p['product_height'],
                         'product_thickness' =>  $p['product_thickness'],
-                        'product_unit' =>  $p['product_width_unit'],
+                        'product_w_unit' =>  $p['product_width_unit'],
+                        'product_h_unit' =>  $p['product_height_unit'],
+                        'product_t_unit' =>  $p['product_thickness_unit'],
                         'product_shape' =>  $p['product_shape'],
                         'product_application' =>  $applications,
                         'product_look' =>  $p['product_look'],

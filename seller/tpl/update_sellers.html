@@ -9,45 +9,90 @@
       <div class="panel panel-default">
         <div class="panel-heading font-bold"> Update all details here</div> 
         <div class="panel-body">
-          <form class="bs-example form-horizontal" name="addTenant">
+          <form class="bs-example form-horizontal info-form form-validation" name="updateSellerForm">
+
             <div class="form-group">
-              <label class="col-lg-2 control-label">Seller Name</label>
-              <div class="col-lg-10">
-                <input type="text" class="form-control" placeholder="name" ng-model="seller.name">
-                <span class="help-block m-b-none">Add a seller name</span>
+              <label class="col-lg-2 control-label">Owner Name*</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" placeholder="name" ng-model="seller.owner_name" required>
+                
               </div>
             </div>
-            
             <div class="form-group">
-              <label class="col-lg-2 control-label">Seller Email</label>
-              <div class="col-lg-10">
-                <input type="text" class="form-control" placeholder="Email" ng-model="seller.email">
+              <label class="col-lg-2 control-label">Owner Mobile No*</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" placeholder="owner mobile no" ng-model="seller.owner_phone" ng-minlength="10" ng-maxlength="10" ng-pattern="/^[0-9]+$/" required>
+                
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-lg-2 control-label">Seller Store Name*</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" placeholder="company" ng-model="seller.storename" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-lg-2 control-label">Contact Person*</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" placeholder="name" ng-model="seller.name" required>
+                
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-lg-2 control-label">Contact Person No*</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" placeholder="contact person mobile number" ng-model="seller.phone" ng-minlength="10" ng-maxlength="10" ng-pattern="/^[0-9]+$/" required>
+                
               </div>
             </div>
 
             <div class="form-group">
-              <label class="col-lg-2 control-label">Seller Address</label>
-              <div class="col-lg-10">
-                <input type="text" class="form-control" placeholder="address" ng-model="seller.address">
+              <label class="col-lg-2 control-label">Seller Email*</label>
+              <div class="col-lg-8">
+                <input type="email" class="form-control" placeholder="Email" ng-model="seller.email" required>
               </div>
             </div>
-            
+
             <div class="form-group">
+              <label class="col-lg-2 control-label">Seller Address*</label>
+              <div class="col-lg-8">
+                <textarea class="form-control" rows="2" placeholder="Ex.: Marg No. 5 , Pragati Vihar " ng-model="seller.address" required>
+                </textarea>
+              </div>
+              
+            </div>
+            <div class="form-group">
+              <label class="col-lg-2 control-label">Pin Code*</label>
+              <div class="col-lg-8">
+                <input class="form-control" type="text"  placeholder="Ex: 110017" ng-model="seller.pincode" ng-minlength="6" ng-maxlength="6" ng-pattern="/^[0-9]+$/" required>                 
+              </div>
+              </div>
+
+            <div class="form-group">
+              <label class="col-lg-2 control-label">City* </label>
+              <div class="col-lg-8">
+                <input class="form-control"   placeholder="Ex: South Delhi " ng-model="seller.city" required>                 
+              </div>
+            </div>  
+            <div class="form-group">  
+              <label class="col-lg-2 control-label">State / Region* </label>
+              <div class="col-lg-8">
+                <input class="form-control"   placeholder="Ex: Delhi " ng-model="seller.state" required>                 
+              </div>
+            </div>
+
+<!--             <div class="form-group">
               <label class="col-lg-2 control-label">Seller Phone</label>
-              <div class="col-lg-10">
+              <div class="col-lg-8">
                 <input type="text" class="form-control" placeholder="phone" ng-model="seller.phone">
               </div>
-            </div>
-            <div class="form-group">
-              <label class="col-lg-2 control-label">Seller Store Name</label>
-              <div class="col-lg-10">
-                <input type="text" class="form-control" placeholder="company" ng-model="seller.storename">
-              </div>
-            </div>
+            </div> -->
+            
+            
             <div class="form-group">
                   <label class="col-lg-2 control-label">Seller Addtional Information</label>
-                   <div class="col-lg-10">
-                  <textarea class="form-control ng-pristine ng-valid ng-touched" rows="6" placeholder="Type additional information about seller here" ng-model="seller.comments"></textarea>
+                   <div class="col-lg-8">
+                  <textarea class="form-control " rows="6" placeholder="Type additional information about you" ng-model="seller.comments"></textarea>
                 </div>
                 </div>
              
@@ -58,14 +103,14 @@
               <div class="col-lg-offset-2 col-lg-10">
                 <div class="checkbox">
                   <label class="i-checks">
-                    <input type="checkbox" checked><i></i> Remember me
+                    <input type="checkbox" ng-model="agree" required><i></i> I Agree to terms and conditions.
                   </label>
                 </div>
               </div>
             </div>
             <div class="form-group">
               <div class="col-lg-offset-2 col-lg-10">
-                <button type="submit" class="btn btn-sm btn-info" ng-click="update(seller)" >Update Seller</button>
+                <button type="submit" class="btn btn-sm btn-info" ng-disabled='updateSellerForm.$invalid' ng-click="update(seller)" >Update Seller</button>
               </div>
             </div> 
           </form>

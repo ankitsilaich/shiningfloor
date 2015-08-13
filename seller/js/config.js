@@ -46,7 +46,7 @@ return $resource('api/index.php/subject/:subject_id', null,
         console.log(responseData);
         if(responseData['login_success'] == 'true'){
          // console.log(responseData);
-          $rootScope.isLoggedIn = true;
+          $rootScope.isLoggedIn = true;                    
           $rootScope.processGoingOn = false;
 //          $('#login-modal').modal('hide');
           $location.path('/home');
@@ -70,7 +70,17 @@ return $resource('api/index.php/subject/:subject_id', null,
       });
     },
     isLoggedIn: function(){
+
      var $checkSessionServer = $http.get('../api/slim.php/auth/process/seller');
+   //  console.log($checkSessionServer);
+     // if($checkSessionServer!=false){
+     //  $http.get('../api/slim.php/shiningfloor/seller/info').then(function (resp) {
+     //       $rootScope.seller = resp.data.seller_data;
+     //        console.log(resp.data);
+     //      if($rootScope.seller.img=='') 
+     //      $rootScope.seller.img = 'img/a0.jpg';   
+     //    });
+     // }
       return $checkSessionServer;
     }
   }

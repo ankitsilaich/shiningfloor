@@ -5,8 +5,8 @@
  */
 angular.module('app')
     .run(
-        ['$rootScope', '$state', '$stateParams', '$location', 'LoginService',
-            function($rootScope, $state, $stateParams, $location, LoginService) {
+        ['$rootScope', '$state', '$stateParams', '$location', 'LoginService','$http',
+            function($rootScope, $state, $stateParams, $location, LoginService,$http) {
                 $rootScope.$state = $state;
 
                 $rootScope.$stateParams = $stateParams;
@@ -25,6 +25,12 @@ angular.module('app')
                         if (msg.data) {
                             //  user is logged in and it will also handle the page refresh
                             $rootScope.isLoggedIn = true;
+                             $http.get('../api/slim.php/shiningfloor/seller/info').then(function (resp) {
+                                     $rootScope.seller = resp.data.seller_data;
+                                      console.log(resp.data);
+                                      if($rootScope.seller.img=='') 
+                                      $rootScope.seller.img = 'img/a0.jpg';   
+                                  });
                             console.log(msg.data);
                             // $location.path('/home');
                         } else {
@@ -58,6 +64,7 @@ angular.module('app')
                         url: '/app',
                         templateUrl: 'tpl/app.html'
                     })
+
                     // .state('app.dashboard-v1', {
                     //     url: '/dashboard-v1',
                     //     templateUrl: 'tpl/app_dashboard_v1.html',
@@ -77,13 +84,24 @@ angular.module('app')
                     .state('app.seller.details', {
                         url: '/details',
                         templateUrl: 'tpl/seller_profile.html',
-                        resolve: {
-                            deps: ['uiLoad',
-                                function(uiLoad) {
-                                    return uiLoad.load('js/controllers/seller.js');
-                                }
-                            ]
-                        }
+                      
+
+
+                         resolve: {
+                                deps: ['$ocLazyLoad', 'uiLoad',
+                                    function($ocLazyLoad, uiLoad) {
+                                        return $ocLazyLoad.load(['angularFileUpload','ngImgCrop']).then(
+                                            function() {
+                                                return uiLoad.load(
+                                                    [ 
+                                                    'vendor/angular/angular-file-upload.min.js',
+                                                    'js/controllers/seller.js'])
+                                            }
+                                        );
+                                    }
+                                ]
+                            }
+
                     })
 
 
@@ -189,7 +207,7 @@ angular.module('app')
                         template: '<div ui-view class="fade-in"></div>',
 
                     })
-                    .state('app.update.tenants', {
+                    .state('app.update.seller', {
                         url: '/sellers',
                         templateUrl: 'tpl/update_sellers.html',
                         resolve: {

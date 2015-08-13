@@ -186,6 +186,9 @@ $app->post("/auth/signup/seller", function() use ($app, $db)
     else
     {
       $array['password'] = md5(sha1($array['password']));
+      $joindate=getdate(date("U"));
+//      echo  "$joindate[month] $joindate[mday], $joindate[year]";
+      $array['join_date'] = "$joindate[month] $joindate[mday], $joindate[year]" ;
       $data = $db->sellers()->insert($array);
 //      echo $data;
       $_SESSION['seller'] = $email;
@@ -226,6 +229,18 @@ $app->get('/auth/process/seller', function() use ($app)
     echo json_encode($data);
 });
 
+$app->get('/auth/process/seller', function() use ($app)
+{
+
+    if (isset($_SESSION['seller'])) {
+        $data = $_SESSION['seller'];
+    } else {
+        $data = false;
+    }
+
+    $app->response()->header('Content-Type', 'application/json');
+    echo json_encode($data);
+});
 
 $app->get("/auth/logout/admin", function() use ($app)
 {
@@ -719,14 +734,16 @@ $app->get('/shiningfloor/admin/selectedproducts(/:id)', $authenticate_admin($app
                         'product_width' =>  $p['product_width'],
                         'product_height' =>  $p['product_height'],
                         'product_thickness' =>  $p['product_thickness'],
-                        'product_unit' =>  $p['product_width_unit'],
+                        'product_w_unit' =>  $p['product_width_unit'],
+                        'product_h_unit' =>  $p['product_height_unit'],
+                        'product_t_unit' =>  $p['product_thickness_unit'],
                         'product_shape' =>  $p['product_shape'],
                         'product_application' =>  $applications,
                         'product_look' =>  $p['product_look'],
                         'product_finish_type'=> $p['product_finish_type'],
                         'product_usages'=> $usages,
                         'product_colors'=> $colors,
-                        'product_img' =>  $images,
+                        'product_images' =>  $images,
                         'product_features'=> $p['product_desc'],
                         'product_price'=>$p['product_price'],
                         'product_rating' => $p['product_rating'],
@@ -842,14 +859,16 @@ $app->get('/shiningfloor/seller/selectedproducts', $authenticate_seller($app),fu
                         'product_width' =>  $p['product_width'],
                         'product_height' =>  $p['product_height'],
                         'product_thickness' =>  $p['product_thickness'],
-                        'product_unit' =>  $p['product_width_unit'],
+                        'product_w_unit' =>  $p['product_width_unit'],
+                        'product_h_unit' =>  $p['product_height_unit'],
+                        'product_t_unit' =>  $p['product_thickness_unit'],
                         'product_shape' =>  $p['product_shape'],
                         'product_application' =>  $applications,
                         'product_look' =>  $p['product_look'],
                         'product_finish_type'=> $p['product_finish_type'],
                         'product_usages'=> $usages,
                         'product_colors'=> $colors,
-                        'product_img' =>  $images,
+                        'product_images' =>  $images,
                         'product_features'=> $p['product_desc'],
                         'product_price'=>$p['product_price'],
                         'product_rating' => $p['product_rating'],
@@ -944,6 +963,36 @@ $app->post('/seller/uploadfile', function() use ($app,$db)
     }
 
 });
+
+$app->post('/seller/uploadprofile', $authenticate_seller($app),function() use ($app,$db)
+{
+     $user = $_SESSION['seller'];  
+     // echo $user;    
+     $seller = $db->sellers()->where('email',$user)->select('id')->fetch();      
+     $seller_id = $seller['id'] ;
+     // echo $seller_id;
+     if ( !empty( $_FILES ) ) {
+     $tempPath = $_FILES[ 'file' ][ 'tmp_name' ];
+     $temp = explode(".",$_FILES["file"]["name"]);
+      
+     $newfilename = $seller_id .'.jpg';
+     $uploadPath = dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '../seller/uploads/profile/'  .$newfilename;
+
+     move_uploaded_file( $tempPath, $uploadPath );
+     $answer = array( 'lastid' => $seller_id,
+     'filename' => $newfilename);
+     echo $db->sellers->where('email',$user)->fetch(); 
+     if($db->sellers->where('email',$user)->update(array('image_name'=>  '../seller/uploads/profile/'.$newfilename)))
+        echo json_encode( array('status' => 'success'));
+      // else
+      //   echo json_encode( array('status' => 'fail'));
+        
+    } else {
+     echo 'No files';
+    }
+
+});
+
 //------------------------------------------
 $app->post('/shiningfloor/seller/addproduct', $authenticate_seller($app),function() use ($app, $db)
 {
@@ -1104,10 +1153,16 @@ $app->get('/shiningfloor/seller/info' ,function() use ($app, $db)
 
             $data = array(
                 'id' => $seller['id'],
+                'owner_name' => $seller['owner_name'],
+                'owner_phone' => $seller['owner_phone'], 
                 'address' => $seller['address'],
                 'name' => $seller['name'],
                 'email' => $seller['email'],
+                'img'=> $seller['image_name'],
                 'phone' => $seller['phone'],
+                'pincode' => $seller['pincode'],
+                'city' => $seller['city'],
+                'state' => $seller['state'],
                 'storename' => $seller['storename'],
                 'comments' => $seller['comments'],
                 'noofproducts' => $countall
@@ -1178,11 +1233,16 @@ $app->put('/shiningfloor/sellers/update', $authenticate_seller($app),function() 
        $post = (array) json_decode($app->request()->getBody());
         $info = array(
 
-                'address' => $post['address'],
+                'owner_name' => $post['owner_name'],
+                'owner_phone' => $post['owner_phone'],                
                 'name' => $post['name'],
                 'phone' => $post['phone'],
                 'storename' => $post['storename'],
                 'email' => $post['email'],
+                'address' => $post['address'],
+                'pincode' => $post['pincode'],
+                'city' => $post['city'],
+                'state' => $post['state'],
                 'comments' => $post['comments']
         );
 

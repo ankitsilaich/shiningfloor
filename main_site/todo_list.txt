@@ -1,0 +1,7 @@
+Seller Details:
+
+1. Proper Address fields
+2. owner name
+3. owner mob no
+4. contact person name
+5. contact person mob no

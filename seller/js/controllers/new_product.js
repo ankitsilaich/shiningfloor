@@ -46,15 +46,7 @@ $scope.selectType =function(val){
       for(i=0;i<$scope.colorsLength;i++)
         $scope.selectedColors[i] = false;
     });
-
-// $http.get('../api/slim.php/shiningfloor/'+$scope.selectedType + '/brands').then(function(resp) {
-//     $scope.brands = resp.data.brands;
-    
-//     if(!$scope.$$phase) {
-//       $scope.$apply();
-//     }
-//   });
-
+ 
     function suggest_brand(term) { 
       var q = term.toLowerCase().trim();
 
@@ -77,9 +69,9 @@ $scope.selectType =function(val){
 $scope.selectedTypeValue = "1";
 $scope.selectedType = 'tiles';
 $scope.selectType();
-$scope.product_types = [{'value':'1','name':'Tile'},{'value':'2','name':'Wood'},{'value':'7','name':'Mosiac'},{'value':'8','name':'Vinyl & Linoleum'},{'value':'9','name':'Carpet & Rugs'},{'value': '10','name':'Accessories'}];
+// $scope.product_types = [{'value':'1','name':'Tile'},{'value':'2','name':'Wood'},{'value':'7','name':'Mosiac'},{'value':'8','name':'Vinyl & Linoleum'},{'value':'9','name':'Carpet & Rugs'},{'value': '10','name':'Accessories'}];
 //$scope.product_types = [{'value':'1','name':'Tile'},{'value':'2','name':'Wood'},{'value':'3','name':'Marble'},{'value':'4','name':'Stone'},{'value':'5','name':'Wallpaper'},{'value': '6','name':'Artificial'}];
-
+$scope.product_types = [{'value':'1','name':'Tile'}];
 
 $scope.product= {"name":"" , "type":"1" ,"brand":""   ,"look":"" ,"width":"","height":"","thickness":"","w_unit":"ft","t_unit":"mm" ,"finish_type":"",
             "url":"", "total_boxes":"","colors":"", "origin_country":"","variation":"","shape":"","price":"","items_per_box":"" ,"material":"",
@@ -91,12 +83,6 @@ $http.get('../api/slim.php/shiningfloor/'+$scope.selectedType + '/brands').then(
     $scope.totalBrands = $scope.brands.length;
 });
 
-$scope.addNewBrandInList = function(){
-  // if($scope.product.brand!=''){
-  //     $scope.brands[$scope.totalBrands] = $scope.product.brand;
-  // }
-  // console.log(JSON.stringify($scope.brands));
-};
 $http.get('../api/slim.php/shiningfloor/sizes').then(function(resp) {
     $scope.sizes = resp.data.sizes;
     function suggest_size(term) {
@@ -116,29 +102,7 @@ $http.get('../api/slim.php/shiningfloor/sizes').then(function(resp) {
     };
 
 });
-
-// $http.get('../api/slim.php/shiningfloor/applications').then(function(resp) {
-//     $scope.applications = resp.data.applications;
-//     function suggest_application(term) {
-//       var q = term.toLowerCase().trim();
-//       var results = [];
-//       for (var i = 0; i < $scope.applications.length && results.length < 10; i++) {
-//         var state = $scope.applications[i];
-
-//         if (state.toLowerCase().indexOf(q) === 0)
-//           results.push({
-//             label: state ,  value: state });
-//       }
-//       return results;
-//     }
-//     $scope.application_options = {
-//       suggest: suggest_application
-//     };
-
-// });
-
-// $http.get('../api/slim.php/shiningfloor/materials').then(function(resp) {
-//     $scope.materials = resp.data.materials;
+ 
     function suggest_material(term) {
       var q = term.toLowerCase().trim();
       var results = [];
@@ -154,8 +118,7 @@ $http.get('../api/slim.php/shiningfloor/sizes').then(function(resp) {
     $scope.material_options = {
       suggest: suggest_material
     };
-
-// });
+ 
 
 $scope.usages = ["Floor","Wall","Commericial","Residential","Outdoor"];
 $scope.usagesLength= $scope.usages.length;
@@ -231,14 +194,7 @@ $scope.shapes = ["Hexagon","Octagon","Oval","Rectangle","Round","Square","Pebble
       }
       return results;
     }
-    // var results = [];
-    //    for (var i = 0; i < $scope.shapes.length && results.length < 10; i++) {
-    //       var state = $scope.shapes[i];
-    //                 results.push({
-    //                   label: state ,  value: state });
-    //             }
-    // $scope.shape_options = {suggest: results};                
-               
+  
     $scope.shape_options = {
       suggest: suggest_shape
     };
@@ -274,62 +230,37 @@ $http.get('../api/slim.php/shiningfloor/looks').then(function(resp) {
           return this.queue.length < 5;
       }
   });
-
-  // CALLBACKS
-
-  uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
-      console.info('onWhenAddingFileFailed', item, filter, options);
-  };
-  uploader.onAfterAddingFile = function(fileItem) {
-      console.info('onAfterAddingFile', fileItem);
-  };
-  uploader.onAfterAddingAll = function(addedFileItems) {
-      console.info('onAfterAddingAll', addedFileItems);
-  };
-  uploader.onBeforeUploadItem = function(item) {
-      console.info('onBeforeUploadItem', item);
-  };
-  uploader.onProgressItem = function(fileItem, progress) {
-      console.info('onProgressItem', fileItem, progress);
-  };
-  uploader.onProgressAll = function(progress) {
-      console.info('onProgressAll', progress);
-  };
-  uploader.onSuccessItem = function(fileItem, response, status, headers) {
-      console.info('onSuccessItem', fileItem, response, status, headers);
-  };
-  uploader.onErrorItem = function(fileItem, response, status, headers) {
-      console.info('onErrorItem', fileItem, response, status, headers);
-  };
-  uploader.onCancelItem = function(fileItem, response, status, headers) {
-      console.info('onCancelItem', fileItem, response, status, headers);
-  };
-  uploader.onCompleteItem = function(fileItem, response, status, headers) {
-      console.info('onCompleteItem', fileItem, response, status, headers);
-  };
-  uploader.onCompleteAll = function() {
-      console.info('onCompleteAll');
-  };
- 
- 
-// $scope.currentProgress ='generalForm';
-// $scope.showProductGeneralForm = function(){
-//   $scope.currentProgress ='generalForm';
-// }
-// $scope.showProductSellerForm = function(){
-//   $scope.currentProgress ='sellerForm';
-// }
-// $scope.showProductImagesForm = function(){
-//   $scope.currentProgress ='imagesForm';
-// }
+  
+$scope.isFormOk = function(){
+  $scope.usagesFieldOk = false;
+  $scope.applicationsFieldOk = false;
+  $scope.colorsFieldOk = false;
+  for(i=0;i<$scope.usagesLength;i++)
+  {   
+      if($scope.selectedUsages[i]==true){
+         $scope.usagesFieldOk = true ; break;
+     }
+  }
+  for(i=0;i<$scope.applicationsLength;i++)
+  {   
+      if($scope.selectedApplications[i]==true){
+         $scope.applicationsFieldOk = true ; break;
+     }
+  }
+  for(i=0;i<$scope.colorsLength;i++)
+  {   
+      if($scope.selectedColors[i]==true){
+         $scope.colorsFieldOk = true ; break;
+     }
+  }
+  if($scope.usagesFieldOk && $scope.applicationsFieldOk && $scope.colorsFieldOk) 
+      return true;
+  else
+      return false;
+}
 
   $scope.submitform = function(product){
- 
-    // for(var i=0; i< uploader.queue.length ;i++)
-    // {
-    // // console.log( uploader.queue)
-    //  uploader.queue[i].upload();
-    // } 
+  
     uploader.uploadAll();
     console.log($scope.selectedUsages);     
     for(i=0;i<$scope.usagesLength;i++)

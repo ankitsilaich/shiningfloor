@@ -9,23 +9,24 @@
                 <li ng-class="{active: t1}"> <a href ng-click="t1=1;t2=0;t3=0;"><span class="fa fa-home"> </span> General</a></li>
                 <li ng-class="{active: t2}"> <a ng-click="t1=0;t2=1;t3=0;"><span class="fa fa-edit"> </span> Seller Data</a></li>
                 <li ng-class="{active:t3}"> <a ng-click="t1=0;t2=0;t3=1;"><span class="fa fa-image"> </span> Images</a></li>
+                <li class="required_info t-r pull-right"> <i> * fields are required </i> </li>
             </ul>
         </div>
         <div id="panel-collapse-1" class="collapse in">
-            <form name="addProduct">
+            <form name="addProduct" class="form-validation newproductform" >
                 <div class="panel-body">
                     <div class="tab-content">
                         <div ng-show="t1" class="tab-pane fade" ng-class="{active:t1 , in:t1}" id="panel-general">
                              
                                 <div class="form-group clearfix">
 
-                                    <label class="col-lg-2 control-label">Product Name</label>
+                                    <label class="col-lg-2 control-label">Product Name*</label>
                                     <div class="col-lg-8 ">
-                                        <input type="text" class="form-control" placeholder="product name" ng-model="product.name">
+                                        <input type="text" class="form-control" placeholder="product name" ng-model="product.name" required>
                                     </div>
                                 </div>    
                                 <div class="form-group clearfix">
-                                    <label class="col-lg-2 control-label">Product Type </label>
+                                    <label class="col-lg-2 control-label">Product Type* </label>
                                     <div class="col-lg-8 ">
                                         <select class="form-control" ng-model="product.type" ng-click="selectType(product.type);">
                                             <option ng-repeat="product_type in product_types" value="{{product_type.value}}">{{product_type.name}}</option>
@@ -35,11 +36,11 @@
                              
                              
                                 <div class="form-group clearfix">
-                                    <label class="col-lg-2 control-label" ng-click='alertMe()'>Product Brand</label>
+                                    <label class="col-lg-2 control-label" ng-click='alertMe()'>Product Brand*</label>
                                     
 
                                     <div class="col-lg-8" mass-autocomplete>                                        
-                                        <input placeholder='select a brand' class="form-control" ng-model="product.brand" mass-autocomplete-item="brand_options" ng-keyup="addNewBrandInList()" ng-focus='t=1' ng-blur="t=0">
+                                        <input placeholder='select a brand' class="form-control" ng-model="product.brand" mass-autocomplete-item="brand_options" ng-keyup="addNewBrandInList()" required>
 
                                         <!-- <div ng-show="product.brand==''&&t==1" > <div class="ac-container"style="position: absolute;" >
                                             <ul class="ac-menu" style='border:none'>
@@ -49,12 +50,12 @@
 
                                 </div>  
                                 <div class="form-group clearfix">
-                                    <label class="col-lg-2 control-label">Product Usages</label>
+                                    <label class="col-lg-2 control-label">Product Usages*</label>
                                     <div class="col-lg-8 form-inline">
                                          
                                         <div class="checkbox custom-checkbox form-group" ng-repeat="usage in usages"  ng-click="selectedUsages[$index] = !selectedUsages[$index];selectUsage($index);">
                                         <label >
-                                            <input  type="checkbox" ng-model="selectedUsages[$index]" ng-checked="selectedUsages[$index]">
+                                            <input  type="checkbox" ng-model="selectedUsages[$index]" ng-checked="selectedUsages[$index]"  >
                                             
                                             <span class="fa fa-check"></span>
                                             {{usage}}
@@ -131,13 +132,13 @@
                                 </div>
                                 
                                 <div class="form-group clearfix">
-                                    <label class="col-lg-2 control-label">Product Applications</label>
+                                    <label class="col-lg-2 control-label">Product Applications*</label>
                                     <div class="col-lg-8 form-inline">
                                          
 
                                         <div class="checkbox custom-checkbox form-group" ng-repeat="application in applications"  ng-click="selectedApplications[$index] = !selectedApplications[$index];selectApplication($index);">
                                         <label >
-                                            <input  type="checkbox" ng-model="selectedApplications[$index]" ng-checked="selectedApplications[$index]">
+                                            <input  type="checkbox" ng-model="selectedApplications[$index]" ng-checked="selectedApplications[$index]" >
                                             
                                             <span class="fa fa-check"></span>
                                             {{application}}
@@ -168,7 +169,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group clearfix">
-                                    <label class="col-lg-2 control-label">Colors</label>
+                                    <label class="col-lg-2 control-label">Colors*</label>
 
                                     <div class=" colors_cat col-lg-8">
                                         <ul id="cat_color"> 
@@ -183,7 +184,7 @@
                                      
                                         <div class="col-lg-8">
                                             <div mass-autocomplete>
-                                              <input placeholder='origin country of product' class="form-control" ng-model="product.origin_country" mass-autocomplete-item="country_options">
+                                              <input placeholder='origin country of product' class="form-control" ng-model="product.origin_country" mass-autocomplete-item="country_options" >
                                             </div>    
                                         <!-- <div mass-autocomplete>
                                             <input placeholder='origin country of product' class="form-control" ng-model="product.origin_country" mass-autocomplete-item="country_options">
@@ -200,9 +201,9 @@
                                 
                                 
                                 <div class="form-group clearfix">
-                                    <label class="col-lg-2 control-label">Special Features</label>
+                                    <label class="col-lg-2 control-label">Special Features*</label>
                                     <div class="col-lg-8">
-                                        <textarea class="form-control" rows="4" placeholder="Type special features information about product here" ng-model="product.features">
+                                        <textarea class="form-control" rows="4" placeholder="Type special features information here" ng-model="product.features" required>
                                         </textarea>
                                     </div>
 
@@ -226,7 +227,7 @@
                                 <div class="col-lg-5">
 
                                 </div>
-                                <div class="col-lg-5 proceed">
+                                <div class="col-lg-5 proceed-fwd">
                                     <button class="btn btn-default" ng-click="t1=0;t2=1;t3=0">Proceed <i class="fa fa-arrow-right" /></button>
                                 </div>
                             </div>
@@ -237,11 +238,11 @@
 
                             <div class="row">
                                 <div class="form-group clearfix">
-                                    <label class="col-lg-2 control-label">Product Price</label>
+                                    <label class="col-lg-2 control-label">Product Price*</label>
                                     <div class="col-lg-3">
                                         <div class="input-group">
                                         <span class="input-group-addon">Rs.</span>
-                                        <input type="text" class="form-control" placeholder="Price" ng-model="product.price">
+                                        <input type="text" class="form-control" placeholder="Price" ng-model="product.price" required>
                                     </div>
                                     </div>
                                     <label class="col-lg-2 col-lg-offset-1  control-label">Product Code</label>
@@ -254,14 +255,14 @@
                             </div>
                             <div class="row">
                                 <div class="form-group clearfix">
-                                    <label class="col-lg-2 control-label">Items Per Box </label>
+                                    <label class="col-lg-2 control-label">Items Per Box* </label>
                                     <div class="col-lg-3">
-                                        <input type="text" class="form-control" placeholder="Number of items per box" ng-model="product.items_per_box">
+                                        <input type="text" class="form-control" placeholder="Number of items per box" ng-model="product.items_per_box" required>
 
                                     </div>
-                                    <label class="col-lg-2 col-lg-offset-1  control-label">Minimum Orders</label>
+                                    <label class="col-lg-2 col-lg-offset-1  control-label">Minimum Orders*</label>
                                     <div class="col-lg-3">
-                                        <input type="text" class="form-control" placeholder="Your Minimum Orders" ng-model="product.minimum_boxes">
+                                        <input type="text" class="form-control" placeholder="Your Minimum Orders" ng-model="product.minimum_boxes" required>
                                     </div>
 
 
@@ -269,9 +270,9 @@
                             </div>
                             <div class="row">
                                 <div class="form-group clearfix">
-                                    <label class="col-lg-2 control-label">Total Quantity </label>
+                                    <label class="col-lg-2 control-label">Total Quantity* </label>
                                     <div class="col-lg-3">
-                                        <input type="text" class="form-control" placeholder="total numbers of boxes" ng-model="product.total_boxes">
+                                        <input type="text" class="form-control" placeholder="total numbers of boxes" ng-model="product.total_boxes" required>
 
                                     </div>
                                     <label class="col-lg-2 col-lg-offset-1  control-label">Seller Comment</label>
@@ -286,11 +287,11 @@
 
 
                             <div class="form-group clearfix">
-                                <div class="col-lg-5">
+                                <div class="col-lg-5 proceed-bck">
                                     <button class="btn btn-default" ng-click="t1=1;t2=0;t3=0"><i class="fa fa-arrow-left" /> Back </button>
                                 </div>
-                                <div class="col-lg-5 proceed">
-                                    <button class="btn btn-default" ng-click="t1=0;t2=0;t3=1">Proceed <i class="fa fa-arrow-right" /></button>
+                                <div class="col-lg-5 proceed-fwd">
+                                    <button class="btn btn-default" ng-click="t1=0;t2=0;t3=1;">Proceed <i class="fa fa-arrow-right" /></button>
                                 </div>
                             </div>
                         </div>
@@ -308,7 +309,7 @@
                                   <h3 class="m-n font-thin">Select Images </h3><em class="text-muted">(maximum 5)*</em>
                                 </div>
                                 <div class="wrapper-md">
-                                    <label> Main Image:</label>
+                                    <label> Main Image:*</label>
                                     <input type="file" nv-file-select="" uploader="uploader" ng-click="uploader.queue.length=0" required/>                                         
                                   <label> Other Images:</label>
                                   <input ng-disabled="uploader.queue.length<1" type="file" nv-file-select="" uploader="uploader" multiple  />
@@ -366,11 +367,11 @@
                              
                             <div class="form-group clearfix">
                                 
-                                <div class="col-lg-5">
-                                    <button class="btn btn-default" ng-click="t1=0;t2=1;t3=0"><i class="fa fa-arrow-left" /> Back </button>
+                                <div class="col-lg-5 proceed-bck">
+                                    <button class="btn btn-default" ng-click="t1=0;t2=1;t3=0"><i class="fa fa-arrow-left" /> Back  </button>
                                 </div>
                                 <div class="col-lg-5">
-                                    <button type="submit" class="btn btn-lg btn-sp btn-br" ng-disabled="uploader.queue.length<1" ng-click="submitform(product)">Add Product</button>
+                                    <button type="submit" class="btn btn-lg btn-sp btn-v" ng-disabled="addProduct.$invalid||!isFormOk()||uploader.queue.length<1" ng-click="submitform(product)">Add Product  </button>
                                 </div>
                             </div>
                         </div>

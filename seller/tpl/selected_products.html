@@ -123,27 +123,31 @@
                         </div>
                         <div class="bottom wrapper w-full bg-gd-dk text-white">
                             <div class="h3 m-b-sm text-white-lter">{{product.product_brand}}</div>
-                            <div>{{product.product_application}}- {{product.product_category}}</div>
-
+                           <!--  <div>{{product.product_application}}- {{product.product_category}}</div>
+ -->
                             <div> <span> Rs. {{product.seller_product_price}} per box, </span> <span style= 'margin-left:7px;'> Min boxes:{{product.seller_minimum_boxes}}, </span> <span style= 'margin-left:7px;'> Per box items: {{product.seller_items_per_box}}, </span> <span style= 'margin-left:7px;'> Comments: {{product.seller_product_comments}}</span> </div>
 
                         </div>
 
-                        <img ng-src="{{product.product_img}}" class="img-full" width=350 height=197>
+                        <img ng-src="{{product.product_images[0]}}" class="img-full" width=350 height=197>
                     </div>
                     <div class="panel-footer bg-light lter wrapper">
                         <div class="row">
                             <div class="col-xs-4">
-                                <small class="text-muted block">Application</small>
-                                <span class="text-md">{{product.product_application}}</span>
+                                <small class="text-muted block">Look</small>
+                                <span class="text-md">{{product.product_look}}</span>
                             </div>
                             <div class="col-xs-4">
                                 <small class="text-muted block">Finish</small>
                                 <span class="text-md">{{product.product_finish_type}}</span>
                             </div>
                             <div class="col-xs-4">
+                                 
                                 <small class="text-muted block">Size</small>
-                                <span class="text-md">{{product.product_size}}</span>
+                                <span class="text-md" ng-show='product.product_width!=0'>{{product.product_width}}</span>
+                                <span class="text-md" ng-show='product.product_height!=0'>* {{product.product_height}}</span>
+                                <span class="text-md" ng-show='product.product_height!=0&&product.product_width!=0'>{{product.product_w_unit}}</span> 
+                                 
                             </div>
                         </div>
                     </div>
