@@ -2,18 +2,33 @@
 
 /* Controllers */
   // signin controller
-app.controller('SigninFormController', ['$rootScope', '$scope', '$http', '$state','$location','LoginService', function($rootScope,$scope, $http, $state, $location,LoginService) {
+app.controller('SigninFormController', ['$rootScope', '$scope', '$http', '$state','$location','LoginService','toaster','$timeout' ,function($rootScope,$scope, $http, $state, $location,LoginService,toaster,$timeout) {
     $scope.user = {};
     $scope.authError = null;
-   
-    $scope.login = function(user){
-//     console.log($scope.user );
+  if($rootScope.isLoggedIn){
+    $location.path('/home');
+  } 
+ $scope.login = function(user) {
     if(!$rootScope.isLoggedIn) {
-      LoginService.login($scope.user, $scope);
-      $scope.user = "";
+        LoginService.login($scope.user, $scope).then(function(){
+//            console.log($rootScope.isLoggedIn);
+            if($rootScope.isLoggedIn){
+                toaster.pop('success', 'Seller added', 'Redirecting to home page...');         
+                $timeout(redirectState, 3000);
+            }
+            else{
+                toaster.pop('error', 'Login Error', 'Either email or password incorrect');
+              }
+        }); 
+    } else { 
+        $location.path('/home');
+    }          
+}
+
+function redirectState() {
+       $location.path('/home');
     }
-    else $location.path('/home');
-  }
+  
   $scope.logout = function(){
     console.log('logout called');
     LoginService.logout();

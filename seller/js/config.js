@@ -40,26 +40,27 @@ return $resource('api/index.php/subject/:subject_id', null,
     login: function(user, scope){
       // console.log(user);
       $rootScope.processGoingOn = true;
-      var $promise = $http.post('../api/slim.php/auth/process/seller', user);  // send data to server to user.php
-      $promise.then(function(msg){
-        var responseData = msg.data;
+      return $http.post('../api/slim.php/auth/process/seller', user).then(function(msg) {
+                var responseData = msg.data;
         console.log(responseData);
         if(responseData['login_success'] == 'true'){
          // console.log(responseData);
           $rootScope.isLoggedIn = true;                    
           $rootScope.processGoingOn = false;
 //          $('#login-modal').modal('hide');
-          $location.path('/home');
+//          $location.path('/home');
+            return;
         }
         else{
           $rootScope.isLoggedIn = false;
           $rootScope.processGoingOn = false;
 //          alert(responseData['message']);
-          $location.path('/access/signin');
-          scope.user = "";
+         // $location.path('/access/signin');
+          scope.user = ""; 
+          return;
         }
         
-      })
+      });
     },
     logout: function(){
       console.log('logout me');

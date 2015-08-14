@@ -1,11 +1,12 @@
 'use strict';
 
 // signup controller
-app.controller('SignupFormController', ['$scope', '$http', '$state', function($scope, $http, $state) {
+app.controller('SignupFormController', ['$scope', '$http', '$state','toaster','$timeout', function($scope, $http, $state,toaster,$timeout) {
 
       
    
     $scope.login = function(user){
+      console.log('ss');      
      // console.log($scope.user);
     if(!$rootScope.isLoggedIn) {
       LoginService.login($scope.user, $scope);
@@ -24,13 +25,18 @@ app.controller('SignupFormController', ['$scope', '$http', '$state', function($s
       .then(function(response) {
 
         if ( response.data.signup_success == 'false') {
-//          $scope.authError = response;
-          console.log('Error in signup');
+ 
+            toaster.pop('error', 'Seller existed', 'Please login with this email...'); 
         }else{
-          $state.go('app.update.seller');
+          toaster.pop('success', 'Seller added', 'Redirecting to update seller details ...');         
+          $timeout(redirectState, 3000);
+          // $state.go('app.update.seller');
         }
-      });
 
+      });
+      function redirectState() {
+       $state.go('app.update.seller',{},{reload:true});
+    }
     };
 
   }]);

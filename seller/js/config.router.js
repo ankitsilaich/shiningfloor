@@ -21,7 +21,7 @@ angular.module('app')
                     var connected = LoginService.isLoggedIn();
                     connected.then(function(msg) {
 
-                        // console.log('s '+ msg.data);
+                          console.log( msg.data);
                         if (msg.data) {
                             //  user is logged in and it will also handle the page refresh
                             $rootScope.isLoggedIn = true;
@@ -31,7 +31,7 @@ angular.module('app')
                                       if($rootScope.seller.img=='') 
                                       $rootScope.seller.img = 'img/a0.jpg';   
                                   });
-                            console.log(msg.data);
+                          //  console.log(msg.data);
                             // $location.path('/home');
                         } else {
                                 // console.log(toString($location.path()));
@@ -264,25 +264,49 @@ angular.module('app')
                     })
                     .state('access.signin', {
                         url: '/signin',
-                        templateUrl: 'tpl/admin_signin.html',
+                        templateUrl: 'tpl/seller_signin.html',
                         resolve: {
-                            deps: ['uiLoad',
-                                function(uiLoad) {
-                                    return uiLoad.load(['js/controllers/signin.js']);
+                            deps: ['$ocLazyLoad', 'uiLoad',
+                                function($ocLazyLoad, uiLoad) {
+                                    return $ocLazyLoad.load('toaster').then(
+                                        function() {
+                                            return uiLoad.load(
+                                                'js/controllers/signin.js')
+                                        }
+                                    );
                                 }
                             ]
                         }
+                        // resolve: {
+                        //     deps: ['uiLoad',
+                        //         function(uiLoad) {
+                        //             return uiLoad.load(['js/controllers/signin.js']);
+                        //         }
+                        //     ]
+                        // }
                     })
                     .state('access.signup', {
                         url: '/signup',
                         templateUrl: 'tpl/page_signup.html',
                         resolve: {
-                            deps: ['uiLoad',
-                                function(uiLoad) {
-                                    return uiLoad.load(['js/controllers/signup.js']);
+                            deps: ['$ocLazyLoad', 'uiLoad',
+                                function($ocLazyLoad, uiLoad) {
+                                    return $ocLazyLoad.load('toaster').then(
+                                        function() {
+                                            return uiLoad.load(
+                                                'js/controllers/signup.js')
+                                        }
+                                    );
                                 }
                             ]
                         }
+                        // resolve: {
+                        //     deps: ['uiLoad',
+                        //         function(uiLoad) {
+                        //             return uiLoad.load(['js/controllers/signup.js']);
+                        //         }
+                        //     ]
+                        // }
                     })
                     .state('access.forgotpwd', {
                         url: '/forgotpwd',
