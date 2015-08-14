@@ -2885,7 +2885,10 @@ fieldset[disabled] .i-checks input + i:before {
   color: #58666e;
   background-color: #edf1f2;
 }
-
+.bg-light.gr,
+.bg-light .gr{
+  background-color:#F2FFEE;
+}
 .bg-light.lt,
 .bg-light .lt {
   background-color: #f3f5f6;
@@ -4151,6 +4154,24 @@ a.text-#000000:hover {
   padding: 0 !important;
 }
 
+.padder-l-sm {
+  padding-left: 10px !important;
+}
+.padder-r-sm {
+  padding-right: 10px !important;
+}
+.padder-l-xs {
+  padding-left: 5px !important;
+}
+.padder-r-xs {
+  padding-right: 5px !important;
+}
+.padder-l-m {
+  padding-left: 15px !important;
+}
+.padder-r-m {
+  padding-right: 15px !important;
+}
 .pull-in {
   margin-right: -15px;
   margin-left: -15px;
@@ -5333,34 +5354,42 @@ font-weight: 700;
 }
 
 .colors_cat ul#cat_color li a.col-1 {
-  background: none repeat scroll 0 0 #E9DAB9;
-}
-.colors_cat ul#cat_color li a.col-2 {
-  background: none repeat scroll 0 0 #000;
-}
-.colors_cat ul#cat_color li a.col-3 {
-  background: none repeat scroll 0 0 #1F72BE;
-}
-.colors_cat ul#cat_color li a.col-4 {
-  background: none repeat scroll 0 0 #DE9934;
-}
-.colors_cat ul#cat_color li a.col-5 {
-  background: none repeat scroll 0 0 #20C0CC;
-}
-.colors_cat ul#cat_color li a.col-6 {
-  background: none repeat scroll 0 0 #F57339;
-}
-.colors_cat ul#cat_color li a.col-7 {
-  background: none repeat scroll 0 0 #6224E1;
-}
-.colors_cat ul#cat_color li a.col-8 {
-  background: none repeat scroll 0 0 #DD3334;
-}
-.colors_cat ul#cat_color li a.col-9 {
   background: none repeat scroll 0 0 #fff;
 }
-.colors_cat ul#cat_color li a.col-10 {
+.colors_cat ul#cat_color li a.col-2 {
+  background: none repeat scroll 0 0 #E9DAB9;
+}
+.colors_cat ul#cat_color li a.col-3 {
+  background: none repeat scroll 0 0 #EE6AA7;
+}
+.colors_cat ul#cat_color li a.col-4 {
+  background: none repeat scroll 0 0 #DD3334;
+}
+
+.colors_cat ul#cat_color li a.col-5 {
+  background: none repeat scroll 0 0 #FF5205;
+}
+.colors_cat ul#cat_color li a.col-6 {
+  background: none repeat scroll 0 0 #FFCC00;;
+}
+.colors_cat ul#cat_color li a.col-7 {
   background: none repeat scroll 0 0 #A2B646;
+}
+.colors_cat ul#cat_color li a.col-8 {
+  background: none repeat scroll 0 0 #33A1DE;
+}
+.colors_cat ul#cat_color li a.col-9 {
+  background: none repeat scroll 0 0 #1F72BE;
+}
+
+.colors_cat ul#cat_color li a.col-10 {
+  background: none repeat scroll 0 0 #6224E1;
+}
+.colors_cat ul#cat_color li a.col-11 {
+  background: none repeat scroll 0 0 #AAAAAA;
+}
+.colors_cat ul#cat_color li a.col-12 {
+  background: none repeat scroll 0 0 #000;
 }
 
 .checkbox{
@@ -5584,4 +5613,8 @@ img-crop canvas{
 
 .info-form :-ms-input-placeholder {  
    color: #ccc;  
+}
+.form-error{
+  color: #D21010;
+  font-size: 13px;
 }

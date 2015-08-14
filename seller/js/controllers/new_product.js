@@ -6,7 +6,9 @@
 app.controller('FormDemoCtrl', ['$scope','$http','toaster','FileUploader','$sce','$q', '$state','$timeout',function($scope,$http,toaster,FileUploader,$sce,$q,$state,$timeout) {
 
   $scope.dirty = {};
-
+$scope.activeTab = 1;
+$scope.generalDataChecked = false;
+$scope.sellerDataChecked = false;
 $scope.selectType =function(val){
 //  console.log('44');
   switch(val){
@@ -230,36 +232,86 @@ $http.get('../api/slim.php/shiningfloor/looks').then(function(resp) {
           return this.queue.length < 5;
       }
   });
-  
-$scope.isFormOk = function(){
-  $scope.usagesFieldOk = false;
+$scope.usagesFieldOk = true;
+$scope.colorsFieldOk = true;
+$scope.applicationsFieldOk = true;  
+
+$scope.isApplicationsOk = function(){
   $scope.applicationsFieldOk = false;
-  $scope.colorsFieldOk = false;
-  for(i=0;i<$scope.usagesLength;i++)
-  {   
-      if($scope.selectedUsages[i]==true){
-         $scope.usagesFieldOk = true ; break;
-     }
-  }
   for(i=0;i<$scope.applicationsLength;i++)
   {   
       if($scope.selectedApplications[i]==true){
          $scope.applicationsFieldOk = true ; break;
      }
   }
+   
+  if($scope.applicationsFieldOk) 
+      return true;
+  else
+      return false;
+}
+$scope.isUsagesOk = function(){
+  $scope.usagesFieldOk = false;
+  for(i=0;i<$scope.usagesLength;i++)
+  {   
+      if($scope.selectedUsages[i]==true){
+         $scope.usagesFieldOk = true ; break;
+     }
+  } 
+  if($scope.usagesFieldOk) 
+      return true;
+  else
+      return false;
+}
+$scope.isColorsOk = function(){
+   
+  $scope.colorsFieldOk = false;   
   for(i=0;i<$scope.colorsLength;i++)
   {   
       if($scope.selectedColors[i]==true){
          $scope.colorsFieldOk = true ; break;
      }
   }
-  if($scope.usagesFieldOk && $scope.applicationsFieldOk && $scope.colorsFieldOk) 
+  if($scope.colorsFieldOk) 
       return true;
   else
       return false;
 }
 
-  $scope.submitform = function(product){
+$scope.isGeneralFormOk = function(){
+   
+  if($scope.isApplicationsOk() && $scope.isUsagesOk() && $scope.isColorsOk()&&$scope.newProductForm.name.$valid&&$scope.newProductForm.brand.$valid&&
+        $scope.newProductForm.brand.$valid && $scope.newProductForm.width.$valid&&$scope.newProductForm.height.$valid&&$scope.newProductForm.thickness.$valid&&
+        $scope.newProductForm.items_per_box.$valid&&$scope.newProductForm.material.$valid&&$scope.newProductForm.features.$valid) 
+      return true;
+  else
+      return false;
+}
+$scope.isSellerFormOk = function(){   
+  if($scope.newProductForm.price.$valid && $scope.newProductForm.total_boxes.$valid && $scope.newProductForm.minimum_boxes.$valid) 
+      return true;
+  else
+      return false;
+}
+$scope.checkProductData = function(){
+  $scope.generalDataChecked = true;
+  if($scope.isGeneralFormOk())
+    $scope.activeTab = 2;
+  else{
+
+    var tmp = $scope.isUsagesOk() || $scope.isApplicationsOk() || $scope.isColorsOk();
+//    console.log($scope.newProductForm.brand.$valid+ 's');
+  }
+    // console.log($scope.activeTab);
+}
+
+$scope.checkSellerData=  function(){
+  $scope.sellerDataChecked = true;
+  if($scope.isSellerFormOk())
+    $scope.activeTab = 3;
+}
+ 
+  $scope.submitForm = function(product){
   
     uploader.uploadAll();
     console.log($scope.selectedUsages);     

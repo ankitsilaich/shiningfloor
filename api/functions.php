@@ -186,7 +186,7 @@ function findAllProducts($query,$usage_location){
                         'product_finish_type'=> $p['product_finish_type'],
                         'product_usages'=> $usages,
                         'product_colors'=> $colors,
-                        // 'product_img' =>  $images,
+                        'product_img' =>  $images,
                         'product_features'=> $p['product_desc'],
                         'product_price'=>$p['product_price'],
                         'product_rating' => $p['product_rating'],

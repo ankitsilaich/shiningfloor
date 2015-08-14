@@ -8,7 +8,7 @@
     <div class="col-sm-12">
       <div class="panel panel-default">
         <div class="panel-heading font-bold"> Update all details here</div> 
-        <div class="panel-body">
+        <div class="panel-body bg-light gr">
           <form class="bs-example form-horizontal info-form form-validation" name="updateSellerForm">
 
             <div class="form-group">
@@ -21,7 +21,12 @@
             <div class="form-group">
               <label class="col-lg-2 control-label">Owner Mobile No*</label>
               <div class="col-lg-8">
-                <input type="text" class="form-control" placeholder="owner mobile no" ng-model="seller.owner_phone" ng-minlength="10" ng-maxlength="10" ng-pattern="/^[0-9]+$/" required>
+                <div class="input-group">
+                      <span class="input-group-addon">+91-</span>
+                      <input type="text" class="form-control" placeholder="owner mobile no" ng-model="seller.owner_phone" ng-minlength="10" ng-maxlength="10" ng-pattern="/^[0-9]+$/" required>
+
+                </div>
+
                 
               </div>
             </div>
@@ -41,8 +46,12 @@
             <div class="form-group">
               <label class="col-lg-2 control-label">Contact Person No*</label>
               <div class="col-lg-8">
-                <input type="text" class="form-control" placeholder="contact person mobile number" ng-model="seller.phone" ng-minlength="10" ng-maxlength="10" ng-pattern="/^[0-9]+$/" required>
                 
+                <div class="input-group">
+                      <span class="input-group-addon ">+91-</span>
+                      <input type="text" class="form-control" placeholder="contact person mobile number" ng-model="seller.phone" ng-minlength="10" ng-maxlength="10" ng-pattern="/^[0-9]+$/" required>
+
+                </div>
               </div>
             </div>
 

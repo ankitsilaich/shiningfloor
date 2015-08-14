@@ -1017,7 +1017,7 @@ $app->post('/shiningfloor/seller/addproduct', $authenticate_seller($app),functio
         'product_origin_country' => $array['origin_country'],
         'product_degree_of_variation' => $array['variation'],
         'type_id' => $array['type'],
-         
+         'product_items_per_box' => $array['items_per_box'],
         'product_material' => $array['material'],                   
         'product_look' => $array['look'],
         'product_width' => $array['width'],
@@ -1025,6 +1025,7 @@ $app->post('/shiningfloor/seller/addproduct', $authenticate_seller($app),functio
         'product_thickness' => $array['thickness'],
         'product_width_unit' => $array['w_unit'],
         'product_height_unit' => $array['w_unit'],
+        'product_isValid' => 1,        
         'product_thickness_unit' => $array['t_unit']
          
         ); 
@@ -1033,7 +1034,7 @@ $app->post('/shiningfloor/seller/addproduct', $authenticate_seller($app),functio
          'sellers_id' =>  $seller_id['id'] ,
          'products_id' =>  $data['id'] ,
          'price' => $array['price'],
-        'items_per_box' => $array['items_per_box'],
+        
         'seller_product_code' => $array['seller_product_code'],
         'comments'=> $array['comments'],
         'minimum_boxes' => $array['minimum_boxes'],
