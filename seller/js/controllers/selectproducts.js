@@ -113,7 +113,7 @@ $scope.seller = resp.data.seller_data;
     
       $scope.selectedcategory = function(value){
         for(i=0;i<$scope.selectedCategory.length;i++){
-          console.log(i + ' ' + value);
+         // console.log(i + ' ' + value);
           if( i !=value)
             $scope.selectedCategory[i] = false ;
           }

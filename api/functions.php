@@ -1,10 +1,10 @@
 <?php
 function findAllFilters(){
   global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$applicationFilters;
+
   if(isset($_GET['pageNo'])){
       $pageNo = ( int )$_GET['pageNo'] ;
   }
-
   if(isset($_GET['color'])){
       $colorFilters =  explode(',', $_GET['color']);
   }
@@ -119,6 +119,7 @@ function setFinalFilterQuery($query){
   return $query;
 }
 
+
 // For finding all products of type say tiles or marbles Removed on 14 june 2015.
 function findAllProducts($query,$usage_location){
     $data = array();
@@ -130,11 +131,39 @@ function findAllProducts($query,$usage_location){
     foreach($query as $p)
     {
 
-        $usages =array();
+      if(isset($_GET['details'])){
+          if($_GET['details'] == 'false')
+          {
+              $img = $p->product_images()->fetch()['image_name'];
+              global $db;
+              $product_category = '';
+              foreach ($db->types() as $product_type) {
+                  if($product_type['id'] == $p['type_id'])
+                    $product_category = $product_type['type_name'];
+              }
+
+              $data[] =  array(
+                               'product_id' => $p['id'],
+                              'product_brand' =>   $p['product_brand'],
+                              'product_name' => $p['product_name'],
+                              'product_category' => $product_category ,
+                              'product_type_id' => $p['type_id'],
+                              'product_width' =>  $p['product_width'],
+                              'product_height' =>  $p['product_height'],
+                              'product_thickness' =>  $p['product_thickness'],
+                              'product_w_unit' =>  $p['product_width_unit'],
+                              'product_h_unit' =>  $p['product_height_unit'],
+                              'product_t_unit' =>  $p['product_thickness_unit'],
+                              'product_img' =>  $img                                                    
+                    );
+          }
+       }
+       else{   
+            $usages =array();
             $applications = array();
             $images = array();         
             $colors = array(); 
-
+            $concepts = array();
             foreach ($p->product_colors() as $product_colors) {
                 $colors[] = $product_colors['color_name'];
             }
@@ -150,9 +179,13 @@ function findAllProducts($query,$usage_location){
             }
              
             foreach ($p->product_images() as $product_images) {
+
                 $images[] = $product_images['image_name'];
             }
+            foreach ($p->concept_images() as $product_images) {
 
+                $concepts[] = $product_images['concept_name'];
+            }
         // foreach ($p->product_features() as $product_features) {
 
         //     $features[] = $product_features->features['feature_name'];
@@ -180,22 +213,27 @@ function findAllProducts($query,$usage_location){
                         'product_w_unit' =>  $p['product_width_unit'],
                         'product_h_unit' =>  $p['product_height_unit'],
                         'product_t_unit' =>  $p['product_thickness_unit'],
+                        'product_items_per_box' => $p['product_items_per_box'],
                         'product_shape' =>  $p['product_shape'],
-                        'product_application' =>  $applications,
+                        'product_applications' =>  $applications,
                         'product_look' =>  $p['product_look'],
                         'product_finish_type'=> $p['product_finish_type'],
                         'product_usages'=> $usages,
-                        'product_colors'=> $colors,
-                        'product_img' =>  $images,
+                        'product_colors'=> $colors, 
+                        'product_img' =>  $images, 
+                        'product_concepts' =>  $concepts,                        
                         'product_features'=> $p['product_desc'],
-                        'product_price'=>$p['product_price'],
                         'product_rating' => $p['product_rating'],
                         'product_supplierID' => $p['supplierID'],
                         'product_isDiscountAvailable' => $p['isDiscountAvailable'],
                         'product_isProductAvailable' => $p['isProductAvailable']
                     );
+      }
     }
 
   return $data;
 }
+
+
+
 ?>

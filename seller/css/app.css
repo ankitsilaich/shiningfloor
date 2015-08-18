@@ -4149,7 +4149,14 @@ a.text-#000000:hover {
   padding-top: 15px;
   padding-bottom: 15px;
 }
-
+.padder-v-sm {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.padder-v-xs {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
 .no-padder {
   padding: 0 !important;
 }
@@ -5150,7 +5157,7 @@ a.text-#000000:hover {
 }
 .sf-super-search .search-options {
     font-size: 14px;
-    line-height: 42px;
+    line-height: 43px;
     width: 100%;
     float: left;
     cursor:pointer;
@@ -5339,7 +5346,7 @@ font-weight: 700;
   margin-left: 5px;
  }
  .tab-content{
-  padding:25px;
+  padding:0px 25px;
  }
 
 .tab-content label{
@@ -5513,6 +5520,8 @@ margin-right: 15px;
 
 .fileupload{
   position: relative;
+  
+  padding: 7px 10px; 
   overflow: hidden;
 }
 .fileupload input.upload{
@@ -5618,4 +5627,23 @@ img-crop canvas{
   color: #D21010;
   font-size: 13px;
 }
+.thumbnail{
+ background-color:  #F2FFEE;
+}
+ 
+div.bd-brown{
+  border:1px solid #DEE5E7;
+}
+.align-center{text-align: center;}
 
+.suggestion{
+  width:100%;
+  padding-top:0px;
+  padding-bottom: 0px;
+  background-color:#EAFFEA; 
+}
+.suggestion li{
+  border: 1px solid #E6E6E6;
+  padding:2px;
+}
+.td canvas{margin-top:5px;margin-left:5px;}

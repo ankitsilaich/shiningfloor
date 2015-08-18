@@ -161,6 +161,43 @@ angular.module('app')
                         }
 
                     })
+           // .state('app.all.editproduct', {
+           //        url: '/:productId',
+           //        templateUrl: 'tpl/editproduct.html',
+
+           //      resolve: {
+           //          deps: ['$ocLazyLoad', 'uiLoad',
+           //          function($ocLazyLoad, uiLoad) {
+           //              return $ocLazyLoad.load(['angularFileUpload','toaster']).then(
+           //                  function() {
+           //                      return uiLoad.load(
+           //                          ['vendor/angular/angular-file-upload.min.js',
+           //                          'js/controllers/edit_product.js'])
+           //                  }
+           //              );
+           //          }  
+           //      }
+           //    })
+                .state('app.all.editproduct', {
+                            url: '/edit/:productId',
+                            templateUrl: 'tpl/editproduct.html',
+                             
+                            resolve: {
+                                deps: ['$ocLazyLoad', 'uiLoad',
+                                    function($ocLazyLoad, uiLoad) {
+                                        return $ocLazyLoad.load(['angularFileUpload','toaster']).then(
+                                            function() {
+                                                return uiLoad.load(
+                                                    [ 
+                                                    'vendor/modules/angular-file-upload/angular-file-upload.min.js',
+                                                    'js/controllers/edit_product.js'])
+                                            }
+                                        );
+                                    }
+                                ]
+                            }
+
+                        })
 
                     .state('app.all.newproduct', {
                             url: '/newproduct',

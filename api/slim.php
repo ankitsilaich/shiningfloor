@@ -16,6 +16,7 @@ $app = new \Slim\Slim();
 /*************************************  EMAIL VERIFICATION ***********************************/
 include 'email_content.php';
 
+
 $app->post("/shiningfloor/email_verification/:email", function ($email=null) use ($app, $db) {
 
      global $email_html_code1,$email_html_code2;
@@ -841,7 +842,7 @@ $app->get('/shiningfloor/seller/selectedproducts', $authenticate_seller($app),fu
               $seller_product_comments = $q['comments'] ;
               $seller_minimum_boxes = $q['minimum_boxes'] ;
               $seller_product_code = $q['seller_product_code'] ;
-              $seller_items_per_box = $q['items_per_box'] ;
+               
               $seller_total_quantity = $q['total_quantity'];
 
          }
@@ -879,7 +880,6 @@ $app->get('/shiningfloor/seller/selectedproducts', $authenticate_seller($app),fu
                         'seller_product_comments' => $seller_product_comments,
                         'seller_minimum_boxes' => $seller_minimum_boxes,
                         'seller_product_code' => $seller_product_code,
-                        'seller_items_per_box' => $seller_items_per_box,
                         'seller_total_quantity' => $seller_total_quantity
 
                     );
@@ -917,7 +917,37 @@ $app->put('/shiningfloor/sellers/products/update_product', function() use ($app,
     echo json_encode($data['id']);
 
 });
+// 
+$app->get('/shiningfloor/downloadImage', function() use ($app,$db)
+{
+  foreach ($db->products as $p ) {
+      if($p['id']<=5005){
 
+      $filenameIn  =  $db->product_images()->where('products_id',$p['id'])->fetch()['image_name'];
+            $filenameOut = '../uploads/products/'+$p['id']+'_1.jpg' ;
+      $ch = curl_init($filenameIn);
+      $fp = fopen( $filenameOut, 'wb');
+      curl_setopt($ch, CURLOPT_FILE, $fp);
+      curl_setopt($ch, CURLOPT_HEADER, 0);
+      curl_exec($ch);
+      curl_close($ch);
+      fclose($fp);
+
+
+      // // print_r($filenameIn);
+      // // print_r($filenameOut);
+      // $contentOrFalseOnFailure   = file_get_contents($filenameIn);
+      
+      // //Store in the filesystem.
+      // $fp = fopen('../uploads/products/'+$p['id']+'_1.jpg', "w");
+      // fwrite($fp, $contentOrFalseOnFailure);
+      // fclose($fp);
+
+      // $byteCountOrFalseOnFailure = file_put_contents($filenameOut, $contentOrFalseOnFailure);
+    }
+  }
+
+});
 
 //   --------------------------
 
@@ -931,37 +961,221 @@ $app->post('/shiningfloor/sellers_products', function() use ($app, $db)
     echo json_encode($data['id']);
 
 });
-//----------------------------------------
-$app->post('/seller/uploadfile', function() use ($app,$db)
-{
 
+function resize($origin,$width,$height,$saveTo){
+   
+        // some settings
+    $max_upload_width = 2592;
+    $max_upload_height = 1944;
+    $remote_file = $saveTo;  
+    
+    // if uploaded image was JPG/JPEG
+    if($_FILES["file"]["type"] == "image/jpeg" || $_FILES["image_upload_box"]["type"] == "image/pjpeg"){  
+      $image_source = imagecreatefromjpeg($origin);
+    }   
+    // if uploaded image was GIF
+    if($_FILES["file"]["type"] == "image/gif"){ 
+      $image_source = imagecreatefromgif($_FILES[ 'file' ][ 'tmp_name' ]);
+    } 
+    // BMP doesn't seem to be supported so remove it form above image type test (reject bmps) 
+    // if uploaded image was BMP
+    if($_FILES["file"]["type"] == "image/bmp"){ 
+      $image_source = imagecreatefromwbmp($_FILES[ 'file' ][ 'tmp_name' ]);
+    }     
+    // if uploaded image was PNG
+    if($_FILES["file"]["type"] == "image/x-png"){
+      $image_source = imagecreatefrompng($_FILES[ 'file' ][ 'tmp_name' ]);
+    }    
+     
+    imagejpeg($image_source,$remote_file,100);
+    chmod($remote_file,0644);
+  
+  
+
+    // get width and height of original image
+    list($image_width, $image_height) = getimagesize($remote_file);
+  
+     
+      $proportions = $image_width/$image_height;
+      
+      if($image_width>$image_height){
+        $new_width = $width;
+        $new_height = $height;
+      }   
+      else{
+        $new_height = $height;
+        $new_width = $width;
+      }   
+      
+      
+      $new_image = imagecreatetruecolor($new_width , $new_height);
+      $image_source = imagecreatefromjpeg($remote_file);
+      
+      imagecopyresampled($new_image, $image_source, 0, 0, 0, 0, $new_width, $new_height, $image_width, $image_height);
+      imagejpeg($new_image,$remote_file,100);
+      
+      imagedestroy($new_image);
+     
+    
+    imagedestroy($image_source);
+
+   
+}
+//----------------------------------------
+$app->post('/seller/uploadfile(/:id)', $authenticate_seller($app),function($id = null) use ($app,$db)
+{
 //echo sizeof($_FILES);
-  if ($last_product = $db->products()->select('id')->order('id desc')->limit(1,0)->fetch()) {
-      //echo $houses;
+  if($id==null)
+   {
+      $last_product = $db->products()->select('id')->order('id desc')->limit(1,0)->fetch() ;
+       $last_id = $last_product['id'] ;
      }
+    else{
+      $last_id = $id;
+    } 
+     echo $last_id;
+     if ( !empty( $_FILES ) ) {
+     $tempPath = $_FILES[ 'file' ][ 'tmp_name' ];
+     $temp = explode(".",$_FILES["file"]["name"]);
+     print_r ($temp);
+     $i=1;
+     while(file_exists(dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '../uploads/products' . DIRECTORY_SEPARATOR .$last_id. '_'.$i.'.' .'jpg'))
+     {
+      echo $i;
+            $i++;
+     }
+     $newfilename = $last_id. '_'.$i.'.' .'jpg';
+     $uploadPath = dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '../uploads/products' . DIRECTORY_SEPARATOR .$newfilename;
+
+     move_uploaded_file( $tempPath, $uploadPath );
+     $answer = array( 'lastid' => $last_id,
+     'filename' => $newfilename);
+     $db->product_images->insert(array('image_name'=>  '../uploads/products' . DIRECTORY_SEPARATOR .$newfilename , 'products_id'=>$last_id));
+     
+     // $db->concept_images->insert(array('concept_name'=>  '../uploads/concepts' . DIRECTORY_SEPARATOR .$newfilename , 'products_id'=>$last_id));
+     $json = json_encode( $answer );
+     echo $json;
+
+     resize($uploadPath,50,50,"../uploads/products_50_50/".$newfilename);
+     resize($uploadPath,100,100,"../uploads/products_100_100/".$newfilename);
+     resize($uploadPath,256,256,"../uploads/products_256_256/".$newfilename);
+     resize($uploadPath,500,500,"../uploads/products_500_500/".$newfilename);
+   
+    
+    // $image_source = imagecreatefromjpeg(     $uploadPath = dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '../uploads/products' . DIRECTORY_SEPARATOR .$newfilename);
+    
+    // $remote_file = "../uploads/".$_FILES["file"]["name"];
+    // imagejpeg($image_source,$remote_file,100);
+    // chmod($remote_file,0644);  
+
+    // // get width and height of original image
+    // list($image_width, $image_height) = getimagesize($remote_file);
+
+    // if(1){
+    //   $proportions = $image_width/$image_height;
+      
+    //   if($image_width>$image_height){
+    //     $new_width = 500;
+    //     $new_height = 500;
+    //   }   
+    //   else{
+    //     $new_height = 500;
+    //     $new_width = 500;      }         
+      
+    //   $new_image = imagecreatetruecolor($new_width , $new_height);
+    //   $image_source = imagecreatefromjpeg($remote_file);
+      
+    //   imagecopyresampled($new_image, $image_source, 0, 0, 0, 0, $new_width, $new_height, $image_width, $image_height);
+    //   imagejpeg($new_image,$remote_file,100);
+      
+    //   imagedestroy($new_image);
+    // }
+    
+    // imagedestroy($image_source);    
+    
+
+
+    } else {
+     echo 'No files';
+    }
+
+      
+});
+
+$app->post('/seller/uploadConcept(/:id)', $authenticate_seller($app), function($id=null) use ($app,$db)
+{
+//echo sizeof($_FILES);
+  if($id==null)
+   {
+      $last_product = $db->products()->select('id')->order('id desc')->limit(1,0)->fetch() ;
+       $last_id = $last_product['id'] ;
+     }
+    else{
+      $last_id = $id;
+    } 
+
      $last_id = $last_product['id'] ;
      if ( !empty( $_FILES ) ) {
      $tempPath = $_FILES[ 'file' ][ 'tmp_name' ];
      $temp = explode(".",$_FILES["file"]["name"]);
      print_r ($temp);
      $i=1;
-     while(file_exists(dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '../uploads' . DIRECTORY_SEPARATOR .$last_id. '_'.$i.'.' .'jpg'))
+     while(file_exists(dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '../uploads/concepts' . DIRECTORY_SEPARATOR .$last_id. '_'.$i.'.' .'jpg'))
      {
             $i++;
      }
      $newfilename = $last_id. '_'.$i.'.' .'jpg';
-     $uploadPath = dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '../uploads' . DIRECTORY_SEPARATOR .$newfilename;
+     $uploadPath = dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '../uploads/concepts' . DIRECTORY_SEPARATOR .$newfilename;
 
      move_uploaded_file( $tempPath, $uploadPath );
      $answer = array( 'lastid' => $last_id,
      'filename' => $newfilename);
-     $db->product_images->insert(array('image_name'=>  '../uploads' . DIRECTORY_SEPARATOR .$newfilename , 'products_id'=>$last_id));
+     $db->concept_images->insert(array('concept_name'=>  '../uploads/concepts' . DIRECTORY_SEPARATOR .$newfilename , 'products_id'=>$last_id));
      $json = json_encode( $answer );
      echo $json;
+
+     resize($uploadPath,50,50,"../uploads/concepts_50_50/".$newfilename);
+     resize($uploadPath,100,100,"../uploads/concepts_100_100/".$newfilename);
+     resize($uploadPath,256,256,"../uploads/concepts_256_256/".$newfilename);
+     resize($uploadPath,500,500,"../uploads/concepts_500_500/".$newfilename);
+
+
     } else {
      echo 'No files';
     }
 
+});
+
+$app->post('/seller/updateImages(/:product_id)',$authenticate_seller($app), function($product_id) use ($app,$db)
+{
+
+    //  $last_id = $last_product['id'] ;
+    //  if ( !empty( $_FILES ) ) {
+// print_r($tempPath);
+     $tempPath = $_FILES[ 'file' ][ 'tmp_name' ];
+     print_r($tempPath);
+     // $temp = explode(".",$_FILES["file"]["name"]);
+     // print_r ($temp);
+    //  $i=1;
+    //  while(file_exists(dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '../uploads' . DIRECTORY_SEPARATOR .$last_id. '_'.$i.'.' .'jpg'))
+    //  {
+    //         $i++;
+    //  }
+     $newfilename = $product_id. '_'.'1'.'.' .'jpg';
+     $uploadPath = dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '../uploads' . DIRECTORY_SEPARATOR .$newfilename;
+
+     move_uploaded_file( $tempPath, $uploadPath );
+    //  $answer = array( 'lastid' => $last_id,
+    //  'filename' => $newfilename);
+    //  $db->product_images->insert(array('image_name'=>  '../uploads' . DIRECTORY_SEPARATOR .$newfilename , 'products_id'=>$last_id));
+    //  $json = json_encode( $answer );
+    //  echo $json;
+    // } else {
+    //  echo 'No files';
+    // }
+});
+$app->post('/seller/updateConceptImages(/:product_id)', $authenticate_seller($app), function($product_id) use ($app,$db)
+{
 });
 
 $app->post('/seller/uploadprofile', $authenticate_seller($app),function() use ($app,$db)
@@ -976,13 +1190,13 @@ $app->post('/seller/uploadprofile', $authenticate_seller($app),function() use ($
      $temp = explode(".",$_FILES["file"]["name"]);
       
      $newfilename = $seller_id .'.jpg';
-     $uploadPath = dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '../seller/uploads/profile/'  .$newfilename;
+     $uploadPath = dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '../uploads/sellers/'  .$newfilename;
 
      move_uploaded_file( $tempPath, $uploadPath );
      $answer = array( 'lastid' => $seller_id,
      'filename' => $newfilename);
      echo $db->sellers->where('email',$user)->fetch(); 
-     if($db->sellers->where('email',$user)->update(array('image_name'=>  '../seller/uploads/profile/'.$newfilename)))
+     if($db->sellers->where('email',$user)->update(array('image_name'=>  '../uploads/sellers/'.$newfilename)))
         echo json_encode( array('status' => 'success'));
       // else
       //   echo json_encode( array('status' => 'fail'));
@@ -1008,8 +1222,7 @@ $app->post('/shiningfloor/seller/addproduct', $authenticate_seller($app),functio
     // //echo $seller_id['id'];
      $product = array(
         'supplierID' =>  $seller_id['id'] ,
-        'product_name' =>  $array['name'] ,
-        'product_price' => $array['price'],
+        'product_name' =>  $array['name'] , 
         'product_brand' => $array['brand'],
         'product_finish_type' => $array['finish_type'],
         'product_desc'=> $array['features'],
@@ -1030,6 +1243,28 @@ $app->post('/shiningfloor/seller/addproduct', $authenticate_seller($app),functio
          
         ); 
     $data = $db->products()->insert($product);
+    
+    $finish_count =  $db->finishes()->where('finish_name ', $array["finish_type"]);   
+    // print_r($finish_count->fetch()); 
+    if(!$finish_count->fetch() and $array['finish_type']!=''){
+        $db->finishes()->insert(array('finish_name' => $array['finish_type']));
+    }
+
+    $shape_count =  $db->shapes()->where('shape_name == ',$array["shape"]);
+     
+    if(!$shape_count->fetch() and $array['shape']!=''){
+        $db->shapes()->insert(array('shape_name'=> $array['shape']));
+    }
+
+    $material_count =  $db->materials()->where('material_name',$array["material"]);
+    if(!$material_count->fetch() and $array['material']!=''){
+        $db->materials()->insert(array('material_name'=>$array['material']));
+    }
+
+    $look_count =  $db->looks()->where('look_name', $array["look"]);
+    if(!$look_count->fetch() and $array['look']!=''){
+        $db->looks()->insert(array('look_name' => $array['look']));
+    }
     $seller_products = array(
          'sellers_id' =>  $seller_id['id'] ,
          'products_id' =>  $data['id'] ,
@@ -1065,6 +1300,149 @@ $app->post('/shiningfloor/seller/addproduct', $authenticate_seller($app),functio
 
 });
 
+//------------------------------------------
+$app->put('/shiningfloor/seller/editproduct/:product_id', $authenticate_seller($app),function($product_id) use ($app, $db)
+{
+    $array = (array) json_decode($app->request()->getBody());
+    $email = $_SESSION['seller'] ;
+    $seller_id = $db->sellers()->where('email', $email)->fetch();
+    //$lastProduct = $db->products()->select('id')->order('id desc')->limit(1,0)->fetch();
+    // $image_name = (string)($lastProduct['id'] + 1) ;
+    // $image_name .=  '_1.' .'jpg';  
+    $product = array(
+        'supplierID' =>  $seller_id['id'] ,
+        'product_name' =>  $array['name'] , 
+        'product_brand' => $array['brand'],
+        'product_finish_type' => $array['finish_type'],
+        'product_desc'=> $array['features'],
+        'product_shape' =>  $array['shape'],
+        'product_origin_country' => $array['origin_country'],
+        'product_degree_of_variation' => $array['variation'],
+        'type_id' => $array['type'],
+        'product_items_per_box' => $array['items_per_box'],
+        'product_material' => $array['material'],                   
+        'product_look' => $array['look'],
+        'product_width' => $array['width'],
+        'product_height' => $array['height'],
+        'product_thickness' => $array['thickness'],
+        'product_width_unit' => $array['w_unit'],
+        'product_height_unit' => $array['w_unit'],
+        'product_isValid' => 1,        
+        'product_thickness_unit' => $array['t_unit']
+         
+        ); 
+    // echo $product_id;
+    $data = $db->products()->where('id', $product_id)->update($product);
+    // echo $data;
+    $query = $db->product_colors()->where('products_id', $product_id);
+    foreach ( $query as $color ) {
+      //if($color->fetch())
+          $color->delete();
+    }
+    $colors = explode(",", $array['colors']);
+
+    for($i=0;$i<sizeof($colors);$i++)
+    {
+        if($colors[$i]!="")
+            $db->product_colors->insert(array('color_name'=> $colors[$i] , 'products_id'=>$product_id));
+    }
+    
+    $query = $db->product_usages()->where('products_id', $product_id);
+    foreach ( $query as $usage ) {
+        if($usage->fetch())
+          $usage->delete();
+    }
+    $usages = explode(",", $array['usages']);
+    for($i=0;$i<sizeof($usages);$i++)
+    {
+        if($usages[$i]!="")
+            $db->product_usages->insert(array('usage_name'=> $usages[$i] , 'products_id'=>$product_id));
+    }
+
+    $query = $db->product_applications()->where('products_id', $product_id);
+    foreach ($query as  $application ) {
+        if($application->fetch())
+          $application->delete();
+    }
+    $applications = explode(",", $array['applications']);
+    for($i=0;$i<sizeof($applications);$i++)
+    {
+        if($applications[$i]!="")
+            $db->product_applications->insert(array('application_name'=> $applications[$i] , 'products_id'=>$product_id));
+    }
+
+    $app->response()->header('Content-Type', 'application/json');
+    echo json_encode($product_id);
+
+});
+
+//------------------------------------------
+$app->post('/shiningfloor/seller/addSellerData/:product_id', $authenticate_seller($app),function($product_id) use ($app, $db)
+{
+    $array = (array) json_decode($app->request()->getBody());
+    $email = $_SESSION['seller'] ;
+    $seller_id = $db->sellers()->where('email', $email)->fetch();    
+    $seller_products = array(
+         'sellers_id' =>  $seller_id['id'] ,
+         'products_id' =>  $product_id ,
+         'price' => $array['price'],        
+        'seller_product_code' => $array['seller_product_code'],
+        'comments'=> $array['comments'],
+        'minimum_boxes' => $array['minimum_boxes'],
+        'total_quantity' => $array['total_boxes']
+       );
+    $seller = $db->sellers_products()->insert($seller_products); 
+    $app->response()->header('Content-Type', 'application/json');
+    echo json_encode($seller['id']);
+});
+
+//------------------------------------------
+$app->post('/shiningfloor/seller/addColorsData/:product_id', $authenticate_seller($app),function($product_id) use ($app, $db)
+{
+    $array = (array) json_decode($app->request()->getBody());
+    $email = $_SESSION['seller'] ;
+    $colors = explode(",", $array['colors']);
+     for($i=0;$i<sizeof($colors);$i++)
+     {
+          if($colors[$i]!="")
+              $db->product_colors->insert(array('color_name'=> $colors[$i] , 'products_id'=>$product_id));
+     }
+    $app->response()->header('Content-Type', 'application/json');
+    echo json_encode($seller['id']);
+
+});
+
+//------------------------------------------
+$app->post('/shiningfloor/seller/addUsagesData/:product_id', $authenticate_seller($app),function($product_id) use ($app, $db)
+{
+    $array = (array) json_decode($app->request()->getBody());
+    $email = $_SESSION['seller'] ;
+    $usages = explode(",", $array['usages']);
+     for($i=0;$i<sizeof($usages);$i++)
+     {
+          if($usages[$i]!="")
+              $db->product_usages->insert(array('usage_name'=> $usages[$i] , 'products_id'=>$product_id));
+     }
+    $app->response()->header('Content-Type', 'application/json');
+    echo json_encode($seller['id']);
+
+});
+
+//------------------------------------------
+$app->post('/shiningfloor/seller/addApplicationsData/:product_id', $authenticate_seller($app),function($product_id) use ($app, $db)
+{
+    $array = (array) json_decode($app->request()->getBody());
+    $email = $_SESSION['seller'] ;
+    $applications = explode(",", $array['applications']);
+    for($i=0;$i<sizeof($applications);$i++)
+    {
+        if($applications[$i]!="")
+            $db->product_applications->insert(array('application_name'=> $applications[$i] , 'products_id'=>$product_id));
+    }
+    $app->response()->header('Content-Type', 'application/json');
+    echo json_encode($seller['id']);
+
+});
 // -----------------------------------------
 $app->post('/shiningfloor/seller/sellers_products', $authenticate_seller($app),function() use ($app, $db)
 {
@@ -1267,6 +1645,17 @@ $brandFilters = [];
 $finishTypeFilters = [];
 $applicationFilters = [];
 
+$app->get('/shiningfloor/product(/:id)', function($id=null ) use ($app, $db){         
+      $data = array();
+      if($id!=null){
+
+        $query =$db->products()->where('id',$id);  
+        $data = findAllProducts($query,'');
+        $app->response()->header('content-type','application/json');
+        echo json_encode(array( 'product_data'=>$data ));
+    }
+});
+
 // Search product results
 $app->get('/shiningfloor/products/search(/:type)/(:input)', function($type=null,$input=null ) use ($app, $db){
         global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$applicationFilters;
@@ -1295,6 +1684,7 @@ $app->get('/shiningfloor/products/search(/:type)/(:input)', function($type=null,
         }
         $query = $query->order('product_price ASC');
         $query = $query->limit(30,$start) ;
+
         $data = findAllProducts($query,'');
 
         $app->response()->header('content-type','application/json');
@@ -1302,17 +1692,35 @@ $app->get('/shiningfloor/products/search(/:type)/(:input)', function($type=null,
 
 });
 
-/* Get all colors */
+$app->get('/shiningfloor/products/(:input)', function($input=null ) use ($app, $db){
+        global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$applicationFilters;
+        global $resultPerPage , $pageNo ;
+        findAllFilters();
+        $data = array();
+         
+        $query =''; 
+        $query = $db->products(); 
 
-$app->get('/shiningfloor/colors', function() use ($app, $db){
+        if($input!=null)
+        {
+            $query = $query->where('product_name LIKE ?' ,"%".$input."%");
+        }
+ 
+        $totalResults = count($query);
+        $start = (($pageNo -1)*( int )$resultPerPage);
+        $last = $start + $resultPerPage;
+        if($last> $totalResults){
+        $last = $totalResults;
+        }
+        $query = $query->order('product_name ASC');
+        $query = $query->limit(5,$start) ;        
+        $data = findAllProducts($query,'');
 
-    $colors = array();
-    foreach ($db->colors() as $color) {
-        $colors[] = $color['color_name'];
-    }
-    $app->response()->header('content-type','application/json');
-    echo json_encode(array('colors'=>$colors));
+        $app->response()->header('content-type','application/json');
+        echo json_encode(array( 'totalResults' => $totalResults , 'start' => $start,'last' => $last  , 'product_data'=>$data ));
+
 });
+// all brands from type name
 
 $app->get('/shiningfloor(/:type)/brands', function($type) use ($app, $db){
     $type_id = $db->types()->where('type_name',$type)->select('id')->fetch();
@@ -1327,16 +1735,27 @@ $app->get('/shiningfloor(/:type)/brands', function($type) use ($app, $db){
     $app->response()->header('content-type','application/json');
     echo json_encode(array('brands'=>$brands));
 });
+/* Get all colors */
 
-$app->get('/shiningfloor/finish_types', function() use ($app, $db){
-    // $type_id = $db->types()->where('type_name',$type)->select('id')->fetch();
-    $finish_types = array();
-    // $query = $db->products()->where('type_id',$type_id)->group('product_finish_type');
-      $query = $db->products()->group('product_finish_type');
-//    echo count($query);
-    foreach ($query as $product) {
-      if($product['product_finish_type']!="")
-        $finish_types[] = $product['product_finish_type'];
+$app->get('/shiningfloor/colors', function() use ($app, $db){
+
+    $colors = array();
+    foreach ($db->colors() as $color) {
+        $colors[] = $color['color_name'];
+    }
+    $app->response()->header('content-type','application/json');
+    echo json_encode(array('colors'=>$colors));
+});
+
+
+$app->get('/shiningfloor/finish_types', function() use ($app, $db){    
+    $finish_types = array();     
+      // $query = $db->products()->group('product_finish_type');
+      $query = $db->finishes()->order('finish_name ASC');
+
+    foreach ($query as $finish) {
+      if($finish['finish_name']!="")
+        $finish_types[] = $finish['finish_name'];
     }
     $app->response()->header('content-type','application/json');
     echo json_encode(array('finish_types'=>$finish_types));
@@ -1344,10 +1763,11 @@ $app->get('/shiningfloor/finish_types', function() use ($app, $db){
 
 $app->get('/shiningfloor/applications', function() use ($app, $db){
     $applications = array();
-    $query = $db->products()->group('product_application');
-    foreach ($query as $product) {
-      if($product['product_application']!="")
-        $applications[] = $product['product_application'];
+//    $query = $db->products()->group('product_application');
+    $query = $db->applications()->order('application_name ASC');
+    foreach ($query as $application) {
+      if($application['application_name']!="")
+        $applications[] = $application['application_name'];
     }
 
     $app->response()->header('content-type','application/json');
@@ -1356,10 +1776,11 @@ $app->get('/shiningfloor/applications', function() use ($app, $db){
 
 $app->get('/shiningfloor/looks', function() use ($app, $db){
     $looks = array();
-    $query = $db->products()->group('product_look');
-    foreach ($query as $product) {
-        if($product['product_look']!="")
-        $looks[] = $product['product_look'];
+    //$query = $db->products()->group('product_look');
+    $query = $db->looks()->order('look_name ASC');
+    foreach ($query as $look) {
+        if($look['look_name']!="")
+        $looks[] = $look['look_name'];
     }
 
     $app->response()->header('content-type','application/json');
@@ -1367,14 +1788,41 @@ $app->get('/shiningfloor/looks', function() use ($app, $db){
 });
 $app->get('/shiningfloor/materials', function() use ($app, $db){
     $product_materials = array();
-    $query = $db->products()->group('product_material');
-    foreach ($query as $product) {
-        if($product['product_material']!="")
-        $product_materials[] = $product['product_material'];
+    // $query = $db->products()->group('product_material');
+    $query = $db->materials()->order('material_name ASC');
+    foreach ($query as $material) {
+        if($material['material_name']!="")
+        $product_materials[] = $material['material_name'];
     }
 
     $app->response()->header('content-type','application/json');
     echo json_encode(array('materials'=>$product_materials));
+});
+
+$app->get('/shiningfloor/shapes', function() use ($app, $db){
+    $product_shapes = array();
+    // $query = $db->products()->group('product_material');
+    $query = $db->shapes()->order('shape_name ASC');
+    foreach ($query as $shape) {
+        if($shape['shape_name']!="")
+        $product_shapes[] = $shape['shape_name'];
+    }
+
+    $app->response()->header('content-type','application/json');
+    echo json_encode(array('shapes'=>$product_shapes));
+});
+
+$app->get('/shiningfloor/usages', function() use ($app, $db){
+    $product_usages = array();
+    // $query = $db->products()->group('product_material');
+    $query = $db->usages()->order('usage_name ASC');
+    foreach ($query as $usage) {
+        if($usage['usage_name']!="")
+        $product_usages[] = $usage['usage_name'];
+    }
+
+    $app->response()->header('content-type','application/json');
+    echo json_encode(array('usages'=>$product_usages));
 });
 
 $app->get('/shiningfloor/sizes', function() use ($app, $db){
@@ -1400,7 +1848,6 @@ $app->get('/shiningfloor/products/allsellers(/:product_id)', function($product_i
       $sellers[] = array(
             'seller_id' => $p['sellers_id'],
             'seller_price' => $p['price'],
-            'seller_items_per_box' => $p['items_per_box'],
             'seller_minimum_boxes' => $p['minimum_boxes'],
             'seller_price_per_item' => $p['price']/$p['items_per_box'],
             'seller_minimum_accept_bill' => ($p['price'] * $p['minimum_boxes'])

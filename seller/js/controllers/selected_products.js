@@ -39,9 +39,9 @@ app.controller('selectedCtrl', ['$scope', '$http','$stateParams','$q','$state','
      // sellers_id : id,
      products_id: product.product_id,
      price: product.seller_product_price,
-     items_per_box: product.seller_items_per_box,
      seller_product_code :product.seller_product_code,
      comments:product.seller_product_comments,
+     total_quantity :product.seller_total_quantity,
      minimum_boxes : product.seller_minimum_boxes
     }
 

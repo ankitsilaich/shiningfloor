@@ -271,7 +271,7 @@
 										</div>
 										<div class="item-sub">
 											<a href="product-detail.html"><h5>{{product.product_name }}</h5></a>
-											<p>$ 90.00 <span><del>$ 100</del></span></p>
+											<p>$ 90.00 <span><del>$ 100</del></span> <span style="padding-left=10px"> size: </span>{{product.product_width}}*{{product.product_height}} {{product.product_w_unit}}</p>
 										</div>
 								  </div>
 								</div>
@@ -286,7 +286,7 @@
 											 <pagination total-items="totalResults" ng-model="temp" max-size="5" class="pagination-lg" items-per-page="20" boundary-links="true" ng-change="pagechange(temp)" direction-links="false" num-pages="numPages"></pagination>
 									   </div>
 									   <div class="col-xs-5 text-right">
-											<p >Showing 1–9 of 20 results</p>
+											<p >Showing {{searchCategory}} from {{ start + 1 }}-{{last}} of {{ totalResults }} results</p>
 									   </div>
 									</div>
 								</div>

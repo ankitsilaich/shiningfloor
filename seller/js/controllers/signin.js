@@ -13,7 +13,7 @@ app.controller('SigninFormController', ['$rootScope', '$scope', '$http', '$state
         LoginService.login($scope.user, $scope).then(function(){
 //            console.log($rootScope.isLoggedIn);
             if($rootScope.isLoggedIn){
-                toaster.pop('success', 'Seller added', 'Redirecting to home page...');         
+                toaster.pop('success', 'Seller Login Successful', 'Redirecting to home page...');         
                 $timeout(redirectState, 3000);
             }
             else{

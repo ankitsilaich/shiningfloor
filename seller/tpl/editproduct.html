@@ -1,8 +1,8 @@
-<div class="bg-light dker b-b wrapper-md">
+<div class="bg-light lter b-b wrapper-md">
     <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
-    <h1 class="m-n font-thin h3">Add New Product</h1>
+    <h1 class="m-n font-thin h3">Edit Product</h1>
 </div>
-<div class="wrapper-md" ng-controller="FormDemoCtrl">
+<div class="wrapper-md" ng-controller="EditProductCtrl" uploader="uploader" filters="queueLimit, customFilter">
     <div class="panel with-nav-tabs panel-default">
         <div class="panel-heading">
             <ul class="nav nav-tabs" >
@@ -15,32 +15,18 @@
         <div id="panel-collapse-1" class="collapse in bg-light gr" >
                 <div class="panel-body">
                     <div class="tab-content">
-                        <form name="newProductForm" class="form-validation newproductform" >
-                          <div ng-show="activeTab==1" class="tab-pane fade m-t-md" ng-class="{active:activeTab==1 , in:activeTab==1}" id="panel-general">
+                        <form name="editProductForm" class="form-validation editProductForm" >
+                          <div ng-show="activeTab==1" class="tab-pane fade" ng-class="{active:activeTab==1 , in:activeTab==1}" id="panel-general">
                              
                                 <div class="form-group clearfix">
 
                                     <label class="col-lg-2 control-label">Product Name*</label>
-                                    <div class="col-lg-8 " ng-init='isOpen=1'  id='product-name'>
-                                        <input type="text" class="form-control" name='name' placeholder="product name" ng-model="product.name" ng-keyup="updateSuggestProducts();isOpen=1;" ng-click='isOpen=1' required>
-                                        <div ng-show="generalDataChecked || newProductForm.name.$touched">
-                                          <span class='form-error' ng-show="newProductForm.name.$error.required"> product name can't be empty</span>
-                                        </div>
-                                        <div class='dropdown' ng-show='searchResults' ng-class='{open:isOpen}' ng-mouseleave='isOpen=0'>
-                                            <ul class="dropdown-menu suggestion" class='dropdown-menu' >
-                                                
-                                              <li class="m-b-xs clearfix" ng-repeat='suggest in searchResults'>
-                                                <div class='col-sm-2'> <img ng-src ='{{suggest.product_img}}' style='width:50px;height:50px;'> </div>
-                                                <div class='col-sm-5 padder-v'> {{suggest.product_name}} </div>
-                                                <div class='col-sm-3 padder-v'> {{suggest.product_brand}} </div>
-                                                <div class='col-sm-2 padder-v-sm'> <a class='btn btn-success' ui-sref="app.all.editproduct({productId: suggest.product_id})"> Edit</a> </div>
-                                                 
-                                              </li>
-                                              
-                                                </ul>
+                                    <div class="col-lg-8 ">
+                                        <input type="text" class="form-control" name='name' placeholder="product name" ng-model="product.name" required>
+                                        <div ng-show="generalDataChecked || editProductForm.name.$touched">
+                                          <span class='form-error' ng-show="editProductForm.name.$error.required"> product name can't be empty</span>
                                         </div>
                                     </div>
-                                    
                                 </div>    
                                 <div class="form-group clearfix">
                                     <label class="col-lg-2 control-label">Product Type* </label>
@@ -53,13 +39,13 @@
                              
                              
                                 <div class="form-group clearfix">
-                                    <label class="col-lg-2 control-label" >Product Brand*</label>
+                                    <label class="col-lg-2 control-label" ng-click='alertMe()'>Product Brand*</label>
                                     
 
                                     <div class="col-lg-8" mass-autocomplete>                                        
                                         <input placeholder='select a brand' class="form-control" name='brand' ng-model="product.brand" mass-autocomplete-item="brand_options" ng-keyup="addNewBrandInList()" required>
-                                        <div ng-show="generalDataChecked || newProductForm.brand.$touched">
-                                          <span class='form-error' ng-show="newProductForm.brand.$error.required"> product brand can't be empty</span>
+                                        <div ng-show="generalDataChecked || editProductForm.brand.$touched">
+                                          <span class='form-error' ng-show="editProductForm.brand.$error.required"> product brand can't be empty</span>
                                         </div>
                                         <!-- <div ng-show="product.brand==''&&t==1" > <div class="ac-container"style="position: absolute;" >
                                             <ul class="ac-menu" style='border:none'>
@@ -106,9 +92,9 @@
                                         </select> </div>
                                         
                                          </div>
-                                     <div ng-show="generalDataChecked || newProductForm.width.$touched">
-                                          <span class='form-error' ng-show="newProductForm.width.$error.required">provide width of product</span>
-                                          <span class='form-error' ng-show="newProductForm.width.$error.pattern">width must be integer</span>
+                                     <div ng-show="generalDataChecked || editProductForm.width.$touched">
+                                          <span class='form-error' ng-show="editProductForm.width.$error.required">provide width of product</span>
+                                          <span class='form-error' ng-show="editProductForm.width.$error.pattern">width must be integer</span>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
@@ -120,9 +106,9 @@
                                         </select>
                                         </div>                                        
                                      </div> 
-                                     <div ng-show="generalDataChecked || newProductForm.height.$touched">
-                                          <span class='form-error' ng-show="newProductForm.height.$error.required">provide height of product </span>
-                                          <span class='form-error' ng-show="newProductForm.height.$error.pattern">height must be integer</span>
+                                     <div ng-show="generalDataChecked || editProductForm.height.$touched">
+                                          <span class='form-error' ng-show="editProductForm.height.$error.required">provide height of product </span>
+                                          <span class='form-error' ng-show="editProductForm.height.$error.pattern">height must be integer</span>
                                         </div> 
                                     </div>
                                     <div class="col-lg-4">
@@ -135,9 +121,9 @@
                                          </div>
                                          
                                      </div>
-                                     <div ng-show="newProductForm.thickness.$touched">
+                                     <div ng-show="editProductForm.thickness.$touched">
                                            
-                                          <span class='form-error' ng-show="newProductForm.thickness.$error.pattern">thickness must be integer</span>
+                                          <span class='form-error' ng-show="editProductForm.thickness.$error.pattern">thickness must be integer</span>
                                         </div>
                                     </div> 
                                             
@@ -148,9 +134,9 @@
                                     <label class="col-lg-2 control-label">Items Per Box* </label>                                    
                                     <div class="col-lg-8">
                                         <input type="text" class="form-control" name='items_per_box' placeholder="Number of items per box" ng-model="product.items_per_box" ng-pattern="/^[0-9]+$/" required>
-                                        <div ng-show="generalDataChecked || newProductForm.items_per_box.$touched">
-                                          <span class='form-error' ng-show="newProductForm.items_per_box.$error.required">provide total items in a box</span>
-                                          <span class='form-error' ng-show="newProductForm.items_per_box.$error.pattern"> items per box must be integer</span>
+                                        <div ng-show="generalDataChecked || editProductForm.items_per_box.$touched">
+                                          <span class='form-error' ng-show="editProductForm.items_per_box.$error.required">provide total items in a box</span>
+                                          <span class='form-error' ng-show="editProductForm.items_per_box.$error.pattern"> items per box must be integer</span>
                                         </div>                                    
                                     </div>
 
@@ -184,8 +170,8 @@
 
                                         <div mass-autocomplete>
                                             <input placeholder='select a material' class="form-control" name='material' ng-model="product.material" mass-autocomplete-item="material_options" required>
-                                            <div ng-show="generalDataChecked || newProductForm.material.$touched">
-                                          <span class='form-error' ng-show="newProductForm.material.$error.required">provide a product material type</span>
+                                            <div ng-show="generalDataChecked || editProductForm.material.$touched">
+                                          <span class='form-error' ng-show="editProductForm.material.$error.required">provide a product material type</span>
                                         </div>
 
                                         </div>
@@ -265,28 +251,39 @@
                                     <div class="col-lg-8">
                                         <textarea class="form-control" name='features' rows="4" placeholder="Type all special features and information here" ng-model="product.features" required>
                                         </textarea>
-                                        <div ng-show="generalDataChecked || newProductForm.features.$touched">
-                                          <span class='form-error' ng-show="newProductForm.features.$error.required">please provide product description</span>
+                                        <div ng-show="generalDataChecked || editProductForm.features.$touched">
+                                          <span class='form-error' ng-show="editProductForm.features.$error.required">please provide product description</span>
                                         </div>
                                     </div>
                                     
 
                                 </div>
                              
-                         
+                        <!--     <div class="row">
+                        <div class="form-group clearfix">
+                              <label class="col-lg-2 control-label">Product Comment</label>
+                               <div class="col-lg-3">
+                              <textarea class="form-control" rows="4" placeholder="Your Comments" ng-model="product.comments" >
+                              </textarea>
+                            </div>
+
+                              
+                            
+                        </div>
+                      </div> -->
 
                             <div class="form-group clearfix">
                                 <div class="col-lg-5">
 
                                 </div>
                                 <div class="col-lg-5 col-sm-6 proceed-fwd">
-                                    <a class="btn btn-default pull-right" ng-click='checkProductData()' >Save & Proceed <i class="fa fa-arrow-right" /></a>
+                                    <a class="btn btn-default pull-right" ng-click="checkProductData()">Save & Proceed <i class="fa fa-arrow-right" /></a>
                                 </div>
                             </div>
 
                         </div>
                      
-                        <div ng-show="activeTab==2" class="tab-pane fade m-t-md" ng-class="{active:activeTab==2 ,in:activeTab==2}" id="panel-colors">
+                        <div ng-show="activeTab==2" class="tab-pane fade" ng-class="{active:activeTab==2 ,in:activeTab==2}" id="panel-colors">
 
                             <div class="row">
                                 <div class="form-group clearfix">
@@ -297,9 +294,9 @@
                                         <input type="text" class="form-control" name='price' placeholder="Price" ng-model="product.price" ng-pattern="/^[0-9]+$/" required>
                                         
                                     </div>
-                                    <div ng-show="sellerDataChecked || newProductForm.price.$touched">
-                                          <span class='form-error' ng-show="newProductForm.price.$error.required">provide price per box</span>
-                                          <span class='form-error' ng-show="newProductForm.price.$error.pattern">price must be integer</span>
+                                    <div ng-show="sellerDataChecked || editProductForm.price.$touched">
+                                          <span class='form-error' ng-show="editProductForm.price.$error.required">provide price per box</span>
+                                          <span class='form-error' ng-show="editProductForm.price.$error.pattern">price must be integer</span>
                                         </div>
                                     </div>
                                     <label class="col-lg-2 col-lg-offset-1  control-label">Product Code / SKU</label>
@@ -315,17 +312,17 @@
                                     <label class="col-lg-2 control-label">Total Quantity* </label>
                                     <div class="col-lg-3">
                                         <input type="text" class="form-control" name='total_boxes' placeholder="total numbers of boxes" ng-model="product.total_boxes" ng-pattern="/^[0-9]+$/" required>
-                                        <div ng-show="sellerDataChecked || newProductForm.total_boxes.$touched">
-                                          <span class='form-error' ng-show="newProductForm.total_boxes.$error.required">provide a valid total quantity </span>
-                                          <span class='form-error' ng-show="newProductForm.total_boxes.$error.pattern">total quantity must be integer</span>
+                                        <div ng-show="sellerDataChecked || editProductForm.total_boxes.$touched">
+                                          <span class='form-error' ng-show="editProductForm.total_boxes.$error.required">provide a valid total quantity </span>
+                                          <span class='form-error' ng-show="editProductForm.total_boxes.$error.pattern">total quantity must be integer</span>
                                         </div>
                                     </div>
                                     <label class="col-lg-2 col-lg-offset-1  control-label">Minimum Orders*</label>
                                     <div class="col-lg-3">
                                         <input type="text" class="form-control" name='minimum_boxes' placeholder="Your Minimum Orders" ng-model="product.minimum_boxes" ng-pattern="/^[0-9]+$/" required>
-                                        <div ng-show="sellerDataChecked || newProductForm.minimum_boxes.$touched">
-                                          <span class='form-error' ng-show="newProductForm.minimum_boxes.$error.required">provide minimum order for this product</span>
-                                          <span class='form-error' ng-show="newProductForm.minimum_boxes.$error.pattern">orders must be integer</span>
+                                        <div ng-show="sellerDataChecked || editProductForm.minimum_boxes.$touched">
+                                          <span class='form-error' ng-show="editProductForm.minimum_boxes.$error.required">provide minimum order for this product</span>
+                                          <span class='form-error' ng-show="editProductForm.minimum_boxes.$error.pattern">orders must be integer</span>
                                         </div>
                                     </div>
 
@@ -351,108 +348,50 @@
                                     <a class="btn btn-default" ng-click="activeTab=1"><i class="fa fa-arrow-left" /> Back </a>
                                 </div>
                                 <div class="col-lg-5 col-sm-6 proceed-fwd ">
-                                    <a class="btn btn-default pull-right" ng-click='checkSellerData()'>Save & Proceed <i class="fa fa-arrow-right" /></a>
+                                    <a class="btn btn-default pull-right" ng-click="checkSellerData()">Save & Proceed <i class="fa fa-arrow-right" /></a>
                                 </div>
                             </div>
                         </div>
                      
-                    <div ng-show="activeTab==3" class="tab-pane fade" ng-class="{active:activeTab==3, in:activeTab==3}" id="panel-images">
+                        <div ng-show="activeTab==3" class="tab-pane fade" ng-class="{active:activeTab==3, in:activeTab==3}" id="panel-images">
                              
-                         <div class="row">
-                            <div class="col-md-12">
-                                 
-                              <div class="clearfix col-md-12 bd-brown no-padder">
-                                <h3 class='padder padder-v m-n'style='background-color: #E3FFEB;'>
-                                <a name="image-example" class="anchor" href=""><span class="octicon octicon-link"></span></a>Main Image* <em class="text-muted small">(single)</em> <em class="text-muted small pull-right">**required**</em> </h3>
-                              <div class="m-t-sm m-b-sm  col-md-6 padder-v align-center">
-                                 
-                                <div class="btn btn-sm btn-primary m-t-lg fileupload" ng-click="uploaders[0].clearQueue()">                  
-                                    <small class="m-s"> <span class="fa fa-camera" ></span> Select image </small>  
-                                     
-                                    <input type="file" id="fileInput" accept="image/*" nv-file-select="" class="upload" uploader="uploaders[0]" >
-                               </div> 
-                                 
-                                <p class='m-t-sm small'>Only PNG,GIF,JPG,JEPG files allowed.</p>
-                            </div>
-                            
-                            <div class="thumbnail col-md-6 align-center"  >
-                                <img src="https://placeholdit.imgix.net/~text?txtsize=19&bg=efefef&txtclr=aaaaaa%26text%3Dno%2Bimage&txt=no+image&w=200&h=150" ng-show='uploaders[0].queue.length==0' >
-                                   <div ng-repeat='item in uploaders[0].queue'>   
-                                         <div ng-thumb="{ file: item._file, height: 150,width:200 }" ng-show='$index==0'></div>
-                                         <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
-                                                                  Remove
-                                                              </button>
-                                    </div>
-                            </div>
-                             
-                            
-                            </div>
+                                                        
+                            <!-- <div class="form-group clearfix">
+                                <div class="col-lg-3 bg-light b-r bg-auto">
+                                <div class="wrapper-md dker b-b">
+                                  <h3 class="m-n font-thin">Select Images </h3><em class="text-muted">(maximum 5)*</em>
+                                </div>
+                                <div class="wrapper-md">
+                                    <label> Main Image:*</label>
+                                    <input type="file" nv-file-select="" uploader="uploader" ng-click="uploader.queue.length=0" required/>                                         
+                                  <label> Other Images:</label>
+                                  <input ng-disabled="uploader.queue.length<1" type="file" nv-file-select="" uploader="uploader" multiple  />
+                                </div>
 
-                           <div class="clearfix col-md-12 bd-brown no-padder">
-                                <h3 class='padder padder-v m-n'style='background-color: #E3FFEB;'>
-                                <a name="image-example" class="anchor" href=""><span class="octicon octicon-link"></span></a>Concept Images <em class="text-muted small">(maximum 2)</em> <em class="text-muted small pull-right">**It is good to add concept Images**</em> </h3>
-                            <div class="m-t-sm m-b-sm  col-md-6 padder-v align-center">
-                                 
-                                <div class="btn btn-sm btn-primary m-t-lg fileupload" ng-class='{disabled:uploaders[1].queue.length>=2}'>                  
-                                    <small class="m-s"> <span class="fa fa-camera"></span> Concept images </small>  
-                                     
-                                    <input type="file" accept="image/*" id="fileInput" nv-file-select="" class="upload" uploader="uploaders[1]">
-                               </div> 
-                                 
-                                <p class='m-t-sm small'>Only PNG,GIF,JPG,JPEG files allowed.</p>
-                            </div>
-                            
-                            <div class="thumbnail col-md-6 align-center"  >
-                                <img src="https://placeholdit.imgix.net/~text?txtsize=19&bg=efefef&txtclr=aaaaaa%26text%3Dno%2Bimage&txt=no+image&w=200&h=150"  ng-show='uploaders[1].queue.length==0'>
-                                 <div class='col-md-6 col-sm-6' ng-repeat='item in uploaders[1].queue' >   
-                                    <div ng-thumb="{ file: item._file, height: 150,width:200 }" > </div>
-                                    <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
-                                                                  Remove
-                                                              </button>
-                                 </div>
-                            </div>
-                             
-                            
-                         </div>
-
- 
-                <div class="clearfix col-md-12 bd-brown m-t-sm no-padder">
-                     <h3 <h3 class='padder padder-v m-n'style='background-color: #E3FFEB;'><a name="basic-example" class="anchor" href=""><span class="octicon octicon-link"></span></a>Choose Other Images <em class="text-muted small">(choose multiple)</em> <em class="text-muted small pull-right">**max 4 other images allowed**</em></h3> 
-                 <div class='col-md-3 padder-v'>
-                     <div class="col-sm-6 col-md-6 btn btn-info fileupload" ng-class='{disabled:uploaders[2].queue.length>=4}'>                  
-                        <small class="m-s"> <span class="fa fa-camera"></span> Other Images</small>                           
-                        <input type="file" accept="image/*" id="fileInput" nv-file-select="" class="upload" uploader="uploaders[2]" multiple>
-                        
-                   </div>
-                    
-                   <button type="button" class="col-sm-6 col-md-6 btn btn-danger m-l-sm" ng-click="uploaders[2].clearQueue()" ng-disabled="!uploaders[2].queue.length" style='position:absolute;'>
-                            <span class="glyphicon glyphicon-trash"></span> Remove all
-                        </button>
-                   <p class='m-t-sm small col-sm-12'>Only PNG,GIF,JPG,JPEG files allowed.</p> 
-               </div>
-                
-                    <div class='col-md-9 padder-v'>
-                            <table class="table bg-white-only b-a">
+                              </div>
+                              <div class="col-lg-9">
+                                <div class="wrapper-md bg-light dk b-b">
+                                  
+                                  <h3 class="m-n font-thin">Selected Images</h3>      
+                                </div> 
+                                  <table class="table bg-white-only b-a">
                                       <thead>
                                           <tr>
                                               <th width="40%">Name</th>
                                               <th >Preview </th>
-                                              <th ng-show="uploaders[2].isHTML5">Size</th>
-                                              <th ng-show="uploaders[2].isHTML5">Progress</th>
+                                              <th ng-show="uploader.isHTML5">Size</th>
+                                              <th ng-show="uploader.isHTML5">Progress</th>
                                               <th>Status</th>
                                               <th>Actions</th>
                                           </tr>
                                       </thead>
                                       <tbody>
-                                          <tr ng-repeat="item in uploaders[2].queue">
-                                              <td><strong>{{ item.file.name }} </strong>
-                                     
-                                              </td>
-                                              <td>   
-                                                <div style='border:1px solid #E1E1E1;' ng-thumb="{ file: item._file, height: 50,width:50 }"></div>
-                                                 </td>
-                                              <td ng-show="uploaders[2].isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
-                                              <td ng-show="uploaders[2].isHTML5">
+                                          <tr ng-repeat="item in uploader.queue">
+                                              <td><strong>{{ item.file.name }}</strong></td>
+                                              <td>    
+                                      </td>
+                                              <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                              <td ng-show="uploader.isHTML5">
                                                   <div class="progress progress-sm m-b-none m-t-xs">
                                                       <div class="progress-bar bg-info" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
                                                   </div>
@@ -463,8 +402,7 @@
                                                   <span ng-show="item.isError" class="text-danger"><i class="glyphicon glyphicon-remove"></i></span>
                                               </td>
                                               <td nowrap>
-                                                   
-                                                   
+                                                    
                                                   <button type="button" class="btn btn-default btn-xs" ng-click="item.remove()">
                                                       Remove
                                                   </button>
@@ -472,21 +410,131 @@
                                           </tr>
                                       </tbody>
                                   </table>
+                                    
+                              </div>
+                          </div> -->
+        <div class="row">
+                            <div class="col-md-12">
+                                 
+                              <div class="clearfix col-md-12 bd-brown no-padder">
+                                <h3 class='padder padder-v m-n'style='background-color: #E3FFEB;'>
+                                <a name="image-example" class="anchor" href=""><span class="octicon octicon-link"></span></a>Main Image* <em class="text-muted small">(single)</em> <em class="text-muted small pull-right">**required**</em> </h3>
+                               
+                            
+                                <div class="m-t-sm m-b-sm  col-md-4 padder-v align-center">
+                                 <div class='col-md-12 bd-brown'>
+                                <div class="btn btn-sm btn-primary m-t-xxl fileupload" ng-click="uploaders[0].clearQueue()" ng-disabled='product.images.length!=0'>                  
+                                    <small class="m-s"> <span class="fa fa-camera" ></span> Select image </small>  
+                                     
+                                    <input type="file" id="fileInput" nv-file-select="" accept="image/*" class="upload" uploader="uploaders[0]" >
+                               </div>
+                                 
+                                <p class='m-t-sm m-b-xxl small'>Only PNG,GIF,JPG,JPEG files allowed.</p>
+                               </div>
+                             
+
+                               <!--  <div class="btn btn-sm btn-primary m-t-lg fileupload" ng-click="uploaders[0].clearQueue()" ng-disabled='product.images.length!=0'>                  
+                                    <small class="m-s"> <span class="fa fa-camera" ></span> Select image </small>  
+                                     
+                                    <input type="file" id="fileInput" nv-file-select="" class="upload" uploader="uploaders[0]" >
+                               </div> 
+                                 
+                                <p class='m-t-sm small'>Only PNG,GIF,JPG,JEPG files allowed.</p> -->
+                            </div>
+                            <div class="m-t-sm m-b-sm  col-md-4 padder-v align-center" >
+                                 <div class='col-md-12 bd-brown padder-v-xs'>
+                                    <img src="{{product.images[0]}}" style='width:150px;height:150px;'ng-show='uploaders[0].queue.length==0' >
+                                    
+                                </div>
+                            </div>
+                            <!-- <div class="thumbnail col-md-6 align-center"  >
+                                <img src="{{product.images[0]}}" style='width:150px;height:150px;'ng-show='uploaders[0].queue.length==0' >
+                                   <div ng-repeat='item in uploaders[0].queue'>   
+                                         <div ng-thumb="{ file: item._file, height: 150,width:200 }" ng-show='$index==0'></div>
+                                         <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                                  Remove
+                                                              </button>
                                     </div>
+                            </div> -->
+                             
+                            
+                            </div>
+
+                           <div class="clearfix col-md-12 bd-brown no-padder m-t-sm">
+                                <h3 class='padder padder-v m-n'style='background-color: #E3FFEB;'>
+                                <a name="image-example" class="anchor" href=""><span class="octicon octicon-link"></span></a>Concept Images <em class="text-muted small">(maximum 2)</em> <em class="text-muted small pull-right">**It is good to add concept Images**</em> </h3>
+                            
+                            <div class="m-t-sm m-b-sm  col-md-4 padder-v align-center" ng-repeat='concept in product.concepts'>
+                                 <div class='col-md-12 bd-brown padder-v-xs'>
+                                                       
+                                    <img ng-src="{{product.concepts[$index]}}" style='width:250px;height:155px;'  >
+ 
+                                </div>
+                            </div>
+
+                             <div class='m-t-sm m-b-sm  col-md-4 padder-v align-center' ng-repeat='item in uploaders[1].queue' >   
+                                    <div class='col-md-12 bd-brown padder-v-xs' ng-thumb="{ file: item._file, height: 155,width:250 }" > </div>
+                                    <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                                  Remove
+                                                              </button>
+                             </div>
+                             <div class="m-t-sm m-b-sm  col-md-4 padder-v align-center">
+                                 <div class='col-md-12 bd-brown'>
+                                <div class="btn btn-sm btn-primary m-t-xxl fileupload" ng-class='{disabled:uploaders[1].queue.length>=2}'>                  
+                                    <small class="m-s"> <span class="fa fa-camera"></span> Add Concepts </small>  
+                                     
+                                    <input type="file" id="fileInput" nv-file-select="" accept="image/*" class="upload" uploader="uploaders[1]">
+                               </div> 
+                                 
+                                <p class='m-t-sm m-b-xxl small'>Only PNG,GIF,JPG,JPEG files allowed.</p>
+                               </div>
+                            </div>
+
+                         </div>
+
+ 
+                <div class="clearfix col-md-12 bd-brown m-t-sm no-padder">
+                     <h3 <h3 class='padder padder-v m-n'style='background-color: #E3FFEB;'><a name="basic-example" class="anchor" href=""><span class="octicon octicon-link"></span></a>Choose Other Images <em class="text-muted small">(choose multiple)</em> <em class="text-muted small pull-right">**max 4 other images allowed**</em></h3> 
                   
+                    
+                    <div class="m-t-sm m-b-sm  col-md-4 padder-v align-center" ng-repeat='other in product.images' ng-show='product.images.length>1&&$index>0'>
+                                 <div class='col-md-12 bd-brown padder-v-xs'>
+                                                       
+                                    <img ng-src="{{product.images[$index]}}" style='width:250px;height:155px;' >
+ 
+                                </div>
+                        </div>
+
+                    <div class='m-t-sm m-b-sm  col-md-4 padder-v align-center' ng-repeat='item in uploaders[2].queue' >   
+                                    <div class='col-md-12 bd-brown padder-v-xs' ng-thumb="{ file: item._file, height: 155,width:250 }" > </div>
+                                    <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                                  Remove
+                                                              </button>
+                        </div>
+
+                    <div class="m-t-sm m-b-sm  col-md-4 padder-v align-center">
+                        <div class='col-md-12 bd-brown'>
+                                <div class="btn btn-sm btn-primary m-t-xxl fileupload" ng-class='{disabled:uploaders[2].queue.length>=4}'>                  
+                                    <small class="m-s"> <span class="fa fa-camera"></span> Other Images </small>  
+                                     
+                                    <input type="file" id="fileInput" nv-file-select="" accept="image/*" class="upload"  uploader="uploaders[2]">
+                               </div> 
+                                 
+                                <p class='m-t-sm m-b-xxl small'>Only PNG,GIF,JPG,JPEG files allowed.</p>
+                        </div>
+                    </div>
                      
                 </div>
             </div>
          
-    </div>
-
-                            <div class="form-group clearfix m-t-md">
+    </div> 
+                            <div class="form-group clearfix m-t-sm">
                                 
-                                <div class="col-lg-5 col-sm-6 proceed-bck">
+                                <div class="col-md-6 col-lg-4 m-t-sm">
                                     <a class="btn btn-default" ng-click="activeTab=2"><i class="fa fa-arrow-left" /> Back  </a>
                                 </div>
-                                <div class="col-lg-5 col-sm-6">
-                                    <button type="submit" class="btn btn-lg btn-sp btn-v" ng-click='submitForm(product)' ng-disabled="newProductForm.$invalid||!uploaders[0].queue.length>0" >Add Product  </button>
+                                <div class="col-md-6 col-lg-4 " >
+                                    <button type="submit" style='height:40px;' class="btn btn-lg btn-sp btn-v" ng-disabled="editProductForm.$invalid" ng-click="submitForm(product)">Save Product  </button>
                                 </div>
                             </div>
                         </div>
@@ -502,160 +550,4 @@
         <!-- /.collapse in -->
     </div>
 
-    <!--   <div class="row">
-    <div class="col-sm-12">
-      <div class="panel panel-default">
-        <div class="panel-heading font-bold" style="text-align:center">Fill All Product Details</div>
-        <div class="panel-body">
-          <form class="bs-example form-horizontal" name="addProduct">
-            <div class="form-group">
-              <label class="col-lg-2 control-label">Product Name</label>
-              <div class="col-lg-3">
-                <input type="text" class="form-control" placeholder="product name" ng-model="product.name" >
-
-              </div>
-
-              <label class="col-lg-2 control-label">Product Type </label>
-              <div class="col-lg-3">
-                <select  class="w-md form-control" ng-model="product.type"  ng-click="selectType(product.type);" >
-                        <option ng-repeat="product_type in product_types" value="{{product_type.value}}">{{product_type.name}}</option>
-                </select>
-              </div>
-            </div>
-            
-            <div class="form-group">
-              <label class="col-lg-2 control-label" ng-click='alertMe()'>Product Brand</label>
-
-                  <div class="col-lg-3" mass-autocomplete>
-                    <input placeholder= 'select a brand' class="form-control" ng-model="product.brand"  mass-autocomplete-item="brand_options" ng-keyup="addNewBrandInList()">
-                  </div>
-
-                
-              <label class="col-lg-2 control-label">Product Material</label>
-              <div class="col-lg-3">
-                 
-                <div mass-autocomplete>
-                    <input placeholder= 'select a material' class="form-control" ng-model="product.material"  mass-autocomplete-item="material_options">
-                  </div>
-
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="col-lg-2 control-label">Product Application</label>
-              <div class="col-lg-3">
-              
-                <div mass-autocomplete>
-                    <input placeholder= 'select an application' class="form-control" ng-model="product.application"  mass-autocomplete-item="application_options">
-                  </div>
-
-              </div>
-
-              <label class="col-lg-2 control-label">Product Size</label>
-              <div class="col-lg-3">
-                
-                <div mass-autocomplete>
-                    <input placeholder= 'size of product' class="form-control" ng-model="product.size"  mass-autocomplete-item="size_options">
-                  </div>
-
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="col-lg-2 control-label">Product Finish</label>
-              <div class="col-lg-3">
-                
-                <div mass-autocomplete>
-                    <input placeholder= 'finish type' class="form-control" ng-model="product.finish_type"  mass-autocomplete-item="finish_type_options">
-                  </div>
-
-              </div>
-              <label class="col-lg-2 control-label">Product Look</label>
-              <div class="col-lg-3">
-             
-                <div mass-autocomplete>
-                    <input placeholder= 'product look' class="form-control" ng-model="product.look"  mass-autocomplete-item="look_options">
-                  </div>
-
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="col-lg-2 control-label">Product Url</label>
-              <div class="col-lg-3">
-                <input type="text" class="form-control" placeholder="http://" ng-model="product.url" >
-              </div>
-
-              <label class="col-lg-2 control-label">Product Price</label>
-              <div class="col-lg-3">
-                <input type="text" class="form-control" placeholder="Price" ng-model="product.price">
-
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="col-lg-2 control-label">Items Per Box </label>
-              <div class="col-lg-3">
-                <input type="text" class="form-control" placeholder="Number of items per box" ng-model="product.items_per_box" >
-
-              </div>
-              <label class="col-lg-2 control-label">Minimum Orders</label>
-              <div class="col-lg-3">
-                <input type="text" class="form-control" placeholder="Your Minimum Orders" ng-model="product.minimum_boxes" >
-
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-lg-2 control-label">Product Code</label>
-              <div class="col-lg-3">
-                <input type="text" class="form-control" placeholder="Product code in your database" ng-model="product.seller_product_code" >
-
-              </div>
-
-                  <label class="col-lg-2 control-label">Choose Image</label>
-
-                  <div class="col-lg-3">
-                    <input type="file" class='btn btn-default form-control' nv-file-select="" uploader="uploader" ng-model="product.image" />
-                  </div>
-            </div>
-             <div class="form-group">
-            <label class="col-lg-2 control-label"style='padding-top:40px'>Colors</label>
-
-                <div class="col-lg-3 panel-body colors_cat">
-                <ul id="cat_color">
-                  <li ng-click="selectColors({{$index+1}})" ng-repeat="color in colors"><a class="col-{{$index+1}}" val="{{$index+1}}" href></a></li>
-                </ul>
-                </div>
-              </div> 
-            <div class="form-group">
-                  <label class="col-lg-2 control-label">Product Comment</label>
-                   <div class="col-lg-3">
-                  <textarea class="form-control" rows="4" placeholder="Your Comments" ng-model="product.comments" >
-                  </textarea>
-                </div>
-
-                  <label class="col-lg-2 control-label">Special Features</label>
-                   <div class="col-lg-3">
-                  <textarea class="form-control" rows="4" placeholder="Type special features information about product here" ng-model="product.features" >
-                  </textarea>
-                </div>
-            </div>
-
-            <div class="form-group">
-              <div class="col-lg-offset-5 col-lg-10">
-                <button type="submit" class="btn btn-sm btn-success" ng-disabled="addProduct.$invalid" ng-click="submitform(product);uploader.uploadAll();" >Add Product</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
- -->
-    <!-- <select  ui-jq="chosen" ui-refresh="chosen" class="w-md" ng-model="product.brand" ng-init="product.brand=''">
-                    <optgroup label="choose from brands <span ng-click='alertMe()'> click </span>" >
-                        <option ng-repeat="brand in brands" value="{{brand}}">{{brand}}</option>
-                     </optgroup>
-
-                </select> -->
 </div>

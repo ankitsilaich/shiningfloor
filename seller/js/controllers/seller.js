@@ -5,7 +5,7 @@ app.controller('sellerCtrl', ['$scope', '$http','$modal','$stateParams','$log','
                                       if($scope.seller.img=='') 
                                         $scope.seller.img = 'img/a0.jpg';   
                                     // $scope.sellerImage = $scope.seller.img;
-               // $scope.seller.img = $scope.sellerImage+ '?_ts=' + new Date().getTime(); 
+               $scope.seller.img = $scope.seller.img+ '?_ts=' + new Date().getTime(); 
 
       });
     // $scope.getImage = function () {

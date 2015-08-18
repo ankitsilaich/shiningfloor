@@ -161,21 +161,21 @@
                           <div class="col-sm-6">
                            <input type="text" class="form-control"  placeholder="Price"  ng-model="product.seller_product_price" id="pricefield{{product.product_id}}" required  ng-pattern="/^[0-9]+$/">
 
-
+                           
                           </div>
-                          <div class="col-sm-6">
-
-                            <input type="text" class="form-control" placeholder="Tiles Per Box"  required  id="tilesperboxtfield{{product.product_items_per_box}}" ng-model="product.seller_items_per_box" ng-pattern="/^[0-9]+$/">
-                          </div>
+                           <div class="col-sm-6">
+                            <input type="text" class="form-control" placeholder="Product Code"  required   id="sellercodefield{{product.seller_product_code}}" ng-model="product.seller_product_code" >
+                           </div>
                         </div>
                         <div class="form-group pull-in clearfix">
-                            <div class="col-sm-6">
-                            <input type="text" class="form-control" placeholder="Product Code"  required   id="sellercodefield{{product.seller_product_code}}" ng-model="product.seller_product_code" ng-pattern="/^[0-9]+$/">
-                           </div>
+                            
                          <!--  <div class="col-sm-6">
                             <input type="text" class="form-control" placeholder="Look"  required    id="lookfield{{product.product_id}}" ng-model="product.product_look">
 
                           </div> -->
+                          <div class="col-sm-6">
+                              <input type="text" class="form-control" placeholder="Total quantity"  required   id="sellercodefield{{product.seller_total_quantity}}" ng-model="product.seller_total_quantity" ng-pattern="/^[0-9]+$/">
+                           </div>
                            <div class="col-sm-6">
                               <input type="text" class="form-control" placeholder="Minimum Orders"  required   id="sellercodefield{{product.minimum_boxes}}" ng-model="product.seller_minimum_boxes" ng-pattern="/^[0-9]+$/">
                            </div>
