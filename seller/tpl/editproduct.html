@@ -22,11 +22,26 @@
 
                                     <label class="col-lg-2 control-label">Product Name*</label>
                                     <div class="col-lg-8 ">
-                                        <input type="text" class="form-control" name='name' placeholder="product name" ng-model="product.name" required>
+                                        <input type="text" class="form-control" name='name'ng-keyup="updateSuggestProducts();isOpen=1;" ng-click='isOpen=1'  placeholder="product name" ng-model="product.name" required>
                                         <div ng-show="generalDataChecked || editProductForm.name.$touched">
                                           <span class='form-error' ng-show="editProductForm.name.$error.required"> product name can't be empty</span>
                                         </div>
-                                    </div>
+                                    
+
+                                         <div class='dropdown' ng-show='searchResults' ng-class='{open:isOpen}' ng-mouseleave='isOpen=0'>
+                                            <ul class="dropdown-menu suggestion" class='dropdown-menu' >
+                                                
+                                              <li class="m-b-xs clearfix" ng-repeat='suggest in searchResults'>
+                                                <div class='col-sm-2'> <img ng-src ='{{suggest.product_img}}' style='width:50px;height:50px;'> </div>
+                                                <div class='col-sm-5 padder-v'> {{suggest.product_name}} </div>
+                                                <div class='col-sm-3 padder-v'> {{suggest.product_brand}} </div>
+                                                <div class='col-sm-2 padder-v-sm'> <a class='btn btn-success' ui-sref="app.all.editproduct({productId: suggest.product_id})"> Edit</a> </div>
+                                                 
+                                              </li>
+                                              
+                                                </ul>
+                                        </div>
+                                    </div>   
                                 </div>    
                                 <div class="form-group clearfix">
                                     <label class="col-lg-2 control-label">Product Type* </label>
@@ -446,7 +461,14 @@
                                     <img src="{{product.images[0]}}" style='width:150px;height:150px;'ng-show='uploaders[0].queue.length==0' >
                                     
                                 </div>
+                                <div ng-repeat='item in uploaders[0].queue'>   
+                                         <div ng-thumb="{ file: item._file, height: 150,width:200 }" ng-show='$index==0'></div>
+                                         <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                                  Remove
+                                                              </button>
+                                    </div>
                             </div>
+
                             <!-- <div class="thumbnail col-md-6 align-center"  >
                                 <img src="{{product.images[0]}}" style='width:150px;height:150px;'ng-show='uploaders[0].queue.length==0' >
                                    <div ng-repeat='item in uploaders[0].queue'>   
@@ -534,7 +556,7 @@
                                     <a class="btn btn-default" ng-click="activeTab=2"><i class="fa fa-arrow-left" /> Back  </a>
                                 </div>
                                 <div class="col-md-6 col-lg-4 " >
-                                    <button type="submit" style='height:40px;' class="btn btn-lg btn-sp btn-v" ng-disabled="editProductForm.$invalid" ng-click="submitForm(product)">Save Product  </button>
+                                    <button type="submit" style='height:40px;' class="btn btn-lg btn-sp btn-v" ng-disabled="editProductForm.$invalid||(product.images.length==0&&uploaders[0].queue.length==0)" ng-click="submitForm(product)">Save Product  </button>
                                 </div>
                             </div>
                         </div>

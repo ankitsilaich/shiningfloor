@@ -164,19 +164,19 @@ function findAllProducts($query,$usage_location){
             $images = array();         
             $colors = array(); 
             $concepts = array();
-            foreach ($p->product_colors() as $product_colors) {
-                $colors[] = $product_colors['color_name'];
-            }
+            // foreach ($p->product_colors() as $product_colors) {
+            //     $colors[] = $product_colors['color_name'];
+            // }
 
-            foreach ($p->product_usages() as $product_usages) {
+            // foreach ($p->product_usages() as $product_usages) {
 
-                $usages[] = $product_usages['usage_name'];
-            }
+            //     $usages[] = $product_usages['usage_name'];
+            // }
 
-            foreach ($p->product_applications() as $product_applications) {
+            // foreach ($p->product_applications() as $product_applications) {
 
-                $applications[] = $product_applications['application_name'];
-            }
+            //     $applications[] = $product_applications['application_name'];
+            // }
              
             foreach ($p->product_images() as $product_images) {
 
@@ -215,11 +215,15 @@ function findAllProducts($query,$usage_location){
                         'product_t_unit' =>  $p['product_thickness_unit'],
                         'product_items_per_box' => $p['product_items_per_box'],
                         'product_shape' =>  $p['product_shape'],
-                        'product_applications' =>  $applications,
+                        // 'product_applications' =>  $applications,
                         'product_look' =>  $p['product_look'],
                         'product_finish_type'=> $p['product_finish_type'],
-                        'product_usages'=> $usages,
-                        'product_colors'=> $colors, 
+                        // 'product_usages'=> $usages,
+                        // 'product_colors'=> $colors, 
+                        'product_colors' => $p['product_colors'],
+                        'product_applications' => $p['product_applications'],
+                        'product_usages' => $p['product_usages'],
+
                         'product_img' =>  $images, 
                         'product_concepts' =>  $concepts,                        
                         'product_features'=> $p['product_desc'],

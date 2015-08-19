@@ -5367,35 +5367,40 @@ font-weight: 700;
   background: none repeat scroll 0 0 #E9DAB9;
 }
 .colors_cat ul#cat_color li a.col-3 {
-  background: none repeat scroll 0 0 #EE6AA7;
+  background: none repeat scroll 0 0 #C68446;
 }
 .colors_cat ul#cat_color li a.col-4 {
+  background: none repeat scroll 0 0 #6B2504;
+}
+.colors_cat ul#cat_color li a.col-5 {
   background: none repeat scroll 0 0 #DD3334;
 }
-
-.colors_cat ul#cat_color li a.col-5 {
-  background: none repeat scroll 0 0 #FF5205;
-}
 .colors_cat ul#cat_color li a.col-6 {
-  background: none repeat scroll 0 0 #FFCC00;;
+  background: none repeat scroll 0 0 #EE6AA7;
 }
 .colors_cat ul#cat_color li a.col-7 {
-  background: none repeat scroll 0 0 #A2B646;
+  background: none repeat scroll 0 0 #FF5205;
 }
 .colors_cat ul#cat_color li a.col-8 {
-  background: none repeat scroll 0 0 #33A1DE;
+  background: none repeat scroll 0 0 #FFCC00;;
 }
 .colors_cat ul#cat_color li a.col-9 {
+  background: none repeat scroll 0 0 #A2B646;
+}
+.colors_cat ul#cat_color li a.col-10 {
+  background: none repeat scroll 0 0 #33A1DE;
+}
+.colors_cat ul#cat_color li a.col-11 {
   background: none repeat scroll 0 0 #1F72BE;
 }
 
-.colors_cat ul#cat_color li a.col-10 {
+.colors_cat ul#cat_color li a.col-12 {
   background: none repeat scroll 0 0 #6224E1;
 }
-.colors_cat ul#cat_color li a.col-11 {
+.colors_cat ul#cat_color li a.col-13 {
   background: none repeat scroll 0 0 #AAAAAA;
 }
-.colors_cat ul#cat_color li a.col-12 {
+ .colors_cat ul#cat_color li a.col-14 {
   background: none repeat scroll 0 0 #000;
 }
 

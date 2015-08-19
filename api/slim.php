@@ -528,7 +528,8 @@ $app->get('/shiningfloor/seller/chooseproducts', $authenticate_seller($app), fun
         findAllFilters();
 
         $query ='';
-        $query = $db->products()->where("NOT id", $db->sellers_products()->where('sellers_id',$user_id )->select('products_id'));
+        // $query = $db->products()->where("NOT id", $db->sellers_products()->where('sellers_id',$user_id )->select('products_id'));
+        $query = $db->products();
 
         if(isset($_GET['category']))
             $query =  categoryFilteredQuery($_GET['category'],$query);
@@ -687,19 +688,19 @@ $app->get('/shiningfloor/admin/selectedproducts(/:id)', $authenticate_admin($app
             $images = array();         
             $colors = array(); 
 
-            foreach ($p->product_colors() as $product_colors) {
-                $colors[] = $product_colors['color_name'];
-            }
+            // foreach ($p->product_colors() as $product_colors) {
+            //     $colors[] = $product_colors['color_name'];
+            // }
 
-            foreach ($p->product_usages() as $product_usages) {
+            // foreach ($p->product_usages() as $product_usages) {
 
-                $usages[] = $product_usages['usage_name'];
-            }
+            //     $usages[] = $product_usages['usage_name'];
+            // }
 
-            foreach ($p->product_applications() as $product_applications) {
+            // foreach ($p->product_applications() as $product_applications) {
 
-                $applications[] = $product_applications['application_name'];
-            }
+            //     $applications[] = $product_applications['application_name'];
+            // }
              
             foreach ($p->product_images() as $product_images) {
 
@@ -739,11 +740,14 @@ $app->get('/shiningfloor/admin/selectedproducts(/:id)', $authenticate_admin($app
                         'product_h_unit' =>  $p['product_height_unit'],
                         'product_t_unit' =>  $p['product_thickness_unit'],
                         'product_shape' =>  $p['product_shape'],
-                        'product_application' =>  $applications,
                         'product_look' =>  $p['product_look'],
                         'product_finish_type'=> $p['product_finish_type'],
-                        'product_usages'=> $usages,
-                        'product_colors'=> $colors,
+                        // 'product_application' =>  $applications,                
+                        // 'product_usages'=> $usages,
+                        // 'product_colors'=> $colors,
+                        'product_colors' => $p['product_colors'],
+                        'product_applications' => $p['product_applications'],
+                        'product_usages' => $p['product_usages'],
                         'product_images' =>  $images,
                         'product_features'=> $p['product_desc'],
                         'product_price'=>$p['product_price'],
@@ -811,19 +815,19 @@ $app->get('/shiningfloor/seller/selectedproducts', $authenticate_seller($app),fu
             $images = array();         
             $colors = array(); 
 
-            foreach ($p->product_colors() as $product_colors) {
-                $colors[] = $product_colors['color_name'];
-            }
+            // foreach ($p->product_colors() as $product_colors) {
+            //     $colors[] = $product_colors['color_name'];
+            // }
 
-            foreach ($p->product_usages() as $product_usages) {
+            // foreach ($p->product_usages() as $product_usages) {
 
-                $usages[] = $product_usages['usage_name'];
-            }
+            //     $usages[] = $product_usages['usage_name'];
+            // }
 
-            foreach ($p->product_applications() as $product_applications) {
+            // foreach ($p->product_applications() as $product_applications) {
 
-                $applications[] = $product_applications['application_name'];
-            }
+            //     $applications[] = $product_applications['application_name'];
+            // }
              
             foreach ($p->product_images() as $product_images) {
 
@@ -864,11 +868,14 @@ $app->get('/shiningfloor/seller/selectedproducts', $authenticate_seller($app),fu
                         'product_h_unit' =>  $p['product_height_unit'],
                         'product_t_unit' =>  $p['product_thickness_unit'],
                         'product_shape' =>  $p['product_shape'],
-                        'product_application' =>  $applications,
+                        // 'product_application' =>  $applications,
                         'product_look' =>  $p['product_look'],
                         'product_finish_type'=> $p['product_finish_type'],
-                        'product_usages'=> $usages,
-                        'product_colors'=> $colors,
+                        // 'product_usages'=> $usages,
+                        // 'product_colors'=> $colors,
+                        'product_colors' => $p['product_colors'],
+                        'product_applications' => $p['product_applications'],
+                        'product_usages' => $p['product_usages'],
                         'product_images' =>  $images,
                         'product_features'=> $p['product_desc'],
                         'product_price'=>$p['product_price'],
@@ -1233,6 +1240,9 @@ $app->post('/shiningfloor/seller/addproduct', $authenticate_seller($app),functio
          'product_items_per_box' => $array['items_per_box'],
         'product_material' => $array['material'],                   
         'product_look' => $array['look'],
+        'product_colors' => $array['colors'],
+        'product_applications' => $array['applications'],
+        'product_usages' => $array['usages'],
         'product_width' => $array['width'],
         'product_height' => $array['height'],
         'product_thickness' => $array['thickness'],
@@ -1265,36 +1275,36 @@ $app->post('/shiningfloor/seller/addproduct', $authenticate_seller($app),functio
     if(!$look_count->fetch() and $array['look']!=''){
         $db->looks()->insert(array('look_name' => $array['look']));
     }
+
     $seller_products = array(
          'sellers_id' =>  $seller_id['id'] ,
          'products_id' =>  $data['id'] ,
-         'price' => $array['price'],
-        
-        'seller_product_code' => $array['seller_product_code'],
-        'comments'=> $array['comments'],
-        'minimum_boxes' => $array['minimum_boxes'],
-        'total_quantity' => $array['total_boxes']
+         'price' => $array['price'],        
+         'seller_product_code' => $array['seller_product_code'],
+         'comments'=> $array['comments'],
+         'minimum_boxes' => $array['minimum_boxes'],
+         'total_quantity' => $array['total_boxes']
        );
    $seller = $db->sellers_products()->insert($seller_products);
 
-   $colors = explode(",", $array['colors']);
-   for($i=0;$i<sizeof($colors);$i++)
-   {
-        if($colors[$i]!="")
-            $db->product_colors->insert(array('color_name'=> $colors[$i] , 'products_id'=>$data['id']));
-   }
-   $usages = explode(",", $array['usages']);
-   for($i=0;$i<sizeof($usages);$i++)
-   {
-        if($usages[$i]!="")
-            $db->product_usages->insert(array('usage_name'=> $usages[$i] , 'products_id'=>$data['id']));
-   }
-   $applications = explode(",", $array['applications']);
-   for($i=0;$i<sizeof($applications);$i++)
-   {
-        if($applications[$i]!="")
-            $db->product_applications->insert(array('application_name'=> $applications[$i] , 'products_id'=>$data['id']));
-   }
+   // $colors = explode(",", $array['colors']);
+   // for($i=0;$i<sizeof($colors);$i++)
+   // {
+   //      if($colors[$i]!="")
+   //          $db->product_colors->insert(array('color_name'=> $colors[$i] , 'products_id'=>$data['id']));
+   // }
+   // $usages = explode(",", $array['usages']);
+   // for($i=0;$i<sizeof($usages);$i++)
+   // {
+   //      if($usages[$i]!="")
+   //          $db->product_usages->insert(array('usage_name'=> $usages[$i] , 'products_id'=>$data['id']));
+   // }
+   // $applications = explode(",", $array['applications']);
+   // for($i=0;$i<sizeof($applications);$i++)
+   // {
+   //      if($applications[$i]!="")
+   //          $db->product_applications->insert(array('application_name'=> $applications[$i] , 'products_id'=>$data['id']));
+   // }
     $app->response()->header('Content-Type', 'application/json');
     echo json_encode($data['id']);
 
@@ -1322,6 +1332,9 @@ $app->put('/shiningfloor/seller/editproduct/:product_id', $authenticate_seller($
         'product_items_per_box' => $array['items_per_box'],
         'product_material' => $array['material'],                   
         'product_look' => $array['look'],
+        'product_colors' => $array['colors'],
+        'product_applications' => $array['applications'],
+        'product_usages' => $array['usages'],
         'product_width' => $array['width'],
         'product_height' => $array['height'],
         'product_thickness' => $array['thickness'],
@@ -1333,43 +1346,42 @@ $app->put('/shiningfloor/seller/editproduct/:product_id', $authenticate_seller($
         ); 
     // echo $product_id;
     $data = $db->products()->where('id', $product_id)->update($product);
-    // echo $data;
-    $query = $db->product_colors()->where('products_id', $product_id);
-    foreach ( $query as $color ) {
-      //if($color->fetch())
-          $color->delete();
-    }
-    $colors = explode(",", $array['colors']);
+     // $query = $db->product_colors()->where('products_id', $product_id);
+    // foreach ( $query as $color ) {
+    //   //if($color->fetch())
+    //       $color->delete();
+    // }
+    // $colors = explode(",", $array['colors']);
 
-    for($i=0;$i<sizeof($colors);$i++)
-    {
-        if($colors[$i]!="")
-            $db->product_colors->insert(array('color_name'=> $colors[$i] , 'products_id'=>$product_id));
-    }
+    // for($i=0;$i<sizeof($colors);$i++)
+    // {
+    //     if($colors[$i]!="")
+    //         $db->product_colors->insert(array('color_name'=> $colors[$i] , 'products_id'=>$product_id));
+    // }
     
-    $query = $db->product_usages()->where('products_id', $product_id);
-    foreach ( $query as $usage ) {
-        if($usage->fetch())
-          $usage->delete();
-    }
-    $usages = explode(",", $array['usages']);
-    for($i=0;$i<sizeof($usages);$i++)
-    {
-        if($usages[$i]!="")
-            $db->product_usages->insert(array('usage_name'=> $usages[$i] , 'products_id'=>$product_id));
-    }
+    // $query = $db->product_usages()->where('products_id', $product_id);
+    // foreach ( $query as $usage ) {
+    //     if($usage->fetch())
+    //       $usage->delete();
+    // }
+    // $usages = explode(",", $array['usages']);
+    // for($i=0;$i<sizeof($usages);$i++)
+    // {
+    //     if($usages[$i]!="")
+    //         $db->product_usages->insert(array('usage_name'=> $usages[$i] , 'products_id'=>$product_id));
+    // }
 
-    $query = $db->product_applications()->where('products_id', $product_id);
-    foreach ($query as  $application ) {
-        if($application->fetch())
-          $application->delete();
-    }
-    $applications = explode(",", $array['applications']);
-    for($i=0;$i<sizeof($applications);$i++)
-    {
-        if($applications[$i]!="")
-            $db->product_applications->insert(array('application_name'=> $applications[$i] , 'products_id'=>$product_id));
-    }
+    // $query = $db->product_applications()->where('products_id', $product_id);
+    // foreach ($query as  $application ) {
+    //     if($application->fetch())
+    //       $application->delete();
+    // }
+    // $applications = explode(",", $array['applications']);
+    // for($i=0;$i<sizeof($applications);$i++)
+    // {
+    //     if($applications[$i]!="")
+    //         $db->product_applications->insert(array('application_name'=> $applications[$i] , 'products_id'=>$product_id));
+    // }
 
     $app->response()->header('Content-Type', 'application/json');
     echo json_encode($product_id);
@@ -1395,6 +1407,27 @@ $app->post('/shiningfloor/seller/addSellerData/:product_id', $authenticate_selle
     $app->response()->header('Content-Type', 'application/json');
     echo json_encode($seller['id']);
 });
+
+//------------------------------------------
+$app->put('/shiningfloor/seller/editSellerData/:product_id', $authenticate_seller($app),function($product_id) use ($app, $db)
+{
+    $array = (array) json_decode($app->request()->getBody());
+    $email = $_SESSION['seller'] ;
+    $seller_id = $db->sellers()->where('email', $email)->fetch();    
+    $seller_products = array(
+         'sellers_id' =>  $seller_id['id'] ,
+         'products_id' =>  $product_id ,
+         'price' => $array['price'],        
+        'seller_product_code' => $array['seller_product_code'],
+        'comments'=> $array['comments'],
+        'minimum_boxes' => $array['minimum_boxes'],
+        'total_quantity' => $array['total_boxes']
+       );
+    $seller = $db->sellers_products()->where('sellers_id',$seller_id['id'])->where('products_id',$product_id)->update($seller_products); 
+    $app->response()->header('Content-Type', 'application/json');
+    echo json_encode($seller['id']);
+});
+
 
 //------------------------------------------
 $app->post('/shiningfloor/seller/addColorsData/:product_id', $authenticate_seller($app),function($product_id) use ($app, $db)
@@ -1598,6 +1631,32 @@ $app->put('/shiningfloor/updatesellers/:id', function($id = null) use ($app, $db
 
 });
 
+//------------------------------------------
+$app->get('/shiningfloor/seller/products/:product_id', $authenticate_seller($app),function($product_id) use ($app, $db)
+{
+    // $array = (array) json_decode($app->request()->getBody());
+    $seller_product = '';
+    $email = $_SESSION['seller'] ;
+    $seller_id = $db->sellers()->where('email', $email)->fetch();    
+    $product_data = $db->sellers_products()->where('products_id',$product_id)->where('sellers_id',$seller_id)->fetch(); 
+    if($product_data){
+      $seller_product = array(
+          
+         'products_id' =>  $product_id ,
+         'price' => $product_data['price'],        
+        'seller_product_code' =>$product_data['seller_product_code'],
+        'comments'=> $product_data['comments'],
+        'minimum_boxes' => $product_data['minimum_boxes'],
+        'total_quantity' => $product_data['total_quantity']
+       );
+  }
+    $app->response()->header('Content-Type', 'application/json');
+    echo json_encode(array(
+        'seller_product_data'=> $seller_product
+        ));
+
+});
+
 
 $app->put('/shiningfloor/sellers/update', $authenticate_seller($app),function() use ($app, $db)
 {
@@ -1649,8 +1708,10 @@ $app->get('/shiningfloor/product(/:id)', function($id=null ) use ($app, $db){
       $data = array();
       if($id!=null){
 
-        $query =$db->products()->where('id',$id);  
-        $data = findAllProducts($query,'');
+        $query =$db->products()->where('id',$id);
+        if(count($query))  
+          $data = findAllProducts($query,'');
+                 
         $app->response()->header('content-type','application/json');
         echo json_encode(array( 'product_data'=>$data ));
     }

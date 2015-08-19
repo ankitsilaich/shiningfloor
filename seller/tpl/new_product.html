@@ -40,7 +40,7 @@
                                                 </ul>
                                         </div>
                                     </div>
-                                    
+
                                 </div>    
                                 <div class="form-group clearfix">
                                     <label class="col-lg-2 control-label">Product Type* </label>
@@ -195,7 +195,7 @@
                                 <div class="form-group clearfix m-b-xs">
                                     <label class="col-lg-2 control-label">Colors*</label>
 
-                                    <div class=" colors_cat col-lg-8">
+                                    <div class=" colors_cat col-lg-10">
                                         
                                         <ul id="cat_color"> 
                                             <li ng-class="{'active':selectedColors[$index]}" ng-click="selectedColors[$index]=!selectedColors[$index];isColorsOk()" ng-repeat="color in colors">
@@ -449,7 +449,7 @@
                                      
                                               </td>
                                               <td>   
-                                                <div style='border:1px solid #E1E1E1;' ng-thumb="{ file: item._file, height: 50,width:50 }"></div>
+                                                <div ng-thumb="{ file: item._file, height: 50,width:50 }"></div>
                                                  </td>
                                               <td ng-show="uploaders[2].isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
                                               <td ng-show="uploaders[2].isHTML5">
