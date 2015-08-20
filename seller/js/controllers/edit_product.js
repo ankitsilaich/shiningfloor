@@ -210,16 +210,15 @@ app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster',
 
         };
             $http.get('../api/slim.php/shiningfloor/colors').then(function(resp) {
-                $scope.colors = resp.data.colors;
-                var selected_colors = $scope.product.colors.split(',');
+                $scope.colors = resp.data.colors;                 
                 $scope.colorsLength = $scope.colors.length;
                 console.log($scope.product.colors);
                 $scope.selectedColors = [];
 
                 for (i = 0; i < $scope.colorsLength; i++) {
                     $scope.selectedColors[i] = false;
-                    for (j = 0; j < selected_colors.length; j++) {
-                        if (selected_colors[j] == $scope.colors[i]) {
+                    for (j = 0; j < $scope.product.colors.length; j++) {
+                        if ($scope.product.colors[j] == $scope.colors[i]) {
                             $scope.selectedColors[i] = true;
                             break;
                         }
@@ -268,14 +267,14 @@ app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster',
 
             $http.get('../api/slim.php/shiningfloor/usages').then(function(resp) {
                 $scope.usages = resp.data.usages;
-                var selected_usages = $scope.product.usages.split(",");
+                 
                 // $scope.usages = ["Floor","Wall","Commericial","Residential","Outdoor"];
                 $scope.usagesLength = $scope.usages.length;                
                 $scope.selectedUsages = [];
                 for (i = 0; i < $scope.usagesLength; i++) {
                     $scope.selectedUsages[i] = false;
-                    for (j = 0; j < selected_usages.length; j++) {
-                        if (selected_usages[j] == $scope.usages[i]) {
+                    for (j = 0; j < $scope.product.usages.length; j++) {
+                        if ($scope.product.usages[j] == $scope.usages[i]) {
                             $scope.selectedUsages[i] = true;
                             break;
                         }
@@ -285,13 +284,13 @@ app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster',
             // $scope.applications=["Bedroom","Bathroom","Kitchen","Living Room","Outdoor"];
             $http.get('../api/slim.php/shiningfloor/applications').then(function(resp) {
                 $scope.applications = resp.data.applications;
-                var selected_applications = $scope.product.applications.split(',');
+                
                 $scope.applicationsLength = $scope.applications.length;
                 $scope.selectedApplications = [];
                 for (i = 0; i < $scope.applicationsLength; i++) {
                     $scope.selectedApplications[i] = false;
-                    for (j = 0; j < selected_applications.length; j++) {
-                        if (selected_applications[j] == $scope.applications[i]) {
+                    for (j = 0; j < $scope.product.applications.length; j++) {
+                        if ($scope.product.applications[j] == $scope.applications[i]) {
                             $scope.selectedApplications[i] = true;
                             break;
                         }

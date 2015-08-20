@@ -1,18 +1,15 @@
 <?php
 function findAllFilters(){
   global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$applicationFilters;
-
   if(isset($_GET['pageNo'])){
       $pageNo = ( int )$_GET['pageNo'] ;
   }
   if(isset($_GET['color'])){
       $colorFilters =  explode(',', $_GET['color']);
   }
-
   if(isset($_GET['price_range'])){
       $priceFilters = explode(',', $_GET['price_range']);
   }
-
   if(isset($_GET['brand_name'])){
       $brandFilters = explode(',', $_GET['brand_name']);
   }
@@ -24,7 +21,6 @@ function findAllFilters(){
   }
 }
 /*  Functions starts here   */
-
 function categoryFilteredQuery($category, $query){
     global $db;
     $type_id = $db->types()->where('type_name', $category)->select('id');
@@ -34,7 +30,6 @@ function priceFilteredQuery($priceFilters , $query){
     global $db;
       $q = '';
     for($i = 0 ; $i < sizeof($priceFilters); $i++){
-
       if($i>0)
           $q .= ' OR ' ;
       if($priceFilters[$i] == 'below-100'){
@@ -49,12 +44,10 @@ function priceFilteredQuery($priceFilters , $query){
     }
     return $query->where($q);
  }
-
 function brandFilteredQuery($brandFilters , $query){
     global $db;
     $q = '';
     for($i = 0 ; $i < sizeof($brandFilters); $i++){
-
         if($i>0)
             $q .= ' OR ' ;
         $q .= ' product_brand = "'. $brandFilters[$i]. '" ' ;
@@ -67,59 +60,51 @@ function finishTypeFilteredQuery($finishTypeFilters , $query){
     for($i = 0 ; $i < sizeof($finishTypeFilters); $i++){
          if($i>0)
             $q .= ' OR ' ;
-
           $q .= ' product_finish_type = "'. $finishTypeFilters[$i]. '" ' ;
     }
     return $query->where($q);
 }
-
   function colorFilteredQuery($colorFilters , $query){
     global $db;
     $p = '';
     for($i = 0 ; $i < sizeof($colorFilters); $i++){
         if($i>0)
             $p .= ' OR ' ;
-
-        $c_id = $db->colors->where('color_name = "' . $colorFilters[$i].'" ' );
-        $p .= ' colors_id = '. $c_id->fetch() . ' ' ;
+        $p .= $db->product_colors->where(' color_name = "' . $colorFilters[$i].'" ')->select('products_id');
+        // ->select('products_id')->fetch()['products_id']
+        //$p .= ' colors_id = '. $c_id->fetch() . ' ' ;
     }
-    $q = $db->product_colors()->where($p)->select('products_id');
-
-    return $query->where('id', $q);
+//     print_r($p->fetch());
+//    $q = $db->product_colors()->where($p)->select('products_id');
+    return $query->where('id', $p);
   }
-
   function applicationFilteredQuery($applicationFilters , $query){
     global $db;
     $q = '';
     for($i = 0 ; $i < sizeof($applicationFilters); $i++){
+          echo $applicationFilters[$i];
          if($i>0)
             $q .= ' OR ' ;
-
-          $q .= ' product_application = "'. $applicationFilters[$i]. '" ' ;
+          // $q .= ' product_applications = "'. $applicationFilters[$i]. '" ' ;
+          $q .= $db->product_applications->where('application_name', $applicationFilters[$i])->select('products_id');
+        
     }
-    return $query->where($q);
+    return $query->where('id', $q);
 }
-
 function setFinalFilterQuery($query){
   global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$applicationFilters;
   if(isset($_GET['price_range']))
       $query = priceFilteredQuery($priceFilters,$query);
-
   if(isset($_GET['brand_name']))
       $query = brandFilteredQuery($brandFilters,$query);
-
   if(isset($_GET['finish_types']))
       $query = finishTypeFilteredQuery($finishTypeFilters,$query);
-
   if(isset($_GET['applications']))
       $query = applicationFilteredQuery($applicationFilters,$query);
-
   if(isset($_GET['color']))
       $query = colorFilteredQuery($colorFilters,$query);
   return $query;
 }
-
-
 // For finding all products of type say tiles or marbles Removed on 14 june 2015.
 function findAllProducts($query,$usage_location){
     $data = array();
@@ -130,7 +115,6 @@ function findAllProducts($query,$usage_location){
     $count3= 0;    // for counting brand filter products
     foreach($query as $p)
     {
-
       if(isset($_GET['details'])){
           if($_GET['details'] == 'false')
           {
@@ -141,7 +125,6 @@ function findAllProducts($query,$usage_location){
                   if($product_type['id'] == $p['type_id'])
                     $product_category = $product_type['type_name'];
               }
-
               $data[] =  array(
                                'product_id' => $p['id'],
                               'product_brand' =>   $p['product_brand'],
@@ -164,30 +147,23 @@ function findAllProducts($query,$usage_location){
             $images = array();         
             $colors = array(); 
             $concepts = array();
-            // foreach ($p->product_colors() as $product_colors) {
-            //     $colors[] = $product_colors['color_name'];
-            // }
-
-            // foreach ($p->product_usages() as $product_usages) {
-
-            //     $usages[] = $product_usages['usage_name'];
-            // }
-
-            // foreach ($p->product_applications() as $product_applications) {
-
-            //     $applications[] = $product_applications['application_name'];
-            // }
+            foreach ($p->product_colors() as $product_colors) {
+                $colors[] = $product_colors['color_name'];
+            }
+            foreach ($p->product_usages() as $product_usages) {
+                $usages[] = $product_usages['usage_name'];
+            }
+            foreach ($p->product_applications() as $product_applications) {
+                $applications[] = $product_applications['application_name'];
+            }
              
             foreach ($p->product_images() as $product_images) {
-
                 $images[] = $product_images['image_name'];
             }
             foreach ($p->concept_images() as $product_images) {
-
                 $concepts[] = $product_images['concept_name'];
             }
         // foreach ($p->product_features() as $product_features) {
-
         //     $features[] = $product_features->features['feature_name'];
         // }
         global $db;
@@ -196,7 +172,6 @@ function findAllProducts($query,$usage_location){
             if($product_type['id'] == $p['type_id'])
               $product_category = $product_type['type_name'];
         }
-
         $data[] =  array(
                          'product_id' => $p['id'],
                         'product_brand' =>   $p['product_brand'],
@@ -215,15 +190,11 @@ function findAllProducts($query,$usage_location){
                         'product_t_unit' =>  $p['product_thickness_unit'],
                         'product_items_per_box' => $p['product_items_per_box'],
                         'product_shape' =>  $p['product_shape'],
-                        // 'product_applications' =>  $applications,
+                        'product_applications' =>  $applications,
                         'product_look' =>  $p['product_look'],
                         'product_finish_type'=> $p['product_finish_type'],
-                        // 'product_usages'=> $usages,
-                        // 'product_colors'=> $colors, 
-                        'product_colors' => $p['product_colors'],
-                        'product_applications' => $p['product_applications'],
-                        'product_usages' => $p['product_usages'],
-
+                        'product_usages'=> $usages,
+                        'product_colors'=> $colors, 
                         'product_img' =>  $images, 
                         'product_concepts' =>  $concepts,                        
                         'product_features'=> $p['product_desc'],
@@ -234,10 +205,6 @@ function findAllProducts($query,$usage_location){
                     );
       }
     }
-
   return $data;
 }
-
-
-
 ?>

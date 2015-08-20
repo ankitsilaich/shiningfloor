@@ -19,15 +19,23 @@
                     <span class="dropdown-label" ng-show="selectedCategory" > Category <i style='margin-left:5px' class='fa fa-caret-down'> </i></span> 
 
                      <div    class="ss-dropdown" tabindex="4" data-attr_value="61">
+                     
                     <ul ng-show="selectedDropdown[3]" class="show-dropdown" style="top:-10px;padding:0px">
+                            <li ng-repeat="category in categoryFilters"  >
+                            <a ng-class="{'activeFilter': selectedCategory[$index]}" ng-click="selectedcategory($index); updateUrlChanges()" >
+                                           
+                                <div class="checkbox custom-checkbox">
+                                    <label >                                                                                       
+                                    <input  type="checkbox" ng-model="selectedCategory[$index]" ng-checked="selectedCategory[$index]">
+                                    <span class="fa fa-check"></span>
+                               
+                                    {{category}}</label>
 
-                 
-                    <li ng-repeat="category in categoryFilters" class="selected">
-                            <a class="ss-option"  ng-click="selectedcategory($index); updateUrlChanges()" href     data-attr_value="61">{{category}}</a><i ng-class="{'fa fa-check' : selectedCategory[$index] }"></i>
- 
-                        </li>
-
-                        </ul>
+                                </div>
+                            </a>
+                            </li>
+                    </ul>
+                            
             </div></div></div>
            
 
@@ -35,57 +43,94 @@
         <div class = "sf-super-search col-md-2 col-xs-12"> 
                 <div class = "search-options"  ng-click="chooseDropdown(4)">
                     <span>Brands <i style='margin-left:5px' class='fa fa-caret-down'> </i> </span>  
-                <div    class="ss-dropdown" tabindex="4" data-attr_value="61">
-                    <ul ng-show="selectedDropdown[4]" class="show-dropdown" style="top:-10px;padding:0px">
-                        
-                        <li ng-repeat="brand in brandFilters"  class="selected">
-                            <a class="ss-option" ng-click="selectedBrands[$index] = !selectedBrands[$index];updateUrlChanges()" href     data-attr_value="61">{{brand}}</a><i ng-class="{'fa fa-check' : selectedBrands[$index]}"></i>
-                        </li>
-                         
-                    </ul>
-                 </div> 
-                        </div>
+                    <div    class="ss-dropdown" tabindex="4" data-attr_value="61">                     
+                        <ul ng-show="selectedDropdown[4]" class="show-dropdown" style="top:-10px;padding:0px">
+                            <li ng-repeat="brand in brandFilters"  >
+                            <a ng-class="{'activeFilter': selectedBrands[$index]}" ng-click="selectedBrands[$index] = !selectedBrands[$index];updateUrlChanges()" >
+                                           
+                                <div class="checkbox custom-checkbox">
+                                    <label >                                                                                       
+                                    <input  type="checkbox" ng-model="selectedBrands[$index]" ng-checked="selectedBrands[$index]">
+                                    <span class="fa fa-check"></span>
+                               
+                                    {{brand}}</label>
+
+                                </div>
+                            </a>
+                            </li>
+                        </ul>
+                     </div> 
+                </div>
         </div>
         <div class = "sf-super-search col-md-2 col-xs-12"> 
                 <div class = "search-options" ng-click="chooseDropdown(0)" >
                     <span >Applications <i style='margin-left:5px' class='fa fa-caret-down'> </i></span> 
-                <div    class="ss-dropdown" tabindex="4" data-attr_value="61">
+                <div    class="ss-dropdown" tabindex="4" data-attr_value="61">                    
                     <ul ng-show="selectedDropdown[0]" class="show-dropdown" style="top:-10px;padding:0px">
-                         
-                        <li ng-repeat="application in applicationFilters"  class="selected">
-                            <a class="ss-option" ng-click="selectedApplications[$index] = !selectedApplications[$index];updateUrlChanges()" href     data-attr_value="61">{{application}}</a><i ng-class="{'fa fa-check' : selectedApplications[$index]}"></i>
+                        <li ng-repeat="application in applicationFilters"  >
+                        <a ng-class="{'activeFilter': selectedBrands[$index]}" ng-click="selectedApplications[$index] = !selectedApplications[$index];updateUrlChanges();" >
+                                       
+                            <div class="checkbox custom-checkbox">
+                                <label >                                                                                       
+                                <input  type="checkbox" ng-model="selectedApplications[$index]" ng-checked="selectedApplications[$index]">
+                                <span class="fa fa-check"></span>
+                           
+                                {{application}}</label>
+
+                            </div>
+                        </a>
                         </li>
-                         
                     </ul>
-                 </div> 
-                        </div>
-        </div>
+                 </div>
+                    
+                </div>
+        </div>        
+
         <div class = "sf-super-search col-md-2 col-xs-12"> 
-                <div class = "search-options" ng-click="chooseDropdown(1)">
+            <div class = "search-options" ng-click="chooseDropdown(1)">
                     <span >Finish Types <i style='margin-left:5px' class='fa fa-caret-down'> </i></span>  
                 <div    class="ss-dropdown" tabindex="4" data-attr_value="61">
-                     <ul ng-show="selectedDropdown[1]" class="show-dropdown" style="top:-10px;padding:0px; height: 185px; overflow-y: scroll;">
+                    <!--  <ul ng-show="selectedDropdown[1]" class="show-dropdown" style="top:-10px;padding:0px; height: 185px; overflow-y: scroll;">
                         
                         <li ng-repeat="finish_type in finishTypeFilters"  class="selected">
                             <a class="ss-option" ng-click="selectedFinishTypes[$index] = !selectedFinishTypes[$index];updateUrlChanges()" href     data-attr_value="61">{{finish_type}}</a><i ng-class="{'fa fa-check' : selectedFinishTypes[$index]}"></i>
                         </li>
                          
+                    </ul> -->
+                    <ul ng-show="selectedDropdown[1]" class="show-dropdown" style="top:-10px;padding:0px">
+                        <li ng-repeat="finish_type in finishTypeFilters"  >
+                            <a ng-class="{'activeFilter': selectedFinishTypes[$index]}" ng-click="selectedFinishTypes[$index] = !selectedFinishTypes[$index];updateUrlChanges();" >                                           
+                                <div class="checkbox custom-checkbox">
+                                    <label >                                                                                       
+                                    <input  type="checkbox" ng-model="selectedFinishTypes[$index]" ng-checked="selectedFinishTypes[$index]">
+                                    <span class="fa fa-check"></span>                           
+                                    {{finish_type}}</label>
+                                </div>
+                            </a>
+                        </li>
                     </ul>
+
                  </div> 
-                        </div>
+            </div>
         </div> 
 
         <div class = "sf-super-search col-md-2 col-xs-12"> 
                 <div class = "search-options" ng-click="chooseDropdown(2)">
                     <span > Colors <i style='margin-left:5px' class='fa fa-caret-down'> </i></span> 
-                <div    class="ss-dropdown" tabindex="4" data-attr_value="61">
-                    <ul ng-show="selectedDropdown[2]" class="show-dropdown" style="top:-10px; height: 185px;padding:0px; overflow-y: scroll;">
-                        
-                        <li ng-repeat="color in colors"  class="selected">
-                            <a class="ss-option" ng-click="selectedColors[$index] = !selectedColors[$index];updateUrlChanges()" href     data-attr_value="61">{{color}}</a><i ng-class="{'fa fa-check' : selectedColors[$index]}"></i>
+                <div    class="ss-dropdown" tabindex="4" data-attr_value="61">                    
+                    <ul ng-show="selectedDropdown[2]" class="show-dropdown" style="top:-10px;padding:0px">
+                        <li ng-repeat="color in colors"  >
+                            <a ng-class="{'activeFilter': selectedColors[$index]}" ng-click="selectedColors[$index] = !selectedColors[$index];updateUrlChanges();" >                                           
+                                <div class="checkbox custom-checkbox">
+                                    <label >                                                                                       
+                                    <input  type="checkbox" ng-model="selectedColors[$index]" ng-checked="selectedColors[$index]">
+                                    <span class="fa fa-check"></span>                           
+                                    {{color}}</label>
+                                </div>
+                            </a>
                         </li>
-                         
                     </ul>
+
                  </div> 
                         </div>
         </div>   

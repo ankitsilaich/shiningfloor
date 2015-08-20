@@ -192,27 +192,16 @@ uploaders[0].uploadAll();
             $scope.usagesLength = $scope.usages.length;
             $scope.selectedUsages = [];
             for (i = 0; i < $scope.usagesLength; i++) {
-                $scope.selectedUsages[i] = false;
-                for (j = 0; j < $scope.product.usages.length; j++) {
-                    if ($scope.product.usages[j] == $scope.usages[i]) {
-                        $scope.selectedUsages[i] = true;
-                        break;
-                    }
-                }
+                $scope.selectedUsages[i] = false;                
             }
         });
+        
         $http.get('../api/slim.php/shiningfloor/applications').then(function(resp) {
             $scope.applications = resp.data.applications;
             $scope.applicationsLength = $scope.applications.length;
             $scope.selectedApplications = [];
             for (i = 0; i < $scope.applicationsLength; i++) {
-                $scope.selectedApplications[i] = false;
-                for (j = 0; j < $scope.product.applications.length; j++) {
-                    if ($scope.product.applications[j] == $scope.applications[i]) {
-                        $scope.selectedApplications[i] = true;
-                        break;
-                    }
-                }
+                $scope.selectedApplications[i] = false;               
             }
         });
 
