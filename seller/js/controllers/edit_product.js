@@ -5,6 +5,20 @@
 // Form controller
 app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster', 'FileUploader', '$sce', '$q', '$state', '$timeout', function($scope, $http, $stateParams, toaster, FileUploader, $sce, $q, $state, $timeout) {
 
+        $(document).click(function(){
+           $scope.isOpen=0;
+           if($("#suggestions").hasClass('open'))
+            $("#suggestions").removeClass('open');
+        });
+
+        $("#product-name").click(function(e){
+           $scope.isOpen=1;
+         if(!$("#suggestions").hasClass('open'))
+            $("#suggestions").addClass('open');
+
+          e.stopPropagation();
+        });
+
         $scope.dirty = {};
         $scope.activeTab = 1;
         $scope.generalDataChecked = false;

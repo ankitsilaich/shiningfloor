@@ -13,15 +13,19 @@ $scope.submitImg = function(){
 uploaders[0].uploadAll();
 };
 
-        // $(document).click(function(){
-        //   console.log('s');$scope.isOpen=0;
-        //   // $("#dropdown-menu").hide();
-        // });
+        $(document).click(function(){
+          console.log('s');$scope.isOpen=0;
+           if($("#suggestions").hasClass('open'))
+            $("#suggestions").removeClass('open');
+        });
 
-        // $("#product-name").click(function(e){
-        //   console.log('r'); $scope.isOpen=1;
-        //   e.stopPropagation();
-        // });
+        $("#product-name").click(function(e){
+          console.log('r'); $scope.isOpen=1;
+         if(!$("#suggestions").hasClass('open'))
+            $("#suggestions").addClass('open');
+
+          e.stopPropagation();
+        });
 
         $scope.selectType = function(val) {
             //  console.log('44');
@@ -391,8 +395,23 @@ uploaders[0].uploadAll();
         }
         $scope.checkProductData = function() {
             $scope.generalDataChecked = true;
-            if ($scope.isGeneralFormOk())
-                $scope.activeTab = 2;
+            if ($scope.isGeneralFormOk()){
+                var arr = {
+                         product_name : $scope.product.name,
+                         product_type : $scope.product.type,
+                         product_brand : $scope.product.brand
+                        }
+                $http.post('../api/slim.php/shiningfloor/seller/checkproduct', arr).success(function(data, status) {
+                    console.log(data);
+                    if(!data)
+                        $scope.activeTab = 2;
+                    else{
+                        toaster.pop('error', 'Product Already Listed', 'Redirecting ...');
+                        $timeout(reloadState, 3000);   
+                    }
+                });
+
+            }    
             else {
 
                 var tmp = $scope.isUsagesOk() || $scope.isApplicationsOk() || $scope.isColorsOk();
@@ -441,13 +460,16 @@ uploaders[0].uploadAll();
             console.log(JSON.stringify(product));
             $http.post('../api/slim.php/shiningfloor/seller/addproduct', product).
             success(function(data, status) {
-                toaster.pop('success', 'New Product', 'Product Added Successfully');
-                $timeout(reloadState, 3000);
                 uploaders[0].uploadAll();
                 uploaders[1].uploadAll();
                 uploaders[2].uploadAll();
+                toaster.pop('success', 'New Product', 'Product Added Successfully');
+                $timeout(reloadState, 3000);
+                
             });
         };
+
+        
 
         function reloadState() {
             $state.go('app.all.newproduct', {}, {

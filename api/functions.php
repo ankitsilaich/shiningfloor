@@ -199,7 +199,6 @@ function findAllProducts($query,$usage_location){
                         'product_concepts' =>  $concepts,                        
                         'product_features'=> $p['product_desc'],
                         'product_rating' => $p['product_rating'],
-                        'product_supplierID' => $p['supplierID'],
                         'product_isDiscountAvailable' => $p['isDiscountAvailable'],
                         'product_isProductAvailable' => $p['isProductAvailable']
                     );
@@ -207,4 +206,5 @@ function findAllProducts($query,$usage_location){
     }
   return $data;
 }
+
 ?>

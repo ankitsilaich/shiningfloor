@@ -45,7 +45,7 @@ app.controller('selectedCtrl', ['$scope', '$http','$stateParams','$q','$state','
      minimum_boxes : product.seller_minimum_boxes
     }
 
-   $http.put('../api/slim.php/shiningfloor/sellers/products/update_product',data).then(function (resp) {
+   $http.put('../api/slim.php/shiningfloor/seller/products/update_product',data).then(function (resp) {
      toaster.pop('success', 'Product Selected', 'Product Informaton Updated');
   //   $scope.findAndRemove($scope.product, "product_id" ,product['product_id']);
 

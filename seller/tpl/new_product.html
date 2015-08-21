@@ -26,7 +26,7 @@
                                         <div ng-show="generalDataChecked || newProductForm.name.$touched">
                                           <span class='form-error' ng-show="newProductForm.name.$error.required"> product name can't be empty</span>
                                         </div>
-                                        <div class='dropdown' ng-show='searchResults' ng-class='{open:isOpen}' ng-mouseleave='isOpen=0'>
+                                        <div class='dropdown' id='suggestions'ng-show='searchResults' ng-class='{open:isOpen}' ng-mouseleave='isOpen=0'>
                                             <ul class="dropdown-menu suggestion" class='dropdown-menu' >
                                                 
                                               <li class="m-b-xs clearfix" ng-repeat='suggest in searchResults'>
