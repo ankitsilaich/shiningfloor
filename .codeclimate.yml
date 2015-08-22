@@ -5,11 +5,11 @@ languages:
   PHP: true
   Python: true
  exclude_paths:
-- uploads/**/*
-- uploads_verified/**/*
-- db/**/*
-- api/Slim/**/*
-- api/NotORM/**/*
-- seller/vendor/**/*
-- main_site/vendor/**/*
+- uploads/*
+- uploads_verified/*
+- db/*
+- api/Slim/*
+- api/NotORM/*
+- seller/vendor/*
+- main_site/vendor/*
 # - "foo/bar.rb"
