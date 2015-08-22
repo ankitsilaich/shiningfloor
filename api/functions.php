@@ -1,6 +1,6 @@
 <?php
 function findAllFilters(){
-  global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$applicationFilters;
+  global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$lookFilters,$materialFilters,$applicationFilters;
   if(isset($_GET['pageNo'])){
       $pageNo = ( int )$_GET['pageNo'] ;
   }
@@ -15,6 +15,12 @@ function findAllFilters(){
   }
   if(isset($_GET['finish_types'])){
       $finishTypeFilters =  explode(',', $_GET['finish_types']);
+  }
+  if(isset($_GET['materials'])){
+      $materialFilters =  explode(',', $_GET['materials']);
+  }
+  if(isset($_GET['looks'])){
+      $lookFilters =  explode(',', $_GET['looks']);
   }
   if(isset($_GET['applications'])){
       $applicationFilters =  explode(',', $_GET['applications']);
@@ -64,6 +70,26 @@ function finishTypeFilteredQuery($finishTypeFilters , $query){
     }
     return $query->where($q);
 }
+function lookFilteredQuery($lookFilters , $query){
+    global $db;
+    $q = '';
+    for($i = 0 ; $i < sizeof($lookFilters); $i++){
+         if($i>0)
+            $q .= ' OR ' ;
+          $q .= ' product_look = "'. $lookFilters[$i]. '" ' ;
+    }
+    return $query->where($q);
+}
+function materialFilteredQuery($materialFilters , $query){
+    global $db;
+    $q = '';
+    for($i = 0 ; $i < sizeof($materialFilters); $i++){
+         if($i>0)
+            $q .= ' OR ' ;
+          $q .= ' product_material = "'. $materialFilters[$i]. '" ' ;
+    }
+    return $query->where($q);
+}
   function colorFilteredQuery($colorFilters , $query){
     global $db;
     $p = '';
@@ -92,13 +118,17 @@ function finishTypeFilteredQuery($finishTypeFilters , $query){
     return $query->where('id', $q);
 }
 function setFinalFilterQuery($query){
-  global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$applicationFilters;
+  global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$lookFilters,$materialFilters,$applicationFilters;
   if(isset($_GET['price_range']))
       $query = priceFilteredQuery($priceFilters,$query);
   if(isset($_GET['brand_name']))
       $query = brandFilteredQuery($brandFilters,$query);
   if(isset($_GET['finish_types']))
       $query = finishTypeFilteredQuery($finishTypeFilters,$query);
+  if(isset($_GET['materials']))
+      $query = materialFilteredQuery($materialFilters,$query);  
+  if(isset($_GET['looks']))
+      $query = lookFilteredQuery($lookFilters,$query);  
   if(isset($_GET['applications']))
       $query = applicationFilteredQuery($applicationFilters,$query);
   if(isset($_GET['color']))

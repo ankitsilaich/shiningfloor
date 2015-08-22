@@ -188,7 +188,7 @@ $app->get('/shiningfloor/seller/chooseproducts', $authenticate_seller($app), fun
         $email = $_SESSION['seller'];
         $user_id = $db->sellers->where('email',$email)->fetch('id');
     if($user_id){
-        global $colorFilters, $priceFilters, $brandFilters , $finishTypeFilters , $applicationFilters;
+        global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$lookFilters,$materialFilters,$applicationFilters;
         global $resultPerPage , $pageNo ;
         findAllFilters();
         $query ='';
@@ -241,7 +241,7 @@ $app->get('/shiningfloor/seller/selectedproducts', $authenticate_seller($app),fu
 {
         $user = $_SESSION['seller'];
         $user_id = $db->sellers->where('email',$user)->fetch();
-        global $colorFilters, $priceFilters, $brandFilters , $finishTypeFilters , $applicationFilters;
+        global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$lookFilters,$materialFilters,$applicationFilters;
         global $resultPerPage , $pageNo ;
         if($user_id){
         $data  = array();

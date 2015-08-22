@@ -44,7 +44,7 @@
                 <div class = "search-options"  ng-click="chooseDropdown(4)">
                     <span>Brands <i style='margin-left:5px' class='fa fa-caret-down'> </i> </span>  
                     <div    class="ss-dropdown" tabindex="4" data-attr_value="61">                     
-                        <ul ng-show="selectedDropdown[4]" class="show-dropdown" style="top:-10px;padding:0px">
+                        <ul ng-show="selectedDropdown[4]&&categoryHTML!=''" class="show-dropdown" style="top:-10px;padding:0px">
                             <li ng-repeat="brand in brandFilters"  >
                             <a ng-class="{'activeFilter': selectedBrands[$index]}" ng-click="selectedBrands[$index] = !selectedBrands[$index];updateUrlChanges()" >
                                            
@@ -64,18 +64,18 @@
         </div>
         <div class = "sf-super-search col-md-2 col-xs-12"> 
                 <div class = "search-options" ng-click="chooseDropdown(0)" >
-                    <span >Applications <i style='margin-left:5px' class='fa fa-caret-down'> </i></span> 
+                    <span >Material Types <i style='margin-left:5px' class='fa fa-caret-down'> </i></span> 
                 <div    class="ss-dropdown" tabindex="4" data-attr_value="61">                    
-                    <ul ng-show="selectedDropdown[0]" class="show-dropdown" style="top:-10px;padding:0px">
-                        <li ng-repeat="application in applicationFilters"  >
-                        <a ng-class="{'activeFilter': selectedBrands[$index]}" ng-click="selectedApplications[$index] = !selectedApplications[$index];updateUrlChanges();" >
+                    <ul ng-show="selectedDropdown[0]&&categoryHTML!=''&&brandHTML!=''" class="show-dropdown" style="top:-10px;padding:0px">
+                        <li ng-repeat="material in materialFilters"  >
+                        <a ng-class="{'activeFilter': selectedMaterials[$index]}" ng-click="selectedMaterials[$index] = !selectedMaterials[$index];updateUrlChanges();" >
                                        
                             <div class="checkbox custom-checkbox">
                                 <label >                                                                                       
-                                <input  type="checkbox" ng-model="selectedApplications[$index]" ng-checked="selectedApplications[$index]">
+                                <input  type="checkbox" ng-model="selectedMaterials[$index]" ng-checked="selectedMaterials[$index]">
                                 <span class="fa fa-check"></span>
                            
-                                {{application}}</label>
+                                {{material}}</label>
 
                             </div>
                         </a>
@@ -97,7 +97,7 @@
                         </li>
                          
                     </ul> -->
-                    <ul ng-show="selectedDropdown[1]" class="show-dropdown" style="top:-10px;padding:0px">
+                    <ul ng-show="selectedDropdown[1]&&categoryHTML!=''&&brandHTML!=''" class="show-dropdown" style="top:-10px;padding:0px">
                         <li ng-repeat="finish_type in finishTypeFilters"  >
                             <a ng-class="{'activeFilter': selectedFinishTypes[$index]}" ng-click="selectedFinishTypes[$index] = !selectedFinishTypes[$index];updateUrlChanges();" >                                           
                                 <div class="checkbox custom-checkbox">
@@ -116,16 +116,16 @@
 
         <div class = "sf-super-search col-md-2 col-xs-12"> 
                 <div class = "search-options" ng-click="chooseDropdown(2)">
-                    <span > Colors <i style='margin-left:5px' class='fa fa-caret-down'> </i></span> 
+                    <span > Look <i style='margin-left:5px' class='fa fa-caret-down'> </i></span> 
                 <div    class="ss-dropdown" tabindex="4" data-attr_value="61">                    
-                    <ul ng-show="selectedDropdown[2]" class="show-dropdown" style="top:-10px;padding:0px">
-                        <li ng-repeat="color in colors"  >
-                            <a ng-class="{'activeFilter': selectedColors[$index]}" ng-click="selectedColors[$index] = !selectedColors[$index];updateUrlChanges();" >                                           
+                    <ul ng-show="selectedDropdown[2]&&categoryHTML!=''&&brandHTML!=''" class="show-dropdown" style="top:-10px;padding:0px">
+                        <li ng-repeat="look in lookFilters"  >
+                            <a ng-class="{'activeFilter': selectedLooks[$index]}" ng-click="selectedLooks[$index] = !selectedLooks[$index];updateUrlChanges();" >                                           
                                 <div class="checkbox custom-checkbox">
                                     <label >                                                                                       
-                                    <input  type="checkbox" ng-model="selectedColors[$index]" ng-checked="selectedColors[$index]">
+                                    <input  type="checkbox" ng-model="selectedLooks[$index]" ng-checked="selectedLooks[$index]">
                                     <span class="fa fa-check"></span>                           
-                                    {{color}}</label>
+                                    {{look}}</label>
                                 </div>
                             </a>
                         </li>
@@ -133,13 +133,14 @@
 
                  </div> 
                         </div>
-        </div>   
+        </div>  
         
  
     </form>
     
-    <p class="m-b-md m-l-md"><strong>{{bigTotalItems}}</strong> Results found for: <strong>{{searchQuery}}</strong> <strong>{{categoryHTML}}</strong>  <strong>{{brandHTML}}</strong> <strong>{{applicationHTML}}</strong><strong>{{finishTypeHTML}}</strong><strong>{{colorHTML}}</strong>  <span style = 'margin-left:10px; margin-top:10px;'> reset Filters <i ng-click='resetAll()' class="icon-reload"></i></span></p>
+    <p class="m-b-md m-l-md"><strong>{{bigTotalItems}}</strong> Results found for: <strong>{{searchQuery}}</strong> <strong>{{categoryHTML}}</strong>  <strong>{{brandHTML}}</strong> <strong>{{materialHTML}}</strong><strong>{{finishTypeHTML}}</strong><strong>{{lookHTML}}</strong>  <span style='margin-left:10px;color:red' ng-click='resetAll()'> reset Filters <i class="m-t-xs icon-reload"></i></span>  </p>
 
+ 
 
     <div class="wrapper-md">
         <div class="row">

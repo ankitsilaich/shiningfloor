@@ -5213,7 +5213,9 @@ a.text-#000000:hover {
     min-height: 40px;
     max-height:185px;
     height:auto;
-    overflow-y: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .browser-ie .sf-super-search .search-options .ss-dropdown ul.show-dropdown {
