@@ -21,19 +21,7 @@ app.controller('hnewCtrl', ['$scope', '$http','$stateParams','$q','$state','$log
    });
    array.splice(indexno,1)
 };
-     $scope.fetchProduct = function(product){
 
-          $scope.showLoader = false;
-          $scope.popupProduct = {}
-          $scope.showpopup = true;
-           console.log(product);    
-           console.log($scope.seller);
-          $scope.product= {"name":product.product_name , "type":product.product_type_id ,"brand":product.product_brand   ,"look":product.product_look ,"width":product.product_width,"height":product.product_height,"thickness":product.product_thickness,"w_unit":product.product_w_unit,"t_unit":product.product_t_unit ,"finish_type":product.product_finish_type,
-              "total_boxes":product.product_,"colors":product.product_colors, "origin_country":product.product_origin_country,"variation":product.product_variation,"shape":product.product_shape,"price":product.product_price,"items_per_box":product.product_ ,"material":product.product_material,
-            "minimum_boxes":product.product_, "seller_product_code":product.product_, "image":product.product_images ,"comments":product.product_comments ,"features":product.product_features,"usages":product.product_usages,"applications":product.product_applications
-       } ;
-
-    };
 
   $scope.selectproduct = function(product){
     //console.log($scope.product);

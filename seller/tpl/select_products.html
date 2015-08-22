@@ -244,11 +244,11 @@
         </div>
          <div class="text-center">
         
-        <h4>Limit the maximum visible buttons <span class="text-sm">(Page: {{bigCurrentPage}}/{{bigTotalItems}} / {{numPages}})</span></h4>
+        <h4>Limit the maximum visible buttons <span class="text-sm">(Page: {{bigCurrentPage}}/{{numPages}} , Total {{bigTotalItems}} Results )</span></h4>
           <!-- <pagination total-items="bigTotalItems" items-per-page="30" ui-scroll="app" ng-model="bigCurrentPage" max-size="maxSize" class="pagination-lg m-t-sm m-b" boundary-links="true" ng-change="pagechange(bigCurrentPage)" num-pages="5" ></pagination>
  -->
 
-        <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" max-size="5" class="pagination-md m-t-sm m-b" items-per-page="30" boundary-links="true" ng-change="pagechange(bigCurrentPage)" direction-links="false" num-pages="numPages"></pagination>
+       <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" max-size="5" class="pagination-md m-t-sm m-b" items-per-page="30" boundary-links="true" ng-change="pagechange(bigCurrentPage)" direction-links="false" num-pages="numPages"></pagination>
 
        <!--  <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm m-t-none m-b" boundary-links="true" rotate="false" ></pagination> -->
       </div>
