@@ -1,0 +1,36 @@
+# Save as .codeclimate.yml (note leading .) in project root directory
+languages:
+  Ruby: false
+  JavaScript: true
+  PHP: true
+  Python: false
+exclude_paths:
+# excluding of main repository paths from Code climate
+- uploads/*
+- uploads_varified/*
+- db/*
+# excluding of api path
+- api/NotORM/*
+- api/Slim/*
+# excluding paths of seller directory
+- seller/vendor/*
+- seller/api/*
+- seller/psd/*
+- seller/l10n/*
+- seller/fonts/*
+- seller/img/*
+
+# excluding paths of mzin_site directory
+- main_site/vendor/*
+- main_site/data/*
+- main_site/db/*
+- main_site/l10n/*
+- main_site/images/*
+- main_site/fonts/*
+# excluding paths of admin directory
+- admin/api/*
+- admin/vendor/*
+- admin/psd/*
+- admin/fonts/*
+- admin/l10n/*
+- admin/fonts/*
