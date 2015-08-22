@@ -21,6 +21,7 @@ exclude_paths:
 - "seller/img/*"
 - "seller/js/directives/*"
 - "seller/js/app/*"
+- "seller/js/controllers/bootstrap.js"
 
 # excluding paths of mzin_site directory
 - "main_site/vendor/*"
@@ -31,6 +32,7 @@ exclude_paths:
 - "main_site/fonts/*"
 - "main_site/js/directives/*"
 - "main_site/js/app/*"
+- "main_site/js/controllers/bootstrap.js"
 # excluding paths of admin directory
 - "admin/api/*"
 - "admin/vendor/*"
@@ -41,4 +43,4 @@ exclude_paths:
 - "admin/img/*"
 - "admin/js/directives/*"
 - "admin/js/app/*"
-
+- "admin/js/controllers/bootstrap.js"
