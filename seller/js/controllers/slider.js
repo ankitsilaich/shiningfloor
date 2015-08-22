@@ -4,7 +4,7 @@ app.controller('SliderCtrl', function($scope) {
     min: 30,
     max: 60
   };
-  $scope.currencyFormatting = function(value) { 
+  $scope.currencyFormatting = function(value) {
     return"$"+value.toString();
-  }
+  };
 });
