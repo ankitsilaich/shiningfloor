@@ -6,31 +6,60 @@ languages:
   Python: false
 exclude_paths:
 # excluding of main repository paths from Code climate
-- uploads/*
-- uploads_varified/*
-- db/*
+- "uploads/*"
+- "uploads_varified/*"
+- "db/*"
 # excluding of api path
-- api/NotORM/*
-- api/Slim/*
+- "api/NotORM/*"
+- "api/Slim/*"
+- "api/slim_old.php"
 # excluding paths of seller directory
-- seller/vendor/*
-- seller/api/*
-- seller/psd/*
-- seller/l10n/*
-- seller/fonts/*
-- seller/img/*
+- "seller/vendor/*"
+- "seller/api/*"
+- "seller/psd/*"
+- "seller/l10n/*"
+- "seller/fonts/*"
+- "seller/img/*"
+- "seller/js/directives/*"
+- "seller/js/app/*"
+- "seller/js/services/*"
+- "seller/js/others/*"
+- "seller/js/controllers/bootstrap.js"
+- "seller/js/controllers/chart.js"
+- "seller/js/controllers/tree.js"
+- "seller/js/controllers/select.js"
+- "seller/js/controllers/grid.js"
+- "seller/js/controllers/table.js"
 
 # excluding paths of mzin_site directory
-- main_site/vendor/*
-- main_site/data/*
-- main_site/db/*
-- main_site/l10n/*
-- main_site/images/*
-- main_site/fonts/*
+- "main_site/vendor/*"
+- "main_site/data/*"
+- "main_site/db/*"
+- "main_site/l10n/*"
+- "main_site/images/*"
+- "main_site/fonts/*"
+- "main_site/js/directives/*"
+- "main_site/js/app/*"
+- "main_site/js/services/*"
+- "main_site/js/others/*"
+- "main_site/js/controllers/bootstrap.js"
+- "main_site/js/controllers/chart.js"
+
 # excluding paths of admin directory
-- admin/api/*
-- admin/vendor/*
-- admin/psd/*
-- admin/fonts/*
-- admin/l10n/*
-- admin/fonts/*
+- "admin/api/*"
+- "admin/vendor/*"
+- "admin/psd/*"
+- "admin/fonts/*"
+- "admin/l10n/*"
+- "admin/fonts/*"
+- "admin/img/*"
+- "admin/js/directives/*"
+- "admin/js/app/*"
+- "admin/js/services/*"
+- "admin/js/others/*"
+- "admin/js/controllers/bootstrap.js"
+- "admin/js/controllers/chart.js"
+- "admin/js/controllers/tree.js"
+- "admin/js/controllers/select.js"
+- "admin/js/controllers/grid.js"
+- "admin/js/controllers/table.js"
