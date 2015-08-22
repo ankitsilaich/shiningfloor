@@ -19,6 +19,7 @@ exclude_paths:
 - "seller/l10n/*"
 - "seller/fonts/*"
 - "seller/img/*"
+- "seller/js/directives/*"
 
 # excluding paths of mzin_site directory
 - "main_site/vendor/*"
@@ -27,6 +28,7 @@ exclude_paths:
 - "main_site/l10n/*"
 - "main_site/images/*"
 - "main_site/fonts/*"
+- "main_site/js/directives/*"
 # excluding paths of admin directory
 - "admin/api/*"
 - "admin/vendor/*"
@@ -35,3 +37,4 @@ exclude_paths:
 - "admin/l10n/*"
 - "admin/fonts/*"
 - "admin/img/*"
+- "admin/js/directives/*"
