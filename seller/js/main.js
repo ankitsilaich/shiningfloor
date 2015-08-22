@@ -36,7 +36,7 @@ angular.module('app')
           asideDock: false,
           container: false
         }
-      }
+      };
 
       // save settings to local storage
       if ( angular.isDefined($localStorage.settings) ) {
@@ -62,30 +62,30 @@ angular.module('app')
         $scope.user = resp.data;
        // console.log(resp);
       });
-// Info needed in whole app     
+// Info needed in whole app
       // $http.get('../api/slim.php/shiningfloor/seller/info').then(function (resp) {
       //    $scope.seller = resp.data.seller_data;
       //     console.log(resp.data);
-      //     if($scope.seller.img=='') 
-      //     $scope.seller.img = 'img/a0.jpg';   
+      //     if($scope.seller.img=='')
+      //     $scope.seller.img = 'img/a0.jpg';
       // });
-      
+
       $scope.logout = function(){
 
       $http.get('../api/slim.php/auth/logout/seller').
-        success(function(data, status) {
+        success(function() {
 
             $rootScope.isLoggedIn = false;
 
            $state.go('access.signin');
         });
 
-      }
+      };
 
       $scope.getNewTimeStamp = function(){
         return new Date().getTime();
-      }
-      $scope.setLang = function(langKey, $event) {
+      };
+      $scope.setLang = function(langKey) {
         // set the current lang
         $scope.selectLang = $scope.langs[langKey];
         // You can change the language during runtime
@@ -96,7 +96,7 @@ angular.module('app')
       function isSmartDevice( $window )
       {
           // Adapted from http://www.detectmobilebrowsers.com
-          var ua = $window['navigator']['userAgent'] || $window['navigator']['vendor'] || $window['opera'];
+          var ua = $window.navigator.userAgent || $window.navigator.vendor || $window.opera;
           // Checks for iOs, Android, Blackberry, Opera Mini, and Windows mobile devices
           return (/iPhone|iPod|iPad|Silk|Android|BlackBerry|Opera Mini|IEMobile/).test(ua);
       }
@@ -199,4 +199,3 @@ app.directive('ngThumb', ['$window', function($window) {
             }
         };
     }]);
-
