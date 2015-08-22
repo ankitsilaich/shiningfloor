@@ -12,6 +12,7 @@ exclude_paths:
 # excluding of api path
 - "api/NotORM/*"
 - "api/Slim/*"
+- "api/slim_old.php"
 # excluding paths of seller directory
 - "seller/vendor/*"
 - "seller/api/*"
