@@ -467,8 +467,7 @@ uploaders[0].uploadAll();
                     uploaders[2].uploadAll();
                 }
                 toaster.pop('success', 'New Product', 'Product Added Successfully');
-                $timeout(reloadState, 3000);
-                
+                $timeout(reloadState, 3000);                
             });
         };
         
