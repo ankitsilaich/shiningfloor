@@ -381,7 +381,7 @@ uploaders[0].uploadAll();
         $scope.isGeneralFormOk = function() {
 
             if ($scope.isApplicationsOk() && $scope.isUsagesOk() && $scope.isColorsOk() && $scope.newProductForm.name.$valid && $scope.newProductForm.brand.$valid &&
-                $scope.newProductForm.brand.$valid && $scope.newProductForm.width.$valid && $scope.newProductForm.height.$valid && $scope.newProductForm.thickness.$valid &&
+                 $scope.newProductForm.width.$valid && $scope.newProductForm.height.$valid && $scope.newProductForm.thickness.$valid &&
                 $scope.newProductForm.items_per_box.$valid && $scope.newProductForm.material.$valid && $scope.newProductForm.features.$valid)
                 return true;
             else
@@ -461,9 +461,11 @@ uploaders[0].uploadAll();
             $http.post('../api/slim.php/shiningfloor/seller/addproduct', product).
             success(function(data, status) {
                 console.log(data);
-                uploaders[0].uploadAll();
-                uploaders[1].uploadAll();
-                uploaders[2].uploadAll();
+                if(data.status=='new'){
+                    uploaders[0].uploadAll();
+                    uploaders[1].uploadAll();
+                    uploaders[2].uploadAll();
+                }
                 toaster.pop('success', 'New Product', 'Product Added Successfully');
                 $timeout(reloadState, 3000);
                 

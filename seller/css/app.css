@@ -5661,3 +5661,7 @@ div.bd-brown{
 }
 .td canvas{margin-top:5px;margin-left:5px;}
 
+.f-s-md{  font-size: 14px; }
+.f-s-sm{font-size:  11px;}
+.f-s-xs{font-size: 8px;}
+.f-s-lg{font-size:  16px;}

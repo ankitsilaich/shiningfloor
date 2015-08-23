@@ -455,11 +455,11 @@ $app->post('/seller/uploadConcept(/:id)', $authenticate_seller($app), function($
     else{
       $last_id = $id;
     } 
-     $last_id = $last_product['id'] ;
+//     $last_id = $last_product['id'] ;
      if ( !empty( $_FILES ) ) {
      $tempPath = $_FILES[ 'file' ][ 'tmp_name' ];
      $temp = explode(".",$_FILES["file"]["name"]);
-     print_r ($temp);
+ //    print_r ($temp);
      $i=1;
      while(file_exists(dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '../uploads/concepts' . DIRECTORY_SEPARATOR .$last_id. '_'.$i.'.' .'jpg'))
      {
@@ -610,7 +610,10 @@ $app->post('/shiningfloor/seller/addproduct', $authenticate_seller($app),functio
         $seller = $db->sellers_products()->where('id',$id)->update($seller_products);
 
     $app->response()->header('Content-Type', 'application/json');
-    echo $product_id;
+    if(!$existedId)
+      echo json_encode(array('status' => 'new'));
+    else
+     echo json_encode(array('status' => 'exist'));;
 });
 //----------------------------
 
@@ -630,9 +633,7 @@ $app->put('/shiningfloor/seller/editproduct/:product_id', $authenticate_seller($
     $array = (array) json_decode($app->request()->getBody());
     $email = $_SESSION['seller'] ;
     $seller_id = $db->sellers()->where('email', $email)->fetch();
-    //$lastProduct = $db->products()->select('id')->order('id desc')->limit(1,0)->fetch();
-    // $image_name = (string)($lastProduct['id'] + 1) ;
-    // $image_name .=  '_1.' .'jpg';  
+
     $product = array(
         'product_editedby' =>  $seller_id['id'] ,
         'product_name' =>  ucfirst($array['name']) , 
@@ -652,75 +653,79 @@ $app->put('/shiningfloor/seller/editproduct/:product_id', $authenticate_seller($
         'product_width_unit' => $array['w_unit'],
         'product_height_unit' => $array['w_unit'],
         'product_isEdited' => 1,        
-        'product_thickness_unit' => $array['t_unit']
-         
+        'product_thickness_unit' => $array['t_unit']         
         ); 
-    // echo $product_id;
-    $data = $db->products()->where('id', $product_id)->update($product);
-    // echo $data;     
-        if($array['finish_type']!=''){
-      $finish =  $db->finishes()->where('finish_name', $array["finish_type"]);   
-//      print_r(' f '. $finish->fetch()['id'].' count='.count($finish)); 
-      if(!count($finish)){
-          $db->finishes()->insert(array('finish_name' => $array['finish_type']));
-      }
-    }
+    
+    $product_existed = $db->products()->where('id', $product_id)->fetch();
 
-    if( $array['shape']!=''){
-      $shape =  $db->shapes()->where('shape_name',$array["shape"]);
-  //    print_r(' s '. $shape->fetch()['id'].' count='.count($shape));      
-      if(!count($shape) ){
-          $db->shapes()->insert(array('shape_name'=> $array['shape']));
+    if($product_existed['product_isEdited']==0  || ($product_existed['product_isEdited']==1 && $product_existed['product_editedby'] == $seller_id['id']))
+    {  
+        $data = $db->products()->where('id', $product_id)->update($product);
+      if($array['finish_type']!=''){
+        $finish =  $db->finishes()->where('finish_name', $array["finish_type"]);   
+        if(!count($finish)){
+            $db->finishes()->insert(array('finish_name' => $array['finish_type']));
+          }
       }
-    }
-    if( $array['material']!=''){
-      $material =  $db->materials()->where('material_name',$array["material"]);
-    //  print_r(' m '. $material->fetch()['id'].' count='.count($material)); 
-      if(!count($material)){
-          $db->materials()->insert(array('material_name'=>$array['material']));
-      }
-    }
 
-    if($array['look']!=''){
-        $look =  $db->looks()->where('look_name', $array["look"]);
-      //  print_r(' l ' . $look->fetch()['id'].' count='.count($look));
-        if(!count($look)){
-            $db->looks()->insert(array('look_name' => $array['look']));
+      if( $array['shape']!=''){
+        $shape =  $db->shapes()->where('shape_name',$array["shape"]);
+        if(!count($shape) ){
+            $db->shapes()->insert(array('shape_name'=> $array['shape']));
+        }
+      }
+      if( $array['material']!=''){
+        $material =  $db->materials()->where('material_name',$array["material"]);
+        if(!count($material)){
+            $db->materials()->insert(array('material_name'=>$array['material']));
+        }
+      }
+
+      if($array['look']!=''){
+          $look =  $db->looks()->where('look_name', $array["look"]);
+          if(!count($look)){
+              $db->looks()->insert(array('look_name' => $array['look']));
+          }
+      }
+
+      $colors = explode(",", $array['colors']);
+      for($i=0;$i<sizeof($colors);$i++)
+      {
+        if($colors[$i]!=""){
+          $query = $db->product_colors()->where('products_id', $product_id)->where('color_name',$colors[$i]);
+          if(!$query->fetch())        
+              $db->product_colors->insert(array('color_name'=> $colors[$i] , 'products_id'=>$product_id));
+        }
+      }
+      
+      $usages = explode(",", $array['usages']);
+      for($i=0;$i<sizeof($usages);$i++)
+      {
+        if($usages[$i]!=""){
+          $query = $db->product_usages()->where('products_id', $product_id)->where('usage_name',$usages[$i]);
+          if(!$query->fetch())        
+              $db->product_usages->insert(array('usage_name'=> $usages[$i] , 'products_id'=>$product_id));
+        }
+      }
+
+      $applications = explode(",", $array['applications']);
+      for($i=0;$i<sizeof($applications);$i++)
+      {
+        if($applications[$i]!=""){
+          $query = $db->product_applications()->where('products_id', $product_id)->where('application_name',$applications[$i]);
+          if(!$query->fetch())        
+              $db->product_applications->insert(array('application_name'=> $applications[$i] , 'products_id'=>$product_id));
         }
     }
-
-    $colors = explode(",", $array['colors']);
-    for($i=0;$i<sizeof($colors);$i++)
-    {
-      if($colors[$i]!=""){
-        $query = $db->product_colors()->where('products_id', $product_id)->where('color_name',$colors[$i]);
-        if(!$query->fetch())        
-            $db->product_colors->insert(array('color_name'=> $colors[$i] , 'products_id'=>$product_id));
-      }
+       $app->response()->header('Content-Type', 'application/json');
+       echo json_encode(array('status' => 'success'));
     }
-    
-    $usages = explode(",", $array['usages']);
-    for($i=0;$i<sizeof($usages);$i++)
-    {
-      if($usages[$i]!=""){
-        $query = $db->product_usages()->where('products_id', $product_id)->where('usage_name',$usages[$i]);
-        if(!$query->fetch())        
-            $db->product_usages->insert(array('usage_name'=> $usages[$i] , 'products_id'=>$product_id));
-      }
+    else{
+       $app->response()->header('Content-Type', 'application/json');
+       echo json_encode(array('status' => 'fail'));
     }
 
-    $applications = explode(",", $array['applications']);
-    for($i=0;$i<sizeof($applications);$i++)
-    {
-      if($applications[$i]!=""){
-        $query = $db->product_applications()->where('products_id', $product_id)->where('application_name',$applications[$i]);
-        if(!$query->fetch())        
-            $db->product_applications->insert(array('application_name'=> $applications[$i] , 'products_id'=>$product_id));
-      }
-    }
 
-    $app->response()->header('Content-Type', 'application/json');
-    echo json_encode($product_id);
 });
 
 //--------- data for seller edited product
