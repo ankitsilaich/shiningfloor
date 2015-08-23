@@ -20,7 +20,7 @@
                              
                                 <div class="form-group clearfix">
 
-                                    <label class="col-lg-2 control-label">Product Name*</label>
+                                    <label class="col-lg-2 control-label">Product Name* <br><em class='text-muted'>(edit if listed)</em></label>
                                     <div class="col-lg-8 ">
                                     <label class='control-label f-s-md'> <b> {{product.name}} </b> </label>
                                        <!--  <input type="text" class="form-control" name='name'ng-keyup="updateSuggestProducts();isOpen=1;" ng-click='isOpen=1'  placeholder="product name" ng-model="product.name" required>
@@ -130,7 +130,7 @@
                                     </div>
                                   </div>
                                 <div class="form-group clearfix">
-                                    <label class="col-lg-2 control-label">Product Usages*</label>
+                                    <label class="col-lg-2 control-label">Product Usages* <br><em class='text-muted'>(choose multiple)</em></label>
                                     <div class="col-lg-8 form-inline">
                                          
                                         <div class="checkbox custom-checkbox form-group" ng-repeat="usage in usages"  ng-click="selectedUsages[$index] = !selectedUsages[$index];selectUsage($index);isUsagesOk()">
@@ -161,7 +161,7 @@
 
                                 
                                 <div class="form-group clearfix">
-                                    <label class="col-lg-2 control-label">Product Applications*</label>
+                                    <label class="col-lg-2 control-label">Product Applications* <br><em class='text-muted'>(choose multiple)</em></label>
                                     <div class="col-lg-8 form-inline">
                                          
 
@@ -196,7 +196,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group clearfix m-b-xs">
-                                    <label class="col-lg-2 control-label">Colors*</label>
+                                    <label class="col-lg-2 control-label">Colors* <br><em class='text-muted'>(choose multiple)</em></label>
 
                                     <div class=" colors_cat col-lg-8">
                                         
