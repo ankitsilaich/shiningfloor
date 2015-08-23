@@ -316,6 +316,7 @@ $app->get('/shiningfloor/seller/selectedproducts', $authenticate_seller($app),fu
                         'product_application' =>  $applications,
                         'product_look' =>  $p['product_look'],
                         'product_finish_type'=> $p['product_finish_type'],
+                        'product_items_per_box' => $p['product_items_per_box'],    
                         'product_usages'=> $usages,
                         'product_colors'=> $colors,
                         'product_images' =>  $images,

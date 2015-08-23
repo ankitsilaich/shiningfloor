@@ -257,7 +257,7 @@
                             <div class="h3 m-b-sm text-white-lter">{{product.product_brand}}</div>
                            <!--  <div>{{product.product_application}}- {{product.product_category}}</div>
  -->
-                            <div> <span> Rs. {{product.seller_product_price}} per box, </span> <span style= 'margin-left:7px;'> Min boxes:{{product.seller_minimum_boxes}}, </span> <span style= 'margin-left:7px;'> Per box items: {{product.seller_items_per_box}}, </span> <span style= 'margin-left:7px;'> Comments: {{product.seller_product_comments}}</span> </div>
+                            <div> <span>  Material: {{product.product_material}}, </span> <span style= 'margin-left:7px;'> Min boxes:{{product.seller_minimum_boxes}}, </span> <span style= 'margin-left:7px;'> Finish : {{product.product_finish_type}} , </span> <span style= 'margin-left:7px;'> Comments: {{product.seller_product_comments}}</span> </div>
 
                         </div>
 
@@ -266,12 +266,13 @@
                     <div class="panel-footer bg-light lter wrapper">
                         <div class="row">
                             <div class="col-xs-4">
-                                <small class="text-muted block">Look</small>
-                                <span class="text-md">{{product.product_look}}</span>
+                                <small class="text-muted block">Price</small>
+                                <span class="text-md">Rs. {{product.seller_product_price}}</span>
                             </div>
                             <div class="col-xs-4">
-                                <small class="text-muted block">Finish</small>
-                                <span class="text-md">{{product.product_finish_type}}</span>
+                                 
+                                <small class="text-muted block">Per box items</small>
+                                <span class="text-md">{{product.product_items_per_box}}</span>
                             </div>
                             <div class="col-xs-4">
                                  
@@ -291,12 +292,23 @@
 
                         <div class="form-group pull-in clearfix">
                           <div class="col-sm-6">
+                            <div class="input-group m-b">
+                            <span class="input-group-addon blue-addon">Price</span>
                            <input type="text" class="form-control"  placeholder="Price"  ng-model="product.seller_product_price" id="pricefield{{product.product_id}}" required  ng-pattern="/^[0-9]+$/">
 
+                            </div>
+
+            
                            
                           </div>
                            <div class="col-sm-6">
-                            <input type="text" class="form-control" placeholder="Product Code"  required   id="sellercodefield{{product.seller_product_code}}" ng-model="product.seller_product_code" >
+                            <div class="input-group m-b">
+                            <span class="input-group-addon blue-addon">SKU</span>
+                           <input type="text" class="form-control" placeholder="Product Code"    id="sellercodefield{{product.seller_product_code}}" ng-model="product.seller_product_code" >
+
+                            </div>
+
+                            
                            </div>
                         </div>
                         <div class="form-group pull-in clearfix">
@@ -306,15 +318,24 @@
 
                           </div> -->
                           <div class="col-sm-6">
-                              <input type="text" class="form-control" placeholder="Total quantity"  required   id="sellercodefield{{product.seller_total_quantity}}" ng-model="product.seller_total_quantity" ng-pattern="/^[0-9]+$/">
+                            <div class="input-group m-b">
+                            <span class="input-group-addon blue-addon">Quantity</span>
+                             <input type="text" class="form-control" placeholder="Total quantity"  required   id="sellercodefield{{product.seller_total_quantity}}" ng-model="product.seller_total_quantity" ng-pattern="/^[0-9]+$/">
+                            </div>
+
+                            
                            </div>
                            <div class="col-sm-6">
+                            <div class="input-group m-b">
+                            <span class="input-group-addon blue-addon">Min. Order</span>
                               <input type="text" class="form-control" placeholder="Minimum Orders"  required   id="sellercodefield{{product.minimum_boxes}}" ng-model="product.seller_minimum_boxes" ng-pattern="/^[0-9]+$/">
+                            </div>
+
                            </div>
                         </div>
                         <div class="form-group">
 
-                          <textarea class="form-control" rows="6" placeholder="Comment on Product" id="coomenttextarea{{product.product_id}}" ng-model="product.seller_product_comments" required> </textarea>
+                          <textarea class="form-control" rows="6" placeholder="Comment on Product" id="coomenttextarea{{product.product_id}}" ng-model="product.seller_product_comments"> </textarea>
                         </div>
                         </form>
                     </div>
