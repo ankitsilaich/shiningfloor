@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 23, 2015 at 11:25 AM
+-- Generation Time: Aug 23, 2015 at 11:31 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -6944,36 +6944,7 @@ INSERT INTO `products` (`id`, `type_id`, `product_name`, `product_brand`, `produ
 (11644, 1, 'Salerno Series', 'Keromosa', NULL, 0, '', 'Stone', 'Mosaic', '', NULL, '', '', 0, 0, 0, 0, 0, 0, '', '', '', 0, 0, '', 0),
 (11645, 1, 'Sanpietro Series', 'Keromosa', NULL, 0, '', '', 'Glaze', '', NULL, '', '', 0, 0, 0, 0, 0, 0, '', '', '', 0, 0, '', 0),
 (11646, 1, 'Signage  Series', 'Keromosa', NULL, 0, '', '', 'Mosaic', '', NULL, '', '', 0, 0, 0, 0, 0, 0, '', '', '', 0, 0, '', 0),
-(11647, 1, 'Simplon Series', 'Keromosa', NULL, 0, '', '', 'Glaze', '', NULL, '', '', 0, 0, 0, 0, 0, 0, '', '', '', 0, 0, '', 0),
-(11673, 1, 'sahil1', 'Somany', NULL, 28, 'Oval', 'Adhesives', '', '', 'sa', 'India', '', 0, 0, 0, 100, 100, 0, 'ft', 'ft', 'mm', 1222, 1, '', 28),
-(11674, 1, 'Sahil2', 'Somany', NULL, 28, 'Square', 'SandStone', 'Stone', 'Eclat', 'Sah', 'India', '', 0, 0, 0, 10, 10, 0, 'ft', 'ft', 'mm', 20, 1, '', 31),
-(11675, 1, 'sahil2', 'Kajaria', NULL, 28, 'square', 'SandStone', 'Stone w1', 'Satin', 'sahi h', 'Saint Lucia', '', 0, 0, 0, 20, 20, 0, 'ft', 'ft', 'mm', 100, 1, '', 0),
-(11676, 1, 'Sahil4', 'Somany', NULL, 28, 'Square', 'Slate', 'Stone1', '', 'Sahi h', '', '', 0, 0, 0, 20, 20, 20, 'ft', 'ft', 'mm', 40, 1, '', 31),
-(11677, 1, 'sahil6', 'Somany', NULL, 28, 'Square', 'stone', 'stone', 'Satin', 'saa', '', '', 0, 0, 0, 40, 60, 10, 'ft', 'ft', 'mm', 10, 1, '', 0),
-(11678, 1, 'sahil19', 'Somany', NULL, 28, 'Square', 'sandstone', 'Cement', 'satin1', 'sas', '', '', 0, 0, 0, 20, 20, 1, 'ft', 'ft', 'mm', 2, 1, '', 0),
-(11679, 1, 'sahil3', 'Somany', NULL, 28, 'Square', 'slate', 'Cement1', 'Satin', 'ssa', '', '', 0, 0, 0, 10, 10, 10, 'ft', 'ft', 'mm', 40, 1, '', 0),
-(11680, 1, 'Sahil33', 'Somany', NULL, 25, 'Hexagon', 'sandstone', 'ston', 'Polished', 'sss', '', '', 0, 0, 0, 30, 40, 0, 'ft', 'ft', 'mm', 50, 1, '', 0),
-(11681, 1, 'Sahil10', 'Somany', NULL, 31, 'Square', 'Stone', 'Stone', 'Satin w', 'Sa', '', '', 0, 0, 0, 20, 20, 0, 'ft', 'ft', 'mm', 300, 0, '', 0),
-(11682, 1, 'Sahil11', 'Somany', NULL, 31, 'Square', 'Slate', '', '', 'Saaa', '', '', 0, 0, 0, 20, 20, 20, 'ft', 'ft', 'mm', 40, 1, '', 25),
-(11683, 1, 'Sahil23', 'Somany', NULL, 31, 'Square', 'SandStone', '', '', 'Ssa', '', '', 0, 0, 0, 12, 12, 12, 'ft', 'ft', 'mm', 34, 1, '', 31),
-(11684, 1, 'Sahil23', 'Somany', NULL, 31, 'Square', 'SandStone', '', '', 'Ssa', '', '', 0, 0, 0, 12, 12, 12, 'ft', 'ft', 'mm', 34, 1, '', 31),
-(11685, 1, 'Sahil55', 'Somany', NULL, 31, '', 'SandStone', 'Stone', '', 'Ss', '', '', 0, 0, 0, 20, 20, 10, 'ft', 'ft', 'mm', 3, 1, '', 31),
-(11686, 1, 'Sahil8', 'Somany', NULL, 31, '', 'SandStone', '', '', 'Sss', '', '', 0, 0, 0, 20, 20, 0, 'ft', 'ft', 'mm', 5, 1, '', 31),
-(11687, 1, 'Sahi70', 'Somany', NULL, 31, 'Square', 'Adhesives', '', '', 'Ss', '', '', 0, 0, 0, 20, 20, 10, 'ft', 'ft', 'mm', 25, 1, '', 25),
-(11688, 1, 'Sahil3434', 'Kajaria', NULL, 31, 'Square', 'SandStone', 'Stone', '', 'Ss', '', 's', 0, 0, 0, 12, 12, 0, 'ft', 'ft', 'mm', 40, 1, '', 31),
-(11689, 1, 'Sah22', 'Somany', NULL, 31, '', 'SandStone', '', '', 'Ss', '', '', 0, 0, 0, 20, 20, 0, 'ft', 'ft', 'mm', 20, 1, '', 31),
-(11690, 1, 'Sahil32', 'Somany', NULL, 31, 'Square', 'Slate', '', '', 'Sss', '', '', 0, 0, 0, 33, 12, 0, 'ft', 'ft', 'mm', 4, 1, '', 31),
-(11691, 1, 'Ss90', '800', NULL, 31, 'Square', 'SandStone', '', 'Satin Matte', 'Sa', '', '', 0, 0, 0, 100, 200, 0, 'ft', 'ft', 'mm', 50, 1, '', 31),
-(11692, 1, 'Sss65', 'Somany', NULL, 31, '', 'SandStone', '', '', 'Ss', '', '', 0, 0, 0, 50, 50, 100, 'ft', 'ft', 'mm', 50, 1, '', 31),
-(11693, 1, 'Sss23', 'Somany', NULL, 31, '', 'Slate', '', '', 'Ss', '', '', 0, 0, 0, 60, 20, 0, 'ft', 'ft', 'mm', 80, 1, '', 31),
-(11694, 1, 'Dsa12', 'Somany', NULL, 31, 'Square', 'SandStone', '', '', 'S', '', '', 0, 0, 0, 40, 50, 0, 'ft', 'ft', 'mm', 35, 1, '', 31),
-(11695, 1, 'Ss24', 'Kajaria', NULL, 31, 'Square', 'SandStone', '', '', 'Ss', '', '', 0, 0, 0, 44, 44, 44, 'ft', 'ft', 'mm', 33, 1, '', 31),
-(11696, 1, 'Saaa122', 'Somany', NULL, 31, 'Square', '12', '', '', 'Sas', '', '', 0, 0, 0, 30, 40, 40, 'ft', 'ft', 'mm', 20, 1, '', 31),
-(11697, 1, 'Sss23', '34', NULL, 31, '', 'SandStone', '', '', 'Ss', '', '', 0, 0, 0, 50, 55, 0, 'ft', 'ft', 'mm', 33, 1, '', 31),
-(11698, 1, 'Ssd24', 'Somany', NULL, 31, '', 'SandStone', '', '', 'Ss', '', '', 0, 0, 0, 12, 32, 23, 'ft', 'ft', 'mm', 33, 1, '', 31),
-(11699, 1, 'Sahil12', 'Somany', NULL, 25, '', 'SandStone', '', '', 'Ss', '', '', 0, 0, 0, 20, 20, 0, 'ft', 'ft', 'mm', 20, 1, '', 25),
-(11700, 1, 'Sahil33', 'Somany', NULL, 25, '', 'Stone', '', '', 'Sss', '', '', 0, 0, 0, 30, 45, 0, 'ft', 'ft', 'mm', 50, 1, '', 25),
-(11701, 1, 'Sahil33', 'Somany', NULL, 25, '', 'Stone', '', '', 'Sss', '', '', 0, 0, 0, 30, 55, 0, 'ft', 'ft', 'mm', 50, 1, '', 25);
+(11647, 1, 'Simplon Series', 'Keromosa', NULL, 0, '', '', 'Glaze', '', NULL, '', '', 0, 0, 0, 0, 0, 0, '', '', '', 0, 0, '', 0);
 
 -- --------------------------------------------------------
 
