@@ -396,20 +396,20 @@ uploaders[0].uploadAll();
         $scope.checkProductData = function() {
             $scope.generalDataChecked = true;
             if ($scope.isGeneralFormOk()){
-                var arr = {
-                         product_name : $scope.product.name,
-                         product_type : $scope.product.type,
-                         product_brand : $scope.product.brand
-                        }
-                $http.post('../api/slim.php/shiningfloor/seller/checkproduct', arr).success(function(data, status) {
-                    console.log(data);
-                    if(!data)
+                // var arr = {
+                //          product_name : $scope.product.name,
+                //          product_type : $scope.product.type,
+                //          product_brand : $scope.product.brand
+                //         }
+                // $http.post('../api/slim.php/shiningfloor/seller/checkproduct', arr).success(function(data, status) {
+                //     console.log(data);
+                //     if(!data)
                         $scope.activeTab = 2;
-                    else{
-                        toaster.pop('error', 'Product Already Listed', 'Redirecting ...');
-                        $timeout(reloadState, 3000);   
-                    }
-                });
+                //     else{
+                //         toaster.pop('error', 'Product Already Listed', 'Redirecting ...');
+                //         $timeout(reloadState, 3000);   
+                //     }
+                // });
 
             }    
             else {
@@ -460,6 +460,7 @@ uploaders[0].uploadAll();
             console.log(JSON.stringify(product));
             $http.post('../api/slim.php/shiningfloor/seller/addproduct', product).
             success(function(data, status) {
+                console.log(data);
                 uploaders[0].uploadAll();
                 uploaders[1].uploadAll();
                 uploaders[2].uploadAll();
@@ -468,7 +469,6 @@ uploaders[0].uploadAll();
                 
             });
         };
-
         
 
         function reloadState() {
