@@ -343,10 +343,10 @@ $scope.seller = resp.data.seller_data;
     };
     $scope.resetBrands = function() {
         // $scope.selectedBrands = [false, false, false, false, false, false];
-    
-      for (i = 0; i < $scope.totalBrands; i++)
-          $scope.selectedBrands[i] = false;
-         
+     
+      for (i = 0; i < $scope.totalBrands; i++){
+        // console.log(selectedBrands[i]);
+          $scope.selectedBrands[i] = false;    }     
          $scope.updateUrlChanges();
         $scope.requestToSearchAPI();
     };

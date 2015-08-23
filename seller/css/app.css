@@ -5210,7 +5210,7 @@ a.text-#000000:hover {
     filter: alpha(opacity=100);
     opacity: 1;
     pointer-events: auto !important;
-    min-height: 40px;
+    min-height: 36px;
     max-height:185px;
     height:auto;
   overflow-y: auto;
@@ -5668,3 +5668,5 @@ div.bd-brown{
 
 .blue-addon{background-color: #31424E;
   color: #fff;}
+
+   

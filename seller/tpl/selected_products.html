@@ -112,7 +112,7 @@
                             <a ng-class="{'activeFilter': selectedCategory[$index]}" ng-click="selectedcategory($index); updateUrlChanges()" >
                                            
                                 <div class="checkbox custom-checkbox">
-                                    <label >                                                                                       
+                                    <label ng-click='resetBrands();resetLooks();resetMaterials();resetFinishTypes()'>                                                                                       
                                     <input  type="checkbox" ng-model="selectedCategory[$index]" ng-checked="selectedCategory[$index]">
                                     <span class="fa fa-check"></span>
                                
@@ -133,7 +133,7 @@
                     <div    class="ss-dropdown" tabindex="4" data-attr_value="61">                     
                         <ul ng-show="selectedDropdown[4]&&categoryHTML!=''" class="show-dropdown" style="top:-10px;padding:0px">
                             <li ng-repeat="brand in brandFilters"  >
-                            <a ng-class="{'activeFilter': selectedBrands[$index]}" ng-click="selectedBrands[$index] = !selectedBrands[$index];updateUrlChanges()" >
+                            <a ng-class="{'activeFilter': selectedBrands[$index]}" ng-click="selectedBrands[$index] = !selectedBrands[$index];resetLooks();resetMaterials();resetFinishTypes();updateUrlChanges()" >
                                            
                                 <div class="checkbox custom-checkbox">
                                     <label >                                                                                       
@@ -144,6 +144,11 @@
 
                                 </div>
                             </a>
+                            </li>
+                        </ul>
+                         <ul ng-show="selectedDropdown[4]&&categoryHTML==''" class="show-dropdown btn" style="background-color:#BA2727;top:-5px;padding:0px">
+                            <li style='color:#fff;font-size:12px;'ng-mouseleave='selectedDropdown[4]=false'>
+                             <span class='fa fa-warning m-r-xs m-l-xs'> </span>first choose categroy
                             </li>
                         </ul>
                      </div> 
@@ -168,6 +173,11 @@
                         </a>
                         </li>
                     </ul>
+                    <ul ng-show="selectedDropdown[0]&&(categoryHTML==''||brandHTML=='')" class="show-dropdown btn" style="background-color:#BA2727;top:-5px;padding:0px">
+                            <li style='color:#fff;font-size:12px;'ng-mouseleave='selectedDropdown[0]=false'>
+                             <span class='fa fa-warning m-r-xs m-l-xs'> </span>select category and brand
+                            </li>
+                        </ul>
                  </div>
                     
                 </div>
@@ -196,7 +206,11 @@
                             </a>
                         </li>
                     </ul>
-
+                    <ul ng-show="selectedDropdown[1]&&(categoryHTML==''||brandHTML=='')" class="show-dropdown btn" style="background-color:#BA2727;top:-5px;padding:0px">
+                            <li style='color:#fff;font-size:12px;'ng-mouseleave='selectedDropdown[1]=false'>
+                             <span class='fa fa-warning m-r-xs m-l-xs'> </span>select category and brand
+                            </li>
+                        </ul>
                  </div> 
             </div>
         </div> 
@@ -217,7 +231,11 @@
                             </a>
                         </li>
                     </ul>
-
+                    <ul ng-show="selectedDropdown[2]&&(categoryHTML==''||brandHTML=='')" class="show-dropdown btn" style="background-color:#BA2727;top:-5px;padding:0px">
+                            <li style='color:#fff;font-size:12px;'ng-mouseleave='selectedDropdown[2]=false'>
+                             <span class='fa fa-warning m-r-xs m-l-xs'> </span>select category and brand
+                            </li>
+                        </ul>
                  </div> 
             </div>
         </div>   
