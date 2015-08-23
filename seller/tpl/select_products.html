@@ -186,7 +186,7 @@
                             <div class="col-xs-4">
                                  
                                 <small class="text-muted block">Per box items</small>
-                                <span class="text-md">{{product.product_items_per_box}}</span>
+                                <span class="text-md" ng-hide='product.product_items_per_box==0'>{{product.product_items_per_box}}</span>
                             </div>
                             <div class="col-xs-4">
                                  
