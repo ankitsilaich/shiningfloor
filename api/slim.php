@@ -352,7 +352,7 @@ $app->get('/shiningfloor/admin/chooseproducts(/:id)', $authenticate_admin($app),
 {
         $data  = array();
         $user = $_SESSION['admin'];
-        global $colorFilters, $priceFilters, $brandFilters , $finishTypeFilters , $applicationFilters;
+        global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$lookFilters,$materialFilters,$applicationFilters;
         global $resultPerPage , $pageNo ;
         findAllFilters();
         $query = $db->products()->where("NOT id", $db->sellers_products()->where('sellers_id',$id )->select('products_id'));
@@ -380,7 +380,7 @@ $app->get('/shiningfloor/admin/selectedproducts(/:id)', $authenticate_admin($app
         $user = $_SESSION['admin'];
         $data  = array();
          //$query = $db->products();
-        global $colorFilters, $priceFilters, $brandFilters , $finishTypeFilters , $applicationFilters;
+        global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$lookFilters,$materialFilters,$applicationFilters;
         global $resultPerPage , $pageNo ;
         findAllFilters();
         $query ='';
@@ -606,6 +606,8 @@ $colorFilters=[];
 $priceFilters = [];
 $brandFilters = [];
 $finishTypeFilters = [];
+$materialFilters = [];
+$lookFilters = [];
 $applicationFilters = [];
 $app->get('/shiningfloor/product(/:id)', function($id=null ) use ($app, $db){         
       $data = array();
@@ -618,7 +620,7 @@ $app->get('/shiningfloor/product(/:id)', function($id=null ) use ($app, $db){
 });
 // Search product results
 $app->get('/shiningfloor/products/search(/:type)/(:input)', function($type=null,$input=null ) use ($app, $db){
-        global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$applicationFilters;
+        global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$lookFilters,$materialFilters,$applicationFilters;
         global $resultPerPage , $pageNo ;
         if(isset($_GET['pageNo'])){
           $pageNo = $_GET['pageNo'];
@@ -649,7 +651,7 @@ $app->get('/shiningfloor/products/search(/:type)/(:input)', function($type=null,
         echo json_encode(array( 'totalResults' => $totalResults , 'start' => $start,'last' => $last  , 'product_data'=>$data ));
 });
 $app->get('/shiningfloor/products/(:input)', function($input=null ) use ($app, $db){
-        global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$applicationFilters;
+        global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$lookFilters,$materialFilters,$applicationFilters;
         global $resultPerPage , $pageNo ;
         findAllFilters();
         $data = array();

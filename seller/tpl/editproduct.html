@@ -20,9 +20,10 @@
                              
                                 <div class="form-group clearfix">
 
-                                    <label class="col-lg-2 control-label">Product Name*</label>
+                                    <label class="col-lg-2 control-label">Product Name* <br><em class='text-muted'>(edit if listed)</em></label>
                                     <div class="col-lg-8 ">
-                                        <input type="text" class="form-control" name='name'ng-keyup="updateSuggestProducts();isOpen=1;" ng-click='isOpen=1'  placeholder="product name" ng-model="product.name" required>
+                                    <label class='control-label f-s-md'> <b> {{product.name}} </b> </label>
+                                       <!--  <input type="text" class="form-control" name='name'ng-keyup="updateSuggestProducts();isOpen=1;" ng-click='isOpen=1'  placeholder="product name" ng-model="product.name" required>
                                         <div ng-show="generalDataChecked || editProductForm.name.$touched">
                                           <span class='form-error' ng-show="editProductForm.name.$error.required"> product name can't be empty</span>
                                         </div>
@@ -40,15 +41,16 @@
                                               </li>
                                               
                                                 </ul>
-                                        </div>
+                                        </div> -->
                                     </div>   
                                 </div>    
                                 <div class="form-group clearfix">
                                     <label class="col-lg-2 control-label">Product Type* </label>
                                     <div class="col-lg-8 ">
-                                        <select class="form-control" name='type' ng-model="product.type" ng-click="selectType(product.type);">
+                                    <label class='control-label f-s-md'> <b> {{selectedType}} </b> </label>
+                                        <!-- <select class="form-control" name='type' ng-model="product.type" ng-click="selectType(product.type);">
                                             <option ng-repeat="product_type in product_types" value="{{product_type.value}}">{{product_type.name}}</option>
-                                        </select>
+                                        </select> -->
                                     </div>
                                 </div>
                              
@@ -57,34 +59,16 @@
                                     <label class="col-lg-2 control-label" ng-click='alertMe()'>Product Brand*</label>
                                     
 
-                                    <div class="col-lg-8" mass-autocomplete>                                        
-                                        <input placeholder='select a brand' class="form-control" name='brand' ng-model="product.brand" mass-autocomplete-item="brand_options" ng-keyup="addNewBrandInList()" required>
+                                    <div class="col-lg-8" mass-autocomplete>                                    
+                                        <label class="control-label"> {{product.brand}}</label>
+
+<!--                                         <input placeholder='select a brand' class="form-control" name='brand' ng-model="product.brand" mass-autocomplete-item="brand_options" ng-keyup="addNewBrandInList()" required>
                                         <div ng-show="generalDataChecked || editProductForm.brand.$touched">
                                           <span class='form-error' ng-show="editProductForm.brand.$error.required"> product brand can't be empty</span>
                                         </div>
-                                        <!-- <div ng-show="product.brand==''&&t==1" > <div class="ac-container"style="position: absolute;" >
-                                            <ul class="ac-menu" style='border:none'>
-                                                <li ng-repeat="brand_name in brands" class="ac-menu-item" ng-click="product.brand=brand_name"> <a href="" >{{brand_name}}</a> </li> </ul> </div>
-                                         </div> -->
+ -->                                        
                                     </div>
 
-                                </div>  
-                                <div class="form-group clearfix">
-                                    <label class="col-lg-2 control-label">Product Usages*</label>
-                                    <div class="col-lg-8 form-inline">
-                                         
-                                        <div class="checkbox custom-checkbox form-group" ng-repeat="usage in usages"  ng-click="selectedUsages[$index] = !selectedUsages[$index];selectUsage($index);isUsagesOk()">
-                                        <label >
-                                            <input  type="checkbox" ng-model="selectedUsages[$index]" ng-checked="selectedUsages[$index]"  > 
-                                            
-                                            <span class="fa fa-check"></span>
-                                            {{usage}}
-                                        </label>
-                                        </div>
-                                        <div ng-show="!usagesFieldOk">
-                                          <span class='form-error'>choose one or more usages</span>
-                                        </div>
-                                    </div>
                                 </div>  
                                     <!-- <select  ui-jq="chosen" ui-refresh="chosen" class="w-md" ng-model="product.brand" ng-init="product.brand=''">
                     <optgroup label="choose from brands <span ng-click='alertMe()'> click </span>" >
@@ -146,6 +130,24 @@
                                     </div>
                                   </div>
                                 <div class="form-group clearfix">
+                                    <label class="col-lg-2 control-label">Product Usages* <br><em class='text-muted'>(choose multiple)</em></label>
+                                    <div class="col-lg-8 form-inline">
+                                         
+                                        <div class="checkbox custom-checkbox form-group" ng-repeat="usage in usages"  ng-click="selectedUsages[$index] = !selectedUsages[$index];selectUsage($index);isUsagesOk()">
+                                        <label >
+                                            <input  type="checkbox" ng-model="selectedUsages[$index]" ng-checked="selectedUsages[$index]"  > 
+                                            
+                                            <span class="fa fa-check"></span>
+                                            {{usage}}
+                                        </label>
+                                        </div>
+                                        <div ng-show="!usagesFieldOk">
+                                          <span class='form-error'>choose one or more usages</span>
+                                        </div>
+                                    </div>
+                                </div>  
+  
+                                <div class="form-group clearfix">
                                     <label class="col-lg-2 control-label">Items Per Box* </label>                                    
                                     <div class="col-lg-8">
                                         <input type="text" class="form-control" name='items_per_box' placeholder="Number of items per box" ng-model="product.items_per_box" ng-pattern="/^[0-9]+$/" required>
@@ -159,7 +161,7 @@
 
                                 
                                 <div class="form-group clearfix">
-                                    <label class="col-lg-2 control-label">Product Applications*</label>
+                                    <label class="col-lg-2 control-label">Product Applications* <br><em class='text-muted'>(choose multiple)</em></label>
                                     <div class="col-lg-8 form-inline">
                                          
 
@@ -194,7 +196,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group clearfix m-b-xs">
-                                    <label class="col-lg-2 control-label">Colors*</label>
+                                    <label class="col-lg-2 control-label">Colors* <br><em class='text-muted'>(choose multiple)</em></label>
 
                                     <div class=" colors_cat col-lg-8">
                                         

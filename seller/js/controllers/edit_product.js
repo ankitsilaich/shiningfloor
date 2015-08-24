@@ -18,7 +18,6 @@ app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster',
 
           e.stopPropagation();
         });
-
         $scope.dirty = {};
         $scope.activeTab = 1;
         $scope.generalDataChecked = false;
@@ -473,9 +472,9 @@ app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster',
         }
 
         $scope.isGeneralFormOk = function() {
-
-            if ($scope.isApplicationsOk() && $scope.isUsagesOk() && $scope.isColorsOk() && $scope.editProductForm.name.$valid && $scope.editProductForm.brand.$valid &&
-                $scope.editProductForm.brand.$valid && $scope.editProductForm.width.$valid && $scope.editProductForm.height.$valid && $scope.editProductForm.thickness.$valid &&
+ 
+            if ($scope.isApplicationsOk() && $scope.isUsagesOk() && $scope.isColorsOk()  
+                 && $scope.editProductForm.width.$valid && $scope.editProductForm.height.$valid && $scope.editProductForm.thickness.$valid &&
                 $scope.editProductForm.items_per_box.$valid && $scope.editProductForm.material.$valid && $scope.editProductForm.features.$valid)
                 return true;
             else
@@ -539,30 +538,31 @@ app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster',
             console.log(product);
             console.log(JSON.stringify(product));
             $http.put('../api/slim.php/shiningfloor/seller/editproduct/' + $stateParams.productId, product).success(function(data, status) {
-
+                console.log(data);
                 if($scope.seller_data!=""){
                     $http.put('../api/slim.php/shiningfloor/seller/editSellerData/' + $stateParams.productId, product).
                     then(function(resp) {
                         console.log(resp);
-                        toaster.pop('success', 'Edit Product', 'Product Updated Successfully');
-                        $timeout(redirectTo, 2000);
+                        
                     });
                 }
                 else{
                     
                     $http.post('../api/slim.php/shiningfloor/seller/addSellerData/' + $stateParams.productId, product).
                     then(function(resp) {
-                        console.log(resp);
-                        toaster.pop('success', 'Edit Product', 'Product Updated Successfully');
-                        $timeout(redirectTo, 2000);
+                        console.log(resp);                         
                     });
                 }
-                if (uploaders[0].queue.length)
-                    uploaders[0].uploadAll();
-                if (uploaders[1].queue.length)
-                    uploaders[1].uploadAll();
-                if (uploaders[2].queue.length)
-                    uploaders[2].uploadAll();
+                if(data.status=='success'){
+                    if (uploaders[0].queue.length)
+                        uploaders[0].uploadAll();
+                    if (uploaders[1].queue.length)
+                        uploaders[1].uploadAll();
+                    if (uploaders[2].queue.length)
+                        uploaders[2].uploadAll();
+                }    
+                toaster.pop('success', 'Edit Product', 'Product Updated Successfully');
+                $timeout(redirectTo, 3000);
             });
         };
 

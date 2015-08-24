@@ -112,7 +112,7 @@
                             <a ng-class="{'activeFilter': selectedCategory[$index]}" ng-click="selectedcategory($index); updateUrlChanges()" >
                                            
                                 <div class="checkbox custom-checkbox">
-                                    <label >                                                                                       
+                                    <label ng-click='resetBrands();resetLooks();resetMaterials();resetFinishTypes()'>                                                                                       
                                     <input  type="checkbox" ng-model="selectedCategory[$index]" ng-checked="selectedCategory[$index]">
                                     <span class="fa fa-check"></span>
                                
@@ -131,9 +131,9 @@
                 <div class = "search-options"  ng-click="chooseDropdown(4)">
                     <span>Brands <i style='margin-left:5px' class='fa fa-caret-down'> </i> </span>  
                     <div    class="ss-dropdown" tabindex="4" data-attr_value="61">                     
-                        <ul ng-show="selectedDropdown[4]" class="show-dropdown" style="top:-10px;padding:0px">
+                        <ul ng-show="selectedDropdown[4]&&categoryHTML!=''" class="show-dropdown" style="top:-10px;padding:0px">
                             <li ng-repeat="brand in brandFilters"  >
-                            <a ng-class="{'activeFilter': selectedBrands[$index]}" ng-click="selectedBrands[$index] = !selectedBrands[$index];updateUrlChanges()" >
+                            <a ng-class="{'activeFilter': selectedBrands[$index]}" ng-click="selectedBrands[$index] = !selectedBrands[$index];resetLooks();resetMaterials();resetFinishTypes();updateUrlChanges()" >
                                            
                                 <div class="checkbox custom-checkbox">
                                     <label >                                                                                       
@@ -146,28 +146,38 @@
                             </a>
                             </li>
                         </ul>
+                         <ul ng-show="selectedDropdown[4]&&categoryHTML==''" class="show-dropdown btn" style="background-color:#BA2727;top:-5px;padding:0px">
+                            <li style='color:#fff;font-size:12px;'ng-mouseleave='selectedDropdown[4]=false'>
+                             <span class='fa fa-warning m-r-xs m-l-xs'> </span>first choose categroy
+                            </li>
+                        </ul>
                      </div> 
                 </div>
         </div>
         <div class = "sf-super-search col-md-2 col-xs-12"> 
                 <div class = "search-options" ng-click="chooseDropdown(0)" >
-                    <span >Applications <i style='margin-left:5px' class='fa fa-caret-down'> </i></span> 
+                    <span >Material Types <i style='margin-left:5px' class='fa fa-caret-down'> </i></span> 
                 <div    class="ss-dropdown" tabindex="4" data-attr_value="61">                    
-                    <ul ng-show="selectedDropdown[0]" class="show-dropdown" style="top:-10px;padding:0px">
-                        <li ng-repeat="application in applicationFilters"  >
-                        <a ng-class="{'activeFilter': selectedBrands[$index]}" ng-click="selectedApplications[$index] = !selectedApplications[$index];updateUrlChanges();" >
+                    <ul ng-show="selectedDropdown[0]&&categoryHTML!=''&&brandHTML!=''" class="show-dropdown" style="top:-10px;padding:0px">
+                        <li ng-repeat="material in materialFilters"  >
+                        <a ng-class="{'activeFilter': selectedMaterials[$index]}" ng-click="selectedMaterials[$index] = !selectedMaterials[$index];updateUrlChanges();" >
                                        
                             <div class="checkbox custom-checkbox">
                                 <label >                                                                                       
-                                <input  type="checkbox" ng-model="selectedApplications[$index]" ng-checked="selectedApplications[$index]">
+                                <input  type="checkbox" ng-model="selectedMaterials[$index]" ng-checked="selectedMaterials[$index]">
                                 <span class="fa fa-check"></span>
                            
-                                {{application}}</label>
+                                {{material}}</label>
 
                             </div>
                         </a>
                         </li>
                     </ul>
+                    <ul ng-show="selectedDropdown[0]&&(categoryHTML==''||brandHTML=='')" class="show-dropdown btn" style="background-color:#BA2727;top:-5px;padding:0px">
+                            <li style='color:#fff;font-size:12px;'ng-mouseleave='selectedDropdown[0]=false'>
+                             <span class='fa fa-warning m-r-xs m-l-xs'> </span>select category and brand
+                            </li>
+                        </ul>
                  </div>
                     
                 </div>
@@ -184,7 +194,7 @@
                         </li>
                          
                     </ul> -->
-                    <ul ng-show="selectedDropdown[1]" class="show-dropdown" style="top:-10px;padding:0px">
+                    <ul ng-show="selectedDropdown[1]&&categoryHTML!=''&&brandHTML!=''" class="show-dropdown" style="top:-10px;padding:0px">
                         <li ng-repeat="finish_type in finishTypeFilters"  >
                             <a ng-class="{'activeFilter': selectedFinishTypes[$index]}" ng-click="selectedFinishTypes[$index] = !selectedFinishTypes[$index];updateUrlChanges();" >                                           
                                 <div class="checkbox custom-checkbox">
@@ -196,35 +206,43 @@
                             </a>
                         </li>
                     </ul>
-
+                    <ul ng-show="selectedDropdown[1]&&(categoryHTML==''||brandHTML=='')" class="show-dropdown btn" style="background-color:#BA2727;top:-5px;padding:0px">
+                            <li style='color:#fff;font-size:12px;'ng-mouseleave='selectedDropdown[1]=false'>
+                             <span class='fa fa-warning m-r-xs m-l-xs'> </span>select category and brand
+                            </li>
+                        </ul>
                  </div> 
             </div>
         </div> 
 
         <div class = "sf-super-search col-md-2 col-xs-12"> 
                 <div class = "search-options" ng-click="chooseDropdown(2)">
-                    <span > Colors <i style='margin-left:5px' class='fa fa-caret-down'> </i></span> 
+                    <span > Look <i style='margin-left:5px' class='fa fa-caret-down'> </i></span> 
                 <div    class="ss-dropdown" tabindex="4" data-attr_value="61">                    
-                    <ul ng-show="selectedDropdown[2]" class="show-dropdown" style="top:-10px;padding:0px">
-                        <li ng-repeat="color in colors"  >
-                            <a ng-class="{'activeFilter': selectedColors[$index]}" ng-click="selectedColors[$index] = !selectedselectedColors[$index];updateUrlChanges();" >                                           
+                    <ul ng-show="selectedDropdown[2]&&categoryHTML!=''&&brandHTML!=''" class="show-dropdown" style="top:-10px;padding:0px">
+                        <li ng-repeat="look in lookFilters"  >
+                            <a ng-class="{'activeFilter': selectedLooks[$index]}" ng-click="selectedLooks[$index] = !selectedLooks[$index];updateUrlChanges();" >                                           
                                 <div class="checkbox custom-checkbox">
                                     <label >                                                                                       
-                                    <input  type="checkbox" ng-model="selectedColors[$index]" ng-checked="selectedColors[$index]">
+                                    <input  type="checkbox" ng-model="selectedLooks[$index]" ng-checked="selectedLooks[$index]">
                                     <span class="fa fa-check"></span>                           
-                                    {{color}}</label>
+                                    {{look}}</label>
                                 </div>
                             </a>
                         </li>
                     </ul>
-
+                    <ul ng-show="selectedDropdown[2]&&(categoryHTML==''||brandHTML=='')" class="show-dropdown btn" style="background-color:#BA2727;top:-5px;padding:0px">
+                            <li style='color:#fff;font-size:12px;'ng-mouseleave='selectedDropdown[2]=false'>
+                             <span class='fa fa-warning m-r-xs m-l-xs'> </span>select category and brand
+                            </li>
+                        </ul>
                  </div> 
-                        </div>
+            </div>
         </div>   
         
  
     </form>
-    <p class="m-b-md m-l-md"><strong>{{bigTotalItems}}</strong> Results found for: <strong>{{searchQuery}}</strong> <strong>{{categoryHTML}}</strong>  <strong>{{brandHTML}}</strong> <strong>{{applicationHTML}}</strong><strong>{{finishTypeHTML}}</strong><strong>{{colorHTML}}</strong>  <span ng-click='resetAll()'> reset Filters</span></p>
+        <p class="m-b-md m-l-md"><strong>{{bigTotalItems}}</strong> Results found for: <strong>{{searchQuery}}</strong> <strong>{{categoryHTML}}</strong>  <strong>{{brandHTML}}</strong> <strong>{{materialHTML}}</strong><strong>{{finishTypeHTML}}</strong><strong>{{lookHTML}}</strong>  <span style='margin-left:10px;color:red' ng-click='resetAll()'> reset Filters <i class="m-t-xs icon-reload"></i></span>  </p>
 
     <div class="wrapper-md">
         <div class="row">
@@ -257,7 +275,7 @@
                             <div class="h3 m-b-sm text-white-lter">{{product.product_brand}}</div>
                            <!--  <div>{{product.product_application}}- {{product.product_category}}</div>
  -->
-                            <div> <span> Rs. {{product.seller_product_price}} per box, </span> <span style= 'margin-left:7px;'> Min boxes:{{product.seller_minimum_boxes}}, </span> <span style= 'margin-left:7px;'> Per box items: {{product.seller_items_per_box}}, </span> <span style= 'margin-left:7px;'> Comments: {{product.seller_product_comments}}</span> </div>
+                            <div> <span>  Material: {{product.product_material}}, </span> <span style= 'margin-left:7px;'> Min boxes:{{product.seller_minimum_boxes}}, </span> <span style= 'margin-left:7px;'> Finish : {{product.product_finish_type}} , </span> <span style= 'margin-left:7px;'> Comments: {{product.seller_product_comments}}</span> </div>
 
                         </div>
 
@@ -266,12 +284,13 @@
                     <div class="panel-footer bg-light lter wrapper">
                         <div class="row">
                             <div class="col-xs-4">
-                                <small class="text-muted block">Look</small>
-                                <span class="text-md">{{product.product_look}}</span>
+                                <small class="text-muted block">Price</small>
+                                <span class="text-md">Rs. {{product.seller_product_price}}</span>
                             </div>
                             <div class="col-xs-4">
-                                <small class="text-muted block">Finish</small>
-                                <span class="text-md">{{product.product_finish_type}}</span>
+                                 
+                                <small class="text-muted block">Per box items</small>
+                                <span class="text-md">{{product.product_items_per_box}}</span>
                             </div>
                             <div class="col-xs-4">
                                  
@@ -291,12 +310,23 @@
 
                         <div class="form-group pull-in clearfix">
                           <div class="col-sm-6">
+                            <div class="input-group m-b">
+                            <span class="input-group-addon blue-addon">Price</span>
                            <input type="text" class="form-control"  placeholder="Price"  ng-model="product.seller_product_price" id="pricefield{{product.product_id}}" required  ng-pattern="/^[0-9]+$/">
 
+                            </div>
+
+            
                            
                           </div>
                            <div class="col-sm-6">
-                            <input type="text" class="form-control" placeholder="Product Code"  required   id="sellercodefield{{product.seller_product_code}}" ng-model="product.seller_product_code" >
+                            <div class="input-group m-b">
+                            <span class="input-group-addon blue-addon">SKU</span>
+                           <input type="text" class="form-control" placeholder="Product Code"    id="sellercodefield{{product.seller_product_code}}" ng-model="product.seller_product_code" >
+
+                            </div>
+
+                            
                            </div>
                         </div>
                         <div class="form-group pull-in clearfix">
@@ -306,15 +336,24 @@
 
                           </div> -->
                           <div class="col-sm-6">
-                              <input type="text" class="form-control" placeholder="Total quantity"  required   id="sellercodefield{{product.seller_total_quantity}}" ng-model="product.seller_total_quantity" ng-pattern="/^[0-9]+$/">
+                            <div class="input-group m-b">
+                            <span class="input-group-addon blue-addon">Quantity</span>
+                             <input type="text" class="form-control" placeholder="Total quantity"  required   id="sellercodefield{{product.seller_total_quantity}}" ng-model="product.seller_total_quantity" ng-pattern="/^[0-9]+$/">
+                            </div>
+
+                            
                            </div>
                            <div class="col-sm-6">
+                            <div class="input-group m-b">
+                            <span class="input-group-addon blue-addon">Min. Order</span>
                               <input type="text" class="form-control" placeholder="Minimum Orders"  required   id="sellercodefield{{product.minimum_boxes}}" ng-model="product.seller_minimum_boxes" ng-pattern="/^[0-9]+$/">
+                            </div>
+
                            </div>
                         </div>
                         <div class="form-group">
 
-                          <textarea class="form-control" rows="6" placeholder="Comment on Product" id="coomenttextarea{{product.product_id}}" ng-model="product.seller_product_comments" required> </textarea>
+                          <textarea class="form-control" rows="6" placeholder="Comment on Product" id="coomenttextarea{{product.product_id}}" ng-model="product.seller_product_comments"> </textarea>
                         </div>
                         </form>
                     </div>
@@ -335,10 +374,9 @@
     </div>
      <div class="text-center">
 
+<h4>Limit the maximum visible buttons <span class="text-sm">(Page: {{bigCurrentPage}}/{{numPages}} , Total {{bigTotalItems}} Results )</span></h4>
+        <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" max-size="5" class="pagination-md m-t-sm m-b" items-per-page="30" boundary-links="true" ng-change="pagechange(bigCurrentPage)" direction-links="false" num-pages="numPages"></pagination>
 
-        <h4>Limit the maximum visible buttons <span class="text-sm">(Page: {{bigCurrentPage}} / {{numPages}})</span></h4>
-
- <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" max-size="5" class="pagination-md m-t-sm m-b" items-per-page="30" boundary-links="true" ng-change="pagechange(bigCurrentPage)" direction-links="false" num-pages="numPages"></pagination>
       </div>
 
 </div>
