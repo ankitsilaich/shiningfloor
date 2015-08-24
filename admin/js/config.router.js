@@ -28,11 +28,11 @@ angular.module('app')
                             // $location.path('/home');
                         } else {
 
-                             if ($location.path().indexOf('access/signup') != 1) {
-                                console.log("not logged in");
+                             // if ($location.path().indexOf('access/signup') != 1) {
+                             //    console.log("not logged in");
                                $location.path('/access/signin');
 
-                            }
+                            // }
 
                         }
                     })
@@ -90,7 +90,6 @@ angular.module('app')
                                 }
                             ]
                         }
-
                     })
 
                 // table
@@ -100,7 +99,7 @@ angular.module('app')
                     template: '<div ui-view></div>'
                 })
 
-                .state('app.all.houses', {
+                .state('app.all.products', {
                         url: '/allproducts',
                         templateUrl: 'tpl/all_products.html',
                         resolve: {
@@ -111,7 +110,39 @@ angular.module('app')
                             ]
                         }
                     })
-
+                .state('app.all.sellers_products', {
+                        url: '/sellersproducts',
+                        templateUrl: 'tpl/sellers_products.html',
+                        resolve: {
+                            deps: ['$ocLazyLoad',
+                                function($ocLazyLoad) {
+                                    return $ocLazyLoad.load(['js/controllers/sellers_products.js']);
+                                }
+                            ]
+                        }
+                    })
+                .state('app.all.new_products', {
+                        url: '/newproducts',
+                        templateUrl: 'tpl/new_sellerProducts.html',
+                        resolve: {
+                            deps: ['$ocLazyLoad',
+                                function($ocLazyLoad) {
+                                    return $ocLazyLoad.load(['js/controllers/new_sellerProducts.js']);
+                                }
+                            ]
+                        }
+                    })
+                .state('app.all.edited_products', {
+                        url: '/editedproducts',
+                        templateUrl: 'tpl/edited_sellerProducts.html',
+                        resolve: {
+                            deps: ['$ocLazyLoad',
+                                function($ocLazyLoad) {
+                                    return $ocLazyLoad.load(['js/controllers/edited_sellerProducts.js']);
+                                }
+                            ]
+                        }
+                    })
 
                 .state('app.all.selectedproducts', {
                         url: '/selectedproducts/:seller_id',
@@ -131,7 +162,7 @@ angular.module('app')
                             ]
                         }
                     })
-                .state('app.all.products', {
+                .state('app.all.chooseproducts', {
                         url: '/chooseproducts/:seller_id',
                         templateUrl: 'tpl/select_products.html',
                         resolve: {
@@ -150,7 +181,7 @@ angular.module('app')
 
                     })
 
-                    .state('app.all.tenants', {
+                    .state('app.all.sellers', {
                         url: '/sellers',
                         templateUrl: 'tpl/all_sellers.html',
                         resolve: {
@@ -180,7 +211,7 @@ angular.module('app')
                         }
 
                     })
-                 .state('app.add.tenants', {
+                 .state('app.add.sellers', {
                         url: '/sellers',
                         templateUrl: 'tpl/add_seller.html'
                     })
@@ -212,52 +243,10 @@ angular.module('app')
                             ]
                         }
                     })
-                    .state('app.update.houses', {
-                        url: '/houses/:house_id',
-                        templateUrl: 'tpl/update_houses.html',
-                        resolve: {
-                            deps: ['$ocLazyLoad', 'uiLoad',
-                                function($ocLazyLoad, uiLoad) {
-                                    return $ocLazyLoad.load('toaster').then(
-                                        function() {
-                                            return uiLoad.load(
-                                                'js/controllers/updatehouse.js')
-                                        }
-                                    );
-                                }
-                            ]
-                        }
-                    })
-                    .state('app.update.owners', {
-                        url: '/owners/:owner_id',
-                        templateUrl: 'tpl/update_owners.html',
-                        resolve: {
-                            deps: ['$ocLazyLoad', 'uiLoad',
-                                function($ocLazyLoad, uiLoad) {
-                                    return $ocLazyLoad.load('toaster').then(
-                                        function() {
-                                            return uiLoad.load(
-                                                'js/controllers/updateowner.js')
-                                        }
-                                    );
-                                }
-                            ]
-                        }
-                    })
+                   
+                     
 
-                    // form
-                    .state('app.form', {
-                        url: '/form',
-                        template: '<div ui-view class="fade-in"></div>',
-                        resolve: {
-                            deps: ['uiLoad',
-                                function(uiLoad) {
-                                    return uiLoad.load('js/controllers/form.js');
-                                }
-                            ]
-                        }
-                    })
-
+                   
 
                 .state('app.house', {
                         url: '/house',
@@ -278,71 +267,9 @@ angular.module('app')
                             ]
                         }
                     })
-                    .state('app.deadlines', {
-                        url: '/deadlines',
-                        template: '<div ui-view></div>'
-                    })
-
-                .state('app.deadlines.houses', {
-                        url: '/houses',
-                        templateUrl: 'tpl/deadline_houses.html',
-                        resolve: {
-                            deps: ['uiLoad',
-                                function(uiLoad) {
-                                    return uiLoad.load(['js/controllers/table.js']);
-                                }
-                            ]
-                        }
-                    })
-                 .state('app.verify', {
-                        url: '/verify',
-                        template: '<div ui-view></div>',
-                        resolve: {
-                            deps: ['$ocLazyLoad', 'uiLoad',
-                                function($ocLazyLoad, uiLoad) {
-                                    return $ocLazyLoad.load('toaster').then(
-                                        function() {
-                                            return uiLoad.load(
-                                                'js/controllers/verify.js')
-                                        }
-                                    );
-                                }
-                            ]
-                        }
-                    })
-
-                .state('app.verify.tenants', {
-                        url: '/tenants',
-                        templateUrl: 'tpl/verify_tenants.html'
-
-                    })
-                    .state('app.deadlines.tenants', {
-                        url: '/tenants',
-                        templateUrl: 'tpl/deadline_tenants.html',
-                        resolve: {
-                            deps: ['uiLoad',
-                                function(uiLoad) {
-                                    return uiLoad.load(['js/controllers/deadlines.js']);
-                                }
-                            ]
-                        }
-                    })
-
-
-
-                // others
-
-                .state('lockme', {
-                        url: '/lockme',
-                        templateUrl: 'tpl/page_lockme.html',
-                        resolve: {
-                            deps: ['uiLoad',
-                                function(uiLoad) {
-                                    return uiLoad.load(['js/controllers/login.js']);
-                                }
-                            ]
-                        }
-                    })
+                     
+               
+ 
                     .state('access', {
                         url: '/access',
                         template: '<div ui-view class="fade-in-right-big smooth"></div>'
@@ -358,36 +285,12 @@ angular.module('app')
                             ]
                         }
                     })
-                    .state('access.signup', {
-                        url: '/signup',
-                        templateUrl: 'tpl/page_signup.html',
-
-                        resolve: {
-                            deps: ['$ocLazyLoad', 'uiLoad',
-                                function($ocLazyLoad, uiLoad) {
-                                    return $ocLazyLoad.load('toaster').then(
-                                        function() {
-                                            return uiLoad.load(
-                                                'js/controllers/signup.js')
-                                        }
-                                    );
-                                }
-                            ]
-                        }
-                    })
-                    .state('access.forgotpwd', {
-                        url: '/forgotpwd',
-                        templateUrl: 'tpl/page_forgotpwd.html'
-                    })
+                   
                     .state('access.404', {
                         url: '/404',
                         templateUrl: 'tpl/page_404.html'
                     })
-
-                // fullCalendar
-
-
-
+ 
 
             }
         ]

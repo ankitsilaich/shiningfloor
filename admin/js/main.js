@@ -12,7 +12,7 @@ angular.module('app')
 
       // config
       $scope.app = {
-        name: 'ShiningFloor',
+        name: 'Buildcorner',
         version: '1.0.0',
         // for chart colors
         color: {
@@ -24,17 +24,6 @@ angular.module('app')
           light:   '#e8eff0',
           dark:    '#3a3f51',
           black:   '#1c2b36'
-        },
-        settings: {
-          themeID: 1,
-          navbarHeaderColor: 'bg-black',
-          navbarCollapseColor: 'bg-white-only',
-          asideColor: 'bg-black',
-          headerFixed: true,
-          asideFixed: false,
-          asideFolded: false,
-          asideDock: false,
-          container: false
         }
       }
 
