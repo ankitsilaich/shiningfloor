@@ -653,6 +653,7 @@ $app->get('/shiningfloor/products/search(/:type)/(:input)', function($type=null,
 $app->get('/shiningfloor/products/(:input)', function($input=null ) use ($app, $db){
         global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$lookFilters,$materialFilters,$applicationFilters;
         global $resultPerPage , $pageNo ;
+        $resultPerPage = 10;
         findAllFilters();
         $data = array();
          
@@ -670,7 +671,7 @@ $app->get('/shiningfloor/products/(:input)', function($input=null ) use ($app, $
         $last = $totalResults;
         }
         $query = $query->order('product_name ASC');
-        $query = $query->limit(5,$start) ;        
+        $query = $query->limit($resultPerPage,$start) ;        
         $data = findAllProducts($query,'');
         $app->response()->header('content-type','application/json');
         echo json_encode(array( 'totalResults' => $totalResults , 'start' => $start,'last' => $last  , 'product_data'=>$data ));

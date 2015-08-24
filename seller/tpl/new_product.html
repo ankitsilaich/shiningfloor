@@ -30,10 +30,20 @@
                                             <ul class="dropdown-menu suggestion" class='dropdown-menu' >
                                                 
                                               <li class="m-b-xs clearfix" ng-repeat='suggest in searchResults'>
-                                                <div class='col-sm-2'> <img ng-src ='{{suggest.product_img}}' style='width:50px;height:50px;'> </div>
-                                                <div class='col-sm-5 padder-v'> {{suggest.product_name}} </div>
-                                                <div class='col-sm-3 padder-v'> {{suggest.product_brand}} </div>
-                                                <div class='col-sm-2 padder-v-sm'> <a class='btn btn-success' ui-sref="app.all.editproduct({productId: suggest.product_id})"> Edit</a> </div>
+                                                <div class='col-sm-2'> 
+                                                    <img ng-src ='{{suggest.product_img}}' style='border: 1px solid #ccc;width:50px;height:50px;'> 
+                                                </div>
+                                                <div class='col-sm-3 padder-v'>
+                                                    {{suggest.product_name}} 
+                                                </div>
+                                                <div class='col-sm-2 padder-v'>
+                                                   <span ng-show='suggest.product_height!=0&&suggest.product_width!=0'> {{suggest.product_width}}*{{suggest.product_height}} {{suggest.product_w_unit}}</span>
+                                                </div>
+                                                <div class='col-sm-3 padder-v'>
+                                                    {{suggest.product_brand}} </div>
+                                                <div class='col-sm-2 padder-v-sm'>
+                                                      <a class='btn btn-success' ui-sref="app.all.editproduct({productId: suggest.product_id})"> Edit</a> 
+                                                </div>
                                                  
                                               </li>
                                               

@@ -5654,11 +5654,16 @@ div.bd-brown{
   padding-top:0px;
   padding-bottom: 0px;
   background-color:#EAFFEA; 
+    max-height: 200px;
+  height: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 .suggestion li{
   border: 1px solid #E6E6E6;
   padding:2px;
 }
+
 .td canvas{margin-top:5px;margin-left:5px;}
 
 .f-s-md{  font-size: 14px; }
