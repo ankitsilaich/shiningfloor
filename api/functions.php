@@ -72,7 +72,7 @@ function finishTypeFilteredQuery($finishTypeFilters , $query){
             $finishQuery .= ' OR ' ;
           $finishQuery .= ' product_finish_type = "'. $finishTypeFilters[$i]. '" ' ;
     }
-    return $query->where($q);
+    return $query->where($finishQuery);
 }
 function lookFilteredQuery($lookFilters , $query){
 
@@ -82,7 +82,7 @@ function lookFilteredQuery($lookFilters , $query){
             $lookQuery .= ' OR ' ;
           $lookQuery .= ' product_look = "'. $lookFilters[$i]. '" ' ;
     }
-    return $query->where($q);
+    return $query->where($lookQuery);
 }
 function materialFilteredQuery($materialFilters , $query){
 
@@ -109,7 +109,7 @@ function materialFilteredQuery($materialFilters , $query){
     return $query->where('id', $colorQuery);
   }
   function applicationFilteredQuery($applicationFilters , $query){
-  
+
     $applicationQuery = '';
     for($i = 0 ; $i < sizeof($applicationFilters); $i++){
           echo $applicationFilters[$i];
@@ -154,7 +154,6 @@ function findAllProducts($query,$usage_location){
           if(filter_input(INPUT_GET, 'details') == 'false')
           {
               $img = $p->product_images()->fetch()['image_name'];
-              global $db;
               $product_category = '';
               foreach ($db->types() as $product_type) {
                   if($product_type['id'] == $p['type_id'])
