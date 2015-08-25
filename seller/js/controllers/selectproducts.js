@@ -212,9 +212,10 @@ $scope.selectedcategory = function(value){
     $scope.selectedType = '';
     $scope.selectedType = $scope.categoryFilters[0]; 
     $scope.selectedDropdown = [false,false,false,false,false];
-
+    console.log($scope.selectedType);
     $scope.findOtherFilters = function(index){
       $scope.selectedType = $scope.categoryFilters[index]; 
+      console.log($scope.selectedType);
       $http.get('../api/slim.php/shiningfloor/' + $scope.selectedType + '/brands').then(function(resp) {
               $scope.brandFilters = resp.data.brands;
               console.log($scope.brandFilters);
@@ -253,6 +254,7 @@ $scope.selectedcategory = function(value){
         $scope.findandselect($scope.finishTypeFilters, 'finish_types', $scope.selectedFinishTypes, $scope.FilterUrl);    
         });
     };
+    console.log($scope.selectedType);
    $scope.findandselect($scope.categoryFilters, 'category', $scope.selectedCategory, $scope.FilterUrl);      
     for(i=0;i<$scope.categoryFilters.length ; i++){
       if($scope.selectedCategory[i] == true)
