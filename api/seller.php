@@ -220,7 +220,7 @@ $app->get('/shiningfloor/seller/chooseproducts', $authenticate_seller($app), fun
 
 //-------------- Delete a product from seller account not from DB ---------------//
 
-$app->delete('/shiningfloor/seller/deletesproduct(/:product_id)', $authenticate_seller($app), function($product_id) use ($app, $db)
+$app->delete('/shiningfloor/seller/deleteproduct(/:product_id)', $authenticate_seller($app), function($product_id) use ($app, $db)
 {
 //echo 'ss';
   $data = null;
@@ -341,7 +341,10 @@ $app->get('/shiningfloor/seller/selectedproducts', $authenticate_seller($app),fu
 $app->put('/shiningfloor/seller/products/update_product', function() use ($app, $db)
 {
     $array = (array) json_decode($app->request()->getBody());
-    $data = $db->sellers_products()->where('products_id',$array['products_id'])->update($array);
+    $email = $_SESSION['seller'] ;
+    $seller_id = $db->sellers()->where('email', $email)->fetch();
+
+    $data = $db->sellers_products()->where('products_id',$array['products_id'])->where('sellers_id',$seller_id)->update($array);
     $app->response()->header('Content-Type', 'application/json');
     echo json_encode($data['id']);
 });

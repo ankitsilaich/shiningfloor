@@ -182,21 +182,6 @@ app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster',
                     case "1":
                         $scope.selectedType = 'tiles';
                         break;
-                    case "2":
-                        $scope.selectedType = 'wood';
-                        break;
-                    case "7":
-                        $scope.selectedType = 'mosiac';
-                        break;
-                    case "8":
-                        $scope.selectedType = 'vinyl-and-linoleum';
-                        break;
-                    case "9":
-                        $scope.selectedType = 'carpet-and-rugs';
-                        break;
-                    case "10":
-                        $scope.selectedType = 'accessories';
-                        break;
                 }
                 $http.get('../api/slim.php/shiningfloor/' + $scope.selectedType + '/brands').then(function(resp) {
                     $scope.brands = resp.data.brands;

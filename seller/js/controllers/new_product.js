@@ -9,9 +9,9 @@ app.controller('FormDemoCtrl', ['$scope', '$http', 'toaster', 'FileUploader', '$
         $scope.activeTab = 1;
         $scope.generalDataChecked = false;
         $scope.sellerDataChecked = false;
-$scope.submitImg = function(){
-uploaders[0].uploadAll();
-};
+        $scope.submitImg = function(){
+        uploaders[0].uploadAll();
+        };
 
         $(document).click(function(){
           console.log('s');$scope.isOpen=0;
@@ -32,21 +32,6 @@ uploaders[0].uploadAll();
             switch (val) {
                 case "1":
                     $scope.selectedType = 'tiles';
-                    break;
-                case "2":
-                    $scope.selectedType = 'wood';
-                    break;
-                case "7":
-                    $scope.selectedType = 'mosiac';
-                    break;
-                case "8":
-                    $scope.selectedType = 'vinyl-and-linoleum';
-                    break;
-                case "9":
-                    $scope.selectedType = 'carpet-and-rugs';
-                    break;
-                case "10":
-                    $scope.selectedType = 'accessories';
                     break;
             }
             $http.get('../api/slim.php/shiningfloor/' + $scope.selectedType + '/brands').then(function(resp) {
@@ -106,8 +91,7 @@ uploaders[0].uploadAll();
         $scope.selectedTypeValue = "1";
         $scope.selectedType = 'tiles';
         $scope.selectType();
-        // $scope.product_types = [{'value':'1','name':'Tile'},{'value':'2','name':'Wood'},{'value':'7','name':'Mosiac'},{'value':'8','name':'Vinyl & Linoleum'},{'value':'9','name':'Carpet & Rugs'},{'value': '10','name':'Accessories'}];
-        //$scope.product_types = [{'value':'1','name':'Tile'},{'value':'2','name':'Wood'},{'value':'3','name':'Marble'},{'value':'4','name':'Stone'},{'value':'5','name':'Wallpaper'},{'value': '6','name':'Artificial'}];
+
         $scope.product_types = [{
             'value': '1',
             'name': 'Tile'
@@ -146,27 +130,7 @@ uploaders[0].uploadAll();
             $scope.brands = resp.data.brands;
             $scope.totalBrands = $scope.brands.length;
         });
-
-        // $http.get('../api/slim.php/shiningfloor/sizes').then(function(resp) {
-        //     $scope.sizes = resp.data.sizes;
-        //     function suggest_size(term) {
-        //       var q = term.toLowerCase().trim();
-        //       var results = [];
-        //       for (var i = 0; i < $scope.sizes.length && results.length < 10; i++) {
-        //         var state = $scope.sizes[i];
-
-        //         if (state.toLowerCase().indexOf(q) === 0)
-        //           results.push({
-        //             label: state ,  value: state });
-        //       }
-        //       return results;
-        //     }
-        //     $scope.size_options = {
-        //       suggest: suggest_size
-        //     };
-
-        // });
-
+ 
         $http.get('../api/slim.php/shiningfloor/materials').then(function(resp) {
             $scope.materials = resp.data.materials;
             $scope.materialsLength = $scope.materials.length;

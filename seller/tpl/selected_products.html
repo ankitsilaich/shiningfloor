@@ -112,7 +112,7 @@
                             <a ng-class="{'activeFilter': selectedCategory[$index]}" ng-click="selectedcategory($index); updateUrlChanges()" >
                                            
                                 <div class="checkbox custom-checkbox">
-                                    <label ng-click='resetBrands();resetLooks();resetMaterials();resetFinishTypes()'>                                                                                       
+                                    <label ng-click='resetBrands();resetLooks();resetMaterials();resetFinishTypes();findOtherFilters($index);'>                                                                                       
                                     <input  type="checkbox" ng-model="selectedCategory[$index]" ng-checked="selectedCategory[$index]">
                                     <span class="fa fa-check"></span>
                                

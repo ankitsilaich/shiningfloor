@@ -5142,7 +5142,7 @@ a.text-#000000:hover {
     background: #314554;
     border-bottom: 1px solid #333;
     color: #fff;
-    padding: 10px 35px;
+    padding: 10px 10px;
     position: relative;
 
 }
@@ -5156,7 +5156,7 @@ a.text-#000000:hover {
     position: absolute;
 }
 .sf-super-search .search-options {
-    font-size: 14px;
+    font-size: 13px;
     line-height: 43px;
     width: 100%;
     float: left;
