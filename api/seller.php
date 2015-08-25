@@ -536,33 +536,34 @@ $app->post('/shiningfloor/seller/addproduct', $authenticate_seller($app),functio
         );
 
         $data = $db->products()->insert($product);
-        
+// if seller insert a new finish, shape, material, look then insert into respective table for next time suggest option .       
         if($array['finish_type']!=''){
           $finish =  $db->finishes()->where('finish_name', $array["finish_type"]);   
           if(!count($finish)){
-              $db->finishes()->insert(array('finish_name' => $array['finish_type']));
+              $db->finishes()->insert(array('finish_name' => $array['finish_type'] , 'type_id' => 1) );
           }
         }
 
         if( $array['shape']!=''){
           $shape =  $db->shapes()->where('shape_name',$array["shape"]);
           if(!count($shape) ){
-              $db->shapes()->insert(array('shape_name'=> $array['shape']));
+              $db->shapes()->insert(array('shape_name'=> $array['shape'], 'type_id' => 1));
           }
         }
         if( $array['material']!=''){
           $material =  $db->materials()->where('material_name',$array["material"]);
           if(!count($material)){
-              $db->materials()->insert(array('material_name'=>$array['material']));
+              $db->materials()->insert(array('material_name'=>$array['material'], 'type_id' => 1));
           }
         }
 
         if($array['look']!=''){
             $look =  $db->looks()->where('look_name', $array["look"]);
             if(!count($look)){
-                $db->looks()->insert(array('look_name' => $array['look']));
+                $db->looks()->insert(array('look_name' => $array['look'], 'type_id' => 1));
             }
         }
+
 
        $colors = explode(",", $array['colors']);
        for($i=0;$i<sizeof($colors);$i++)
@@ -665,27 +666,27 @@ $app->put('/shiningfloor/seller/editproduct/:product_id', $authenticate_seller($
       if($array['finish_type']!=''){
         $finish =  $db->finishes()->where('finish_name', $array["finish_type"]);   
         if(!count($finish)){
-            $db->finishes()->insert(array('finish_name' => $array['finish_type']));
+            $db->finishes()->insert(array('finish_name' => $array['finish_type'], 'type_id' => 1));
           }
       }
 
       if( $array['shape']!=''){
         $shape =  $db->shapes()->where('shape_name',$array["shape"]);
         if(!count($shape) ){
-            $db->shapes()->insert(array('shape_name'=> $array['shape']));
+            $db->shapes()->insert(array('shape_name'=> $array['shape'], 'type_id' => 1));
         }
       }
       if( $array['material']!=''){
         $material =  $db->materials()->where('material_name',$array["material"]);
         if(!count($material)){
-            $db->materials()->insert(array('material_name'=>$array['material']));
+            $db->materials()->insert(array('material_name'=>$array['material'], 'type_id' => 1));
         }
       }
 
       if($array['look']!=''){
           $look =  $db->looks()->where('look_name', $array["look"]);
           if(!count($look)){
-              $db->looks()->insert(array('look_name' => $array['look']));
+              $db->looks()->insert(array('look_name' => $array['look'], 'type_id' => 1));
           }
       }
 

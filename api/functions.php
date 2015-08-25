@@ -1,5 +1,5 @@
 <?php
-  global $db;
+//  global $db;
 function findAllFilters(){
   global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$lookFilters,$materialFilters,$applicationFilters;
   $get = filter_input_array(INPUT_GET);
@@ -32,7 +32,7 @@ function findAllFilters(){
 }
 /*  Functions starts here   */
 function categoryFilteredQuery($category, $query){
-
+  global $db;
     $type_id = $db->types()->where('type_name', $category)->select('id');
     return $query->where('type_id',$type_id);
 }
@@ -72,7 +72,7 @@ function finishTypeFilteredQuery($finishTypeFilters , $query){
             $finishQuery .= ' OR ' ;
           $finishQuery .= ' product_finish_type = "'. $finishTypeFilters[$i]. '" ' ;
     }
-    return $query->where($q);
+    return $query->where($finishQuery);
 }
 function lookFilteredQuery($lookFilters , $query){
 
@@ -82,7 +82,7 @@ function lookFilteredQuery($lookFilters , $query){
             $lookQuery .= ' OR ' ;
           $lookQuery .= ' product_look = "'. $lookFilters[$i]. '" ' ;
     }
-    return $query->where($q);
+    return $query->where($lookQuery);
 }
 function materialFilteredQuery($materialFilters , $query){
 
