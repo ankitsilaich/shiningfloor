@@ -143,7 +143,28 @@ angular.module('app')
                             ]
                         }
                     })
-
+                .state('app.all.add_product', {
+                        url: '/addproduct',
+                        templateUrl: 'tpl/add_product.html',
+                        resolve: {
+                            deps: ['$ocLazyLoad',
+                                function($ocLazyLoad) {
+                                    return $ocLazyLoad.load(['js/controllers/add_product.js']);
+                                }
+                            ]
+                        }
+                    })
+                .state('app.all.edit_product', {
+                        url: '/editproduct(/:id)',
+                        templateUrl: 'tpl/edit_product.html',
+                        resolve: {
+                            deps: ['$ocLazyLoad',
+                                function($ocLazyLoad) {
+                                    return $ocLazyLoad.load(['js/controllers/edit_product.js']);
+                                }
+                            ]
+                        }
+                    })
                 .state('app.all.selectedproducts', {
                         url: '/selectedproducts/:seller_id',
                         templateUrl: 'tpl/selected_products.html',
