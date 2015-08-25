@@ -21,19 +21,7 @@ app.controller('hnewCtrl', ['$scope', '$http','$stateParams','$q','$state','$log
    });
    array.splice(indexno,1)
 };
-     $scope.fetchProduct = function(product){
 
-          $scope.showLoader = false;
-          $scope.popupProduct = {}
-          $scope.showpopup = true;
-           console.log(product);    
-           console.log($scope.seller);
-          $scope.product= {"name":product.product_name , "type":product.product_type_id ,"brand":product.product_brand   ,"look":product.product_look ,"width":product.product_width,"height":product.product_height,"thickness":product.product_thickness,"w_unit":product.product_w_unit,"t_unit":product.product_t_unit ,"finish_type":product.product_finish_type,
-              "total_boxes":product.product_,"colors":product.product_colors, "origin_country":product.product_origin_country,"variation":product.product_variation,"shape":product.product_shape,"price":product.product_price,"items_per_box":product.product_ ,"material":product.product_material,
-            "minimum_boxes":product.product_, "seller_product_code":product.product_, "image":product.product_images ,"comments":product.product_comments ,"features":product.product_features,"usages":product.product_usages,"applications":product.product_applications
-       } ;
-
-    };
 
   $scope.selectproduct = function(product){
     //console.log($scope.product);
@@ -121,31 +109,39 @@ $scope.seller = resp.data.seller_data;
       }
 
      $scope.updateUrlChanges = function() {
-       
+
         $location.search("pageNo", '1');
-        if ($scope.colorUrl = $scope.makeUrl($scope.selectedColors, $scope.colors)) {
-           
-            $location.search('color', $scope.colorUrl);
-        } else $location.search('color', null);
+        // if ($scope.colorUrl = $scope.makeUrl($scope.selectedColors, $scope.colors)) {
+
+        //     $location.search('color', $scope.colorUrl);
+        // } else $location.search('color', null);
         if ($scope.priceUrl = $scope.makeUrl($scope.selectedPrices, $scope.priceFilters)) {
             $location.search('price_range', $scope.priceUrl);
         } else $location.search('price_range', null);
-        
+
         if ($scope.brandUrl = $scope.makeUrl($scope.selectedBrands, $scope.brandFilters)) {
             $location.search('brand_name', $scope.brandUrl);
         } else $location.search('brand_name', null);
-        
+
         if ($scope.finishTypesUrl = $scope.makeUrl($scope.selectedFinishTypes, $scope.finishTypeFilters)) {
             $location.search('finish_types', $scope.finishTypesUrl);
         } else $location.search('finish_types', null);
 
-        if ($scope.applicationUrl = $scope.makeUrl($scope.selectedApplications, $scope.applicationFilters)) {
-            $location.search('applications', $scope.applicationUrl);
-        } else $location.search('applications', null);
+        if ($scope.materialsUrl = $scope.makeUrl($scope.selectedMaterials, $scope.materialFilters)) {
+            $location.search('materials', $scope.materialsUrl);
+        } else $location.search('materials', null);
+
+        if ($scope.looksUrl = $scope.makeUrl($scope.selectedLooks, $scope.lookFilters)) {
+            $location.search('looks', $scope.looksUrl);
+        } else $location.search('looks', null);
+
+        // if ($scope.applicationUrl = $scope.makeUrl($scope.selectedApplications, $scope.applicationFilters)) {
+        //     $location.search('applications', $scope.applicationUrl);
+        // } else $location.search('applications', null);
 
         if ($scope.categoryUrl = $scope.makeUrl($scope.selectedCategory, $scope.categoryFilters)) {
             $location.search('category', $scope.categoryUrl);
-        } else $location.search('category', null);    
+        } else $location.search('category', null);
         //console.log($scope.searchQuery);
         if ($scope.searchQuery!=''){
             $scope.queryUrl = $scope.searchQuery ;
@@ -154,9 +150,11 @@ $scope.seller = resp.data.seller_data;
 
     $scope.categoryHTML =  (typeof $location.search().category == 'undefined') ? '' : '| Category = '+ $location.search().category    ;
     $scope.brandHTML =  (typeof $location.search().brand_name == 'undefined') ? '' : '| Brands = '+ $location.search().brand_name    ;
-    $scope.applicationHTML =  (typeof $location.search().applications == 'undefined') ? '' : '| Applications = '+ $location.search().applications   ;
-    $scope.colorHTML =  (typeof $location.search().color == 'undefined') ? '' : '| Colors = '+ $location.search().color    ;
+    // $scope.applicationHTML =  (typeof $location.search().applications == 'undefined') ? '' : '| Applications = '+ $location.search().applications   ;
+    // $scope.colorHTML =  (typeof $location.search().color == 'undefined') ? '' : '| Colors = '+ $location.search().color    ;
     $scope.finishTypeHTML =  (typeof $location.search().finish_types == 'undefined') ? '' : '| Finish Types = '+ $location.search().finish_types   ;
+    $scope.materialHTML =  (typeof $location.search().materials == 'undefined') ? '' : '| Material Types = '+ $location.search().materials   ;
+    $scope.lookHTML =  (typeof $location.search().looks == 'undefined') ? '' : '| Looks = '+ $location.search().looks   ;
 
         $scope.requestToSearchAPI();
 
@@ -211,13 +209,16 @@ $scope.seller = resp.data.seller_data;
             return params['pageNo'];
         }
     };
+
     $scope.FilterUrl = $location.search();
     // console.log(typeof $scope.FilterUrl.category);
     $scope.categoryHTML =  (typeof $location.search().category == 'undefined') ? '' : '| Category = '+ $location.search().category    ;
     $scope.brandHTML =  (typeof $location.search().brand_name == 'undefined') ? '' : '| Brands = '+ $location.search().brand_name    ;
-    $scope.applicationHTML =  (typeof $location.search().applications == 'undefined') ? '' : '| Applications = '+ $location.search().applications   ;
-    $scope.colorHTML =  (typeof $location.search().color == 'undefined') ? '' : '| Colors = '+ $location.search().color    ;
+    // $scope.applicationHTML =  (typeof $location.search().applications == 'undefined') ? '' : '| Applications = '+ $location.search().applications   ;
+    // $scope.colorHTML =  (typeof $location.search().color == 'undefined') ? '' : '| Colors = '+ $location.search().color    ;
     $scope.finishTypeHTML =  (typeof $location.search().finish_types == 'undefined') ? '' : '| Finish Types = '+ $location.search().finish_types   ;
+    $scope.materialHTML =  (typeof $location.search().materials == 'undefined') ? '' : '| Material Types = '+ $location.search().materials   ;
+    $scope.lookHTML =  (typeof $location.search().looks == 'undefined') ? '' : '| Looks = '+ $location.search().looks   ;
 
     $scope.priceFilters = ['below-100', '100-200', '200-above'];
     $scope.priceFiltersLabels = ['Below 100', '100-200', 'Above 200'];
@@ -250,6 +251,7 @@ $scope.seller = resp.data.seller_data;
             $scope.selectedBrands = [];
             for (i = 0; i < $scope.totalBrands; i++)
                 $scope.selectedBrands[i] = false;
+            $scope.findandselect($scope.brandFilters, 'brand_name', $scope.selectedBrands, $scope.FilterUrl);      
         });
 
 
@@ -263,12 +265,32 @@ $scope.seller = resp.data.seller_data;
                 $scope.selectedColors[i] = false;
         });
 
+    $http.get('../api/slim.php/shiningfloor/materials').then(function(resp) {
+        $scope.materialFilters = resp.data.materials;
+        $scope.materialsLength = $scope.materialFilters.length;
+        $scope.selectedMaterials = [];
+            for (i = 0; i < $scope.materialsLength; i++)
+                $scope.selectedMaterials[i] = false;         
+            $scope.findandselect($scope.materialFilters, 'materials', $scope.selectedMaterials, $scope.FilterUrl);    
+      
+      });
+    $http.get('../api/slim.php/shiningfloor/looks').then(function(resp) {
+        $scope.lookFilters = resp.data.looks;
+        $scope.looksLength = $scope.lookFilters.length;
+        console.log($scope.looksLength);
+        $scope.selectedLooks = [];
+            for (i = 0; i < $scope.looksLength; i++)
+                $scope.selectedLooks[i] = false;         
+            $scope.findandselect($scope.lookFilters, 'looks', $scope.selectedLooks, $scope.FilterUrl);
+      
+      });
     $http.get('../api/slim.php/shiningfloor/finish_types').then(function(resp) {
         $scope.finishTypeFilters = resp.data.finish_types;
         $scope.finish_typesLength = $scope.finishTypeFilters.length;
         $scope.selectedFinishTypes = [];
             for (i = 0; i < $scope.finish_typesLength; i++)
                 $scope.selectedFinishTypes[i] = false;         
+      $scope.findandselect($scope.finishTypeFilters, 'finish_types', $scope.selectedFinishTypes, $scope.FilterUrl);    
       });
 
     $http.get('../api/slim.php/shiningfloor/applications').then(function(resp) {
@@ -282,8 +304,10 @@ $scope.seller = resp.data.seller_data;
 
 
     $scope.findandselect($scope.categoryFilters, 'category', $scope.selectedCategory, $scope.FilterUrl); 
-    $scope.findandselect($scope.brandFilters, 'brand_name', $scope.selectedBrands, $scope.FilterUrl);    
-    $scope.findandselect($scope.finishTypeFilters, 'finish_types', $scope.selectedFinishTypes, $scope.FilterUrl);
+    // $scope.findandselect($scope.brandFilters, 'brand_name', $scope.selectedBrands, $scope.FilterUrl);    
+    // $scope.findandselect($scope.finishTypeFilters, 'finish_types', $scope.selectedFinishTypes, $scope.FilterUrl);
+    // $scope.findandselect($scope.lookFilters, 'looks', $scope.selectedLooks, $scope.FilterUrl);
+    // $scope.findandselect($scope.materialFilters, 'materials', $scope.selectedMaterials, $scope.FilterUrl);    
     $scope.findandselect($scope.applicationFilters, 'applications', $scope.selectedApplications, $scope.FilterUrl);    
     $scope.findandselect($scope.priceFilters, 'price_range', $scope.selectedPrices, $scope.FilterUrl);
     $scope.findandselect($scope.colors, 'color', $scope.selectedColors, $scope.FilterUrl)
@@ -319,10 +343,10 @@ $scope.seller = resp.data.seller_data;
     };
     $scope.resetBrands = function() {
         // $scope.selectedBrands = [false, false, false, false, false, false];
-    
-      for (i = 0; i < $scope.totalBrands; i++)
-          $scope.selectedBrands[i] = false;
-         
+     
+      for (i = 0; i < $scope.totalBrands; i++){
+        // console.log(selectedBrands[i]);
+          $scope.selectedBrands[i] = false;    }     
          $scope.updateUrlChanges();
         $scope.requestToSearchAPI();
     };
@@ -330,6 +354,22 @@ $scope.seller = resp.data.seller_data;
         // $scope.selectedFinishTypes = [false, false, false, false, false, false,false, false, false, false, false, false,false, false, false, false, false, false];     
         for (i = 0; i < $scope.finish_typesLength; i++)
             $scope.selectedFinishTypes[i] = false;         
+     
+         $scope.updateUrlChanges();
+        $scope.requestToSearchAPI();
+    };
+    $scope.resetMaterials = function() {
+        // $scope.selectedFinishTypes = [false, false, false, false, false, false,false, false, false, false, false, false,false, false, false, false, false, false];     
+        for (i = 0; i < $scope.materialsLength; i++)
+            $scope.selectedMaterials[i] = false;         
+     
+         $scope.updateUrlChanges();
+        $scope.requestToSearchAPI();
+    };
+    $scope.resetLooks = function() {
+        // $scope.selectedFinishTypes = [false, false, false, false, false, false,false, false, false, false, false, false,false, false, false, false, false, false];     
+        for (i = 0; i < $scope.looksLength; i++)
+            $scope.selectedLooks[i] = false;         
      
          $scope.updateUrlChanges();
         $scope.requestToSearchAPI();
@@ -357,6 +397,11 @@ $scope.seller = resp.data.seller_data;
           $scope.selectedBrands[i] = false;
         for (i = 0; i < $scope.finish_typesLength; i++)
             $scope.selectedFinishTypes[i] = false;                  
+        for (i = 0; i < $scope.materialsLength; i++)
+            $scope.selectedMaterials[i] = false;                  
+        for (i = 0; i < $scope.looksLength; i++)
+            $scope.selectedLooks[i] = false;                  
+
         for (i = 0; i < $scope.applicationsLength; i++) {
               $scope.selectedApplications[i] = false;               
           }  
@@ -374,5 +419,6 @@ $scope.seller = resp.data.seller_data;
           $scope.selectedDropdown[i] =false;
       }
     } 
+
 
 }]);

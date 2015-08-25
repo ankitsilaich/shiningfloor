@@ -5210,10 +5210,12 @@ a.text-#000000:hover {
     filter: alpha(opacity=100);
     opacity: 1;
     pointer-events: auto !important;
-    min-height: 40px;
+    min-height: 36px;
     max-height:185px;
     height:auto;
-    overflow-y: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .browser-ie .sf-super-search .search-options .ss-dropdown ul.show-dropdown {
@@ -5659,3 +5661,12 @@ div.bd-brown{
 }
 .td canvas{margin-top:5px;margin-left:5px;}
 
+.f-s-md{  font-size: 14px; }
+.f-s-sm{font-size:  11px;}
+.f-s-xs{font-size: 8px;}
+.f-s-lg{font-size:  16px;}
+
+.blue-addon{background-color: #31424E;
+  color: #fff;}
+
+   

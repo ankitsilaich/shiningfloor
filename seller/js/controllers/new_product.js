@@ -381,7 +381,7 @@ uploaders[0].uploadAll();
         $scope.isGeneralFormOk = function() {
 
             if ($scope.isApplicationsOk() && $scope.isUsagesOk() && $scope.isColorsOk() && $scope.newProductForm.name.$valid && $scope.newProductForm.brand.$valid &&
-                $scope.newProductForm.brand.$valid && $scope.newProductForm.width.$valid && $scope.newProductForm.height.$valid && $scope.newProductForm.thickness.$valid &&
+                 $scope.newProductForm.width.$valid && $scope.newProductForm.height.$valid && $scope.newProductForm.thickness.$valid &&
                 $scope.newProductForm.items_per_box.$valid && $scope.newProductForm.material.$valid && $scope.newProductForm.features.$valid)
                 return true;
             else
@@ -396,20 +396,20 @@ uploaders[0].uploadAll();
         $scope.checkProductData = function() {
             $scope.generalDataChecked = true;
             if ($scope.isGeneralFormOk()){
-                var arr = {
-                         product_name : $scope.product.name,
-                         product_type : $scope.product.type,
-                         product_brand : $scope.product.brand
-                        }
-                $http.post('../api/slim.php/shiningfloor/seller/checkproduct', arr).success(function(data, status) {
-                    console.log(data);
-                    if(!data)
+                // var arr = {
+                //          product_name : $scope.product.name,
+                //          product_type : $scope.product.type,
+                //          product_brand : $scope.product.brand
+                //         }
+                // $http.post('../api/slim.php/shiningfloor/seller/checkproduct', arr).success(function(data, status) {
+                //     console.log(data);
+                //     if(!data)
                         $scope.activeTab = 2;
-                    else{
-                        toaster.pop('error', 'Product Already Listed', 'Redirecting ...');
-                        $timeout(reloadState, 3000);   
-                    }
-                });
+                //     else{
+                //         toaster.pop('error', 'Product Already Listed', 'Redirecting ...');
+                //         $timeout(reloadState, 3000);   
+                //     }
+                // });
 
             }    
             else {
@@ -460,15 +460,16 @@ uploaders[0].uploadAll();
             console.log(JSON.stringify(product));
             $http.post('../api/slim.php/shiningfloor/seller/addproduct', product).
             success(function(data, status) {
-                uploaders[0].uploadAll();
-                uploaders[1].uploadAll();
-                uploaders[2].uploadAll();
+                console.log(data);
+                if(data.status=='new'){
+                    uploaders[0].uploadAll();
+                    uploaders[1].uploadAll();
+                    uploaders[2].uploadAll();
+                }
                 toaster.pop('success', 'New Product', 'Product Added Successfully');
-                $timeout(reloadState, 3000);
-                
+                $timeout(reloadState, 3000);                
             });
         };
-
         
 
         function reloadState() {

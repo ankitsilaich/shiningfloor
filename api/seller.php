@@ -4,7 +4,7 @@
 $authenticate_seller = function ($app) {
     return function () use ($app) {
         if (!isset($_SESSION['seller'])) {
-        	echo 'not seller';
+          echo 'not seller';
 //            $app->redirect('/shiningfloor/admin-shiningfloor/#/access/signin');
         }
     };
@@ -188,7 +188,7 @@ $app->get('/shiningfloor/seller/chooseproducts', $authenticate_seller($app), fun
         $email = $_SESSION['seller'];
         $user_id = $db->sellers->where('email',$email)->fetch('id');
     if($user_id){
-        global $colorFilters, $priceFilters, $brandFilters , $finishTypeFilters , $applicationFilters;
+        global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$lookFilters,$materialFilters,$applicationFilters;
         global $resultPerPage , $pageNo ;
         findAllFilters();
         $query ='';
@@ -241,7 +241,7 @@ $app->get('/shiningfloor/seller/selectedproducts', $authenticate_seller($app),fu
 {
         $user = $_SESSION['seller'];
         $user_id = $db->sellers->where('email',$user)->fetch();
-        global $colorFilters, $priceFilters, $brandFilters , $finishTypeFilters , $applicationFilters;
+        global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$lookFilters,$materialFilters,$applicationFilters;
         global $resultPerPage , $pageNo ;
         if($user_id){
         $data  = array();
@@ -316,6 +316,7 @@ $app->get('/shiningfloor/seller/selectedproducts', $authenticate_seller($app),fu
                         'product_application' =>  $applications,
                         'product_look' =>  $p['product_look'],
                         'product_finish_type'=> $p['product_finish_type'],
+                        'product_items_per_box' => $p['product_items_per_box'],    
                         'product_usages'=> $usages,
                         'product_colors'=> $colors,
                         'product_images' =>  $images,
@@ -455,11 +456,11 @@ $app->post('/seller/uploadConcept(/:id)', $authenticate_seller($app), function($
     else{
       $last_id = $id;
     } 
-     $last_id = $last_product['id'] ;
+//     $last_id = $last_product['id'] ;
      if ( !empty( $_FILES ) ) {
      $tempPath = $_FILES[ 'file' ][ 'tmp_name' ];
      $temp = explode(".",$_FILES["file"]["name"]);
-     print_r ($temp);
+ //    print_r ($temp);
      $i=1;
      while(file_exists(dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '../uploads/concepts' . DIRECTORY_SEPARATOR .$last_id. '_'.$i.'.' .'jpg'))
      {
@@ -503,7 +504,14 @@ $app->post('/shiningfloor/seller/addproduct', $authenticate_seller($app),functio
     //echo $image_name;
     // echo($array['name']);
     // //echo $seller_id['id'];
-     $product = array(
+    if($array['thickness']=='') $array['thickness'] = 0;
+
+    $query = $db->products()->where('product_name',ucfirst($array['name']))->where('product_brand', ucfirst($array['brand']))->where('type_id' , $array['type'])->where('product_items_per_box', $array['items_per_box'])->where('product_width', $array['width'])->where('product_height' , $array['height'])->where('product_thickness' , $array['thickness'])->where('product_width_unit' , $array['w_unit'])->where('product_thickness_unit' , $array['t_unit']) ;
+    $existedId = $query->select('id')->fetch();
+    $product_id = 0;
+    if(!$existedId)
+    {
+      $product = array(
         'product_addedby' =>  $seller_id['id'] ,
         'product_editedby' =>  $seller_id['id'] ,        
         'product_name' =>  ucfirst($array['name']) , 
@@ -527,75 +535,92 @@ $app->post('/shiningfloor/seller/addproduct', $authenticate_seller($app),functio
          
         );
 
-    $data = $db->products()->insert($product);
-    
-    if($array['finish_type']!=''){
-      $finish =  $db->finishes()->where('finish_name', $array["finish_type"]);   
-//      print_r(' f '. $finish->fetch()['id'].' count='.count($finish)); 
-      if(!count($finish)){
-          $db->finishes()->insert(array('finish_name' => $array['finish_type']));
-      }
-    }
-
-    if( $array['shape']!=''){
-      $shape =  $db->shapes()->where('shape_name',$array["shape"]);
-  //    print_r(' s '. $shape->fetch()['id'].' count='.count($shape));      
-      if(!count($shape) ){
-          $db->shapes()->insert(array('shape_name'=> $array['shape']));
-      }
-    }
-    if( $array['material']!=''){
-      $material =  $db->materials()->where('material_name',$array["material"]);
-    //  print_r(' m '. $material->fetch()['id'].' count='.count($material)); 
-      if(!count($material)){
-          $db->materials()->insert(array('material_name'=>$array['material']));
-      }
-    }
-
-    if($array['look']!=''){
-        $look =  $db->looks()->where('look_name', $array["look"]);
-      //  print_r(' l ' . $look->fetch()['id'].' count='.count($look));
-        if(!count($look)){
-            $db->looks()->insert(array('look_name' => $array['look']));
+        $data = $db->products()->insert($product);
+        
+        if($array['finish_type']!=''){
+          $finish =  $db->finishes()->where('finish_name', $array["finish_type"]);   
+          if(!count($finish)){
+              $db->finishes()->insert(array('finish_name' => $array['finish_type']));
+          }
         }
+
+        if( $array['shape']!=''){
+          $shape =  $db->shapes()->where('shape_name',$array["shape"]);
+          if(!count($shape) ){
+              $db->shapes()->insert(array('shape_name'=> $array['shape']));
+          }
+        }
+        if( $array['material']!=''){
+          $material =  $db->materials()->where('material_name',$array["material"]);
+          if(!count($material)){
+              $db->materials()->insert(array('material_name'=>$array['material']));
+          }
+        }
+
+        if($array['look']!=''){
+            $look =  $db->looks()->where('look_name', $array["look"]);
+            if(!count($look)){
+                $db->looks()->insert(array('look_name' => $array['look']));
+            }
+        }
+
+       $colors = explode(",", $array['colors']);
+       for($i=0;$i<sizeof($colors);$i++)
+       {
+            if($colors[$i]!="")
+                $db->product_colors->insert(array('color_name'=> $colors[$i] , 'products_id'=>$data['id']));
+       }
+       $usages = explode(",", $array['usages']);
+       for($i=0;$i<sizeof($usages);$i++)
+       {
+            if($usages[$i]!="")
+                $db->product_usages->insert(array('usage_name'=> $usages[$i] , 'products_id'=>$data['id']));
+       }
+       $applications = explode(",", $array['applications']);
+       for($i=0;$i<sizeof($applications);$i++)
+       {
+            if($applications[$i]!="")
+                $db->product_applications->insert(array('application_name'=> $applications[$i] , 'products_id'=>$data['id']));
+       }
+
+       $product_id = $data['id'];
     }
+    else
+    {
+        $product_id = $existedId ;
+        // IF SAME PRODUCT TRYING TO INSERT AGAIN THEN DONOT CHANGE THE DATA.
+    }
+    // if same seller you uploaded it trying to add it as new product.
+    $query = $db->sellers_products->where('sellers_id',$seller_id['id'])->where('products_id',$product_id);
+    $id = $query->select('id')->fetch();
+//    echo $id;
     $seller_products = array(
          'sellers_id' =>  $seller_id['id'] ,
-         'products_id' =>  $data['id'] ,
-         'price' => $array['price'],
-        
+         'products_id' =>  $product_id ,
+         'price' => $array['price'],        
         'seller_product_code' => $array['seller_product_code'],
         'comments'=> $array['comments'],
         'minimum_boxes' => $array['minimum_boxes'],
         'total_quantity' => $array['total_boxes']
        );
-   $seller = $db->sellers_products()->insert($seller_products);
-   $colors = explode(",", $array['colors']);
-   for($i=0;$i<sizeof($colors);$i++)
-   {
-        if($colors[$i]!="")
-            $db->product_colors->insert(array('color_name'=> $colors[$i] , 'products_id'=>$data['id']));
-   }
-   $usages = explode(",", $array['usages']);
-   for($i=0;$i<sizeof($usages);$i++)
-   {
-        if($usages[$i]!="")
-            $db->product_usages->insert(array('usage_name'=> $usages[$i] , 'products_id'=>$data['id']));
-   }
-   $applications = explode(",", $array['applications']);
-   for($i=0;$i<sizeof($applications);$i++)
-   {
-        if($applications[$i]!="")
-            $db->product_applications->insert(array('application_name'=> $applications[$i] , 'products_id'=>$data['id']));
-   }
+    if(!$id){
+        $seller = $db->sellers_products()->insert($seller_products); 
+         
+    }
+    else
+        $seller = $db->sellers_products()->where('id',$id)->update($seller_products);
+
     $app->response()->header('Content-Type', 'application/json');
-    echo json_encode($data['id']);
+    if(!$existedId)
+      echo json_encode(array('status' => 'new'));
+    else
+     echo json_encode(array('status' => 'exist'));;
 });
 //----------------------------
 
 $app->post('/shiningfloor/seller/checkproduct', $authenticate_seller($app),function() use ($app, $db)
 {
-	$id =0;
+  $id =0;
     $array = (array) json_decode($app->request()->getBody());
     $query = $db->products->where('product_name',ucfirst($array['product_name']))->where('type_id',$array['product_type'])->where('product_brand',ucfirst($array['product_brand']))->select('id');
     $id = $query->fetch();
@@ -609,9 +634,7 @@ $app->put('/shiningfloor/seller/editproduct/:product_id', $authenticate_seller($
     $array = (array) json_decode($app->request()->getBody());
     $email = $_SESSION['seller'] ;
     $seller_id = $db->sellers()->where('email', $email)->fetch();
-    //$lastProduct = $db->products()->select('id')->order('id desc')->limit(1,0)->fetch();
-    // $image_name = (string)($lastProduct['id'] + 1) ;
-    // $image_name .=  '_1.' .'jpg';  
+
     $product = array(
         'product_editedby' =>  $seller_id['id'] ,
         'product_name' =>  ucfirst($array['name']) , 
@@ -631,75 +654,79 @@ $app->put('/shiningfloor/seller/editproduct/:product_id', $authenticate_seller($
         'product_width_unit' => $array['w_unit'],
         'product_height_unit' => $array['w_unit'],
         'product_isEdited' => 1,        
-        'product_thickness_unit' => $array['t_unit']
-         
+        'product_thickness_unit' => $array['t_unit']         
         ); 
-    // echo $product_id;
-    $data = $db->products()->where('id', $product_id)->update($product);
-    // echo $data;     
-        if($array['finish_type']!=''){
-      $finish =  $db->finishes()->where('finish_name', $array["finish_type"]);   
-//      print_r(' f '. $finish->fetch()['id'].' count='.count($finish)); 
-      if(!count($finish)){
-          $db->finishes()->insert(array('finish_name' => $array['finish_type']));
-      }
-    }
+    
+    $product_existed = $db->products()->where('id', $product_id)->fetch();
 
-    if( $array['shape']!=''){
-      $shape =  $db->shapes()->where('shape_name',$array["shape"]);
-  //    print_r(' s '. $shape->fetch()['id'].' count='.count($shape));      
-      if(!count($shape) ){
-          $db->shapes()->insert(array('shape_name'=> $array['shape']));
+    if($product_existed['product_isEdited']==0  || ($product_existed['product_isEdited']==1 && $product_existed['product_editedby'] == $seller_id['id']))
+    {  
+        $data = $db->products()->where('id', $product_id)->update($product);
+      if($array['finish_type']!=''){
+        $finish =  $db->finishes()->where('finish_name', $array["finish_type"]);   
+        if(!count($finish)){
+            $db->finishes()->insert(array('finish_name' => $array['finish_type']));
+          }
       }
-    }
-    if( $array['material']!=''){
-      $material =  $db->materials()->where('material_name',$array["material"]);
-    //  print_r(' m '. $material->fetch()['id'].' count='.count($material)); 
-      if(!count($material)){
-          $db->materials()->insert(array('material_name'=>$array['material']));
-      }
-    }
 
-    if($array['look']!=''){
-        $look =  $db->looks()->where('look_name', $array["look"]);
-      //  print_r(' l ' . $look->fetch()['id'].' count='.count($look));
-        if(!count($look)){
-            $db->looks()->insert(array('look_name' => $array['look']));
+      if( $array['shape']!=''){
+        $shape =  $db->shapes()->where('shape_name',$array["shape"]);
+        if(!count($shape) ){
+            $db->shapes()->insert(array('shape_name'=> $array['shape']));
+        }
+      }
+      if( $array['material']!=''){
+        $material =  $db->materials()->where('material_name',$array["material"]);
+        if(!count($material)){
+            $db->materials()->insert(array('material_name'=>$array['material']));
+        }
+      }
+
+      if($array['look']!=''){
+          $look =  $db->looks()->where('look_name', $array["look"]);
+          if(!count($look)){
+              $db->looks()->insert(array('look_name' => $array['look']));
+          }
+      }
+
+      $colors = explode(",", $array['colors']);
+      for($i=0;$i<sizeof($colors);$i++)
+      {
+        if($colors[$i]!=""){
+          $query = $db->product_colors()->where('products_id', $product_id)->where('color_name',$colors[$i]);
+          if(!$query->fetch())        
+              $db->product_colors->insert(array('color_name'=> $colors[$i] , 'products_id'=>$product_id));
+        }
+      }
+      
+      $usages = explode(",", $array['usages']);
+      for($i=0;$i<sizeof($usages);$i++)
+      {
+        if($usages[$i]!=""){
+          $query = $db->product_usages()->where('products_id', $product_id)->where('usage_name',$usages[$i]);
+          if(!$query->fetch())        
+              $db->product_usages->insert(array('usage_name'=> $usages[$i] , 'products_id'=>$product_id));
+        }
+      }
+
+      $applications = explode(",", $array['applications']);
+      for($i=0;$i<sizeof($applications);$i++)
+      {
+        if($applications[$i]!=""){
+          $query = $db->product_applications()->where('products_id', $product_id)->where('application_name',$applications[$i]);
+          if(!$query->fetch())        
+              $db->product_applications->insert(array('application_name'=> $applications[$i] , 'products_id'=>$product_id));
         }
     }
-
-    $colors = explode(",", $array['colors']);
-    for($i=0;$i<sizeof($colors);$i++)
-    {
-      if($colors[$i]!=""){
-        $query = $db->product_colors()->where('products_id', $product_id)->where('color_name',$colors[$i]);
-        if(!$query->fetch())        
-            $db->product_colors->insert(array('color_name'=> $colors[$i] , 'products_id'=>$product_id));
-      }
+       $app->response()->header('Content-Type', 'application/json');
+       echo json_encode(array('status' => 'success'));
     }
-    
-    $usages = explode(",", $array['usages']);
-    for($i=0;$i<sizeof($usages);$i++)
-    {
-      if($usages[$i]!=""){
-        $query = $db->product_usages()->where('products_id', $product_id)->where('usage_name',$usages[$i]);
-        if(!$query->fetch())        
-            $db->product_usages->insert(array('usage_name'=> $usages[$i] , 'products_id'=>$product_id));
-      }
+    else{
+       $app->response()->header('Content-Type', 'application/json');
+       echo json_encode(array('status' => 'fail'));
     }
 
-    $applications = explode(",", $array['applications']);
-    for($i=0;$i<sizeof($applications);$i++)
-    {
-      if($applications[$i]!=""){
-        $query = $db->product_applications()->where('products_id', $product_id)->where('application_name',$applications[$i]);
-        if(!$query->fetch())        
-            $db->product_applications->insert(array('application_name'=> $applications[$i] , 'products_id'=>$product_id));
-      }
-    }
 
-    $app->response()->header('Content-Type', 'application/json');
-    echo json_encode($product_id);
 });
 
 //--------- data for seller edited product
