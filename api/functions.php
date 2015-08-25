@@ -2,30 +2,30 @@
 function findAllFilters(){
   global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$lookFilters,$materialFilters,$applicationFilters;
   $get = filter_input_array(INPUT_GET);
-  if($get['pageNo']){
+  if(array_key_exists('pageNo', $get)){
       $pageNo = ( int )$get['pageNo'] ;
     }
-  if($get['color']){
+  if(array_key_exists('color', $get)){
       $colorFilters =  explode(',', $get['color']);
   }
-  if($get['price_range']){
+  if(array_key_exists('price_range', $get)){
       $priceFilters = explode(',', $get['price_range']);
   }
-  if($get['brand_name']){
+  if(array_key_exists('brand_name', $get)){
       $brandFilters = explode(',', $get['brand_name']);
   }
-  if($get['finish_types']){
+  if(array_key_exists('finish_types', $get)){
       $finishTypeFilters =  explode(',', $get['finish_types']);
   }
 
-  if(isset($_GET['materials'])){
-      $materialFilters =  explode(',', $_GET['materials']);
+  if(array_key_exists('materials', $get)){
+      $materialFilters =  explode(',', $get['materials']);
   }
-  if(isset($_GET['looks'])){
-      $lookFilters =  explode(',', $_GET['looks']);
+  if(array_key_exists('looks', $get)){
+      $lookFilters =  explode(',', $get['looks']);
   }
-  if(isset($_GET['applications'])){
-      $applicationFilters =  explode(',', $_GET['applications']);
+  if(array_key_exists('applications', $get)){
+      $applicationFilters =  explode(',', $get['applications']);
 
   }
 }
@@ -122,19 +122,20 @@ function materialFilteredQuery($materialFilters , $query){
 }
 function setFinalFilterQuery($query){
   global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$lookFilters,$materialFilters,$applicationFilters;
-  if(isset($_GET['price_range']))
+  $get = filter_input_array(INPUT_GET);
+  if(array_key_exists('price_range', $get))
       $query = priceFilteredQuery($priceFilters,$query);
-  if($get['brand_name'])
+  if(array_key_exists('brand_name', $get))
       $query = brandFilteredQuery($brandFilters,$query);
-  if($get['finish_types'])
+  if(array_key_exists('finish_types', $get))
       $query = finishTypeFilteredQuery($finishTypeFilters,$query);
-  if(isset($_GET['materials']))
+  if(array_key_exists('materials', $get))
       $query = materialFilteredQuery($materialFilters,$query);
-  if(isset($_GET['looks']))
+  if(array_key_exists('looks', $get))
       $query = lookFilteredQuery($lookFilters,$query);
-  if(isset($_GET['applications']))
+  if(array_key_exists('applications', $get))
       $query = applicationFilteredQuery($applicationFilters,$query);
-  if($get['color'])
+  if(array_key_exists('color', $get))
       $query = colorFilteredQuery($colorFilters,$query);
   return $query;
 }
@@ -148,7 +149,7 @@ function findAllProducts($query,$usage_location){
     $count3= 0;    // for counting brand filter products
     foreach($query as $p)
     {
-      if(filter_input(INPUT_GET, 'details'])){
+      if(filter_input(INPUT_GET, 'details')){
           if(filter_input(INPUT_GET, 'details') == 'false')
           {
               $img = $p->product_images()->fetch()['image_name'];
