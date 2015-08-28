@@ -444,6 +444,32 @@ $app->put('/shiningfloor/updatesellers/:id', function($id = null) use ($app, $db
         "message" => "data updated successfully"
     ));
 });
+// verified products search
+$app->get('/shiningfloor/admin/products/(:input)', function($input=null ) use ($app, $db){
+        global $resultPerPage , $pageNo ;
+        $resultPerPage = 10;
+        findAllFilters();
+        $data = array();
+         
+        $query =''; 
+        $query = $db->products(); 
+        if($input!=null)
+        {
+            $query = $query->where('product_name LIKE ?' ,"%".$input."%");
+        }
+ 
+        $totalResults = count($query);
+        $start = (($pageNo -1)*( int )$resultPerPage);
+        $last = $start + $resultPerPage;
+        if($last> $totalResults){
+        $last = $totalResults;
+        }
+        $query = $query->order('product_name ASC');
+        $query = $query->limit($resultPerPage,$start) ;        
+        $data = findAllProducts($query,'');
+        $app->response()->header('content-type','application/json');
+        echo json_encode(array( 'totalResults' => $totalResults , 'start' => $start,'last' => $last  , 'product_data'=>$data ));
+});
 
 
 ?>

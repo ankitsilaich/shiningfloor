@@ -337,6 +337,7 @@ $app->get('/shiningfloor/products/search(/:type)/(:input)', function($type=null,
         $app->response()->header('content-type','application/json');
         echo json_encode(array( 'totalResults' => $totalResults , 'start' => $start,'last' => $last  , 'product_data'=>$data ));
 });
+
 $app->get('/shiningfloor/products/(:input)', function($input=null ) use ($app, $db){
         global $resultPerPage , $pageNo ;
         $resultPerPage = 10;

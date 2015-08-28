@@ -1,11 +1,41 @@
+<div ng-controller="ReviewProductCtrl">
 <div class="bg-light lter b-b wrapper-md">
     <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
-    <h1 class="m-n font-thin h3">Review Product </h1>
+    <h1 class="m-n h3">Review : {{product.name}} </h1>
 </div>
 
-<div class="wrapper-md" ng-controller="ReviewProductCtrl" uploader="uploader" filters="queueLimit, customFilter">
+<div class="wrapper-md" uploader="uploader" filters="queueLimit, customFilter">
  
-            <form name="editProductForm" class="form-validation editProductForm" >
+ <form action="#" class="m-b-md" >
+    <div class="input-group" ng-init="isOpen=1" id='product-name'>
+      <input type="text" ng-model="query"  ng-click='isOpen=1' ng-keyup="updateSuggestProducts();isOpen=1;" class="form-control input-lg" placeholder="Search to compare from existed one" >
+      <span class="input-group-btn">
+        <button class="btn btn-lg btn-primary" type="button">Search</button>
+      </span>
+    </div>
+
+    <div class='dropdown' id='suggestions'ng-show='searchResults' ng-class='{open:isOpen}' ng-mouseleave='isOpen=0'>
+      <ul class="dropdown-menu suggestion" class='dropdown-menu' >
+          
+        <li class="m-b-xs clearfix" ng-repeat='suggest in searchResults'>
+          <div class='col-sm-2'> 
+              <img ng-src ='{{suggest.product_img}}' style='border: 1px solid #ccc;width:50px;height:50px;'> 
+          </div>
+          <div class='col-sm-2 padder-v'>  {{suggest.product_name}}           </div>          
+          <div class='col-sm-2 padder-v'>  {{suggest.product_brand}} </div>
+          <div class='col-sm-2 padder-v'> <span ng-show='suggest.product_height!=0&&suggest.product_width!=0'> {{suggest.product_width}}*{{suggest.product_height}} sq {{suggest.product_w_unit}}</span>  <span ng-show='suggest.product_thickness!=0'>*{{suggest.product_thickness}} {{suggest.product_t_unit}}</span>
+          </div>
+          <div class='col-sm-2 padder-v' >  <span ng-show='suggest.product_items_per_box>0'> {{suggest.product_items_per_box}} per box </span>
+          </div>          
+          <div class='col-sm-2 padder-v-sm'> <a class='btn btn-success' ng-click="SelectProduct()"> Edit</a> 
+          </div>
+           
+        </li>
+        
+          </ul>
+    </div>
+  </form>
+
                <div class='row' style='background-color: #F5FAFA;'>
                   
                     <div class='col-sm-6'>
@@ -33,6 +63,7 @@
                     </div>
                   </div>
                     <div class='col-sm-6'>
+                      <form name="editProductForm" class="form-validation editProductForm" >
                       <div class="panel with-nav-tabs panel-info" style='background-color: #F5FAFA;'>
                         <div class="panel-heading">
                             <ul class="nav nav-tabs" >
@@ -50,8 +81,8 @@
                                 <div class="form-group clearfix">
 
                                     <label class="col-sm-4 control-label">Product Name* <br> </label>
-                                    <div class="col-sm-8 " ng-init='isOpen=1'  id='product-name'>
-                                        <input type="text" class="form-control" name='name' placeholder="product name" ng-model="product.name" ng-keyup="updateSuggestProducts();isOpen=1;" ng-click='isOpen=1' required>
+                                    <div class="col-sm-8 " >
+                                        <input type="text" class="form-control" name='name' placeholder="product name" ng-model="product.name"   required>
                                         <div ng-show="generalDataChecked || newProductForm.name.$touched">
                                           <span class='form-error' ng-show="newProductForm.name.$error.required"> product name can't be empty</span>
                                         </div>
@@ -371,9 +402,10 @@
                       </div>
                       </div>
                     </div>
+                    </form>
  </div>
                </div>           
-            </form>
+            
  
 </div>
 
@@ -409,3 +441,5 @@
 
 </div>
 
+
+</div>

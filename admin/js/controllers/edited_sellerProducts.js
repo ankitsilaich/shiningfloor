@@ -15,7 +15,7 @@ app.controller('sellerEditedProducts', ['$scope', '$http','$stateParams','$q','$
             indexno = index;
        }    
    });
-   array.splice(indexno,1)
+   array.splice(indexno,1);
 };
 
 console.log('s');
@@ -31,10 +31,10 @@ console.log('s');
      comments:product.product_comments,
      minimum_boxes : product.minimum_boxes
 
-    }
+    };
    $http.post('../api/slim.php/shiningfloor/seller/sellers_products',data).then(function (resp) {
      toaster.pop('success', 'Product Selected', 'Product added to Seller account');
-     $scope.findAndRemove($scope.product, "product_id" ,product['product_id']);
+     $scope.findAndRemove($scope.product, "product_id" ,product.product_id);
    
    
      $scope.bigTotalItems--;
@@ -84,8 +84,8 @@ $scope.seller = resp.data.seller_data;
         var url, count = 0;
         angular.forEach(selected, function(item, index) {
             if (item == true && count != 0) {
-                url = url + ',' + original[index]
-            };
+                url = url + ',' + original[index];
+            }
             if (item == true && count == 0) {
                 url = original[index];
                 count++;
@@ -98,9 +98,10 @@ $scope.seller = resp.data.seller_data;
 $scope.selectedcategory = function(value){
   for(i=0;i<$scope.selectedCategory.length;i++){
     console.log(i + ' ' + value);
-    if( i !=value)
+    if( i !==value){
       $scope.selectedCategory[i] = false ;
     }
+  }
   $scope.selectedCategory[value] = !$scope.selectedCategory[value] ;
 }
      $scope.updateUrlChanges = function() {
@@ -112,12 +113,14 @@ $scope.selectedcategory = function(value){
 
         if ($scope.finishTypesUrl = $scope.makeUrl($scope.selectedFinishTypes, $scope.finishTypeFilters)) {
             $location.search('finish_types', $scope.finishTypesUrl);
-        } else $location.search('finish_types', null);
-
+        } else {
+          $location.search('finish_types', null);
+          }
         if ($scope.materialsUrl = $scope.makeUrl($scope.selectedMaterials, $scope.materialFilters)) {
             $location.search('materials', $scope.materialsUrl);
-        } else $location.search('materials', null);
-
+        } else {
+          $location.search('materials', null);
+          }
         if ($scope.looksUrl = $scope.makeUrl($scope.selectedLooks, $scope.lookFilters)) {
             $location.search('looks', $scope.looksUrl);
         } else $location.search('looks', null);
@@ -131,11 +134,11 @@ $scope.selectedcategory = function(value){
             $location.search('query', $scope.queryUrl);
         } else $location.search('query', null);
 
-    $scope.categoryHTML =  (typeof $location.search().category == 'undefined') ? '' : '| Category = '+ $location.search().category    ;
-    $scope.brandHTML =  (typeof $location.search().brand_name == 'undefined') ? '' : '| Brands = '+ $location.search().brand_name    ;
-    $scope.finishTypeHTML =  (typeof $location.search().finish_types == 'undefined') ? '' : '| Finish Types = '+ $location.search().finish_types   ;
-    $scope.materialHTML =  (typeof $location.search().materials == 'undefined') ? '' : '| Material Types = '+ $location.search().materials   ;
-    $scope.lookHTML =  (typeof $location.search().looks == 'undefined') ? '' : '| Looks = '+ $location.search().looks   ;
+    $scope.categoryHTML =  (typeof $location.search().category === 'undefined') ? '' : '| Category = '+ $location.search().category    ;
+    $scope.brandHTML =  (typeof $location.search().brand_name === 'undefined') ? '' : '| Brands = '+ $location.search().brand_name    ;
+    $scope.finishTypeHTML =  (typeof $location.search().finish_types === 'undefined') ? '' : '| Finish Types = '+ $location.search().finish_types   ;
+    $scope.materialHTML =  (typeof $location.search().materials === 'undefined') ? '' : '| Material Types = '+ $location.search().materials   ;
+    $scope.lookHTML =  (typeof $location.search().looks === 'undefined') ? '' : '| Looks = '+ $location.search().looks   ;
 
         $scope.requestToSearchAPI();
 
@@ -143,10 +146,9 @@ $scope.selectedcategory = function(value){
 
    $scope.pagechange = function(value) {
         console.log('pagechangeval =  ' + value);
-         console.log(typeof($scope.pageNo))
         $location.search('pageNo', value);
         $scope.requestToSearchAPI();
-      }
+      };
 
 // API is different for differnet controller       
  $scope.requestToSearchAPI = function() {
@@ -175,24 +177,24 @@ $scope.selectedcategory = function(value){
                     emptyitems[i] = true;
                 else emptyitems[i] = false;
             });
-         console.log(emptyitems)
+         console.log(emptyitems);
         }
       
     };
      $scope.findpageNo = function() {
         var params = $location.search();
-        if (params['pageNo']) {
-            return params['pageNo'];
+        if (params.pageNo) {
+            return params.pageNo;
         }
     };
 
     $scope.FilterUrl = $location.search();
     // console.log(typeof $scope.FilterUrl.category);
-    $scope.categoryHTML =  (typeof $location.search().category == 'undefined') ? '' : '| Category = '+ $location.search().category    ;
-    $scope.brandHTML =  (typeof $location.search().brand_name == 'undefined') ? '' : '| Brands = '+ $location.search().brand_name    ;
-    $scope.finishTypeHTML =  (typeof $location.search().finish_types == 'undefined') ? '' : '| Finish Types = '+ $location.search().finish_types   ;
-    $scope.materialHTML =  (typeof $location.search().materials == 'undefined') ? '' : '| Material Types = '+ $location.search().materials ;
-    $scope.lookHTML =  (typeof $location.search().looks == 'undefined') ? '' : '| Looks = '+ $location.search().looks   ;
+    $scope.categoryHTML =  (typeof $location.search().category === 'undefined') ? '' : '| Category = '+ $location.search().category    ;
+    $scope.brandHTML =  (typeof $location.search().brand_name === 'undefined') ? '' : '| Brands = '+ $location.search().brand_name    ;
+    $scope.finishTypeHTML =  (typeof $location.search().finish_types === 'undefined') ? '' : '| Finish Types = '+ $location.search().finish_types   ;
+    $scope.materialHTML =  (typeof $location.search().materials === 'undefined') ? '' : '| Material Types = '+ $location.search().materials ;
+    $scope.lookHTML =  (typeof $location.search().looks === 'undefined') ? '' : '| Looks = '+ $location.search().looks   ;
 
     // $scope.categoryFilters = ['tiles', 'marble', 'wood','artificial','stone','wallpaper'];
     $scope.selectedCategory=[];
@@ -211,8 +213,9 @@ $scope.selectedcategory = function(value){
               console.log($scope.brandFilters);
               $scope.totalBrands = $scope.brandFilters.length;            
               $scope.selectedBrands = [];
-              for (i = 0; i < $scope.totalBrands; i++)
+              for (i = 0; i < $scope.totalBrands; i++){
                   $scope.selectedBrands[i] = false;
+                }
               $scope.findandselect($scope.brandFilters, 'brand_name', $scope.selectedBrands, $scope.FilterUrl);      
       });
 
@@ -220,8 +223,9 @@ $scope.selectedcategory = function(value){
           $scope.materialFilters = resp.data.materials;
           $scope.materialsLength = $scope.materialFilters.length;
           $scope.selectedMaterials = [];
-              for (i = 0; i < $scope.materialsLength; i++)
-                  $scope.selectedMaterials[i] = false;         
+              for (i = 0; i < $scope.materialsLength; i++){
+                  $scope.selectedMaterials[i] = false;     
+                  }    
               $scope.findandselect($scope.materialFilters, 'materials', $scope.selectedMaterials, $scope.FilterUrl);    
         
         });
@@ -230,8 +234,9 @@ $scope.selectedcategory = function(value){
           $scope.looksLength = $scope.lookFilters.length;
           console.log($scope.looksLength);
           $scope.selectedLooks = [];
-              for (i = 0; i < $scope.looksLength; i++)
-                  $scope.selectedLooks[i] = false;         
+              for (i = 0; i < $scope.looksLength; i++){
+                  $scope.selectedLooks[i] = false;     
+                  }    
               $scope.findandselect($scope.lookFilters, 'looks', $scope.selectedLooks, $scope.FilterUrl);
         
         });
@@ -239,8 +244,9 @@ $scope.selectedcategory = function(value){
           $scope.finishTypeFilters = resp.data.finish_types;
           $scope.finish_typesLength = $scope.finishTypeFilters.length;
           $scope.selectedFinishTypes = [];
-              for (i = 0; i < $scope.finish_typesLength; i++)
-                  $scope.selectedFinishTypes[i] = false;         
+              for (i = 0; i < $scope.finish_typesLength; i++){
+                  $scope.selectedFinishTypes[i] = false;      
+                  }   
         $scope.findandselect($scope.finishTypeFilters, 'finish_types', $scope.selectedFinishTypes, $scope.FilterUrl);    
         });
 
@@ -318,7 +324,7 @@ $scope.selectedcategory = function(value){
         if(i!=index)
           $scope.selectedDropdown[i] =false;
       }
-    } 
+    }; 
 
 
 }]);
