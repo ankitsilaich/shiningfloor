@@ -3,7 +3,7 @@
 /* Controllers */
 
 // Form controller
-app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster', 'FileUploader', '$sce', '$q', '$state', '$timeout', function($scope, $http, $stateParams, toaster, FileUploader, $sce, $q, $state, $timeout) {
+app.controller('ReviewProductCtrl', ['$scope', '$http', '$stateParams', 'toaster', 'FileUploader', '$sce', '$q', '$state', '$timeout', function($scope, $http, $stateParams, toaster, FileUploader, $sce, $q, $state, $timeout) {
 
         $(document).click(function(){
            $scope.isOpen=0;

@@ -107,6 +107,116 @@ $app->delete('/shiningfloor/admin/deleteseller(/:seller_id)', $authenticate_admi
   echo json_encode($data);
 });
 
+// --------- Seller Info -------------
+$app->get('/shiningfloor/admin/sellers/newproducts', $authenticate_admin($app),function() use ($app, $db)
+{
+    global $resultPerPage , $pageNo ;
+    global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$lookFilters,$materialFilters,$applicationFilters;
+     
+    $get = filter_input_array(INPUT_GET);
+    // print_r ($get);
+    if(array_key_exists('pageNo', $get)){
+        $pageNo = ( int )$get['pageNo'] ;
+    }
+    $type='';
+    if(array_key_exists('category', $get)){
+        $type = ( int )$get['category'] ;
+    }
+    $input='';
+    if(array_key_exists('query', $get)){ 
+        $input = $get['query'] ;
+    }
+    $data = array();
+    $query = $db->products()->where('product_isNew',1);
+
+    if($type!=''){
+        $type_id = $db->types()->where('type_name',$types)->fetch();
+        $query = $query->where('type_id',$type_id);
+    }
+    if($input!='')
+    {
+        $query = $query->where('product_name LIKE ?' ,"%".$input."%");
+    }
+    findAllFilters();
+    $query = setFinalFilterQuery($query) ;
+    $totalResults = count($query);
+    $start = (($pageNo -1)*( int )$resultPerPage);
+    $last = $start + $resultPerPage;
+    if($last> $totalResults){
+        $last = $totalResults;
+    }
+    $query = $query->order('id ASC');
+    $query = $query->limit(30,$start) ;
+    foreach ($query as $p) {
+         # code...
+        $data[] = array_merge(
+                fetchProductData($p) ,
+                array('product_addedby' => $p['product_addedby'],
+                'product_isEdited' => $p['product_isEdited'],
+                'product_editedby' => $p['product_editedby'],                
+                'product_isNew' => $p['product_isNew'])
+            );
+    } 
+    $app->response()->header('content-type','application/json');
+    echo json_encode(array( 'totalResults' => $totalResults , 'start' => $start,'last' => $last  , 'product_data'=>$data ));
+
+});
+
+// --------- Seller Info -------------
+$app->get('/shiningfloor/admin/sellers/editedproducts', $authenticate_admin($app),function() use ($app, $db)
+{
+    global $resultPerPage , $pageNo ;
+    global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$lookFilters,$materialFilters,$applicationFilters;
+    $get = filter_input_array(INPUT_GET);
+    // print_r ($get);
+    if(array_key_exists('pageNo', $get)){
+        $pageNo = ( int )$get['pageNo'] ;
+    }
+    $type='';
+    if(array_key_exists('category', $get)){
+        $type = $get['category'] ;
+    }
+    $input='';
+    if(array_key_exists('query', $get)){ 
+        $input = $get['query'] ;
+    }
+    $data = array();
+    $query = $db->products()->where('product_isNew',0)->where('product_isEdited',1);
+
+    if($type!=''){
+        $type_id = $db->types()->where('type_name',$type)->fetch();
+        $query = $query->where('type_id',$type_id);
+    }
+    if($input!='')
+    {  
+        $query = $query->where('product_name LIKE ?' ,"%".$input."%");
+    }
+    findAllFilters(); 
+    $query = setFinalFilterQuery($query) ;
+    
+    $totalResults = count($query);
+    $start = (($pageNo -1)*( int )$resultPerPage);
+    $last = $start + $resultPerPage;
+    if($last> $totalResults){
+        $last = $totalResults;
+    }
+    $query = $query->order('id ASC');
+    $query = $query->limit(30,$start) ;
+    foreach ($query as $p) {
+         # code...
+        $data[] = array_merge(
+                fetchProductData($p),
+                fetchOtherProductData($p),
+                array('product_addedby' => $p['product_addedby'],
+                'product_isEdited' => $p['product_isEdited'],
+                'product_editedby' => $p['product_editedby'],                
+                'product_isNew' => $p['product_isNew'])
+            );
+    } 
+    $app->response()->header('content-type','application/json');
+    echo json_encode(array( 'totalResults' => $totalResults , 'start' => $start,'last' => $last  , 'product_data'=>$data ));
+
+});
 
 $app->get('/shiningfloor/admin/chooseproducts(/:id)', $authenticate_admin($app), function($id = null) use ($app, $db)
 {
@@ -196,14 +306,14 @@ $app->get('/shiningfloor/admin/selectedproducts(/:id)', $authenticate_admin($app
               $seller_total_quantity = $q['total_quantity'];
          }
           $data[] =  array(
-                         'product_id' => $p['id'],
+                        'product_id' => $p['id'],
                         'product_brand' =>   $p['product_brand'],
                         'product_name' => $p['product_name'],
                         'product_category' => $product_category ,
                         'product_type_id' => $p['type_id'],
                         'product_desc' =>  $p['product_desc'], 
                         'product_origin_country' => $p['product_origin_country'],
-                         'product_degree_of_variation' => $p['product_degree_of_variation'],
+                        'product_degree_of_variation' => $p['product_degree_of_variation'],
                         'product_material' =>  $p['product_material'],
                         'product_width' =>  $p['product_width'],
                         'product_height' =>  $p['product_height'],
@@ -334,7 +444,6 @@ $app->put('/shiningfloor/updatesellers/:id', function($id = null) use ($app, $db
         "message" => "data updated successfully"
     ));
 });
-
 
 
 ?>

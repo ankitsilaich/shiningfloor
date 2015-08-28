@@ -1,0 +1,280 @@
+<div ng-controller="sellerEditedProducts">
+    <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+<div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h3"><i class="icon-magnifier i-sm m-r-sm"></i> Select and Review Changes</h1>
+</div>
+<div class="wrapper-md" >
+ 
+    <form action="#" >
+       <div class = "sf-super-search col-md-2 col-xs-12"> 
+                <div class = "search-options" style='height:42px;'>
+ 
+                 <input type="text" ng-model="searchQuery" class="form-control input-lg" placeholder="Type keyword" ng-keyup="updateUrlChanges()" >
+                        </div>
+        </div>
+
+        <div class = "sf-super-search col-md-2 col-xs-12"> 
+                <div class = "search-options" ng-click="chooseDropdown(3)"> 
+                     
+                    <span class="dropdown-label" ng-show="selectedCategory" > Category <i style='margin-left:5px' class='fa fa-caret-down'> </i></span> 
+
+                     <div    class="ss-dropdown" tabindex="4" data-attr_value="61">
+                     
+                    <ul ng-show="selectedDropdown[3]" class="show-dropdown" style="top:-10px;padding:0px">
+                            <li ng-repeat="category in categoryFilters"  >
+                            <a ng-class="{'activeFilter': selectedCategory[$index]}" ng-click="selectedcategory($index); updateUrlChanges()" >
+                                           
+                                <div class="checkbox custom-checkbox">
+                                    <label ng-click='resetBrands();resetLooks();resetMaterials();resetFinishTypes();findOtherFilters($index)'>                                                                                       
+                                    <input  type="checkbox" ng-model="selectedCategory[$index]" ng-checked="selectedCategory[$index]">
+                                    <span class="fa fa-check"></span>
+                               
+                                    {{category}}</label>
+
+                                </div>
+                            </a>
+                            </li>
+                    </ul>
+                            
+            </div></div></div>
+           
+
+
+        <div class = "sf-super-search col-md-2 col-xs-12"> 
+                <div class = "search-options"  ng-click="chooseDropdown(4)">
+                    <span>Brands <i style='margin-left:5px' class='fa fa-caret-down'> </i> </span>  
+                    <div    class="ss-dropdown" tabindex="4" data-attr_value="61">                     
+                        <ul ng-show="selectedDropdown[4]&&categoryHTML!=''" class="show-dropdown" style="top:-10px;padding:0px">
+                            <li ng-repeat="brand in brandFilters"  >
+                            <a ng-class="{'activeFilter': selectedBrands[$index]}" ng-click="selectedBrands[$index] = !selectedBrands[$index];resetLooks();resetMaterials();resetFinishTypes();updateUrlChanges()" >
+                                           
+                                <div class="checkbox custom-checkbox">
+                                    <label>                                                                                       
+                                    <input  type="checkbox" ng-model="selectedBrands[$index]" ng-checked="selectedBrands[$index]" >
+                                    <span class="fa fa-check"></span>
+                               
+                                    {{brand}}</label>
+
+                                </div>
+                            </a>
+                            </li>
+                        </ul>
+                        <ul ng-show="selectedDropdown[4]&&categoryHTML==''" class="show-dropdown btn" style="background-color:#BA2727;top:-5px;padding:0px">
+                            <li style='color:#fff;font-size:12px;'ng-mouseleave='selectedDropdown[4]=false'>
+                             <span class='fa fa-warning m-r-xs m-l-xs'> </span>first choose categroy
+                            </li>
+                        </ul>
+
+                     </div> 
+                </div>
+        </div>
+        <div class = "sf-super-search col-md-2 col-xs-12"> 
+                <div class = "search-options" ng-click="chooseDropdown(0)" >
+                    <span >Material Types <i style='margin-left:5px' class='fa fa-caret-down'> </i></span> 
+                <div    class="ss-dropdown" tabindex="4" data-attr_value="61">                    
+                    <ul ng-show="selectedDropdown[0]&&categoryHTML!=''&&brandHTML!=''" class="show-dropdown" style="top:-10px;padding:0px">
+                        <li ng-repeat="material in materialFilters"  >
+                        <a ng-class="{'activeFilter': selectedMaterials[$index]}" ng-click="selectedMaterials[$index] = !selectedMaterials[$index];updateUrlChanges();" >
+                                       
+                            <div class="checkbox custom-checkbox">
+                                <label >                                                                                       
+                                <input  type="checkbox" ng-model="selectedMaterials[$index]" ng-checked="selectedMaterials[$index]">
+                                <span class="fa fa-check"></span>
+                           
+                                {{material}}</label>
+
+                            </div>
+                        </a>
+                        </li>
+                    </ul>
+
+                    <ul ng-show="selectedDropdown[0]&&(categoryHTML==''||brandHTML=='')" class="show-dropdown btn" style="background-color:#BA2727;top:-5px;padding:0px">
+                            <li style='color:#fff;font-size:12px;'ng-mouseleave='selectedDropdown[0]=false'>
+                             <span class='fa fa-warning m-r-xs m-l-xs'> </span>select category and brand
+                            </li>
+                        </ul>
+
+                 </div>
+                    
+                </div>
+        </div>        
+
+        <div class = "sf-super-search col-md-2 col-xs-12"> 
+            <div class = "search-options" ng-click="chooseDropdown(1)">
+                    <span >Finish Types <i style='margin-left:5px' class='fa fa-caret-down'> </i></span>  
+                <div    class="ss-dropdown" tabindex="4" data-attr_value="61">
+                    <!--  <ul ng-show="selectedDropdown[1]" class="show-dropdown" style="top:-10px;padding:0px; height: 185px; overflow-y: scroll;">
+                        
+                        <li ng-repeat="finish_type in finishTypeFilters"  class="selected">
+                            <a class="ss-option" ng-click="selectedFinishTypes[$index] = !selectedFinishTypes[$index];updateUrlChanges()" href     data-attr_value="61">{{finish_type}}</a><i ng-class="{'fa fa-check' : selectedFinishTypes[$index]}"></i>
+                        </li>
+                         
+                    </ul> -->
+                    <ul ng-show="selectedDropdown[1]&&categoryHTML!=''&&brandHTML!=''" class="show-dropdown" style="top:-10px;padding:0px">
+                        <li ng-repeat="finish_type in finishTypeFilters"  >
+                            <a ng-class="{'activeFilter': selectedFinishTypes[$index]}" ng-click="selectedFinishTypes[$index] = !selectedFinishTypes[$index];updateUrlChanges();" >                                           
+                                <div class="checkbox custom-checkbox">
+                                    <label >                                                                                       
+                                    <input  type="checkbox" ng-model="selectedFinishTypes[$index]" ng-checked="selectedFinishTypes[$index]">
+                                    <span class="fa fa-check"></span>                           
+                                    {{finish_type}}</label>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                      <ul ng-show="selectedDropdown[1]&&(categoryHTML==''||brandHTML=='')" class="show-dropdown btn" style="background-color:#BA2727;top:-5px;padding:0px">
+                            <li style='color:#fff;font-size:12px;'ng-mouseleave='selectedDropdown[1]=false'>
+                             <span class='fa fa-warning m-r-xs m-l-xs'> </span>select category and brand
+                            </li>
+                        </ul>
+                 </div> 
+            </div>
+        </div> 
+
+        <div class = "sf-super-search col-md-2 col-xs-12"> 
+                <div class = "search-options" ng-click="chooseDropdown(2)">
+                    <span > Look <i style='margin-left:5px' class='fa fa-caret-down'> </i></span> 
+                <div    class="ss-dropdown" tabindex="4" data-attr_value="61">                    
+                    <ul ng-show="selectedDropdown[2]&&categoryHTML!=''&&brandHTML!=''" class="show-dropdown" style="top:-10px;padding:0px">
+                        <li ng-repeat="look in lookFilters"  >
+                            <a ng-class="{'activeFilter': selectedLooks[$index]}" ng-click="selectedLooks[$index] = !selectedLooks[$index];updateUrlChanges();" >                                           
+                                <div class="checkbox custom-checkbox">
+                                    <label >                                                                                       
+                                    <input  type="checkbox" ng-model="selectedLooks[$index]" ng-checked="selectedLooks[$index]">
+                                    <span class="fa fa-check"></span>                           
+                                    {{look}}</label>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul ng-show="selectedDropdown[2]&&(categoryHTML==''||brandHTML=='')" class="show-dropdown btn" style="background-color:#BA2727;top:-5px;padding:0px">
+                            <li style='color:#fff;font-size:12px;'ng-mouseleave='selectedDropdown[2]=false'>
+                             <span class='fa fa-warning m-r-xs m-l-xs'> </span>select category and brand
+                            </li>
+                        </ul>
+
+                 </div> 
+                        </div>
+        </div>  
+        
+ 
+    </form>
+    
+    <p class="m-b-md m-l-md"><strong>{{bigTotalItems}}</strong> Results found for: <strong>{{searchQuery}}</strong> <strong>{{categoryHTML}}</strong>  <strong>{{brandHTML}}</strong> <strong>{{materialHTML}}</strong><strong>{{finishTypeHTML}}</strong><strong>{{lookHTML}}</strong>  <span style='margin-left:10px;color:red' ng-click='resetAll()'> reset Filters <i class="m-t-xs icon-reload"></i></span>  </p>
+
+ 
+
+    <div class="wrapper-md">
+        <div class="row">
+            <h4 class="m-t-xs text-center">All products</h4>
+            <div class="col-md-4" ng-repeat="product in products = (product | filter:quedsadsadsary)">
+                <div class="panel b-a">
+                    <div class="panel-heading no-border bg-black lter">
+                        <span class="h4 text-lt text-u-c">{{product.product_name}}/{{product.product_id}}</span>
+                    </div>
+                    <div class="item m-l-n-xxs m-r-n-xxs">
+                        <div ng-init="x = 3" class="top text-right padder m-t-xs w-full">
+
+                        </div>
+                        <div class="center text-center w-full" style="margin-top:-60px">
+                            <div ui-jq="easyPieChart" ui-refresh="x" ui-options="{
+                percent: 0,
+                lineWidth: 60,
+                trackColor: 'rgba(255,255,255,0)',
+                barColor: 'rgba(35,183,229,0.7)',
+                scaleColor: false,
+                size: 120,
+                lineCap: 'butt',
+                rotate: 0,
+                animate: 1000
+              }" class="inline easyPieChart" style="width: 120px; height: 120px; line-height: 120px;">
+                                <canvas width="120" height="120"></canvas>
+                            </div>
+                        </div>
+                        <div class="bottom wrapper w-full bg-gd-dk text-white">
+                            <div class="h3 m-b-sm text-white-lter">{{product.product_brand}}</div>
+                            <div>{{product.product_application}}- {{product.product_category}}</div>
+                            <div>{{product.product_finish_type}}- {{product.product_size}}</div>
+                        </div>
+                        <img ng-src="{{product.product_img[0]}}" class="img-full" width=350 height=197>
+                    </div>
+                
+        <div class="panel-footer bg-light lter wrapper">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <small class="text-muted block">Material</small>
+                                <span class="text-md"> {{product.product_material}}</span>
+                            </div>
+                            <div class="col-xs-4">
+                                 
+                                <small class="text-muted block">Per box items</small>
+                                <span class="text-md" ng-hide='product.product_items_per_box==0'>{{product.product_items_per_box}}</span>
+                            </div>
+                            <div class="col-xs-4">
+                                 
+                                <small class="text-muted block">Size</small>
+                                <span class="text-md" ng-show='product.product_width!=0'>{{product.product_width}}</span>
+                                <span class="text-md" ng-show='product.product_height!=0'>* {{product.product_height}}</span>
+                                <span class="text-md" ng-show='product.product_height!=0&&product.product_width!=0'>{{product.product_w_unit}}</span> 
+                                 
+                            </div>
+                        </div>
+                    </div>
+                
+
+               <div class="panel panel-default  m-b-n-sm pos-rlt">
+                                    
+                   <!--  <div class="panel-body" ng-show="temp">
+                       <form name="detailsForm" class="form-validation" novalidate>   
+                                              
+                        <div class="form-group pull-in clearfix">
+                          <div class="col-sm-6">
+                           <input type="text" class="form-control"  placeholder="Price"  ng-model="product.price" id="pricefield{{product.product_id}}" required  ng-pattern="/^[0-9]+$/">
+
+                            
+                          </div>
+                          <div class="col-sm-6">
+                            
+                            <input type="text" class="form-control" placeholder="Tiles Per Box"  required  id="tilesperboxtfield{{product.product_items_per_box}}" ng-model="product.product_items_per_box" ng-pattern="/^[0-9]+$/">
+                          </div>
+                        </div>
+                        <div class="form-group pull-in clearfix">
+                            <div class="col-sm-6">
+                            <input type="text" class="form-control" placeholder="Product Code"  required   id="sellercodefield{{product.seller_product_code}}" ng-model="product.seller_product_code" ng-pattern="/^[0-9]+$/">
+                           </div>
+                          
+                           <div class="col-sm-6">
+                              <input type="text" class="form-control" placeholder="Minimum Orders"  required   id="sellercodefield{{product.minimum_boxes}}" ng-model="product.minimum_boxes" ng-pattern="/^[0-9]+$/">
+                           </div>
+                        </div>
+                        <div class="form-group">
+                          
+                          <textarea class="form-control" rows="6" placeholder="Comment on Product" id="coomenttextarea{{product.product_id}}" ng-model="product.product_comments" required> </textarea>
+                        </div>
+                        </form>
+                    </div> -->
+                    <footer class="panel-footer text-right bg-light lter">
+                       <a type="submit" class="btn btn-success btn-addon" ui-sref="app.all.revieweditedproduct({productId: product.product_id})"><i class="fa fa-plus"></i>Select & Edit</a>
+<!--                          <button type="submit" class="btn btn-danger" ng-click="temp = !temp"  ng-show="temp">Cancel</button>
+                      <button type="submit" class="btn btn-success" ng-disabled="detailsForm.$invalid" ng-show="temp" ng-click="selectproduct(product)">Submit</button>
+ -->
+                    </footer>
+                 
+                </div>
+                 
+              </div>
+              </div>
+                     
+                </div>
+            </div>
+        </div>
+         <div class="text-center">
+        
+        <h4>Limit the maximum visible buttons <span class="text-sm">(Page: {{bigCurrentPage}}/{{numPages}} , Total {{bigTotalItems}} Results )</span></h4>
+          <!-- <pagination total-items="bigTotalItems" items-per-page="30" ui-scroll="app" ng-model="bigCurrentPage" max-size="maxSize" class="pagination-lg m-t-sm m-b" boundary-links="true" ng-change="pagechange(bigCurrentPage)" num-pages="5" ></pagination>
+ -->
+
+       <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" max-size="5" class="pagination-md m-t-sm m-b" items-per-page="30" boundary-links="true" ng-change="pagechange(bigCurrentPage)" direction-links="false" num-pages="numPages"></pagination>
+
+       <!--  <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm m-t-none m-b" boundary-links="true" rotate="false" ></pagination> -->
+      </div>

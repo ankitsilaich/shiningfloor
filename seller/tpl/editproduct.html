@@ -216,7 +216,7 @@
                                     </div>
                                  </div>
                                  <div ng-show="!colorsFieldOk" class='form-group clearfix m-t-n'> 
-                                          <span class='form-error col-sm-offset-2 padder-md'>choose one or more colors</span>
+                                          <span class='form-error padder'>choose one or more colors</span>
                                         </div>
                                
                                 <div class="form-group clearfix">
@@ -563,10 +563,13 @@
                                 <div class="col-md-6 col-lg-4 m-t-sm">
                                     <a class="btn btn-default" ng-click="activeTab=2"><i class="fa fa-arrow-left" /> Back  </a>
                                 </div>
-                                <div class="col-md-6 col-lg-4 " >
-                                    <button type="submit" style='height:40px;' class="btn btn-lg btn-sp btn-v" ng-disabled="editProductForm.$invalid||(product.images.length==0&&uploaders[0].queue.length==0)" ng-click="submitForm(product)">Save Product  </button>
+                                <div class="col-md-6 col-lg-4 " ng-init='hideSubmitButton=0' >
+                                    <button type="submit" style='height:40px;' class="btn btn-lg btn-sp btn-v" ng-show='hideSubmitButton==0' ng-disabled="editProductForm.$invalid||(product.images.length==0&&uploaders[0].queue.length==0)" ng-click="hideSubmitButton=1;submitForm(product)">Save Product  </button>
+                                    <button class="btn btn-lg btn-info" ng-show='hideSubmitButton==1'><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Updating Product...</button>
                                 </div>
+
                             </div>
+ 
                         </div>
                         <!-- /#panel-image -->
                     </div>

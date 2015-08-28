@@ -140,6 +140,77 @@ function setFinalFilterQuery($query){
       $query = colorFilteredQuery($colorFilters,$query);
   return $query;
 }
+function fetchProductData($p){
+  $data = array();
+  global $db;
+  $product_category = '';
+  foreach ($db->types() as $product_type) {
+      if($product_type['id'] == $p['type_id'])
+        $product_category = $product_type['type_name'];
+  }
+
+  $mainTableData =  array(
+                'product_id' => $p['id'],
+                'product_brand' =>   $p['product_brand'],
+                'product_name' => $p['product_name'],
+                'product_category' => $product_category ,
+                'product_type_id' => $p['type_id'],
+                'product_desc' =>  $p['product_desc'],
+                'product_origin_country' => $p['product_origin_country'],
+                'product_degree_of_variation' => $p['product_degree_of_variation'],
+                'product_material' =>  $p['product_material'],
+                'product_width' =>  $p['product_width'],
+                'product_height' =>  $p['product_height'],
+                'product_thickness' =>  $p['product_thickness'],
+                'product_w_unit' =>  $p['product_width_unit'],
+                'product_h_unit' =>  $p['product_height_unit'],
+                'product_t_unit' =>  $p['product_thickness_unit'],
+                'product_items_per_box' => $p['product_items_per_box'],
+                'product_shape' =>  $p['product_shape'],
+                'product_look' =>  $p['product_look'],
+                'product_finish_type'=> $p['product_finish_type'],
+                'product_features'=> $p['product_desc'],
+                'product_rating' => $p['product_rating'],
+                'product_isDiscountAvailable' => $p['isDiscountAvailable'],
+                'product_isProductAvailable' => $p['isProductAvailable']
+    );
+  if(filter_input(INPUT_GET, 'details') == 'true')
+    return array_merge($mainTableData ,fetchOtherProductData($p));
+  else
+    return $mainTableData;
+}
+          // if(filter_input(INPUT_GET, 'details') == 'false')
+function fetchOtherProductData($p){
+    $usages =array();
+    $applications = array();
+    $images = array();
+    $colors = array();
+    $concepts = array();
+    foreach ($p->product_colors() as $product_colors) {
+        $colors[] = $product_colors['color_name'];
+    }
+    foreach ($p->product_usages() as $product_usages) {
+        $usages[] = $product_usages['usage_name'];
+    }
+    foreach ($p->product_applications() as $product_applications) {
+        $applications[] = $product_applications['application_name'];
+    }
+
+    foreach ($p->product_images() as $product_images) {
+        $images[] = $product_images['image_name'];
+    }
+    foreach ($p->concept_images() as $product_images) {
+        $concepts[] = $product_images['concept_name'];
+    }
+
+    return  array(
+                'product_applications' =>  $applications,
+                'product_usages'=> $usages,
+                'product_colors'=> $colors,
+                'product_img' =>  $images,
+                'product_concepts' =>  $concepts,
+            );
+}
 // For finding all products of type say tiles or marbles Removed on 14 june 2015.
 function findAllProducts($query,$usage_location){
     $data = array();
@@ -172,6 +243,7 @@ function findAllProducts($query,$usage_location){
                               'product_w_unit' =>  $p['product_width_unit'],
                               'product_h_unit' =>  $p['product_height_unit'],
                               'product_t_unit' =>  $p['product_thickness_unit'],
+                              'product_items_per_box' =>$p['product_items_per_box'],
                               'product_img' =>  $img
                     );
           }

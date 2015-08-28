@@ -27,13 +27,7 @@ angular.module('app')
                             console.log(msg.data);
                             // $location.path('/home');
                         } else {
-
-                             // if ($location.path().indexOf('access/signup') != 1) {
-                             //    console.log("not logged in");
                                $location.path('/access/signin');
-
-                            // }
-
                         }
                     })
 
@@ -50,7 +44,7 @@ angular.module('app')
             function($stateProvider, $urlRouterProvider) {
 
                 $urlRouterProvider
-                    .otherwise('/app/all/allproducts');
+                    .otherwise('/app/admin/all/allproducts');
                 $stateProvider
                     .state('app', {
                         abstract: true,
@@ -58,17 +52,7 @@ angular.module('app')
                         templateUrl: 'tpl/app.html'
 
                     })
-                    .state('app.dashboard-v1', {
-                        url: '/dashboard-v1',
-                        templateUrl: 'tpl/app_dashboard_v1.html',
-                        resolve: {
-                            deps: ['$ocLazyLoad',
-                                function($ocLazyLoad) {
-                                    return $ocLazyLoad.load(['js/controllers/chart.js']);
-                                }
-                            ]
-                        }
-                    })
+                     
 
                 .state('app.seller', {
                         url: '/seller',
@@ -95,7 +79,7 @@ angular.module('app')
                 // table
 
                 .state('app.all', {
-                    url: '/all',
+                    url: '/admin/all',
                     template: '<div ui-view></div>'
                 })
 
@@ -123,22 +107,33 @@ angular.module('app')
                     })
                 .state('app.all.new_products', {
                         url: '/newproducts',
-                        templateUrl: 'tpl/new_sellerProducts.html',
+                        templateUrl: 'tpl/new_sellerProducts.html',                         
                         resolve: {
-                            deps: ['$ocLazyLoad',
-                                function($ocLazyLoad) {
-                                    return $ocLazyLoad.load(['js/controllers/new_sellerProducts.js']);
+                            deps: ['$ocLazyLoad', 'uiLoad',
+                                function($ocLazyLoad, uiLoad) {
+                                    return $ocLazyLoad.load('toaster').then(
+                                        function() {
+                                            return uiLoad.load(
+                                                'js/controllers/new_sellerProducts.js')
+                                        }
+                                    );
                                 }
                             ]
                         }
+
                     })
                 .state('app.all.edited_products', {
                         url: '/editedproducts',
                         templateUrl: 'tpl/edited_sellerProducts.html',
                         resolve: {
-                            deps: ['$ocLazyLoad',
-                                function($ocLazyLoad) {
-                                    return $ocLazyLoad.load(['js/controllers/edited_sellerProducts.js']);
+                            deps: ['$ocLazyLoad', 'uiLoad',
+                                function($ocLazyLoad, uiLoad) {
+                                    return $ocLazyLoad.load('toaster').then(
+                                        function() {
+                                            return uiLoad.load(
+                                                'js/controllers/edited_sellerProducts.js')
+                                        }
+                                    );
                                 }
                             ]
                         }
@@ -201,7 +196,46 @@ angular.module('app')
                         }
 
                     })
+                .state('app.all.reviewnewproduct', {
+                            url: '/review/new/:productId',
+                            templateUrl: 'tpl/reviewNewProduct.html',
+                             
+                            resolve: {
+                                deps: ['$ocLazyLoad', 'uiLoad',
+                                    function($ocLazyLoad, uiLoad) {
+                                        return $ocLazyLoad.load(['angularFileUpload','toaster']).then(
+                                            function() {
+                                                return uiLoad.load(
+                                                    [ 
+                                                    'vendor/modules/angular-file-upload/angular-file-upload.min.js',
+                                                    'js/controllers/reviewNewProduct.js'])
+                                            }
+                                        );
+                                    }
+                                ]
+                            }
 
+                        })
+                    .state('app.all.revieweditedproduct', {
+                            url: '/review/edit/:productId',
+                            templateUrl: 'tpl/reviewEditedProduct.html',
+                             
+                            resolve: {
+                                deps: ['$ocLazyLoad', 'uiLoad',
+                                    function($ocLazyLoad, uiLoad) {
+                                        return $ocLazyLoad.load(['angularFileUpload','toaster']).then(
+                                            function() {
+                                                return uiLoad.load(
+                                                    [ 
+                                                    'vendor/modules/angular-file-upload/angular-file-upload.min.js',
+                                                    'js/controllers/reviewEditedProduct.js'])
+                                            }
+                                        );
+                                    }
+                                ]
+                            }
+
+                        })
                     .state('app.all.sellers', {
                         url: '/sellers',
                         templateUrl: 'tpl/all_sellers.html',
@@ -265,32 +299,7 @@ angular.module('app')
                         }
                     })
                    
-                     
-
                    
-
-                .state('app.house', {
-                        url: '/house',
-                        template: '<div ui-view class="fade-in-down"></div>'
-                    })
-                    .state('app.house.detail', {
-                        url: '/details/:house_id',
-                        templateUrl: 'tpl/page_profile.html',
-                        resolve: {
-                            deps: ['$ocLazyLoad',
-                                function($ocLazyLoad) {
-                                    return $ocLazyLoad.load('toaster').then(
-                                        function() {
-                                            return $ocLazyLoad.load('js/controllers/houses.js');
-                                        }
-                                    );
-                                }
-                            ]
-                        }
-                    })
-                     
-               
- 
                     .state('access', {
                         url: '/access',
                         template: '<div ui-view class="fade-in-right-big smooth"></div>'

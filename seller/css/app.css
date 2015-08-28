@@ -5477,7 +5477,7 @@ margin-right: 15px;
 }
 .col-lg-5 .btn-lg{
   width: 75%;
-  height: 40px; 
+  height: 44px; 
 }
 .btn-sp.btn-v{
   border: 2px solid #674ed6;
@@ -5675,3 +5675,17 @@ div.bd-brown{
   color: #fff;}
 
    
+   .glyphicon-refresh-animate {
+    -animation: spin .7s infinite linear;
+    -webkit-animation: spin2 .7s infinite linear;
+}
+
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg);}
+    to { -webkit-transform: rotate(360deg);}
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg);}
+    to { transform: scale(1) rotate(360deg);}
+}

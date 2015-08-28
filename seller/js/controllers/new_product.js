@@ -426,15 +426,36 @@ app.controller('FormDemoCtrl', ['$scope', '$http', 'toaster', 'FileUploader', '$
             success(function(data, status) {
                 console.log(data);
                 if(data.status=='new'){
-                    uploaders[0].uploadAll();
-                    uploaders[1].uploadAll();
-                    uploaders[2].uploadAll();
+                    uploaders[0].queue[0].upload();
+                 //   uploaders[1].uploadAll();
+                    //uploaders[2].uploadAll();
                 }
-                toaster.pop('success', 'New Product', 'Product Added Successfully');
-                $timeout(reloadState, 3000);                
+                else{
+                    toaster.pop('success', 'Same Product Existed', 'Seller Data addedd Successfully');
+                    $timeout(reloadState, 3000);
+                }
+                               
             });
         };
-        
+        uploaders[0].onCompleteItem = function(fileItem, response, status, headers) {
+            console.info('file uploaded', fileItem, response, status, headers);
+            if(uploaders[1].queue.length!=0)
+                uploaders[1].uploadAll();
+            else
+                uploaders[2].uploadAll();
+        };
+         
+        uploaders[1].onCompleteAll = function() {
+            console.log('concepts uploads');
+            if(uploaders[2].queue.length!=0)
+                uploaders[2].uploadAll();
+            };    
+
+        uploaders[2].onCompleteAll = function() {
+        console.log('other images uploaded');
+        toaster.pop('success', 'New Product', 'Product Added Successfully');
+                $timeout(reloadState, 3000); 
+        };
 
         function reloadState() {
             $state.go('app.all.newproduct', {}, {

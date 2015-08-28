@@ -307,7 +307,7 @@ $app->get('/shiningfloor/product(/:id)', function($id=null ) use ($app, $db){
 });
 // Search product results
 $app->get('/shiningfloor/products/search(/:type)/(:input)', function($type=null,$input=null ) use ($app, $db){
-        global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$lookFilters,$materialFilters,$applicationFilters;
+        
         global $resultPerPage , $pageNo ;
         if(isset($_GET['pageNo'])){
           $pageNo = $_GET['pageNo'];
@@ -338,7 +338,6 @@ $app->get('/shiningfloor/products/search(/:type)/(:input)', function($type=null,
         echo json_encode(array( 'totalResults' => $totalResults , 'start' => $start,'last' => $last  , 'product_data'=>$data ));
 });
 $app->get('/shiningfloor/products/(:input)', function($input=null ) use ($app, $db){
-        global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$lookFilters,$materialFilters,$applicationFilters;
         global $resultPerPage , $pageNo ;
         $resultPerPage = 10;
         findAllFilters();

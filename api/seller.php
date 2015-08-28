@@ -187,9 +187,13 @@ $app->get('/shiningfloor/seller/chooseproducts', $authenticate_seller($app), fun
         $data  = array();
         $email = $_SESSION['seller'];
         $user_id = $db->sellers->where('email',$email)->fetch('id');
-    if($user_id){
+        if($user_id){
         global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$lookFilters,$materialFilters,$applicationFilters;
         global $resultPerPage , $pageNo ;
+        $get = filter_input_array(INPUT_GET);
+        if(array_key_exists('pageNo', $get)){
+            $pageNo = ( int )$get['pageNo'] ;
+          }
         findAllFilters();
         $query ='';
 //        $query = $db->products()->where("NOT id", $db->sellers_products()->where('sellers_id',$user_id )->select('products_id'));
@@ -243,6 +247,10 @@ $app->get('/shiningfloor/seller/selectedproducts', $authenticate_seller($app),fu
         $user_id = $db->sellers->where('email',$user)->fetch();
         global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$lookFilters,$materialFilters,$applicationFilters;
         global $resultPerPage , $pageNo ;
+        $get = filter_input_array(INPUT_GET);
+        if(array_key_exists('pageNo', $get)){
+            $pageNo = ( int )$get['pageNo'] ;
+          }
         if($user_id){
         $data  = array();
         findAllFilters();       // All filters from url
@@ -516,6 +524,7 @@ $app->post('/shiningfloor/seller/addproduct', $authenticate_seller($app),functio
     {
       $product = array(
         'product_addedby' =>  $seller_id['id'] ,
+        'product_isNew' =>  1 ,        
         'product_editedby' =>  $seller_id['id'] ,        
         'product_name' =>  ucfirst($array['name']) , 
         'product_brand' => ucfirst($array['brand']),
