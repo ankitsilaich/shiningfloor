@@ -106,6 +106,25 @@ angular.module('app')
 
 
               })
+              .state('app.home.contact', {
+                 url: '/contacts',
+                 templateUrl: 'tpl/contact.html',
+                   resolve: {
+                     deps: ['$ocLazyLoad', 'uiLoad',
+                       function( $ocLazyLoad, uiLoad ){
+                         return uiLoad.load(
+                           [
+
+
+
+                             ]
+                         )
+                     }]
+                 }
+
+
+
+             })
               .state('app.home.checkout', {
                  url: '/checkout',
                  templateUrl: 'tpl/checkout.html',
@@ -208,7 +227,7 @@ angular.module('app')
                             [
 
                               'js/controllers/searchPageCtrl.js'  ,
-                              'js/controllers/index.filterCtrl.js'    
+                              'js/controllers/index.filterCtrl.js'
 
 
                               ]
