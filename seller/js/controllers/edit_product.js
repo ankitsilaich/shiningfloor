@@ -560,12 +560,35 @@ app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster',
             });
         };
 
+        uploaders[0].onAfterAddingFile = function(fileItem) {
+            if(fileItem.file.size > 2000000){
+              toaster.pop('info', 'Image size exceeded', 'maximum allowed size is 2MB'); 
+              fileItem.remove();
+              }  
+        };
+        uploaders[1].onAfterAddingFile = function(fileItem) {
+           if(fileItem.file.size > 2000000){
+              toaster.pop('info', 'Image size exceeded', 'maximum allowed size is 2MB');
+              fileItem.remove();
+            } 
+        };
+        uploaders[2].onAfterAddingFile = function(fileItem) {
+            if(fileItem.file.size > 2000000){
+              toaster.pop('info', 'Image size exceeded', 'maximum allowed size is 2MB'); 
+              fileItem.remove();
+          }
+        };
+
         uploaders[0].onCompleteItem = function(fileItem, response, status, headers) {
             console.info('file uploaded', fileItem, response, status, headers);
             if(uploaders[1].queue.length!=0)
                 uploaders[1].uploadAll();
-            else
+            else if(uploaders[2].queue.length!=0)
                 uploaders[2].uploadAll();
+            else{
+                toaster.pop('success', 'New Product', 'Product Added Successfully');
+                $timeout(reloadState, 3000); 
+            }
         };
          
         uploaders[1].onCompleteAll = function() {

@@ -82,14 +82,14 @@ app.controller('ReviewProductCtrl', ['$scope', '$http', '$stateParams', 'toaster
             else{
                 console.log(productData.product_name);
                 $scope.product.name = productData.product_name;
-                $scope.product.type = productData.product_type_id.;
+                $scope.product.type = productData.product_type_id;
                 $scope.product.brand = productData.product_brand;
                 $scope.product.look = productData.product_look;
                 if (productData.product_width !== 0)
                     $scope.product.width = productData.product_width;
                 if (productData.product_height !== 0)
                     $scope.product.height = productData.product_height;
-                if (productDataproduct_thickness !== 0)
+                if (productData.product_thickness !== 0)
                     $scope.product.thickness = productData.product_thickness;
                 if (productData.product_w_unit !== '')
                     $scope.product.w_unit = productData.product_w_unit;

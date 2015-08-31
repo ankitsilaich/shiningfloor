@@ -356,60 +356,58 @@ $app->put('/shiningfloor/seller/products/update_product', function() use ($app, 
     $app->response()->header('Content-Type', 'application/json');
     echo json_encode($data['id']);
 });
-function resize($origin,$width,$height,$saveTo){
-   
+function resize($origin,$width,$height,$saveTo){   
         // some settings
-    $max_upload_width = 2592;
-    $max_upload_height = 1944;
-    $remote_file = $saveTo;  
-    
+    $max_upload_width = 1200;
+    $max_upload_height = 800;
+    $remote_file = $saveTo;      
     // if uploaded image was JPG/JPEG
     if($_FILES["file"]["type"] == "image/jpeg" || $_FILES["file"]["type"] == "image/pjpeg"){  
       $image_source = imagecreatefromjpeg($origin);
-    }   
-    // if uploaded image was GIF
-    if($_FILES["file"]["type"] == "image/gif"){ 
-      $image_source = imagecreatefromgif($_FILES[ 'file' ][ 'tmp_name' ]);
-    } 
-    // BMP doesn't seem to be supported so remove it form above image type test (reject bmps) 
-    // if uploaded image was BMP
-    if($_FILES["file"]["type"] == "image/bmp"){ 
-      $image_source = imagecreatefromwbmp($_FILES[ 'file' ][ 'tmp_name' ]);
-    }     
-    // if uploaded image was PNG
-    if($_FILES["file"]["type"] == "image/x-png"){
-      $image_source = imagecreatefrompng($_FILES[ 'file' ][ 'tmp_name' ]);
-    }    
-     
-    imagejpeg($image_source,$remote_file,100);
-    chmod($remote_file,0644);
-    
+    }        
+    imagejpeg($image_source,$remote_file,80);
+    chmod($remote_file,0644);    
     // get width and height of original image
     list($image_width, $image_height) = getimagesize($remote_file);  
      
-      $proportions = $image_width/$image_height;      
-      if($image_width>$image_height){
-        $new_width = $width;
-        $new_height = $height;
-      }   
+      $proportions = $image_width/$image_height;   
+      if($width && $height){   
+          if($image_width>$image_height){
+            $new_width = $width;
+            $new_height = $height;
+          }   
+          else{
+            $new_height = $height;
+            $new_width = $width;
+          }   
+      } // for original image put 0 , 0
       else{
-        $new_height = $height;
-        $new_width = $width;
-      }   
-      
-      
+
+        if($image_width > $max_upload_width){
+          if($image_width>$image_height){            
+                $new_width = $max_upload_width ;
+                $new_height  = $new_width/$proportions ;
+            }
+             
+          else{
+            $new_width = $max_upload_height ;
+            $new_height  = $new_width/$proportions ;
+          }  
+        }
+        else{ 
+        // if original image width height is lesser than max allowd size than take original image
+            $new_height =$image_height;
+            $new_width = $image_width ;
+        }             
+      }     
       $new_image = imagecreatetruecolor($new_width , $new_height);
-      $image_source = imagecreatefromjpeg($remote_file);
-      
+      $image_source = imagecreatefromjpeg($remote_file);      
       imagecopyresampled($new_image, $image_source, 0, 0, 0, 0, $new_width, $new_height, $image_width, $image_height);
-      imagejpeg($new_image,$remote_file,100);
-      
+      imagejpeg($new_image,$remote_file,80);      
       imagedestroy($new_image);
-     
-    
-    imagedestroy($image_source);
-   
+      imagedestroy($image_source);   
 }
+
 //----------------------------------------
 $app->post('/seller/uploadfile(/:id)', $authenticate_seller($app),function($id = null) use ($app,$db)
 {
@@ -435,7 +433,8 @@ $app->post('/seller/uploadfile(/:id)', $authenticate_seller($app),function($id =
      }
      $newfilename = $last_id. '_'.$i.'.' .'jpg';
      $uploadPath = dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '../uploads/products' . DIRECTORY_SEPARATOR .$newfilename;
-     move_uploaded_file( $tempPath, $uploadPath );
+     resize($tempPath,0,0,"../uploads/products/".$newfilename);
+//     move_uploaded_file( $tempPath, $uploadPath );
      $answer = array( 'lastid' => $last_id,
      'filename' => $newfilename);
      $db->product_images->insert(array('image_name'=>  '../uploads/products' . DIRECTORY_SEPARATOR .$newfilename , 'products_id'=>$last_id));
@@ -479,7 +478,9 @@ $app->post('/seller/uploadConcept(/:id)', $authenticate_seller($app), function($
      }
      $newfilename = $last_id. '_'.$i.'.' .'jpg';
      $uploadPath = dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '../uploads/concepts' . DIRECTORY_SEPARATOR .$newfilename;
-     move_uploaded_file( $tempPath, $uploadPath );
+      resize($tempPath,0,0,"../uploads/concepts/".$newfilename);
+
+     // move_uploaded_file( $tempPath, $uploadPath );
      $answer = array( 'lastid' => $last_id,
      'filename' => $newfilename);
      $db->concept_images->insert(array('concept_name'=>  '../uploads/concepts' . DIRECTORY_SEPARATOR .$newfilename , 'products_id'=>$last_id));

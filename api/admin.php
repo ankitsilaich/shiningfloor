@@ -452,7 +452,7 @@ $app->get('/shiningfloor/admin/products/(:input)', function($input=null ) use ($
         $data = array();
          
         $query =''; 
-        $query = $db->products(); 
+        $query = $db->verified_products(); 
         if($input!=null)
         {
             $query = $query->where('product_name LIKE ?' ,"%".$input."%");
@@ -471,5 +471,13 @@ $app->get('/shiningfloor/admin/products/(:input)', function($input=null ) use ($
         echo json_encode(array( 'totalResults' => $totalResults , 'start' => $start,'last' => $last  , 'product_data'=>$data ));
 });
 
-
+$app->get('/shiningfloor/admin/product(/:id)', function($id=null ) use ($app, $db){         
+      $data = array();
+      if($id!=null){
+        $query =$db->verified_products()->where('id',$id);  
+        $data = findAllProducts($query,'');
+        $app->response()->header('content-type','application/json');
+        echo json_encode(array( 'product_data'=>$data ));
+    }
+});
 ?>

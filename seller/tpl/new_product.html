@@ -384,10 +384,10 @@
                                 <div class="btn btn-sm btn-primary m-t-lg fileupload" ng-click="uploaders[0].clearQueue()">                  
                                     <small class="m-s"> <span class="fa fa-camera" ></span> Select image </small>  
                                      
-                                    <input type="file" id="fileInput" accept="image/*" nv-file-select="" class="upload" uploader="uploaders[0]"  >
+                                    <input type="file" id="fileInput" accept="image/jpg,image/jpeg" nv-file-select="" class="upload" uploader="uploaders[0]"  >
                                </div> 
                                  
-                                <p class='m-t-sm small'>Only PNG,GIF,JPG,JEPG files allowed.</p>
+                                <p class='m-t-sm small'>Only JPG,JPEG files allowed(max 2MB).</p>
                             </div>
                             
                             <div class="thumbnail col-md-6 align-center"  >
@@ -411,10 +411,10 @@
                                 <div class="btn btn-sm btn-primary m-t-lg fileupload" ng-class='{disabled:uploaders[1].queue.length>=2}'>                  
                                     <small class="m-s"> <span class="fa fa-camera"></span> Concept images </small>  
                                      
-                                    <input type="file" accept="image/*" id="fileInput" nv-file-select="" class="upload" uploader="uploaders[1]">
+                                    <input type="file" accept="image/jpg,image/jpeg" id="fileInput" nv-file-select="" class="upload" uploader="uploaders[1]">
                                </div> 
                                  
-                                <p class='m-t-sm small'>Only PNG,GIF,JPG,JPEG files allowed.</p>
+                                <p class='m-t-sm small'>Only JPG,JPEG files allowed(max 2MB).</p>
                             </div>
                             
                             <div class="thumbnail col-md-6 align-center"  >
@@ -436,14 +436,14 @@
                  <div class='col-md-3 padder-v'>
                      <div class="col-sm-6 col-md-6 btn btn-info fileupload" ng-class='{disabled:uploaders[2].queue.length>=4}'>                  
                         <small class="m-s"> <span class="fa fa-camera"></span> Other Images</small>                           
-                        <input type="file" accept="image/*" id="fileInput" nv-file-select="" class="upload" uploader="uploaders[2]" multiple>
+                        <input type="file" accept="image/jpg,image/jpeg" id="fileInput" nv-file-select="" class="upload" uploader="uploaders[2]" >
                         
                    </div>
                     
                    <button type="button" class="col-sm-6 col-md-6 btn btn-danger m-l-sm" ng-click="uploaders[2].clearQueue()" ng-disabled="!uploaders[2].queue.length" style='position:absolute;'>
                             <span class="glyphicon glyphicon-trash"></span> Remove all
                         </button>
-                   <p class='m-t-sm small col-sm-12'>Only PNG,GIF,JPG,JPEG files allowed.</p> 
+                   <p class='m-t-sm small col-sm-12'>Only JPG,JPEG files allowed(max 2MB).</p> 
                </div>
                 
                     <div class='col-md-9 padder-v'>

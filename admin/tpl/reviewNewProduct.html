@@ -27,7 +27,7 @@
           </div>
           <div class='col-sm-2 padder-v' >  <span ng-show='suggest.product_items_per_box>0'> {{suggest.product_items_per_box}} per box </span>
           </div>          
-          <div class='col-sm-2 padder-v-sm'> <a class='btn btn-success' ng-click="SelectProduct()"> Edit</a> 
+          <div class='col-sm-2 padder-v-sm'> <a class='btn btn-success' ng-click="selectProduct(suggest.product_id)"> Edit</a> 
           </div>
            
         </li>
@@ -76,7 +76,7 @@
                         <div class="panel-body">
                               <div class="tab-content no-padder">
                                   
-                                    <div ng-show="activeTab==1" class="tab-pane fade m-t-md" ng-class="{active:activeTab==1 , in:activeTab==1}" id="panel-general">
+                                <div ng-show="activeTab==1" class="tab-pane fade m-t-md" ng-class="{active:activeTab==1 , in:activeTab==1}" id="panel-general">
                              
                                 <div class="form-group clearfix">
 

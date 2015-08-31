@@ -82,7 +82,43 @@ app.controller('ReviewProductCtrl', ['$scope', '$http', '$stateParams', 'toaster
                 $scope.searchResults = '';
             }
         };
-
+        $scope.tmp_product = $scope.product;
+        $scope.selectProduct  = function(id){
+            $http.get('../api/slim.php/shiningfloor/admin/product/' + id).then(function(resp) {
+            //       console.log(resp.data.product_data[0]);
+            var productData = resp.data.product_data[0];
+            console.log(productData);
+//                console.log(productData.product_name);
+                $scope.tmp_product.name = productData.product_name;
+                $scope.tmp_product.type = productData.product_type_id;
+                $scope.tmp_product.brand = productData.product_brand;
+                $scope.tmp_product.look = productData.product_look;
+                if (productData.product_width !== 0)
+                    $scope.tmp_product.width = productData.product_width;
+                if (productData.product_height !== 0)
+                    $scope.tmp_product.height = productData.product_height;
+                if (productData.product_thickness !== 0)
+                    $scope.tmp_product.thickness = productData.product_thickness;
+                if (productData.product_w_unit !== '')
+                    $scope.tmp_product.w_unit = productData.product_w_unit;
+                if (productData.product_t_unit !== '')
+                    $scope.tmp_product.t_unit = productData.product_t_unit;
+                $scope.tmp_product.finish_type = productData.product_finish_type;
+                $scope.tmp_product.material = productData.product_material;
+                if (productData.product_items_per_box !== 0)
+                    $scope.tmp_product.items_per_box = productData.product_items_per_box;
+                $scope.tmp_product.origin_country = productData.product_origin_country;
+                $scope.tmp_product.variation = productData.product_degree_of_variation;
+                $scope.tmp_product.shape = productData.product_shape;
+                $scope.tmp_product.features = productData.product_features;
+                $scope.tmp_product.colors = productData.product_colors;
+                $scope.tmp_product.usages = productData.product_usages;
+                $scope.tmp_product.applications = productData.product_applications;
+                $scope.tmp_product.images = productData.product_img;
+                $scope.tmp_product.concepts = productData.product_concepts;                 
+            });
+            console.log($scope.tmp_product);
+        }
 
         var i, j;
         $http.get('../api/slim.php/shiningfloor/product/' + $stateParams.productId).then(function(resp) {
@@ -94,14 +130,14 @@ app.controller('ReviewProductCtrl', ['$scope', '$http', '$stateParams', 'toaster
             else{
                 console.log(productData.product_name);
                 $scope.product.name = productData.product_name;
-                $scope.product.type = productData.product_type_id.;
+                $scope.product.type = productData.product_type_id;
                 $scope.product.brand = productData.product_brand;
                 $scope.product.look = productData.product_look;
                 if (productData.product_width !== 0)
                     $scope.product.width = productData.product_width;
                 if (productData.product_height !== 0)
                     $scope.product.height = productData.product_height;
-                if (productDataproduct_thickness !== 0)
+                if (productData.product_thickness !== 0)
                     $scope.product.thickness = productData.product_thickness;
                 if (productData.product_w_unit !== '')
                     $scope.product.w_unit = productData.product_w_unit;
@@ -155,7 +191,7 @@ app.controller('ReviewProductCtrl', ['$scope', '$http', '$stateParams', 'toaster
             $scope.updateSuggestProducts = function() {
                 if ($scope.product.name != '' && typeof $scope.product.name != 'undefined') {
                      $scope.queryUrl = $scope.query;
-                     $http.get('../api/slim.php/shiningfloor/products/' + $scope.queryUrl + '?details=false').then(function(resp) {
+                     $http.get('../api/slim.php/shiningfloor/admin/products/' + $scope.queryUrl + '?details=false').then(function(resp) {
                     $scope.searchResults = resp.data.product_data;
                     $scope.totalResults = resp.data.totalResults;
                     $scope.start = resp.data.start;
