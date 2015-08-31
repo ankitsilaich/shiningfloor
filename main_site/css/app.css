@@ -207,7 +207,7 @@ text-transform: uppercase;
   text-align: center;
 }
 .header_left {
-  margin: 43px 0;
+  margin: 41px 0;
   position: relative;
 }
 .header_right {
@@ -884,6 +884,13 @@ position: relative;
 .promotion_area {
   padding: 60px 0 97px;
 }
+.promotion_header{
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+  color: #434343;
+}
+
 .promotion_top {
 margin-bottom: 18px;
 overflow: hidden;
