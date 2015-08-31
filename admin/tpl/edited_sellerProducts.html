@@ -1,7 +1,7 @@
-<div ng-controller="hnewCtrl">
+<div ng-controller="sellerEditedProducts">
     <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
 <div class="bg-light lter b-b wrapper-md">
-    <h1 class="m-n font-thin h3"><i class="icon-magnifier i-sm m-r-sm"></i> Select Product for {{seller.storename}} of {{seller.name}}</h1>
+    <h1 class="m-n font-thin h3"><i class="icon-magnifier i-sm m-r-sm"></i> Select and Review Changes</h1>
 </div>
 <div class="wrapper-md" >
  
@@ -254,7 +254,7 @@
                         </form>
                     </div> -->
                     <footer class="panel-footer text-right bg-light lter">
-                       <a type="submit" class="btn btn-success btn-addon" ui-sref="app.all.editproduct({productId: product.product_id})"><i class="fa fa-plus"></i>Select & Edit</a>
+                       <a type="submit" class="btn btn-success btn-addon" ui-sref="app.all.revieweditedproduct({productId: product.product_id})"><i class="fa fa-plus"></i>Select & Edit</a>
 <!--                          <button type="submit" class="btn btn-danger" ng-click="temp = !temp"  ng-show="temp">Cancel</button>
                       <button type="submit" class="btn btn-success" ng-disabled="detailsForm.$invalid" ng-show="temp" ng-click="selectproduct(product)">Submit</button>
  -->

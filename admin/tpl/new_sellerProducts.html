@@ -1,7 +1,7 @@
-<div ng-controller="hnewCtrl">
+<div ng-controller="sellerNewProducts">
     <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
 <div class="bg-light lter b-b wrapper-md">
-    <h1 class="m-n font-thin h3"><i class="icon-magnifier i-sm m-r-sm"></i> Select Product for {{seller.storename}} of {{seller.name}}</h1>
+    <h1 class="m-n font-thin h3"><i class="icon-magnifier i-sm m-r-sm"></i> New Products</h1>
 </div>
 <div class="wrapper-md" >
  
@@ -224,40 +224,9 @@
 
                <div class="panel panel-default  m-b-n-sm pos-rlt">
                                     
-                   <!--  <div class="panel-body" ng-show="temp">
-                       <form name="detailsForm" class="form-validation" novalidate>   
-                                              
-                        <div class="form-group pull-in clearfix">
-                          <div class="col-sm-6">
-                           <input type="text" class="form-control"  placeholder="Price"  ng-model="product.price" id="pricefield{{product.product_id}}" required  ng-pattern="/^[0-9]+$/">
-
-                            
-                          </div>
-                          <div class="col-sm-6">
-                            
-                            <input type="text" class="form-control" placeholder="Tiles Per Box"  required  id="tilesperboxtfield{{product.product_items_per_box}}" ng-model="product.product_items_per_box" ng-pattern="/^[0-9]+$/">
-                          </div>
-                        </div>
-                        <div class="form-group pull-in clearfix">
-                            <div class="col-sm-6">
-                            <input type="text" class="form-control" placeholder="Product Code"  required   id="sellercodefield{{product.seller_product_code}}" ng-model="product.seller_product_code" ng-pattern="/^[0-9]+$/">
-                           </div>
-                          
-                           <div class="col-sm-6">
-                              <input type="text" class="form-control" placeholder="Minimum Orders"  required   id="sellercodefield{{product.minimum_boxes}}" ng-model="product.minimum_boxes" ng-pattern="/^[0-9]+$/">
-                           </div>
-                        </div>
-                        <div class="form-group">
-                          
-                          <textarea class="form-control" rows="6" placeholder="Comment on Product" id="coomenttextarea{{product.product_id}}" ng-model="product.product_comments" required> </textarea>
-                        </div>
-                        </form>
-                    </div> -->
                     <footer class="panel-footer text-right bg-light lter">
-                       <a type="submit" class="btn btn-success btn-addon" ui-sref="app.all.editproduct({productId: product.product_id})"><i class="fa fa-plus"></i>Select & Edit</a>
-<!--                          <button type="submit" class="btn btn-danger" ng-click="temp = !temp"  ng-show="temp">Cancel</button>
-                      <button type="submit" class="btn btn-success" ng-disabled="detailsForm.$invalid" ng-show="temp" ng-click="selectproduct(product)">Submit</button>
- -->
+                       <a type="submit" class="btn btn-success btn-addon" ui-sref="app.all.reviewnewproduct({productId: product.product_id})">Review Product <i class="fa fa-search"></i></a>
+
                     </footer>
                  
                 </div>

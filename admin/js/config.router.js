@@ -27,13 +27,7 @@ angular.module('app')
                             console.log(msg.data);
                             // $location.path('/home');
                         } else {
-
-                             if ($location.path().indexOf('access/signup') != 1) {
-                                console.log("not logged in");
                                $location.path('/access/signin');
-
-                            }
-
                         }
                     })
 
@@ -50,7 +44,7 @@ angular.module('app')
             function($stateProvider, $urlRouterProvider) {
 
                 $urlRouterProvider
-                    .otherwise('/app/all/allproducts');
+                    .otherwise('/app/admin/all/allproducts');
                 $stateProvider
                     .state('app', {
                         abstract: true,
@@ -58,17 +52,7 @@ angular.module('app')
                         templateUrl: 'tpl/app.html'
 
                     })
-                    .state('app.dashboard-v1', {
-                        url: '/dashboard-v1',
-                        templateUrl: 'tpl/app_dashboard_v1.html',
-                        resolve: {
-                            deps: ['$ocLazyLoad',
-                                function($ocLazyLoad) {
-                                    return $ocLazyLoad.load(['js/controllers/chart.js']);
-                                }
-                            ]
-                        }
-                    })
+                     
 
                 .state('app.seller', {
                         url: '/seller',
@@ -90,17 +74,16 @@ angular.module('app')
                                 }
                             ]
                         }
-
                     })
 
                 // table
 
                 .state('app.all', {
-                    url: '/all',
+                    url: '/admin/all',
                     template: '<div ui-view></div>'
                 })
 
-                .state('app.all.houses', {
+                .state('app.all.products', {
                         url: '/allproducts',
                         templateUrl: 'tpl/all_products.html',
                         resolve: {
@@ -111,8 +94,72 @@ angular.module('app')
                             ]
                         }
                     })
+                .state('app.all.sellers_products', {
+                        url: '/sellersproducts',
+                        templateUrl: 'tpl/sellers_products.html',
+                        resolve: {
+                            deps: ['$ocLazyLoad',
+                                function($ocLazyLoad) {
+                                    return $ocLazyLoad.load(['js/controllers/sellers_products.js']);
+                                }
+                            ]
+                        }
+                    })
+                .state('app.all.new_products', {
+                        url: '/newproducts',
+                        templateUrl: 'tpl/new_sellerProducts.html',                         
+                        resolve: {
+                            deps: ['$ocLazyLoad', 'uiLoad',
+                                function($ocLazyLoad, uiLoad) {
+                                    return $ocLazyLoad.load('toaster').then(
+                                        function() {
+                                            return uiLoad.load(
+                                                'js/controllers/new_sellerProducts.js')
+                                        }
+                                    );
+                                }
+                            ]
+                        }
 
-
+                    })
+                .state('app.all.edited_products', {
+                        url: '/editedproducts',
+                        templateUrl: 'tpl/edited_sellerProducts.html',
+                        resolve: {
+                            deps: ['$ocLazyLoad', 'uiLoad',
+                                function($ocLazyLoad, uiLoad) {
+                                    return $ocLazyLoad.load('toaster').then(
+                                        function() {
+                                            return uiLoad.load(
+                                                'js/controllers/edited_sellerProducts.js')
+                                        }
+                                    );
+                                }
+                            ]
+                        }
+                    })
+                .state('app.all.add_product', {
+                        url: '/addproduct',
+                        templateUrl: 'tpl/add_product.html',
+                        resolve: {
+                            deps: ['$ocLazyLoad',
+                                function($ocLazyLoad) {
+                                    return $ocLazyLoad.load(['js/controllers/add_product.js']);
+                                }
+                            ]
+                        }
+                    })
+                .state('app.all.edit_product', {
+                        url: '/editproduct(/:id)',
+                        templateUrl: 'tpl/edit_product.html',
+                        resolve: {
+                            deps: ['$ocLazyLoad',
+                                function($ocLazyLoad) {
+                                    return $ocLazyLoad.load(['js/controllers/edit_product.js']);
+                                }
+                            ]
+                        }
+                    })
                 .state('app.all.selectedproducts', {
                         url: '/selectedproducts/:seller_id',
                         templateUrl: 'tpl/selected_products.html',
@@ -131,7 +178,7 @@ angular.module('app')
                             ]
                         }
                     })
-                .state('app.all.products', {
+                .state('app.all.chooseproducts', {
                         url: '/chooseproducts/:seller_id',
                         templateUrl: 'tpl/select_products.html',
                         resolve: {
@@ -149,8 +196,47 @@ angular.module('app')
                         }
 
                     })
+                .state('app.all.reviewnewproduct', {
+                            url: '/review/new/:productId',
+                            templateUrl: 'tpl/reviewNewProduct.html',
+                             
+                            resolve: {
+                                deps: ['$ocLazyLoad', 'uiLoad',
+                                    function($ocLazyLoad, uiLoad) {
+                                        return $ocLazyLoad.load(['angularFileUpload','toaster']).then(
+                                            function() {
+                                                return uiLoad.load(
+                                                    [ 
+                                                    'vendor/modules/angular-file-upload/angular-file-upload.min.js',
+                                                    'js/controllers/reviewNewProduct.js'])
+                                            }
+                                        );
+                                    }
+                                ]
+                            }
 
-                    .state('app.all.tenants', {
+                        })
+                    .state('app.all.revieweditedproduct', {
+                            url: '/review/edit/:productId',
+                            templateUrl: 'tpl/reviewEditedProduct.html',
+                             
+                            resolve: {
+                                deps: ['$ocLazyLoad', 'uiLoad',
+                                    function($ocLazyLoad, uiLoad) {
+                                        return $ocLazyLoad.load(['angularFileUpload','toaster']).then(
+                                            function() {
+                                                return uiLoad.load(
+                                                    [ 
+                                                    'vendor/modules/angular-file-upload/angular-file-upload.min.js',
+                                                    'js/controllers/reviewEditedProduct.js'])
+                                            }
+                                        );
+                                    }
+                                ]
+                            }
+
+                        })
+                    .state('app.all.sellers', {
                         url: '/sellers',
                         templateUrl: 'tpl/all_sellers.html',
                         resolve: {
@@ -180,7 +266,7 @@ angular.module('app')
                         }
 
                     })
-                 .state('app.add.tenants', {
+                 .state('app.add.sellers', {
                         url: '/sellers',
                         templateUrl: 'tpl/add_seller.html'
                     })
@@ -212,137 +298,8 @@ angular.module('app')
                             ]
                         }
                     })
-                    .state('app.update.houses', {
-                        url: '/houses/:house_id',
-                        templateUrl: 'tpl/update_houses.html',
-                        resolve: {
-                            deps: ['$ocLazyLoad', 'uiLoad',
-                                function($ocLazyLoad, uiLoad) {
-                                    return $ocLazyLoad.load('toaster').then(
-                                        function() {
-                                            return uiLoad.load(
-                                                'js/controllers/updatehouse.js')
-                                        }
-                                    );
-                                }
-                            ]
-                        }
-                    })
-                    .state('app.update.owners', {
-                        url: '/owners/:owner_id',
-                        templateUrl: 'tpl/update_owners.html',
-                        resolve: {
-                            deps: ['$ocLazyLoad', 'uiLoad',
-                                function($ocLazyLoad, uiLoad) {
-                                    return $ocLazyLoad.load('toaster').then(
-                                        function() {
-                                            return uiLoad.load(
-                                                'js/controllers/updateowner.js')
-                                        }
-                                    );
-                                }
-                            ]
-                        }
-                    })
-
-                    // form
-                    .state('app.form', {
-                        url: '/form',
-                        template: '<div ui-view class="fade-in"></div>',
-                        resolve: {
-                            deps: ['uiLoad',
-                                function(uiLoad) {
-                                    return uiLoad.load('js/controllers/form.js');
-                                }
-                            ]
-                        }
-                    })
-
-
-                .state('app.house', {
-                        url: '/house',
-                        template: '<div ui-view class="fade-in-down"></div>'
-                    })
-                    .state('app.house.detail', {
-                        url: '/details/:house_id',
-                        templateUrl: 'tpl/page_profile.html',
-                        resolve: {
-                            deps: ['$ocLazyLoad',
-                                function($ocLazyLoad) {
-                                    return $ocLazyLoad.load('toaster').then(
-                                        function() {
-                                            return $ocLazyLoad.load('js/controllers/houses.js');
-                                        }
-                                    );
-                                }
-                            ]
-                        }
-                    })
-                    .state('app.deadlines', {
-                        url: '/deadlines',
-                        template: '<div ui-view></div>'
-                    })
-
-                .state('app.deadlines.houses', {
-                        url: '/houses',
-                        templateUrl: 'tpl/deadline_houses.html',
-                        resolve: {
-                            deps: ['uiLoad',
-                                function(uiLoad) {
-                                    return uiLoad.load(['js/controllers/table.js']);
-                                }
-                            ]
-                        }
-                    })
-                 .state('app.verify', {
-                        url: '/verify',
-                        template: '<div ui-view></div>',
-                        resolve: {
-                            deps: ['$ocLazyLoad', 'uiLoad',
-                                function($ocLazyLoad, uiLoad) {
-                                    return $ocLazyLoad.load('toaster').then(
-                                        function() {
-                                            return uiLoad.load(
-                                                'js/controllers/verify.js')
-                                        }
-                                    );
-                                }
-                            ]
-                        }
-                    })
-
-                .state('app.verify.tenants', {
-                        url: '/tenants',
-                        templateUrl: 'tpl/verify_tenants.html'
-
-                    })
-                    .state('app.deadlines.tenants', {
-                        url: '/tenants',
-                        templateUrl: 'tpl/deadline_tenants.html',
-                        resolve: {
-                            deps: ['uiLoad',
-                                function(uiLoad) {
-                                    return uiLoad.load(['js/controllers/deadlines.js']);
-                                }
-                            ]
-                        }
-                    })
-
-
-
-                // others
-
-                .state('lockme', {
-                        url: '/lockme',
-                        templateUrl: 'tpl/page_lockme.html',
-                        resolve: {
-                            deps: ['uiLoad',
-                                function(uiLoad) {
-                                    return uiLoad.load(['js/controllers/login.js']);
-                                }
-                            ]
-                        }
-                    })
+                   
+                   
                     .state('access', {
                         url: '/access',
                         template: '<div ui-view class="fade-in-right-big smooth"></div>'
@@ -358,36 +315,12 @@ angular.module('app')
                             ]
                         }
                     })
-                    .state('access.signup', {
-                        url: '/signup',
-                        templateUrl: 'tpl/page_signup.html',
-
-                        resolve: {
-                            deps: ['$ocLazyLoad', 'uiLoad',
-                                function($ocLazyLoad, uiLoad) {
-                                    return $ocLazyLoad.load('toaster').then(
-                                        function() {
-                                            return uiLoad.load(
-                                                'js/controllers/signup.js')
-                                        }
-                                    );
-                                }
-                            ]
-                        }
-                    })
-                    .state('access.forgotpwd', {
-                        url: '/forgotpwd',
-                        templateUrl: 'tpl/page_forgotpwd.html'
-                    })
+                   
                     .state('access.404', {
                         url: '/404',
                         templateUrl: 'tpl/page_404.html'
                     })
-
-                // fullCalendar
-
-
-
+ 
 
             }
         ]

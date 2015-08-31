@@ -1,0 +1,445 @@
+<div ng-controller="ReviewProductCtrl">
+<div class="bg-light lter b-b wrapper-md">
+    <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    <h1 class="m-n h3">Review : {{product.name}} </h1>
+</div>
+
+<div class="wrapper-md" uploader="uploader" filters="queueLimit, customFilter">
+ 
+ <form action="#" class="m-b-md" >
+    <div class="input-group" ng-init="isOpen=1" id='product-name'>
+      <input type="text" ng-model="query"  ng-click='isOpen=1' ng-keyup="updateSuggestProducts();isOpen=1;" class="form-control input-lg" placeholder="Search to compare from existed one" >
+      <span class="input-group-btn">
+        <button class="btn btn-lg btn-primary" type="button">Search</button>
+      </span>
+    </div>
+
+    <div class='dropdown' id='suggestions'ng-show='searchResults' ng-class='{open:isOpen}' ng-mouseleave='isOpen=0'>
+      <ul class="dropdown-menu suggestion" class='dropdown-menu' >
+          
+        <li class="m-b-xs clearfix" ng-repeat='suggest in searchResults'>
+          <div class='col-sm-2'> 
+              <img ng-src ='{{suggest.product_img}}' style='border: 1px solid #ccc;width:50px;height:50px;'> 
+          </div>
+          <div class='col-sm-2 padder-v'>  {{suggest.product_name}}           </div>          
+          <div class='col-sm-2 padder-v'>  {{suggest.product_brand}} </div>
+          <div class='col-sm-2 padder-v'> <span ng-show='suggest.product_height!=0&&suggest.product_width!=0'> {{suggest.product_width}}*{{suggest.product_height}} sq {{suggest.product_w_unit}}</span>  <span ng-show='suggest.product_thickness!=0'>*{{suggest.product_thickness}} {{suggest.product_t_unit}}</span>
+          </div>
+          <div class='col-sm-2 padder-v' >  <span ng-show='suggest.product_items_per_box>0'> {{suggest.product_items_per_box}} per box </span>
+          </div>          
+          <div class='col-sm-2 padder-v-sm'> <a class='btn btn-success' ng-click="selectProduct(suggest.product_id)"> Edit</a> 
+          </div>
+           
+        </li>
+        
+          </ul>
+    </div>
+  </form>
+
+               <div class='row' style='background-color: #F5FAFA;'>
+                  
+                    <div class='col-sm-6'>
+                      <div class="panel with-nav-tabs panel-info" style='background-color: #F5FAFA;'>
+                        <div class="panel-heading">
+                              
+                             <ul class="nav nav-tabs" >
+                              <li ng-class="{active: activeTab==1}"> <a ><span class="fa fa-home"> </span> General</a></li>
+                              <li ng-class="{active: activeTab==2}"> <a  ><span class="fa fa-edit"> </span> Seller Data</a></li>
+                              <li ng-class="{active: activeTab==3}"> <a  ><span class="fa fa-image"> </span> Images</a></li>
+                              <li class="required_info t-r pull-right"> <i> * fields are required </i> </li>
+                            </ul>
+                        </div>
+                         
+                          <div class="panel-body">
+                              <div class="tab-content no-padder">
+                                  
+                                    <div ng-show="activeTab==1" class="tab-pane fade" ng-class="{active:activeTab==1 , in:activeTab==1}" id="panel-general">
+                                         
+ 
+                                    </div>
+                              </div>
+
+                      </div>
+                    </div>
+                  </div>
+                    <div class='col-sm-6'>
+                      <form name="editProductForm" class="form-validation editProductForm" >
+                      <div class="panel with-nav-tabs panel-info" style='background-color: #F5FAFA;'>
+                        <div class="panel-heading">
+                            <ul class="nav nav-tabs" >
+                              <li ng-class="{active: activeTab==1}"> <a ><span class="fa fa-home"> </span> General</a></li>
+                              <li ng-class="{active: activeTab==2}"> <a  ><span class="fa fa-edit"> </span> Seller Data</a></li>
+                              <li ng-class="{active: activeTab==3}"> <a  ><span class="fa fa-image"> </span> Images</a></li>
+                              <li class="required_info t-r pull-right"> <i> * fields are required </i> </li>
+                          </ul>
+                        </div>
+                        <div class="panel-body">
+                              <div class="tab-content no-padder">
+                                  
+                                <div ng-show="activeTab==1" class="tab-pane fade m-t-md" ng-class="{active:activeTab==1 , in:activeTab==1}" id="panel-general">
+                             
+                                <div class="form-group clearfix">
+
+                                    <label class="col-sm-4 control-label">Product Name* <br> </label>
+                                    <div class="col-sm-8 " >
+                                        <input type="text" class="form-control" name='name' placeholder="product name" ng-model="product.name"   required>
+                                        <div ng-show="generalDataChecked || newProductForm.name.$touched">
+                                          <span class='form-error' ng-show="newProductForm.name.$error.required"> product name can't be empty</span>
+                                        </div>
+                                         
+                                    </div>
+
+                                </div>    
+                                <div class="form-group clearfix">
+                                    <label class="col-sm-4 control-label">Product Type* </label>
+                                    <div class="col-sm-8 ">
+                                        <select class="form-control" name='type' ng-model="product.type" ng-click="selectType(product.type);">
+                                            <option ng-repeat="product_type in product_types" value="{{product_type.value}}">{{product_type.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                             
+                             
+                                <div class="form-group clearfix">
+                                    <label class="col-sm-4 control-label" >Product Brand*</label>
+                                    
+
+                                    <div class="col-sm-8" mass-autocomplete>                                        
+                                        <input placeholder='select a brand' class="form-control" name='brand' ng-model="product.brand" mass-autocomplete-item="brand_options" ng-keyup="addNewBrandInList()" required>
+                                        <div ng-show="generalDataChecked || newProductForm.brand.$touched">
+                                          <span class='form-error' ng-show="newProductForm.brand.$error.required"> product brand can't be empty</span>
+                                        </div>
+                                        
+                                    </div>
+
+                                </div>  
+                                <div class="form-group clearfix">
+                                    <label class="col-sm-4 control-label">Product Usages* <br><em class='text-muted'>(choose multiple)</em></label>
+                                    <div class="col-sm-8 form-inline">
+                                         
+                                        <div class="checkbox custom-checkbox form-group" ng-repeat="usage in usages"  ng-click="selectedUsages[$index] = !selectedUsages[$index];selectUsage($index);isUsagesOk()">
+                                        <label >
+                                            <input  type="checkbox" ng-model="selectedUsages[$index]" ng-checked="selectedUsages[$index]"  > 
+                                            
+                                            <span class="fa fa-check"></span>
+                                            {{usage}}
+                                        </label>
+                                        </div>
+                                        <div ng-show="!usagesFieldOk">
+                                          <span class='form-error'>choose one or more usages</span>
+                                        </div>
+                                    </div>
+                                </div>  
+                             
+                                <div class="form-group clearfix">
+                                    <label class="col-sm-4 control-label ">Product Width*</label>
+                                    <div class="col-sm-8 form-inline size_info"  >
+                                         
+                                     
+                                         <div class="input-group">
+                                            <input placeholder='width' class="form-control" name='width'ng-model="product.width" ng-pattern="/^[0-9]+$/" required>
+                                        <div class="input-group-btn"> <select  class="form-control pull-right" name='w_unit' ng-model ="product.w_unit" placeholder="unit">
+                                                <option  value="ft"> ft</option> <option  value="inch">inch</option> <option  value="cm">cm</option> <option  value="mm">mm</option>
+                                        </select> </div>
+                                        
+                                         </div>
+                                       <div ng-show="generalDataChecked || newProductForm.width.$touched">
+                                          <span class='form-error' ng-show="newProductForm.width.$error.required">provide width of product </span>
+                                          <span class='form-error' ng-show="newProductForm.width.$error.pattern">width must be integer</span>
+                                        </div>
+                                  </div> 
+                                  </div>  
+                                    <div class="form-group clearfix">
+                                    <label class="col-sm-4 control-label ">Product Height*</label>
+                                    <div class="col-sm-8 form-inline size_info" >
+                                         
+                                        <div class="input-group">    
+                                       <input placeholder='height' class="form-control" name='height' ng-model="product.height" ng-pattern="/^[0-9]+$/" required>
+                                       <div class="input-group-btn">
+                                         <select  class="form-control pull-right" name='h_unit' ng-model ="product.w_unit" placeholder="unit">
+                                                <option  value="ft"> ft</option> <option  value="inch">inch</option> <option  value="cm">cm</option> <option  value="mm">mm</option>
+                                        </select>
+                                        </div>                                        
+                                     </div> 
+                                     <div ng-show="generalDataChecked || newProductForm.height.$touched">
+                                          <span class='form-error' ng-show="newProductForm.height.$error.required">provide height of product </span>
+                                          <span class='form-error' ng-show="newProductForm.height.$error.pattern">height must be integer</span>
+                                        </div> 
+                                    </div>
+                                  </div>
+                                    <div class="form-group clearfix">
+                                    <label class="col-sm-4 control-label ">Product Thickness*</label>
+                                    <div class="col-sm-8 form-inline size_info">
+                                         
+                                        <div class="input-group">
+                                       <input placeholder='thickness (optional)' class="form-control" name='thickness' ng-pattern="/^[0-9]+$/" ng-model="product.thickness">
+                                       <div class="input-group-btn" dropdown>
+                                           <select  class="form-control pull-right" name='h_unit' ng-model ="product.t_unit" placeholder="unit">
+                                                <option  value="ft"> ft</option> <option  value="inch">inch</option> <option  value="cm">cm</option> <option  value="mm">mm</option>
+                                        </select>
+                                         </div>
+                                         
+                                     </div>
+                                     <div ng-show="newProductForm.thickness.$touched">
+                                           
+                                          <span class='form-error' ng-show="newProductForm.thickness.$error.pattern">thickness must be integer</span>
+                                        </div>
+                                    </div> 
+                                            
+                                  </div>
+                                <div class="form-group clearfix">
+                                    <label class="col-sm-4 control-label">Items Per Box* </label>                                    
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name='items_per_box' placeholder="Number of items per box" ng-model="product.items_per_box" ng-pattern="/^[0-9]+$/" required>
+                                        <div ng-show="generalDataChecked || newProductForm.items_per_box.$touched">
+                                          <span class='form-error' ng-show="newProductForm.items_per_box.$error.required">provide total items in a box</span>
+                                          <span class='form-error' ng-show="newProductForm.items_per_box.$error.pattern"> items per box must be integer</span>
+                                        </div>                                    
+                                    </div>
+
+                                </div>  
+
+                                
+                                <div class="form-group clearfix">
+                                    <label class="col-sm-4 control-label">Product Applications* <br><em class='text-muted'>(choose multiple)</em></label>
+                                    <div class="col-sm-8 form-inline">
+                                         
+
+                                        <div class="checkbox custom-checkbox form-group" ng-repeat="application in applications"  ng-click="selectedApplications[$index] = !selectedApplications[$index];selectApplication($index);isApplicationsOk()">
+                                        <label >
+                                            <input  type="checkbox" ng-model="selectedApplications[$index]" ng-checked="selectedApplications[$index]" >
+                                            
+                                            <span class="fa fa-check"></span>
+                                            {{application}}
+                                        </label>
+                                        </div>
+                                        <div ng-show="!applicationsFieldOk">
+                                          <span class='form-error'>choose one or more applications</span>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+
+                                <div class="form-group clearfix">
+
+                                    <label class="col-sm-4 control-label">Product Material*</label>
+                                    <div class="col-sm-8 ">
+
+                                        <div mass-autocomplete>
+                                            <input placeholder='select a material' class="form-control" name='material' ng-model="product.material" mass-autocomplete-item="material_options" required>
+                                            <div ng-show="generalDataChecked || newProductForm.material.$touched">
+                                          <span class='form-error' ng-show="newProductForm.material.$error.required">provide a product material type</span>
+                                        </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group clearfix m-b-xs">
+                                    <label class="col-sm-4 control-label">Colors* <br><em class='text-muted'>(choose multiple)</em></label>
+
+                                    <div class=" colors_cat col-sm-8">
+                                        
+                                         
+                                            <div id='cat_color'ng-class="{'active':selectedColors[$index]}" ng-click="selectedColors[$index]=!selectedColors[$index];isColorsOk()" ng-repeat="color in colors">
+                                                <a class="col-{{$index+1}}" val="{{$index+1}}" href></a>
+                                            </div>
+                                         
+                                         
+
+                                    </div>
+                                    <div ng-show="!colorsFieldOk" class='form-group clearfix m-t-n'> 
+                                          <span class='form-error padder'>choose one or more colors</span>
+                                        </div>
+                                 </div>
+                                 
+                               
+                                <div class="form-group clearfix">
+                                    <label class="col-sm-4 control-label">Product Shape</label>
+                                    <div class="col-sm-8">
+
+                                        <div mass-autocomplete >
+                                            <input placeholder='select a product shape (optional)' class="form-control" name='product_shape'ng-model="product.shape" mass-autocomplete-item="shape_options">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <label class="col-sm-4 control-label">Product Finish</label>
+                                    <div class="col-sm-8">
+
+                                        <div mass-autocomplete>
+                                            <input placeholder='finish type (optional)' class="form-control" name='finish_type' ng-model="product.finish_type" mass-autocomplete-item="finish_type_options">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <label class="col-sm-4 control-label">Product Look</label>
+                                    <div class="col-sm-8">
+
+                                        <div mass-autocomplete>
+                                            <input placeholder='product look (optional)' class="form-control" name='look' ng-model="product.look" mass-autocomplete-item="look_options">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                
+                              <div class="form-group clearfix">
+                                    <label class="col-sm-4 control-label">Origin Country</label>
+                                     
+                                        <div class="col-sm-8">
+                                            <div mass-autocomplete>
+                                              <input placeholder='origin country of product (optional)' class="form-control" name='origin_country' ng-model="product.origin_country" mass-autocomplete-item="country_options" >
+                                            </div>    
+                                        <!-- <div mass-autocomplete>
+                                            <input placeholder='origin country of product' class="form-control" ng-model="product.origin_country" mass-autocomplete-item="country_options">
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <label class="col-sm-4 control-label">Degree of Variation</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name='variation'placeholder="product degree variation (optional)" ng-model="product.variation">
+                                    </div>
+                                </div>
+                                
+                                 <div class="form-group clearfix">
+                                    <label class="col-sm-4 control-label">Product Description*</label>
+                                    <div class="col-sm-8">
+                                        <textarea class="form-control" name='features' rows="4" placeholder="Type all special features and information here" ng-model="product.features" required>
+                                        </textarea>
+                                        <div ng-show="generalDataChecked || newProductForm.features.$touched">
+                                          <span class='form-error' ng-show="newProductForm.features.$error.required">please provide product description</span>
+                                        </div>
+                                    </div>
+                                    
+
+                                </div>
+                             
+                         
+
+                            <div class="form-group clearfix">
+                                <div class="col-sm-6">
+
+                                </div>
+                                <div class="col-sm-6 proceed-fwd">
+                                    <a class="btn btn-default pull-right" ng-click='checkProductData()' >Save & Proceed <i class="fa fa-arrow-right" /></a>
+                                </div>
+                            </div>
+
+                        </div>
+                     
+                        <div ng-show="activeTab==2" class="tab-pane fade m-t-md" ng-class="{active:activeTab==2 ,in:activeTab==2}" id="panel-colors">
+
+                            <div class="row">
+                                <div class="form-group clearfix">
+                                    <label class="col-sm-4 control-label">Product Box Price*</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                        <span class="input-group-addon">Rs.</span>
+                                        <input type="text" class="form-control" name='price' placeholder="Price" ng-model="product.price" ng-pattern="/^[0-9]+$/" required>
+                                        
+                                      </div>
+                                    <div ng-show="sellerDataChecked || newProductForm.price.$touched">
+                                          <span class='form-error' ng-show="newProductForm.price.$error.required">provide price per box</span>
+                                          <span class='form-error' ng-show="newProductForm.price.$error.pattern">price must be integer</span>
+                                        </div>
+                                    </div>
+                                </div>
+                              <div class="form-group clearfix">
+                                <label class="col-sm-4 control-label">Product Code / SKU</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name='seller_product_code' placeholder="Product code in your database" ng-model="product.seller_product_code">
+
+                                </div>
+
+                              </div>
+                               
+                              
+                                <div class="form-group clearfix">
+                                    <label class="col-sm-4 control-label">Total Quantity* </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name='total_boxes' placeholder="total numbers of boxes" ng-model="product.total_boxes" ng-pattern="/^[0-9]+$/" required>
+                                        <div ng-show="sellerDataChecked || newProductForm.total_boxes.$touched">
+                                          <span class='form-error' ng-show="newProductForm.total_boxes.$error.required">provide a valid total quantity </span>
+                                          <span class='form-error' ng-show="newProductForm.total_boxes.$error.pattern">total quantity must be integer</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <label class="col-sm-4 control-label">Minimum Orders*</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name='minimum_boxes' placeholder="Your Minimum Orders" ng-model="product.minimum_boxes" ng-pattern="/^[0-9]+$/" required>
+                                        <div ng-show="sellerDataChecked || newProductForm.minimum_boxes.$touched">
+                                          <span class='form-error' ng-show="newProductForm.minimum_boxes.$error.required">provide minimum order for this product</span>
+                                          <span class='form-error' ng-show="newProductForm.minimum_boxes.$error.pattern">orders must be integer</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                             
+                                <div class="form-group clearfix">
+                                    
+                                    <label class="col-sm-4 control-label">Seller Comment</label>
+                                    <div class="col-sm-8">
+                                        <textarea class="form-control" name='comments'rows="4" placeholder="Your Comments for product" ng-model="product.comments">
+                                        </textarea>                                         
+                                    </div>
+                                </div>
+                              
+                            <div class="form-group clearfix">
+                                <div class="col-lg-5 col-sm-6 proceed-bck">
+                                    <a class="btn btn-default" ng-click="activeTab=1"><i class="fa fa-arrow-left" /> Back </a>
+                                </div>
+                                <div class="col-lg-5 col-sm-6 proceed-fwd ">
+                                    <a class="btn btn-default pull-right" ng-click='checkSellerData()'>Save & Proceed <i class="fa fa-arrow-right" /></a>
+                                </div>
+                            </div>
+                        </div>
+                              </div>
+
+                      </div>
+                      </div>
+                    </div>
+                    </form>
+ </div>
+               </div>           
+            
+ 
+</div>
+
+
+<div class='wrapper'>
+
+  <header>
+    <h1>3 Column Responsive Layout</h1>
+  </header>
+    
+  <div id="content" class='col-lg-4 col-sm-4'>
+    <h2>1st Content Area</h2>
+    <p>This page demonstrates a 3 column responsive layout, complete with responsive images and jquery slideshow.</p>
+  </div>
+  
+  <div id="middle" class='col-lg-4 col-sm-4'>
+    <h2>2nd Content Area</h2>
+    <p>At full width all three columns will be displayed side by side. As the page is resized the third column will collapse under the first and second. At the smallest screen size all three columns will be stacked on top of one another.</p>
+    <p>Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>
+  </div>
+
+  <div id="sidebar" class='col-lg-4 col-sm-4'>
+    <h2>3rd Content Area</h2>
+    <p>Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.</p>
+    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+    <p>Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.</p>
+  </div>
+  
+  <footer>
+    <h4>Footer</h4>
+    <p>Footer text</p>
+  </footer>
+
+</div>
+
+
+</div>

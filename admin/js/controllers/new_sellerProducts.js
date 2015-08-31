@@ -1,68 +1,86 @@
-app.controller('selectedCtrl', ['$scope', '$http','$stateParams','$q','$state','$location','toaster','$log', function($scope, $http, $stateParams,$q,$state,$location,toaster,$log) {
-   $scope.bigCurrentPage = 1;
+app.controller('sellerNewProducts', ['$scope', '$http','$stateParams','$q','$state','$log','$location','toaster', function($scope, $http, $stateParams,$q,$state,$log,$location,toaster) {
+  $scope.numPages = 5;
+  console.log('ss');
+   // var id = $stateParams.seller_id;
+   $('#choosen').on('change', function(e) {
+    // triggers when whole value changed
+         $('select').trigger("chosen:updated");
+  });
+//    console.log('hghgh');
+    $scope.findAndRemove = function(array, property, value) {
+    var indexno;
+   $.each(array, function(index, result) {
+      
+     if(result[property] == value) {           
+            indexno = index;
+       }    
+   });
+   array.splice(indexno,1)
+};
 
-//var id = $stateParams.seller_id;
-
-  //   $http.get('../api/slim.php/shiningfloor/selectedproducts/'+id+'?page='+$scope.bigCurrentPage).
-  // then(function(response) {
-  //   $scope.product =  response.data.product_data ;
-
-  //     $scope.bigTotalItems = response.data.totalResults ;
-
-  // });
-     $scope.totalItems = 64;
-
-     $scope.findAndRemove = function(array, property, value) {
-         var indexno;
-        $.each(array, function(index, result) {
-          if(result[property] == value) {
-                 indexno = index;
-            }
-           //   else
-        });
-        array.splice(indexno,1)
-     };
-      $scope.deleteproduct = function(id){
-         //console.log($scope.product);
-         console.log('sssss');
-        $http.delete('../api/slim.php/shiningfloor/seller/deleteproduct/'+id).then(function (resp) {
-          toaster.pop('success', 'Product Deleted', 'Sellers Products Updated');
-          $scope.findAndRemove($scope.product, "product_id" ,id);
-          $scope.bigTotalItems--;
-       });
-
-     };
-
+console.log('s');
   $scope.selectproduct = function(product){
     //console.log($scope.product);
+     
     var data = {
      // sellers_id : id,
      products_id: product.product_id,
-     price: product.seller_product_price,
-     seller_product_code :product.seller_product_code,
-     comments:product.seller_product_comments,
-     total_quantity :product.seller_total_quantity,
-     minimum_boxes : product.seller_minimum_boxes
+     price: product.price,
+     items_per_box: product.product_items_per_box,
+     seller_product_code :product.seller_product_code,      
+     comments:product.product_comments,
+     minimum_boxes : product.minimum_boxes
+
     }
-
-   $http.put('../api/slim.php/shiningfloor/seller/products/update_product',data).then(function (resp) {
-     toaster.pop('success', 'Product Selected', 'Product Informaton Updated');
-  //   $scope.findAndRemove($scope.product, "product_id" ,product['product_id']);
-
-   $scope.data = resp;
+   $http.post('../api/slim.php/shiningfloor/seller/sellers_products',data).then(function (resp) {
+     toaster.pop('success', 'Product Selected', 'Product added to Seller account');
+     $scope.findAndRemove($scope.product, "product_id" ,product['product_id']);
+   
+   
+     $scope.bigTotalItems--;
+    // console.log($scope.bigCurrentPage);
+    $scope.data = resp;
+//    console.log($scope.data);
+//console.log(resp);
 
 });
-
+     
 
   };
+   $scope.bigCurrentPage = 1;
+  
+var deferredAbort = $q.defer();
+$http.get('../api/slim.php/shiningfloor/seller/info').then(function (resp) {
+$scope.seller = resp.data.seller_data;
 
+});
+    
+     $scope.totalItems = 64;
+   
 
-       $scope.setPage = function (pageNo) {
+    $scope.maxSize = 10;
+    
+// $http.get('../api/slim.php/shiningfloor/chooseproducts/'+id+'?pageNo='+$scope.bigCurrentPage).
+//   then(function(resp) {
+
+//     $scope.product = resp.data.product_data;
+//     $scope.bigTotalItems = resp.data.totalResults;
+// // console.log($scope.bigTotalItems);
+//     $scope.start = resp.data.start;
+//     $scope.last = resp.data.last;  
+//   });
+
+     $scope.totalItems = 64;
+    
+
+    $scope.setPage = function (pageNo) {
     //  console.log("dasda");
       $scope.currentPage = pageNo;
     };
 
-  $scope.makeUrl = function(selected, original) {
+    $scope.makeUrl = function(selected, original) {
+        //this function is used to make the url
+        //console.log(selected);
         var url, count = 0;
         angular.forEach(selected, function(item, index) {
             if (item == true && count != 0) {
@@ -73,8 +91,10 @@ app.controller('selectedCtrl', ['$scope', '$http','$stateParams','$q','$state','
                 count++;
             }
         });
+//        console.log(url);
         return url;
     };
+    
 $scope.selectedcategory = function(value){
   for(i=0;i<$scope.selectedCategory.length;i++){
     console.log(i + ' ' + value);
@@ -130,25 +150,25 @@ $scope.selectedcategory = function(value){
         $scope.requestToSearchAPI();
       }
   //  };
-
-$scope.requestToSearchAPI = function() {
-      final='';
-      final += $location.url().replace($location.path(), '') ;
-
-      $http.get('../api/slim.php/shiningfloor/seller/selectedproducts'+final).then(function(resp) {
+// API is different for differnet controller       
+ $scope.requestToSearchAPI = function() {
+        final='';
+        final = $location.url().replace($location.path(), '') ;
+       console.log(final);
+      $http.get('../api/slim.php/shiningfloor/admin/sellers/newproducts'+ final).then(function(resp) {
             $scope.product = resp.data.product_data;
             $scope.bigTotalItems = resp.data.totalResults;
             console.log($scope.bigTotalItems);
             $scope.totalPages = resp.data.totalResults;
             $scope.start = resp.data.start;
-            $scope.last = resp.data.last;
+            $scope.last = resp.data.last;         
 
         });
     };
 
     $scope.findandselect = function(allitems, filter, emptyitems, url) {
         //this function is used to select the already selected filters on refreshing the page
-
+      
         if (url[filter]) {
             var items = url[filter].split(',');
             angular.forEach(allitems, function(item, i) {
@@ -159,17 +179,14 @@ $scope.requestToSearchAPI = function() {
             });
          console.log(emptyitems)
         }
-
+      
     };
-
      $scope.findpageNo = function() {
         var params = $location.search();
         if (params['pageNo']) {
             return params['pageNo'];
         }
     };
-
-
 
     $scope.FilterUrl = $location.search();
     // console.log(typeof $scope.FilterUrl.category);
@@ -187,9 +204,10 @@ $scope.requestToSearchAPI = function() {
     $scope.selectedType = '';
     $scope.selectedType = $scope.categoryFilters[0]; 
     $scope.selectedDropdown = [false,false,false,false,false];
-
+    console.log($scope.selectedType);
     $scope.findOtherFilters = function(index){
       $scope.selectedType = $scope.categoryFilters[index]; 
+      console.log($scope.selectedType);
       $http.get('../api/slim.php/shiningfloor/' + $scope.selectedType + '/brands').then(function(resp) {
               $scope.brandFilters = resp.data.brands;
               console.log($scope.brandFilters);
@@ -198,9 +216,9 @@ $scope.requestToSearchAPI = function() {
               for (i = 0; i < $scope.totalBrands; i++)
                   $scope.selectedBrands[i] = false;
               $scope.findandselect($scope.brandFilters, 'brand_name', $scope.selectedBrands, $scope.FilterUrl);      
-          });
+      });
 
-      $http.get('../api/slim.php/shiningfloor/'+'materials').then(function(resp) {
+       $http.get('../api/slim.php/shiningfloor/'+'materials').then(function(resp) {
           $scope.materialFilters = resp.data.materials;
           $scope.materialsLength = $scope.materialFilters.length;
           $scope.selectedMaterials = [];
@@ -227,14 +245,17 @@ $scope.requestToSearchAPI = function() {
                   $scope.selectedFinishTypes[i] = false;         
         $scope.findandselect($scope.finishTypeFilters, 'finish_types', $scope.selectedFinishTypes, $scope.FilterUrl);    
         });
+
     };
    $scope.findandselect($scope.categoryFilters, 'category', $scope.selectedCategory, $scope.FilterUrl);      
-    for(i=0;i<$scope.categoryFilters.length ; i++){
+   
+   for(i=0;i<$scope.categoryFilters.length ; i++){
       if($scope.selectedCategory[i] == true)
       {    $scope.selectedType = $scope.categoryFilters[i];
          $scope.findOtherFilters(i);
       }
-    }  
+   }
+
    $scope.pageNo = $scope.findpageNo();
     $scope.bigCurrentPage =  $scope.pageNo;
     if ($scope.pageNo == undefined) {        
@@ -300,5 +321,6 @@ $scope.requestToSearchAPI = function() {
           $scope.selectedDropdown[i] =false;
       }
     } 
+
 
 }]);

@@ -9,9 +9,9 @@ app.controller('FormDemoCtrl', ['$scope', '$http', 'toaster', 'FileUploader', '$
         $scope.activeTab = 1;
         $scope.generalDataChecked = false;
         $scope.sellerDataChecked = false;
-$scope.submitImg = function(){
-uploaders[0].uploadAll();
-};
+        $scope.submitImg = function(){
+        uploaders[0].uploadAll();
+        };
 
         $(document).click(function(){
           console.log('s');$scope.isOpen=0;
@@ -32,21 +32,6 @@ uploaders[0].uploadAll();
             switch (val) {
                 case "1":
                     $scope.selectedType = 'tiles';
-                    break;
-                case "2":
-                    $scope.selectedType = 'wood';
-                    break;
-                case "7":
-                    $scope.selectedType = 'mosiac';
-                    break;
-                case "8":
-                    $scope.selectedType = 'vinyl-and-linoleum';
-                    break;
-                case "9":
-                    $scope.selectedType = 'carpet-and-rugs';
-                    break;
-                case "10":
-                    $scope.selectedType = 'accessories';
                     break;
             }
             $http.get('../api/slim.php/shiningfloor/' + $scope.selectedType + '/brands').then(function(resp) {
@@ -106,8 +91,7 @@ uploaders[0].uploadAll();
         $scope.selectedTypeValue = "1";
         $scope.selectedType = 'tiles';
         $scope.selectType();
-        // $scope.product_types = [{'value':'1','name':'Tile'},{'value':'2','name':'Wood'},{'value':'7','name':'Mosiac'},{'value':'8','name':'Vinyl & Linoleum'},{'value':'9','name':'Carpet & Rugs'},{'value': '10','name':'Accessories'}];
-        //$scope.product_types = [{'value':'1','name':'Tile'},{'value':'2','name':'Wood'},{'value':'3','name':'Marble'},{'value':'4','name':'Stone'},{'value':'5','name':'Wallpaper'},{'value': '6','name':'Artificial'}];
+
         $scope.product_types = [{
             'value': '1',
             'name': 'Tile'
@@ -146,27 +130,7 @@ uploaders[0].uploadAll();
             $scope.brands = resp.data.brands;
             $scope.totalBrands = $scope.brands.length;
         });
-
-        // $http.get('../api/slim.php/shiningfloor/sizes').then(function(resp) {
-        //     $scope.sizes = resp.data.sizes;
-        //     function suggest_size(term) {
-        //       var q = term.toLowerCase().trim();
-        //       var results = [];
-        //       for (var i = 0; i < $scope.sizes.length && results.length < 10; i++) {
-        //         var state = $scope.sizes[i];
-
-        //         if (state.toLowerCase().indexOf(q) === 0)
-        //           results.push({
-        //             label: state ,  value: state });
-        //       }
-        //       return results;
-        //     }
-        //     $scope.size_options = {
-        //       suggest: suggest_size
-        //     };
-
-        // });
-
+ 
         $http.get('../api/slim.php/shiningfloor/materials').then(function(resp) {
             $scope.materials = resp.data.materials;
             $scope.materialsLength = $scope.materials.length;
@@ -462,15 +426,59 @@ uploaders[0].uploadAll();
             success(function(data, status) {
                 console.log(data);
                 if(data.status=='new'){
-                    uploaders[0].uploadAll();
-                    uploaders[1].uploadAll();
-                    uploaders[2].uploadAll();
+                    uploaders[0].queue[0].upload();
                 }
-                toaster.pop('success', 'New Product', 'Product Added Successfully');
-                $timeout(reloadState, 3000);                
+                else{
+                    toaster.pop('success', 'Same Product Existed', 'Seller Data addedd Successfully');
+                    $timeout(reloadState, 3000);
+                }
+                               
             });
         };
+ 
+         uploaders[0].onAfterAddingFile = function(fileItem) {
+            if(fileItem.file.size > 2000000){
+              toaster.pop('info', 'Image size exceeded', 'maximum allowed size is 2MB'); 
+              fileItem.remove();
+              }  
+        };
+        uploaders[1].onAfterAddingFile = function(fileItem) {
+           if(fileItem.file.size > 2000000){
+              toaster.pop('info', 'Image size exceeded', 'maximum allowed size is 2MB');
+              fileItem.remove();
+            } 
+        };
+        uploaders[2].onAfterAddingFile = function(fileItem) {
+            if(fileItem.file.size > 2000000){
+              toaster.pop('info', 'Image size exceeded', 'maximum allowed size is 2MB'); 
+              fileItem.remove();
+          }
+        };
         
+        uploaders[0].onCompleteItem = function(fileItem, response, status, headers) {
+            console.info('file uploaded', fileItem, response, status, headers);
+            if(uploaders[1].queue.length!=0)
+                uploaders[1].uploadAll();
+            else if(uploaders[2].queue.length!=0)
+                uploaders[2].uploadAll();
+            else{
+                toaster.pop('success', 'New Product', 'Product Added Successfully');
+                $timeout(reloadState, 3000); 
+            }
+
+        };
+         
+        uploaders[1].onCompleteAll = function() {
+            console.log('concepts uploads');
+            if(uploaders[2].queue.length!=0)
+                uploaders[2].uploadAll();
+            };    
+
+        uploaders[2].onCompleteAll = function() {
+        console.log('other images uploaded');
+        toaster.pop('success', 'New Product', 'Product Added Successfully');
+                $timeout(reloadState, 3000); 
+        };
 
         function reloadState() {
             $state.go('app.all.newproduct', {}, {

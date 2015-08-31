@@ -3,7 +3,7 @@
 /* Controllers */
 
 // Form controller
-app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster', 'FileUploader', '$sce', '$q', '$state', '$timeout', function($scope, $http, $stateParams, toaster, FileUploader, $sce, $q, $state, $timeout) {
+app.controller('ReviewProductCtrl', ['$scope', '$http', '$stateParams', 'toaster', 'FileUploader', '$sce', '$q', '$state', '$timeout', function($scope, $http, $stateParams, toaster, FileUploader, $sce, $q, $state, $timeout) {
 
         $(document).click(function(){
            $scope.isOpen=0;
@@ -11,7 +11,7 @@ app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster',
             $("#suggestions").removeClass('open');
         });
 
-        $("#product-name").click(function(e){
+        $("#query").click(function(e){
            $scope.isOpen=1;
          if(!$("#suggestions").hasClass('open'))
             $("#suggestions").addClass('open');
@@ -69,112 +69,107 @@ app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster',
             });
         });
 
-
-
+        $scope.updateSuggestProducts = function() {
+            if ($scope.product.name != '' && typeof $scope.product.name != 'undefined') {
+                $scope.queryUrl = $scope.product.name;
+                $http.get('../api/slim.php/shiningfloor/admin/products/' + $scope.queryUrl + '?details=false').then(function(resp) {
+                    $scope.searchResults = resp.data.product_data;
+                    $scope.totalResults = resp.data.totalResults;
+                    $scope.start = resp.data.start;
+                    $scope.last = resp.data.last;
+                });
+            } else {
+                $scope.searchResults = '';
+            }
+        };
+        $scope.tmp_product = $scope.product;
+        $scope.selectProduct  = function(id){
+            $http.get('../api/slim.php/shiningfloor/admin/product/' + id).then(function(resp) {
+            //       console.log(resp.data.product_data[0]);
+            var productData = resp.data.product_data[0];
+            console.log(productData);
+//                console.log(productData.product_name);
+                $scope.tmp_product.name = productData.product_name;
+                $scope.tmp_product.type = productData.product_type_id;
+                $scope.tmp_product.brand = productData.product_brand;
+                $scope.tmp_product.look = productData.product_look;
+                if (productData.product_width !== 0)
+                    $scope.tmp_product.width = productData.product_width;
+                if (productData.product_height !== 0)
+                    $scope.tmp_product.height = productData.product_height;
+                if (productData.product_thickness !== 0)
+                    $scope.tmp_product.thickness = productData.product_thickness;
+                if (productData.product_w_unit !== '')
+                    $scope.tmp_product.w_unit = productData.product_w_unit;
+                if (productData.product_t_unit !== '')
+                    $scope.tmp_product.t_unit = productData.product_t_unit;
+                $scope.tmp_product.finish_type = productData.product_finish_type;
+                $scope.tmp_product.material = productData.product_material;
+                if (productData.product_items_per_box !== 0)
+                    $scope.tmp_product.items_per_box = productData.product_items_per_box;
+                $scope.tmp_product.origin_country = productData.product_origin_country;
+                $scope.tmp_product.variation = productData.product_degree_of_variation;
+                $scope.tmp_product.shape = productData.product_shape;
+                $scope.tmp_product.features = productData.product_features;
+                $scope.tmp_product.colors = productData.product_colors;
+                $scope.tmp_product.usages = productData.product_usages;
+                $scope.tmp_product.applications = productData.product_applications;
+                $scope.tmp_product.images = productData.product_img;
+                $scope.tmp_product.concepts = productData.product_concepts;                 
+            });
+            console.log($scope.tmp_product);
+        }
 
         var i, j;
         $http.get('../api/slim.php/shiningfloor/product/' + $stateParams.productId).then(function(resp) {
             //       console.log(resp.data.product_data[0]);
             var productData = resp.data.product_data[0];
-            if(typeof productData === 'undefined')
-                $state.go('app.all.products')
+            if(typeof productData === 'undefined'){
+                $state.go('app.all.products'); 
+            }
             else{
-                $scope.product.name = productData['product_name'];
-                $scope.product.type = productData['product_type_id'];
-                $scope.product.brand = productData['product_brand'];
-                $scope.product.look = productData['product_look'];
-                if (productData['product_width'] != 0)
-                    $scope.product.width = productData['product_width'];
-                if (productData['product_height'] != 0)
-                    $scope.product.height = productData['product_height'];
-                if (productData['product_thickness'] != 0)
-                    $scope.product.thickness = productData['product_thickness'];
-                if (productData['product_w_unit'] != '')
-                    $scope.product.w_unit = productData['product_w_unit'];
-                if (productData['product_t_unit'] != '')
-                    $scope.product.t_unit = productData['product_t_unit'];
-                $scope.product.finish_type = productData['product_finish_type'];
-                $scope.product.material = productData['product_material'];
-                if (productData['product_items_per_box'] != 0)
-                    $scope.product.items_per_box = productData['product_items_per_box'];
-                $scope.product.origin_country = productData['product_origin_country'];
-                $scope.product.variation = productData['product_degree_of_variation'];
-                $scope.product.shape = productData['product_shape'];
-                $scope.product.features = productData['product_features'];
-                $scope.product.colors = productData['product_colors'];
-                $scope.product.usages = productData['product_usages'];
-                $scope.product.applications = productData['product_applications'];
-                $scope.product.images = productData['product_img'];
-                $scope.product.concepts = productData['product_concepts'];
+                console.log(productData.product_name);
+                $scope.product.name = productData.product_name;
+                $scope.product.type = productData.product_type_id;
+                $scope.product.brand = productData.product_brand;
+                $scope.product.look = productData.product_look;
+                if (productData.product_width !== 0)
+                    $scope.product.width = productData.product_width;
+                if (productData.product_height !== 0)
+                    $scope.product.height = productData.product_height;
+                if (productData.product_thickness !== 0)
+                    $scope.product.thickness = productData.product_thickness;
+                if (productData.product_w_unit !== '')
+                    $scope.product.w_unit = productData.product_w_unit;
+                if (productData.product_t_unit !== '')
+                    $scope.product.t_unit = productData.product_t_unit;
+                $scope.product.finish_type = productData.product_finish_type;
+                $scope.product.material = productData.product_material;
+                if (productData.product_items_per_box !== 0)
+                    $scope.product.items_per_box = productData.product_items_per_box;
+                $scope.product.origin_country = productData.product_origin_country;
+                $scope.product.variation = productData.product_degree_of_variation;
+                $scope.product.shape = productData.product_shape;
+                $scope.product.features = productData.product_features;
+                $scope.product.colors = productData.product_colors;
+                $scope.product.usages = productData.product_usages;
+                $scope.product.applications = productData.product_applications;
+                $scope.product.images = productData.product_img;
+                $scope.product.concepts = productData.product_concepts;
                 $http.get('../api/slim.php/shiningfloor/seller/products/' + $stateParams.productId).then(function(resp) {
                     $scope.seller_data =resp.data.seller_product_data
                     if($scope.seller_data!=""){
                         $scope.data = resp.data.seller_product_data;
 
-                            $scope.product.price = $scope.seller_data["price"];
-                            $scope.product.minimum_boxes = $scope.seller_data['minimum_boxes'] ;
-                            $scope.product.seller_product_code = $scope.seller_data['seller_product_code'];
-                            $scope.product.total_boxes = $scope.seller_data['total_quantity'];                         
-                            $scope.product.comments = $scope.seller_data['comments']; 
+                            $scope.product.price = $scope.seller_data.price;
+                            $scope.product.minimum_boxes = $scope.seller_data.minimum_boxes ;
+                            $scope.product.seller_product_code = $scope.seller_data.seller_product_code;
+                            $scope.product.total_boxes = $scope.seller_data.total_quantity;                         
+                            $scope.product.comments = $scope.seller_data.comments; 
                    
                     }
                 });
             }
-            // console.log($scope.product.concepts.length);
-            // $scope.imgLength1 = 0;
-            // $scope.imgLength2 = 0; // concept images
-            // $scope.imgLength3 = 0; // other existed  images
-            // if ($scope.product.images.length == 1) {
-            //     $scope.imgLength1 = 1;
-            // }
-            // if ($scope.product.images.length > 1) {
-            //     $scope.imgLength1 = 1;
-            //     $scope.imgLength3 = $scope.product.concepts.length;
-            // }
-            // if ($scope.product.concepts.length > 0) {
-            //     $scope.imgLength2 = $scope.product.images.length - 1;
-            // }
-             
-            // function convertImgToBase64(url, callback, outputFormat){
-            //   var img = new Image();
-            //   img.crossOrigin = 'Anonymous';
-            //   img.onload = function(){
-            //       var canvas = document.createElement('CANVAS');
-            //       var ctx = canvas.getContext('2d');
-            //     canvas.height = this.height;
-            //     canvas.width = this.width;
-            //       ctx.drawImage(this,0,0);
-            //       var dataURL = canvas.toDataURL(outputFormat || 'image/png');
-            //       callback(dataURL);
-            //       canvas = null; 
-            //   };
-            //   img.src = url;
-            // }
-            //     var dataURItoBlob = function(dataURI){
-            //   var binary = atob(dataURI.split(',')[1]);
-            //   var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-            //   var array = [];
-            //   for(i=0;i<binary.length;i++){
-            //     array.push(binary.charCodeAt(i));
-            //   }
-            //   return new Blob([new Uint8Array(array)],{type:'image/jpeg'});
-            // }
-            //  var blob = dataURItoBlob($scope.product.images[0]);
-
-            // uploaders[0].addToQueue(blob);
-            // convertImgToBase64($scope.product.images[0], function(base64Img){
-            //   console.log(dataURItoBlob(base64Img));
-            //    uploaders[0].addToQueue(dataURItoBlob(base64Img));
-            //  });
-
-           
-            //   // add first img to 1st uploader
-            // var i;
-            // for(i=1;i<$scope.product.images.length;i++){ 
-            //    uploaders[2].addToQueue(getBase64FromImageUrl($scope.product.images[i])); 
-            // }
-
-
 
             $scope.selectType = function(val) {
                 //  console.log('44');
@@ -191,12 +186,12 @@ app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster',
                     }
 
                 });
-            }
-
+            };
+            $scope.query='';
             $scope.updateSuggestProducts = function() {
                 if ($scope.product.name != '' && typeof $scope.product.name != 'undefined') {
-                     $scope.queryUrl = $scope.product.name;
-                     $http.get('../api/slim.php/shiningfloor/products/' + $scope.queryUrl + '?details=false').then(function(resp) {
+                     $scope.queryUrl = $scope.query;
+                     $http.get('../api/slim.php/shiningfloor/admin/products/' + $scope.queryUrl + '?details=false').then(function(resp) {
                     $scope.searchResults = resp.data.product_data;
                     $scope.totalResults = resp.data.totalResults;
                     $scope.start = resp.data.start;
@@ -232,15 +227,16 @@ app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster',
                 for (var i = 0; i < $scope.brands.length && results.length < 10; i++) {
                     var state = $scope.brands[i];
 
-                    if (state.toLowerCase().indexOf(q) === 0)
+                    if (state.toLowerCase().indexOf(q) === 0){
                         results.push({
                             label: state,
                             value: state
                         });
+                    }
                 }
 
                 return results;
-            }
+            };
             $scope.brand_options = {
                 suggest: suggest_brand
             };
@@ -312,7 +308,7 @@ app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster',
                             });
                     }
                     return results;
-                }
+                };
                 $scope.material_options = {
                     suggest: suggest_material
                 };
@@ -334,7 +330,7 @@ app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster',
                         });
                 }
                 return results;
-            }
+            };
             $scope.country_options = {
                 suggest: suggest_country
             };
@@ -356,7 +352,7 @@ app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster',
                             });
                     }
                     return results;
-                }
+                };
                 $scope.finish_type_options = {
                     suggest: suggest_finish_type
                 };
@@ -379,7 +375,7 @@ app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster',
                             });
                     }
                     return results;
-                }
+                };
 
                 $scope.shape_options = {
                     suggest: suggest_shape
@@ -401,7 +397,7 @@ app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster',
                             });
                     }
                     return results;
-                }
+                };
                 $scope.look_options = {
                     suggest: suggest_look
                 };
@@ -427,7 +423,7 @@ app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster',
                 return true;
             else
                 return false;
-        }
+        };
         $scope.isUsagesOk = function() {
             $scope.usagesFieldOk = false;
             for (i = 0; i < $scope.usagesLength; i++) {
@@ -440,7 +436,7 @@ app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster',
                 return true;
             else
                 return false;
-        }
+        };
         $scope.isColorsOk = function() {
 
             $scope.colorsFieldOk = false;
@@ -454,7 +450,7 @@ app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster',
                 return true;
             else
                 return false;
-        }
+        };
 
         $scope.isGeneralFormOk = function() {
  
@@ -464,13 +460,13 @@ app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster',
                 return true;
             else
                 return false;
-        }
+        };
         $scope.isSellerFormOk = function() {
             if ($scope.editProductForm.price.$valid && $scope.editProductForm.total_boxes.$valid && $scope.editProductForm.minimum_boxes.$valid)
                 return true;
             else
                 return false;
-        }
+        };
         $scope.checkProductData = function() {
             $scope.generalDataChecked = true;
             if ($scope.isGeneralFormOk())
@@ -481,13 +477,13 @@ app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster',
                 //    console.log($scope.editProductForm.brand.$valid+ 's');
             }
             // console.log($scope.activeTab);
-        }
+        };
 
         $scope.checkSellerData = function() {
             $scope.sellerDataChecked = true;
             if ($scope.isSellerFormOk())
                 $scope.activeTab = 3;
-        }
+        };
 
         $scope.submitForm = function(product) {
 
@@ -560,35 +556,12 @@ app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster',
             });
         };
 
-        uploaders[0].onAfterAddingFile = function(fileItem) {
-            if(fileItem.file.size > 2000000){
-              toaster.pop('info', 'Image size exceeded', 'maximum allowed size is 2MB'); 
-              fileItem.remove();
-              }  
-        };
-        uploaders[1].onAfterAddingFile = function(fileItem) {
-           if(fileItem.file.size > 2000000){
-              toaster.pop('info', 'Image size exceeded', 'maximum allowed size is 2MB');
-              fileItem.remove();
-            } 
-        };
-        uploaders[2].onAfterAddingFile = function(fileItem) {
-            if(fileItem.file.size > 2000000){
-              toaster.pop('info', 'Image size exceeded', 'maximum allowed size is 2MB'); 
-              fileItem.remove();
-          }
-        };
-
         uploaders[0].onCompleteItem = function(fileItem, response, status, headers) {
             console.info('file uploaded', fileItem, response, status, headers);
             if(uploaders[1].queue.length!=0)
                 uploaders[1].uploadAll();
-            else if(uploaders[2].queue.length!=0)
+            else
                 uploaders[2].uploadAll();
-            else{
-                toaster.pop('success', 'New Product', 'Product Added Successfully');
-                $timeout(reloadState, 3000); 
-            }
         };
          
         uploaders[1].onCompleteAll = function() {
@@ -613,7 +586,7 @@ app.controller('EditProductCtrl', ['$scope', '$http', '$stateParams', 'toaster',
             $state.go('app.all.products', {}, {
                 reload: true
             });
-        }
+        };
 
     }
 

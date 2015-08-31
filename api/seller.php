@@ -187,9 +187,13 @@ $app->get('/shiningfloor/seller/chooseproducts', $authenticate_seller($app), fun
         $data  = array();
         $email = $_SESSION['seller'];
         $user_id = $db->sellers->where('email',$email)->fetch('id');
-    if($user_id){
+        if($user_id){
         global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$lookFilters,$materialFilters,$applicationFilters;
         global $resultPerPage , $pageNo ;
+        $get = filter_input_array(INPUT_GET);
+        if(array_key_exists('pageNo', $get)){
+            $pageNo = ( int )$get['pageNo'] ;
+          }
         findAllFilters();
         $query ='';
 //        $query = $db->products()->where("NOT id", $db->sellers_products()->where('sellers_id',$user_id )->select('products_id'));
@@ -220,7 +224,7 @@ $app->get('/shiningfloor/seller/chooseproducts', $authenticate_seller($app), fun
 
 //-------------- Delete a product from seller account not from DB ---------------//
 
-$app->delete('/shiningfloor/seller/deletesproduct(/:product_id)', $authenticate_seller($app), function($product_id) use ($app, $db)
+$app->delete('/shiningfloor/seller/deleteproduct(/:product_id)', $authenticate_seller($app), function($product_id) use ($app, $db)
 {
 //echo 'ss';
   $data = null;
@@ -243,6 +247,10 @@ $app->get('/shiningfloor/seller/selectedproducts', $authenticate_seller($app),fu
         $user_id = $db->sellers->where('email',$user)->fetch();
         global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$lookFilters,$materialFilters,$applicationFilters;
         global $resultPerPage , $pageNo ;
+        $get = filter_input_array(INPUT_GET);
+        if(array_key_exists('pageNo', $get)){
+            $pageNo = ( int )$get['pageNo'] ;
+          }
         if($user_id){
         $data  = array();
         findAllFilters();       // All filters from url
@@ -341,64 +349,65 @@ $app->get('/shiningfloor/seller/selectedproducts', $authenticate_seller($app),fu
 $app->put('/shiningfloor/seller/products/update_product', function() use ($app, $db)
 {
     $array = (array) json_decode($app->request()->getBody());
-    $data = $db->sellers_products()->where('products_id',$array['products_id'])->update($array);
+    $email = $_SESSION['seller'] ;
+    $seller_id = $db->sellers()->where('email', $email)->fetch();
+
+    $data = $db->sellers_products()->where('products_id',$array['products_id'])->where('sellers_id',$seller_id)->update($array);
     $app->response()->header('Content-Type', 'application/json');
     echo json_encode($data['id']);
 });
-function resize($origin,$width,$height,$saveTo){
-   
+function resize($origin,$width,$height,$saveTo){   
         // some settings
-    $max_upload_width = 2592;
-    $max_upload_height = 1944;
-    $remote_file = $saveTo;  
-    
+    $max_upload_width = 1200;
+    $max_upload_height = 800;
+    $remote_file = $saveTo;      
     // if uploaded image was JPG/JPEG
     if($_FILES["file"]["type"] == "image/jpeg" || $_FILES["file"]["type"] == "image/pjpeg"){  
       $image_source = imagecreatefromjpeg($origin);
-    }   
-    // if uploaded image was GIF
-    if($_FILES["file"]["type"] == "image/gif"){ 
-      $image_source = imagecreatefromgif($_FILES[ 'file' ][ 'tmp_name' ]);
-    } 
-    // BMP doesn't seem to be supported so remove it form above image type test (reject bmps) 
-    // if uploaded image was BMP
-    if($_FILES["file"]["type"] == "image/bmp"){ 
-      $image_source = imagecreatefromwbmp($_FILES[ 'file' ][ 'tmp_name' ]);
-    }     
-    // if uploaded image was PNG
-    if($_FILES["file"]["type"] == "image/x-png"){
-      $image_source = imagecreatefrompng($_FILES[ 'file' ][ 'tmp_name' ]);
-    }    
-     
-    imagejpeg($image_source,$remote_file,100);
-    chmod($remote_file,0644);
-    
+    }        
+    imagejpeg($image_source,$remote_file,80);
+    chmod($remote_file,0644);    
     // get width and height of original image
     list($image_width, $image_height) = getimagesize($remote_file);  
      
-      $proportions = $image_width/$image_height;      
-      if($image_width>$image_height){
-        $new_width = $width;
-        $new_height = $height;
-      }   
+      $proportions = $image_width/$image_height;   
+      if($width && $height){   
+          if($image_width>$image_height){
+            $new_width = $width;
+            $new_height = $height;
+          }   
+          else{
+            $new_height = $height;
+            $new_width = $width;
+          }   
+      } // for original image put 0 , 0
       else{
-        $new_height = $height;
-        $new_width = $width;
-      }   
-      
-      
+
+        if($image_width > $max_upload_width){
+          if($image_width>$image_height){            
+                $new_width = $max_upload_width ;
+                $new_height  = $new_width/$proportions ;
+            }
+             
+          else{
+            $new_width = $max_upload_height ;
+            $new_height  = $new_width/$proportions ;
+          }  
+        }
+        else{ 
+        // if original image width height is lesser than max allowd size than take original image
+            $new_height =$image_height;
+            $new_width = $image_width ;
+        }             
+      }     
       $new_image = imagecreatetruecolor($new_width , $new_height);
-      $image_source = imagecreatefromjpeg($remote_file);
-      
+      $image_source = imagecreatefromjpeg($remote_file);      
       imagecopyresampled($new_image, $image_source, 0, 0, 0, 0, $new_width, $new_height, $image_width, $image_height);
-      imagejpeg($new_image,$remote_file,100);
-      
+      imagejpeg($new_image,$remote_file,80);      
       imagedestroy($new_image);
-     
-    
-    imagedestroy($image_source);
-   
+      imagedestroy($image_source);   
 }
+
 //----------------------------------------
 $app->post('/seller/uploadfile(/:id)', $authenticate_seller($app),function($id = null) use ($app,$db)
 {
@@ -424,7 +433,8 @@ $app->post('/seller/uploadfile(/:id)', $authenticate_seller($app),function($id =
      }
      $newfilename = $last_id. '_'.$i.'.' .'jpg';
      $uploadPath = dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '../uploads/products' . DIRECTORY_SEPARATOR .$newfilename;
-     move_uploaded_file( $tempPath, $uploadPath );
+     resize($tempPath,0,0,"../uploads/products/".$newfilename);
+//     move_uploaded_file( $tempPath, $uploadPath );
      $answer = array( 'lastid' => $last_id,
      'filename' => $newfilename);
      $db->product_images->insert(array('image_name'=>  '../uploads/products' . DIRECTORY_SEPARATOR .$newfilename , 'products_id'=>$last_id));
@@ -468,7 +478,9 @@ $app->post('/seller/uploadConcept(/:id)', $authenticate_seller($app), function($
      }
      $newfilename = $last_id. '_'.$i.'.' .'jpg';
      $uploadPath = dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '../uploads/concepts' . DIRECTORY_SEPARATOR .$newfilename;
-     move_uploaded_file( $tempPath, $uploadPath );
+      resize($tempPath,0,0,"../uploads/concepts/".$newfilename);
+
+     // move_uploaded_file( $tempPath, $uploadPath );
      $answer = array( 'lastid' => $last_id,
      'filename' => $newfilename);
      $db->concept_images->insert(array('concept_name'=>  '../uploads/concepts' . DIRECTORY_SEPARATOR .$newfilename , 'products_id'=>$last_id));
@@ -513,6 +525,7 @@ $app->post('/shiningfloor/seller/addproduct', $authenticate_seller($app),functio
     {
       $product = array(
         'product_addedby' =>  $seller_id['id'] ,
+        'product_isNew' =>  1 ,        
         'product_editedby' =>  $seller_id['id'] ,        
         'product_name' =>  ucfirst($array['name']) , 
         'product_brand' => ucfirst($array['brand']),
@@ -536,33 +549,34 @@ $app->post('/shiningfloor/seller/addproduct', $authenticate_seller($app),functio
         );
 
         $data = $db->products()->insert($product);
-        
+// if seller insert a new finish, shape, material, look then insert into respective table for next time suggest option .       
         if($array['finish_type']!=''){
           $finish =  $db->finishes()->where('finish_name', $array["finish_type"]);   
           if(!count($finish)){
-              $db->finishes()->insert(array('finish_name' => $array['finish_type']));
+              $db->finishes()->insert(array('finish_name' => $array['finish_type'] , 'type_id' => 1) );
           }
         }
 
         if( $array['shape']!=''){
           $shape =  $db->shapes()->where('shape_name',$array["shape"]);
           if(!count($shape) ){
-              $db->shapes()->insert(array('shape_name'=> $array['shape']));
+              $db->shapes()->insert(array('shape_name'=> $array['shape'], 'type_id' => 1));
           }
         }
         if( $array['material']!=''){
           $material =  $db->materials()->where('material_name',$array["material"]);
           if(!count($material)){
-              $db->materials()->insert(array('material_name'=>$array['material']));
+              $db->materials()->insert(array('material_name'=>$array['material'], 'type_id' => 1));
           }
         }
 
         if($array['look']!=''){
             $look =  $db->looks()->where('look_name', $array["look"]);
             if(!count($look)){
-                $db->looks()->insert(array('look_name' => $array['look']));
+                $db->looks()->insert(array('look_name' => $array['look'], 'type_id' => 1));
             }
         }
+
 
        $colors = explode(",", $array['colors']);
        for($i=0;$i<sizeof($colors);$i++)
@@ -665,27 +679,27 @@ $app->put('/shiningfloor/seller/editproduct/:product_id', $authenticate_seller($
       if($array['finish_type']!=''){
         $finish =  $db->finishes()->where('finish_name', $array["finish_type"]);   
         if(!count($finish)){
-            $db->finishes()->insert(array('finish_name' => $array['finish_type']));
+            $db->finishes()->insert(array('finish_name' => $array['finish_type'], 'type_id' => 1));
           }
       }
 
       if( $array['shape']!=''){
         $shape =  $db->shapes()->where('shape_name',$array["shape"]);
         if(!count($shape) ){
-            $db->shapes()->insert(array('shape_name'=> $array['shape']));
+            $db->shapes()->insert(array('shape_name'=> $array['shape'], 'type_id' => 1));
         }
       }
       if( $array['material']!=''){
         $material =  $db->materials()->where('material_name',$array["material"]);
         if(!count($material)){
-            $db->materials()->insert(array('material_name'=>$array['material']));
+            $db->materials()->insert(array('material_name'=>$array['material'], 'type_id' => 1));
         }
       }
 
       if($array['look']!=''){
           $look =  $db->looks()->where('look_name', $array["look"]);
           if(!count($look)){
-              $db->looks()->insert(array('look_name' => $array['look']));
+              $db->looks()->insert(array('look_name' => $array['look'], 'type_id' => 1));
           }
       }
 
