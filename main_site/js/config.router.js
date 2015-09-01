@@ -114,7 +114,8 @@ angular.module('app')
                        function( $ocLazyLoad, uiLoad ){
                          return uiLoad.load(
                            [
-
+                              'https://maps.googleapis.com/maps/api/js?callback=initialize',
+                              'js/others/contact.js'
 
 
                              ]

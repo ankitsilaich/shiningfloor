@@ -17,9 +17,12 @@
         <a href="product-detail.html"><h5>{{item.getName()}}</h5></a>
         <span>{{item.getQuantity()}} x Rs {{item.getPrice()}}</span>
       </div>
-      <div class="close_icon_cart floatleft" style="margin-top:20px" ng-click="ngCart.removeItemById(item.getData().product_id); showCounter1();">
-        <img src="images/close.png" alt="" />
-      </div>
+
+
+
+    </div>
+    <div class="close_icon_cart floatleft" style="margin-top:-40px;font-size:20px;" ng-click="ngCart.removeItemById(item.getData().product_id); showCounter1();">
+        <i class="icon-close" style="color:#EA2E49"></i>
     </div>
   </div>
 
@@ -32,7 +35,7 @@
     </div>
   </div>
   <div class="cart_view_bottom">
-    <div class="c_totals_left floatleft">
+    <div class="c_totals_left floatleft" style="background:none repeat scroll 0 0 #375D81">
       <a ui-sref="app.home.cart">View Cart</a>
     </div>
     <div class="c_totals_right floatleft">
