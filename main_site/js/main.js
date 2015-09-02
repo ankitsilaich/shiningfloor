@@ -6,7 +6,7 @@ angular.module('app')
 
   .controller('AppCtrl', ['$scope', '$rootScope', '$translate', 'ngCart', '$localStorage', '$window',
     function(              $scope, $rootScope,  $translate, ngCart,  $localStorage,   $window ) {
-    
+
       // add 'ie' classes to html
       var isIE = !!navigator.userAgent.match(/MSIE/i);
       isIE && angular.element($window.document.body).addClass('ie');
@@ -14,7 +14,7 @@ angular.module('app')
      $scope.noofcartItems = 3;
       // config
       $scope.app = {
-        name: 'Angulr',
+        name: 'Buildcorner.com',
         version: '1.3.3',
         // for chart colors
         color: {

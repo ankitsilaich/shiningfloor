@@ -57,7 +57,7 @@ angular.module('app')
                           return uiLoad.load(
                             [
                               'js/controllers/index.filterCtrl.js',
-
+                              'js/controllers/loginCtrl.js'
 
                               ]
                           )
