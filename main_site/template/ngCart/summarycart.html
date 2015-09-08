@@ -1,42 +1,46 @@
 <div class="col-md-3 col-sm-4 col-xs-12">
     <div class="checkout_right">
-        <h4>Review of Your Order</h4>
 
-        <div class="product_form_total">
+        <h4>3. Review of Your Order</h4>
+        <div class="dotted_line"></div>
+        <div class="product_form_total m-t-md">
             <div class="c_main_item">
-                <p>Product</p>
-                <span>Total</span>
+                <p><b>Product</b></p>
+                <span><b>Total</b></span>
             </div>
             <div class="c_single_item" ng-repeat="item in ngCart.getCart().items track by $index">
-                <p>{{ item.getName() }} x {{ item.getQuantity() | number }}</p>
-                <span>Rs. {{ item.getTotal() }}</span>
+                <p ng-show='item.getTotal()!=0'>{{ item.getName() }}  ({{ item.getQuantity() | number }} cartoons)</p>
+                <span ng-show='item.getTotal()!=0'>Rs. {{ item.getTotal() }}</span>
+                <p ng-show='item.getTotal()==0'>{{ item.getName() }} </p>
+                <span ng-show="item.getTotal()==0"> Sample </span>
             </div>
             <div class="c_single_item sp_single_item">
-
+                <p> <b>Sample Charges </b></p>
+                <span> Rs. {{ngCart.getSampleCharges()}} </span>
             </div>
 
             <div class="c_single_item">
-                <p>subtotal</p>
+                <p> <b>subtotal </b></p>
                 <span>Rs. {{ ngCart.totalCost()  }}</span>
             </div>
 
 
             <div class="c_single_item sp_single_item">
-                <p>Shipping Charge</p>
+                <p> <b> Shipping Charge </b></p>
                 <span>Free</span>
             </div>
             <div class="c_total_item sp_single_item">
                 <p>Order Total</p>
                 <span>Rs. {{ ngCart.totalCost()  }}</span>
             </div>
-            <div class="c_payment">
+            <!-- <div class="c_payment">
                 <p>Select Payment Method</p>
                 <select class="selectpicker sel_state">
                     <option>Direct Bank Transfer</option>
                     <option>Wire Transfer</option>
                     <option>VISA</option>
                 </select>
-            </div>
+            </div> -->
             <div class="checkbox">
                 <label>
                     <input type="checkbox"> I have Read & Accept <span>Terms & Conditions</span>

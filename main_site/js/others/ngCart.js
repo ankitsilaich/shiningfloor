@@ -32,6 +32,8 @@ angular.module('ngCart', ['ngCart.directives'])
         this.init = function(){
             this.$cart = {
                 shipping : null,
+                sampleCharges : null,
+                perSampleCharge : 50,
                 taxRate : null,
                 tax : null,
                 items : []
@@ -39,18 +41,19 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         this.addItem = function (id, name, price, quantity, data) {
-console.log("called");
+ 
             var inCart = this.getItemById(id);
 
             if (typeof inCart === 'object'){
                 //Update quantity of an item if it's already in the cart
                 inCart.setQuantity(quantity, false);
             } else {
-                var newItem = new ngCartItem(id, name, price, quantity, data);
+                var newItem = new ngCartItem(id, name, price, quantity, data);                 
                 this.$cart.items.push(newItem);
                 $rootScope.$broadcast('ngCart:itemAdded', newItem);
             }
-
+ 
+            this.setSampleCharges(this.$cart.perSampleCharge);
             $rootScope.$broadcast('ngCart:change', {});
         };
 
@@ -75,7 +78,18 @@ console.log("called");
             if (this.getCart().items.length == 0) return 0;
             return  this.getCart().shipping;
         };
+        this.setSampleCharges = function(sampleCharges){
+            if(this.getCart().items.length <= 5)
+               this.$cart.sampleCharges = 0;
+            else
+                this.$cart.sampleCharges =   (this.getCart().items.length-5)*sampleCharges;               
+            return this.getSampleCharges();
+        };
 
+        this.getSampleCharges = function(){
+            if (this.getCart().items.length <= 5) return 0;
+            return   this.getCart().sampleCharges; 
+        };
         this.setTaxRate = function(taxRate){
             this.$cart.taxRate = +parseFloat(taxRate).toFixed(2);
             return this.getTaxRate();
@@ -96,6 +110,10 @@ console.log("called");
 
         this.getCart = function(){
             return this.$cart;
+        };
+
+        this.getItems = function(){
+            return this.getCart().items;
         };
 
         this.getItems = function(){
@@ -123,8 +141,8 @@ console.log("called");
             return +parseFloat(total).toFixed(2);
         };
 
-        this.totalCost = function () {
-            return +parseFloat(this.getSubTotal() + this.getShipping() + this.getTax()).toFixed(2);
+        this.totalCost = function () { 
+            return +parseFloat(this.getSubTotal() + this.getShipping() + this.getSampleCharges()+ this.getTax()).toFixed(2);
         };
 
         this.removeItem = function (index) {
@@ -150,6 +168,7 @@ console.log("called");
                 }
             });
             this.setCart(cart);
+             this.setSampleCharges(this.$cart.perSampleCharge);
             $rootScope.$broadcast('ngCart:itemRemoved', {});
             $rootScope.$broadcast('ngCart:change', {});
         };
@@ -172,6 +191,7 @@ console.log("called");
 
             return {
                 shipping: this.getShipping(),
+                sampleCharges : this.getSampleCharges(),
                 tax: this.getTax(),
                 taxRate: this.getTaxRate(),
                 subTotal: this.getSubTotal(),
@@ -185,6 +205,7 @@ console.log("called");
             var _self = this;
             _self.init();
             _self.$cart.shipping = storedCart.shipping;
+            _self.$cart.sampleCharges = storedCart.sampleCharges;            
             _self.$cart.tax = storedCart.tax;
 
             angular.forEach(storedCart.items, function (item) {
@@ -233,15 +254,19 @@ console.log("called");
         };
 
         item.prototype.setPrice = function(price){
+
             var priceFloat = parseFloat(price);
             if (priceFloat) {
-                if (priceFloat <= 0) {
+                if (priceFloat < 0) {
                     $log.error('A price must be over 0');
                 } else {
                     this._price = (priceFloat);
                 }
             } else {
-                $log.error('A price must be provided');
+                if(price==0)
+                    this._price = 0;
+                else
+                 $log.error('A price must be provided');
             }
         };
         item.prototype.getPrice = function(){

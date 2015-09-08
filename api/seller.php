@@ -209,7 +209,7 @@ $app->get('/shiningfloor/seller/chooseproducts', $authenticate_seller($app), fun
         if($last> $totalResults){
         $last = $totalResults;
         }
-        $query = $query->order('product_price ASC');
+        // $query = $query->order('product_price ASC');
         $query = $query->limit(30,$start) ;
         //echo $query;
         $data = findAllProducts($query,'');
@@ -233,8 +233,16 @@ $app->delete('/shiningfloor/seller/deleteproduct(/:product_id)', $authenticate_s
   $p = $db->sellers_products()->where('sellers_id', $seller_id)->where('products_id',$product_id) ;
     //  $product = $db->deposits()->where('id', $p['products_id']);
    if ($p->fetch()) {
-        $data = $p->delete();
-    }
+       $data = $p->delete();
+        $minPrice= 0;
+        $pricesAsc = $db->sellers_products()->where('products_id',$product_id)->order(' price ASC ')->fetch()  ;
+        // echo $pricesAsc['price'];
+        if($pricesAsc){
+          $minPrice = $pricesAsc['price'];
+          // echo $minPrice;
+        } // if now no seller for product then price 0 else min from remaining.
+        $db->products()->where('id',$product_id)->update(array('product_price'=>$minPrice));             
+  }
   $app->response()->header('Content-Type', 'application/json');
  echo json_encode($data);
 });
@@ -271,7 +279,7 @@ $app->get('/shiningfloor/seller/selectedproducts', $authenticate_seller($app),fu
         if($last> $totalResults){
           $last = $totalResults;
         }
-        $query = $query->order('product_price ASC');
+//        $query = $query->order('product_price ASC');
         $query = $query->limit(30,$start) ;
         foreach ($query as $p) {
             $usages =array();
@@ -308,6 +316,7 @@ $app->get('/shiningfloor/seller/selectedproducts', $authenticate_seller($app),fu
                          'product_id' => $p['id'],
                         'product_brand' =>   $p['product_brand'],
                         'product_name' => $p['product_name'],
+                        'product_min_price' =>   $p['product_price'],                        
                         'product_category' => $product_category ,
                         'product_type_id' => $p['type_id'],
                         'product_desc' =>  $p['product_desc'], 
@@ -349,13 +358,21 @@ $app->get('/shiningfloor/seller/selectedproducts', $authenticate_seller($app),fu
 $app->put('/shiningfloor/seller/products/update_product', function() use ($app, $db)
 {
     $array = (array) json_decode($app->request()->getBody());
+
     $email = $_SESSION['seller'] ;
     $seller_id = $db->sellers()->where('email', $email)->fetch();
 
+    $time = new DateTime("now", new DateTimeZone('Asia/Kolkata'));
+    $time = $time->format('Y-m-d H:i:s');
+    $array = array_merge($array, array('edited_on' => $time));
     $data = $db->sellers_products()->where('products_id',$array['products_id'])->where('sellers_id',$seller_id)->update($array);
+    if($data){
+          updateMinPrice($array['products_id'] , $array['price']); 
+        } 
     $app->response()->header('Content-Type', 'application/json');
     echo json_encode($data['id']);
 });
+
 function resize($origin,$width,$height,$saveTo){   
         // some settings
     $max_upload_width = 1200;
@@ -608,22 +625,44 @@ $app->post('/shiningfloor/seller/addproduct', $authenticate_seller($app),functio
     $query = $db->sellers_products->where('sellers_id',$seller_id['id'])->where('products_id',$product_id);
     $id = $query->select('id')->fetch();
 //    echo $id;
-    $seller_products = array(
+    $time = new DateTime("now", new DateTimeZone('Asia/Kolkata'));
+    $time = $time->format('Y-m-d H:i:s');
+
+    if(!$id){
+        $seller_products = array(
          'sellers_id' =>  $seller_id['id'] ,
          'products_id' =>  $product_id ,
          'price' => $array['price'],        
         'seller_product_code' => $array['seller_product_code'],
         'comments'=> $array['comments'],
         'minimum_boxes' => $array['minimum_boxes'],
-        'total_quantity' => $array['total_boxes']
+        'total_quantity' => $array['total_boxes'],
+        'added_on' => $time,
+        'edited_on' => $time
        );
-    if(!$id){
         $seller = $db->sellers_products()->insert($seller_products); 
-         
+        
+        if($seller){
+          updateMinPrice($product_id , $array['price']); 
+        }                 
     }
-    else
-        $seller = $db->sellers_products()->where('id',$id)->update($seller_products);
+    else{
+        $seller_products = array(
+         'sellers_id' =>  $seller_id['id'] ,
+         'products_id' =>  $product_id ,
+         'price' => $array['price'],        
+        'seller_product_code' => $array['seller_product_code'],
+        'comments'=> $array['comments'],
+        'minimum_boxes' => $array['minimum_boxes'],
+        'total_quantity' => $array['total_boxes'],
+        'edited_on' => $time
+       );
 
+        $seller = $db->sellers_products()->where('id',$id)->update($seller_products);
+        if($seller){
+          updateMinPrice($product_id , $array['price']); 
+        } 
+    }
     $app->response()->header('Content-Type', 'application/json');
     if(!$existedId)
       echo json_encode(array('status' => 'new'));
@@ -773,7 +812,9 @@ $app->post('/shiningfloor/seller/addSellerData/:product_id', $authenticate_selle
 {
     $array = (array) json_decode($app->request()->getBody());
     $email = $_SESSION['seller'] ;
-    $seller_id = $db->sellers()->where('email', $email)->fetch();    
+    $seller_id = $db->sellers()->where('email', $email)->fetch(); 
+    $time = new DateTime("now", new DateTimeZone('Asia/Kolkata'));
+    $time = $time->format('Y-m-d H:i:s');   
     $seller_products = array(
          'sellers_id' =>  $seller_id['id'] ,
          'products_id' =>  $product_id ,
@@ -781,9 +822,14 @@ $app->post('/shiningfloor/seller/addSellerData/:product_id', $authenticate_selle
         'seller_product_code' => $array['seller_product_code'],
         'comments'=> $array['comments'],
         'minimum_boxes' => $array['minimum_boxes'],
-        'total_quantity' => $array['total_boxes']
+        'total_quantity' => $array['total_boxes'],
+        'added_on' => $time,
+        'edited_on' => $time      
        );
     $seller = $db->sellers_products()->insert($seller_products); 
+    if($seller){
+          updateMinPrice($product_id , $array['price']); 
+        } 
     $app->response()->header('Content-Type', 'application/json');
     echo json_encode($seller['id']);
 });
@@ -793,7 +839,11 @@ $app->put('/shiningfloor/seller/editSellerData/:product_id', $authenticate_selle
 {
     $array = (array) json_decode($app->request()->getBody());
     $email = $_SESSION['seller'] ;
-    $seller_id = $db->sellers()->where('email', $email)->fetch();    
+    $seller_id = $db->sellers()->where('email', $email)->fetch();
+    
+    $time = new DateTime("now", new DateTimeZone('Asia/Kolkata'));
+    $time = $time->format('Y-m-d H:i:s');
+
     $seller_products = array(
          'sellers_id' =>  $seller_id['id'] ,
          'products_id' =>  $product_id ,
@@ -801,9 +851,13 @@ $app->put('/shiningfloor/seller/editSellerData/:product_id', $authenticate_selle
         'seller_product_code' => $array['seller_product_code'],
         'comments'=> ucfirst($array['comments']),
         'minimum_boxes' => $array['minimum_boxes'],
-        'total_quantity' => $array['total_boxes']
+        'total_quantity' => $array['total_boxes'],
+        'edited_on' => $time
        );
     $seller = $db->sellers_products()->where('sellers_id',$seller_id['id'])->where('products_id',$product_id)->update($seller_products); 
+    if($seller){
+          updateMinPrice($product_id , $array['price']); 
+        } 
     $app->response()->header('Content-Type', 'application/json');
     echo json_encode($seller['id']);
 });
@@ -879,6 +933,9 @@ $app->post('/shiningfloor/seller/sellers_products', $authenticate_seller($app),f
          'minimum_boxes' => $array['minimum_boxes']
         );
     $data = $db->sellers_products()->insert($seller_products);
+    if($seller){
+          updateMinPrice($product_id , $array['price']); 
+        } 
     $app->response()->header('Content-Type', 'application/json');
     echo json_encode($data['id']);
 });

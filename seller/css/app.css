@@ -3881,6 +3881,12 @@ a.text-#000000:hover {
 .text-white {
   color: #fff;
 }
+.text-dark-red{
+color: #CA2929;
+}
+.text-dark-blue{
+  color: #314554;
+}
 
 .text-muted {
   color: #98a6ad;

@@ -61,6 +61,7 @@
       </div>
       <div class="col-md-6 col-sm-6 col-xs-12">
         <div class="header_top_right floatright">
+          <p> <a href='../seller'> Sell on Buildcorner </a></p>
           <p><a ng-click="login()">login</a> / <a ng-click="signup()">register</a></p>
           <!-- <nav class="currency alignleft">
                             <ul>
@@ -94,7 +95,7 @@
       <div class="col-md-4 col-sm-5 col-xs-12">
         <div class="header_center">
           <a ui-sref="app.home.site">
-            <img style="margin-top:-40px" src="images/logo.jpg" alt="Site Logo" />
+            <img style="margin-top:-40px" src="images/logo1.png" alt="Site Logo" />
           </a>
         </div>
       </div>
@@ -109,7 +110,7 @@
             <!--  <li class="mobi_right_li"><a style="cursor:pointer"><i class="fa fa-search"></i>Personal Search</a></li>-->
           </ul>
           <div class="w_likes">
-            <span>{{ ngCart.getTotalItems() }}</span>
+            <span>{{ ngCart.getItems().length }}</span>
           </div>
         </div>
       </div>

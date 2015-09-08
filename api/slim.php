@@ -95,6 +95,79 @@ $app->post("/auth/process", function () use ($app, $db) {
 $app->get("/auth/logout", function () use ($app) {
    unset($_SESSION['user']);
 });
+
+// Contact us 
+$app->post("/shiningfloor/contactus", function () use ($app, $db) {
+          $email = $app->request()->post('email');  
+          $name = $app->request()->post('name');
+          $msg = $app->request()->post('msg');
+           // echo $msg . $name . $email ;
+          $time = new DateTime("now", new DateTimeZone('Asia/Kolkata'));
+          $time = $time->format('Y-m-d H:i:s');
+          $query = $db->contact_us()->insert(
+            array(
+              "name" => $name ,
+              "email"=> $email,
+              "msg" => $msg ,
+              "date" => (string)$time
+              )
+            );
+          if($query)
+            echo 'success';      
+  });
+
+$app->get("/shiningfloor/userquery", function () use ($app, $db) {
+           
+          $query = $db->contact_us()->order('date DESC');
+          $data = array();
+          foreach($query as $user){
+            $data[] = array(
+              "name" => $user["name"],
+              "email"=> $user["email"],
+              "msg" => $user["msg"],
+              "date" =>  $user["date"]
+              );
+          }
+          echo json_encode(array('users_data'=> $data));           
+  });
+
+// Subscribe user
+
+$app->post("/shiningfloor/subscribe", function () use ($app, $db) {
+          $email = $app->request()->post('email');  
+           
+//           echo $msg . $name . $email ;
+          $time = new DateTime("now", new DateTimeZone('Asia/Kolkata'));
+          $time = $time->format('Y-m-d H:i:s');
+          if(!count($db->subscribed_user()->where('email',$email))){
+            $query = $db->subscribed_user()->insert(
+              array(               
+                "email"=> $email,               
+                "date" => (string)$time
+                )
+              );
+            echo 'success';
+          }
+          else
+            echo 'subscribed';
+
+  });
+
+$app->get("/shiningfloor/subscribedUsers", function () use ($app, $db) {
+           
+          $query = $db->subscribed_user()->order('date DESC');
+          $data = array();
+          foreach($query as $user){
+            $data[] = array(
+               
+              "email"=> $user["email"],             
+              "date" =>  $user["date"]
+              );
+          }
+          echo json_encode(array('users_data'=> $data));           
+  });
+
+
 /********************* pwd change info **********************************/
 $app->put('/users/:email', function ($email = null) use ($app, $db) {
      $data = array();
@@ -295,6 +368,7 @@ $brandFilters = [];
 $finishTypeFilters = [];
 $materialFilters = [];
 $lookFilters = [];
+$shapeFilters = [];
 $applicationFilters = [];
 $app->get('/shiningfloor/product(/:id)', function($id=null ) use ($app, $db){         
       $data = array();
@@ -331,7 +405,9 @@ $app->get('/shiningfloor/products/search(/:type)/(:input)', function($type=null,
         if($last> $totalResults){
         $last = $totalResults;
         }
-        $query = $query->order('product_price ASC');
+        $get = filter_input_array(INPUT_GET);
+        if(!array_key_exists('sortBy', $get))
+          $query = $query->order('product_price ASC');
         $query = $query->limit(30,$start) ;
         $data = findAllProducts($query,'');
         $app->response()->header('content-type','application/json');
@@ -357,7 +433,9 @@ $app->get('/shiningfloor/products/(:input)', function($input=null ) use ($app, $
         if($last> $totalResults){
         $last = $totalResults;
         }
-        $query = $query->order('product_name ASC');
+        $get = filter_input_array(INPUT_GET);
+        if(!array_key_exists('sortBy', $get))
+          $query = $query->order('product_name ASC');
         $query = $query->limit($resultPerPage,$start) ;        
         $data = findAllProducts($query,'');
         $app->response()->header('content-type','application/json');

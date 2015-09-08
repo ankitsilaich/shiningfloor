@@ -275,7 +275,7 @@
                             <div class="h3 m-b-sm text-white-lter">{{product.product_brand}}</div>
                            <!--  <div>{{product.product_application}}- {{product.product_category}}</div>
  -->
-                            <div> <span>  Material: {{product.product_material}}, </span> <span style= 'margin-left:7px;'> Min boxes:{{product.seller_minimum_boxes}}, </span> <span style= 'margin-left:7px;'> Finish : {{product.product_finish_type}} , </span> <span style= 'margin-left:7px;'> Comments: {{product.seller_product_comments}}</span> </div>
+                            <div> <span>  Material: {{product.product_material}}, </span> <span style= 'margin-left:7px;'> Min boxes:{{product.seller_minimum_boxes}}, </span> <span style= 'margin-left:7px;'> Finish : {{product.product_finish_type}}  </span>   </div>
 
                         </div>
 
@@ -284,13 +284,13 @@
                     <div class="panel-footer bg-light lter wrapper">
                         <div class="row">
                             <div class="col-xs-4">
-                                <small class="text-muted block">Price</small>
-                                <span class="text-md">Rs. {{product.seller_product_price}}</span>
+                                <small class="text-muted block">Current Price</small>
+                                <span class="text-md"> Rs. {{product.product_min_price}} </span>
                             </div>
                             <div class="col-xs-4">
                                  
-                                <small class="text-muted block">Per box items</small>
-                                <span class="text-md">{{product.product_items_per_box}}</span>
+                                <small class="text-muted block">Your Price</small>
+                                <span class="text-md">Rs. {{product.seller_product_price}}</span>
                             </div>
                             <div class="col-xs-4">
                                  

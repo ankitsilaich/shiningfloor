@@ -15,7 +15,8 @@
     <div class="c_item_totals floatleft">
       <div class="c_item_totals_detail floatleft">
         <a href="product-detail.html"><h5>{{item.getName()}}</h5></a>
-        <span>{{item.getQuantity()}} x Rs {{item.getPrice()}}</span>
+        <span ng-show='item.getPrice()!=0'>{{item.getQuantity()}} x Rs {{item.getPrice()}}</span>
+        <span ng-show='item.getPrice()==0'> Free Sample</span>
       </div>
 
 
@@ -28,7 +29,7 @@
 
   <div class="cart_totals">
     <div class="c_totals_left floatleft">
-      <p>Free shipping</p>
+      <p>Free shipping </p>
     </div>
     <div class="c_totals_right floatleft">
       <p>total   Rs.{{ ngCart.totalCost()  }}</p>

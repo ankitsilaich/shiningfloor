@@ -15,10 +15,10 @@
 				<div class="col-md-12 col-sm-12 col-xs-12">
 					<div class="bread_box">
 						<ul class="breadcumb">
-							<li><a href="index.html">home <span>|</span></a></li>
-							<li><a href="category-1.html">Shop <span>|</span></a></li>
-							<li><a href="cart.html">Cart <span>|</span></a></li>
-							<li class="active"><a href="">checkout</a></li>
+							<li><a ui-sref="app.home">home <span>|</span></a></li>
+							<li><a ui-sref="app.home" >Shop <span>|</span></a></li>
+							<li><a ui-sref= "app.home.cart">Cart <span>|</span></a></li>
+							<li class="active"><a href >checkout</a></li>
 						</ul>
 					</div>
 				</div>
@@ -29,25 +29,113 @@
 	<section class="checkout_area">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-9 col-sm-8 col-xs-12">
+				<div class="col-md-4 col-sm-4 col-xs-12">
 					<div class="checkout_left">
 
 
-						<h2>Billing Address</h2>
+						<h4>1. Login/Signup</h4>
+						<div class="dotted_line"></div>
+						<!-- <div data-ng-include=" 'tpl/blocks/login_signup.html' " ></div> -->
+
+						<div class="checkout_form cd-user-modal-container"> 
+							 <div class='mail_info'><p  > We will send order details to this email address </p></div>
+							<div class='btn btn-default checkout_signIn' ng-click="login()"><a  >Sign in</a></div>
+							<div class='btn btn-info checkout_signUp' ng-click="signup()"><a  >New account</a></div>
+						 
+
+							<div id="cd-login"  ng-class="{'is-selected' : showLogin}"> <!-- log in form -->
+								<form class="cd-form">
+									<p class="fieldset">
+										<label class="image-replace cd-email" for="signin-email">E-mail</label>
+										<input class="full-width has-padding has-border" id="signin-email" type="email" placeholder="E-mail">
+										<span class="cd-error-message">Error message here!</span>
+									</p>
+
+									<p class="fieldset">
+										<label class="image-replace cd-password" for="signin-password">Password</label>
+										<input class="full-width has-padding has-border" id="signin-password" type="text"  placeholder="Password">
+										<a href="#0" class="hide-password">Hide</a>
+										<span class="cd-error-message">Error message here!</span>
+									</p>
+
+									<p class="fieldset">
+										<input type="checkbox" id="remember-me" checked>
+										<label for="remember-me">Remember me</label>
+									</p>
+
+									<p class="fieldset">
+										<input class="full-width" type="submit" value="Login">
+									</p>
+								</form>
+
+								<p class="cd-form-bottom-message"><a ng-click="resetPassword()">Forgot your password?</a></p>
+								<!-- <a href="#0" class="cd-close-form">Close</a> -->
+							</div> <!-- cd-login -->
+
+							<div id="cd-signup"  ng-class="{'is-selected' : showSignup}"> <!-- sign up form -->
+								<form class="cd-form">
+									<p class="fieldset">
+										<label class="image-replace cd-username" for="signup-username">Username</label>
+										<input class="full-width has-padding has-border" id="signup-username" type="text" placeholder="Username">
+										<span class="cd-error-message">Error message here!</span>
+									</p>
+
+									<p class="fieldset">
+										<label class="image-replace cd-email" for="signup-email">E-mail</label>
+										<input class="full-width has-padding has-border" id="signup-email" type="email" placeholder="E-mail">
+										<span class="cd-error-message">Error message here!</span>
+									</p>
+
+									<p class="fieldset">
+										<label class="image-replace cd-password" for="signup-password">Password</label>
+										<input class="full-width has-padding has-border" id="signup-password" type="text"  placeholder="Password">
+										<a href="#0" class="hide-password">Hide</a>
+										<span class="cd-error-message">Error message here!</span>
+									</p>
+
+									<p class="fieldset">
+										<input type="checkbox" id="accept-terms">
+										<label for="accept-terms">I agree to the <a href="#0">Terms</a></label>
+									</p>
+
+									<p class="fieldset">
+										<input class="full-width has-padding" type="submit" value="Create account">
+									</p>
+								</form>
+
+								<!-- <a href="#0" class="cd-close-form">Close</a> -->
+							</div> <!-- cd-signup -->
+
+							<div id="cd-reset-password" ng-class="{'is-selected' : resetPass}"> <!-- reset password form -->
+								<p class="cd-form-message">Lost your password? Please enter your email address. You will receive a link to create a new password.</p>
+
+								<form class="cd-form">
+									<p class="fieldset">
+										<label class="image-replace cd-email" for="reset-email">E-mail</label>
+										<input class="full-width has-padding has-border" id="reset-email" type="email" placeholder="E-mail">
+										<span class="cd-error-message">Error message here!</span>
+									</p>
+
+									<p class="fieldset">
+										<input class="full-width has-padding" type="submit" value="Reset password">
+									</p>
+								</form>
+
+								<p class="cd-form-bottom-message"><a ng-click="login()">Back to log-in</a></p>
+							</div> <!-- cd-reset-password -->
+						</div>
+ 
+					</div>
+				</div>
+				<div class="col-md-5 col-sm-4 col-xs-12">
+					<div class="checkout_left">
+
+
+						<h4>2. Confirm Address</h4>
 						<div class="dotted_line"></div>
 
 						<div class="checkout_form">
-							<div class="country_select">
-								<p>Country</p>
-								<select class="selectpicker sel_state">
-								  <option>Sate/Country</option>
-								  <option>Bangladesh</option>
-								  <option>USA</option>
-								  <option>UK</option>
-								  <option>Canda</option>
-								  <option>Australia</option>
-								</select>
-							</div>
+							 
 							<div class="c_name_box">
 								<div class="c_name_box_left">
 									<p>First Name <span>*</span></p>
@@ -97,50 +185,7 @@
 
 
 						</div>
-
-						<h2>Shiiping Address</h2>
-						<div class="dotted_line"></div>
-
-						<div class="shipping_form">
-							<div class="country_select country_select2">
-								<p>Country</p>
-								<select class="selectpicker sel_state">
-								  <option>Sate/Country</option>
-								  <option>Bangladesh</option>
-								  <option>USA</option>
-								  <option>UK</option>
-								  <option>Canda</option>
-								  <option>Australia</option>
-								</select>
-							</div>
-							<div class="c_name_box">
-								<div class="c_name_box_left">
-									<p>First Name <span>*</span></p>
-									<input type="text">
-								</div>
-								<div class="c_name_box_right">
-									<p>Last Name <span>*</span></p>
-									<input type="text">
-								</div>
-							</div>
-							<div class="company_name">
-								<p>Company Name <span>*</span></p>
-								<input type="text">
-							</div>
-							<div class="c_address">
-								<p>Address <span>*</span></p>
-								<input type="text" placeholder="Street Address">
-							</div>
-							<div class="s_town">
-								<p>Town/City <span>*</span></p>
-								<input type="text" placeholder="Town/City">
-							</div>
-							<div class="s_order">
-								<p>Order Notes <span>*</span></p>
-								<textarea name="" cols="30" rows="10"></textarea>
-							</div>
-
-						</div>
+ 
 					</div>
 				</div>
 				  <ngcart-summarycart></ngcart-summarycart>

@@ -38,7 +38,7 @@ angular.module('app')
                           return uiLoad.load(
                             [
 
-                              'js/others/jquery.elevatezoom.js',
+                              'js/others/jquery.elevatezoom.min.js',
                               'js/others/header.js'
 
 
@@ -239,7 +239,7 @@ angular.module('app')
               })
 
               .state('app.home.search.type', {
-                  url: '/:routeId/:query',
+                  url: '/:routeId/:query?pageNo&priceRange&brand_name&usages&applications&colors&finish_types&materials&looks&shapes&sortBy',
                   templateUrl : 'tpl/searchwithfilters.html',
                   reloadOnSearch:false,
 
