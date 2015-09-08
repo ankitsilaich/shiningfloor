@@ -22,10 +22,14 @@ app.controller('loginController', ['$scope', '$http', '$filter', '$location', fu
 
   }
   $scope.close = function(event) {
-    alert("ESC")
-    if (event.keyCode == 27) {
-      alert("ESC")
-    }
+    // alert("ESC");
+    // if (event.keyCode == 27) {
+//      alert("ESC")
+    // }
+  $scope.showModal = false;
+  $scope.showLogin = false;
+  $scope.showSignup = false;
+  $scope.resetPass = false;
 
   }
   $scope.resetPassword = function() {

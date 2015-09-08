@@ -1,12 +1,12 @@
 <div class="cd-user-modal" ng-class="{'is-visible' : showModal}" > <!-- this is the entire modal form, including the background -->
 		<div class="cd-user-modal-container"> <!-- this is the container wrapper -->
 			<ul class="cd-switcher" style="margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
-		list-style:none">
+			    padding: 0;
+			    border: 0;
+			    font-size: 100%;
+			    font: inherit;
+			    vertical-align: baseline;
+					list-style:none">
 				<li><a ng-class="{'selected' : loginTab}" ng-click="login()">Sign in</a></li>
 				<li><a ng-class="{'selected' : signupTab}" ng-click="signup()">New account</a></li>
 			</ul>
@@ -91,6 +91,6 @@
 
 				<p class="cd-form-bottom-message"><a ng-click="login()">Back to log-in</a></p>
 			</div> <!-- cd-reset-password -->
-			<a href="#0" class="cd-close-form">Close</a>
+			<a href ng-click='close()' class="cd-close-form"> X </a>
 		</div> <!-- cd-user-modal-container -->
 	</div> <!-- cd-user-modal -->

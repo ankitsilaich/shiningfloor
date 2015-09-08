@@ -1,391 +1,542 @@
 <div ng-controller="searchPageCtrl">
-<section class="breadcumb_top_area">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12 col-sm-12 col-xs-12">
-					<div class="bread_top_box">
-						<h2>{{rId}}</h2>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<div class="breadcumb_area">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12 col-sm-12 col-xs-12">
-					<div class="bread_box">
-						<ul class="breadcumb">
-							<li><a href="index-2.html">home <span>|</span></a></li>
-							<li><a href="category-1.html">Shop <span>|</span></a></li>
-							<li><a href="category-2.html">{{rId}} <span>|</span></a></li>
-							<li class="active"><a href="#">Products</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="filter_area">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-6 col-sm-8 col-xs-12">
-					<div class="filter_box_left">
-						<p>FILTERING:</p>
-						<div class="filter_cont">
-							<ul>
-								<li><a ng-click="Reset = !Reset;resetAll()">on</a></li>
-								<li ng-show="Reset"><img src="images/filter_ico.png" alt="" /></li>
-								 <li ng-show="!Reset"><img src="images/filter_ico_off.png" alt="" /></li>
-								<li><a ng-click="Reset = !Reset">off</a></li>
-							</ul>
-						</div>
-						<div class="s_results">
-
-							<p><span>|</span> showing {{searchCategory}} from {{ start + 1 }}-{{last}} of {{ totalResults }} results {{showpopup}} </p>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6 col-sm-4 col-xs-12">
-					<div class="filter_box_right">
-						<a class="dropdown-toggle" data-toggle="dropdown" href="#">sort by newness <span class="caret"></span></a>
-						  <ul class="dropdown-menu">
-							<li><a href="#">Top Seller </a></li>
-							<li><a href="#">Most Popular</a></li>
-							<li><a href="#">Alphabetically</a></li>
-							<li><a href="#">Older First</a></li>
-						  </ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<section class="main_category_area">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-3 col-sm-4 col-xs-12">
-					<div class="main_category_left">
-
-						<!-- <div class="panel-group" id="home-accordion" role="tablist" aria-multiselectable="true"> -->
-						  <div class="panel panel-default">
-							<div class="panel-heading" role="tab" id="headingOne">
-							  <h4 class="panel-title">
-								<a data-toggle="collapse" data-parent="#home-accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-								  CATEGORIES
-								  <span class="floatright"><i class="fa fa-angle-right" style="font-weight:bolder"></i></span>
-								</a>
-							  </h4>
-							</div>
-							<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-							  <div class="panel-body">
-								<ul id="c_tab1">
-									<li><a href>Tiles (12)</a></li>
-									<li><a href>Woods (54)</a></li>
-									<li><a href>Marble (105)</a></li>
-									<li><a href>Wallpapers (48)</a></li>
-									<li><a href>Artificial (120)</a></li>
-									<li><a href>Stone</a></li>
-
-							  </div>
-							</div>
-						  </div>
-						  <div class="panel panel-default">
-							<div class="panel-heading" style="cursor:pointer" ng-click="pricecollapse = !pricecollapse" >
-							  <h4 class="panel-title">
-								<a class="collapsed" >
-								  PRICE FILTER
-								  <span class="floatright" ><i class="fa fa-angle-down" style="font-weight:bolder" ng-show="!pricecollapse"></i><i class="fa fa-angle-right" style="font-weight:bolder" ng-show="pricecollapse"></i></span>
-								</a>
-							  </h4>
-							</div>
-							<div  >
-							  <div class="panel-body" ng-show="!pricecollapse">
-								<div ui-jq="slider" class="slider form-control" ng-model="range" value="" data-slider-min="10" data-slider-max="1400" data-slider-step="5" data-slider-value="[100,1300]" ></div>
-									<div class="cat_filter_box">
-										<p>
-										  <label for="amount">FILTER</label>
-										  <input type="text" id="amount" readonly style="border:0; color:#000; font-weight:bold;" value="Rs 100 to Rs 1300">
-										</p>
-									</div>
-							  </div>
-							</div>
-						  </div>
-						  <div class="panel panel-default">
-							<div class="panel-heading"  ng-click="colorscollapse = !colorscollapse" style="cursor:pointer;">
-							  <h4 class="panel-title">
-
-								<a class="collapsed">
-								  COLORS
-								  <span class="floatright"><i class="fa fa-angle-down" style="font-weight:bolder" ng-show="!colorscollapse"></i><i class="fa fa-angle-right" style="font-weight:bolder" ng-show="colorscollapse"></i></span>
-								</a>
-							  </h4>
-							</div>
-							<div id="collapseThree" ng-show="!colorscollapse">
-							  <div class="panel-body colors_cat">
-								<ul id="cat_color">
-									<li><a class="col-1" href="#"></a></li>
-									<li><a class="col-2" href="#"></a></li>
-									<li><a class="col-3" href="#"></a></li>
-									<li><a class="col-4" href="#"></a></li>
-									<li><a class="col-5" href="#"></a></li>
-									<li><a class="col-6" href="#"></a></li>
-									<li><a class="col-7" href="#"></a></li>
-									<li><a class="col-8" href="#"></a></li>
-									<li><a class="col-9" href="#"></a></li>
-									<li><a class="col-10" href="#"></a></li>
-								</ul>
-							  </div>
-							</div>
-						  </div>
-						  <div class="panel panel-default">
-							<div class="panel-heading" style="cursor:pointer;" ng-click="sizecollapse = !sizecollapse">
-							  <h4 class="panel-title">
-								<a class="collapsed" >
-								  SIZE
-								  <span class="floatright"><i class="fa fa-angle-down" style="font-weight:bolder"  ng-show="!colorscollapse"></i><i class="fa fa-angle-right"  style="font-weight:bolder"  ng-show="colorscollapse"></i></span>
-								</a>
-							  </h4>
-							</div>
-							<div id="collapseFour" ng-show="!sizecollapse">
-							  <div class="panel-body">
-								<ul id="cat_size">
-									<li><a href="#">xs</a></li>
-									<li><a href="#">s</a></li>
-									<li><a href="#">m</a></li>
-									<li><a href="#">l</a></li>
-									<li><a href="#">xl</a></li>
-									<li><a href="#">xxl</a></li>
-								</ul>
-							  </div>
-							</div>
-						  </div>
-						  <div class="panel panel-default">
-							<div class="panel-heading" ng-click="brandcollapse = !brandcollapse" style="cursor:pointer">
-							  <h4 class="panel-title">
-								<a class="collapsed">
-								  BRANDS
-								  <span class="floatright" n><i class="fa fa-angle-down" style="font-weight:bolder" ng-show="!brandcollapse"></i><i class="fa fa-angle-right" style="font-weight:bolder" ng-show="brandcollapse"></i></span>
-								</a>
-							  </h4>
-							</div>
-							<div  ng-show="!brandcollapse">
-							  <div class="panel-body">
-								<ul id="c_tab2">
-
-									<li ng-repeat="brand in brandFilters" ><a ng-class="{'activeFilter': selectedBrands[$index]}" ng-click="selectedBrands[$index] = !selectedBrands[$index];updateUrlChanges();" >
-										<!-- <span ng-show="selectedBrands[$index]" class="fa fa-check-square-o" style="margin-right:15px"></span>
-
-										<span ng-show="!selectedBrands[$index]" class="fa fa-square-o" style="margin-right:15px"></span>{{brandFilters[$index]}}</a> -->
-										<div class="checkbox custom-checkbox">
-											<label >											
-											
-											<input  type="checkbox" ng-model="selectedBrands[$index]" ng-checked="selectedBrands[$index]">
-											<span class="fa fa-check"></span>
-											<!-- <span ng-show="!selectedBrands[$index]" class="fa fa-check"></span> -->
-
-											{{brandFilters[$index]}} </label>
-
-										</div>
-
-									</li>
-
-								</ul>
-							  </div>
-							</div>
-						  </div>
-						  <div class="panel panel-default">
-							<div class="panel-heading" role="tab" id="headingSix">
-							  <h4 class="panel-title">
-								<a class="collapsed" >
-								  LOOK
-								  <span class="floatright"><i class="fa fa-angle-right"></i></span>
-								</a>
-							  </h4>
-							</div>
-							<div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
-							  <div class="panel-body">
-
-							  </div>
-							</div>
-						  </div>
-						  <div class="panel panel-default">
-							<div class="panel-heading" role="tab" id="headingSeven">
-							  <h4 class="panel-title">
-								<a class="collapsed" data-toggle="collapse" data-parent="#home-accordion" href="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
-								 STYLE
-								  <span class="floatright"><i class="fa fa-angle-right"></i></span>
-								</a>
-							  </h4>
-							</div>
-							<div id="collapseSeven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSeven">
-							  <div class="panel-body">
-
-							  </div>
-							</div>
-						  </div>
-						  <div class="panel panel-default">
-							<div class="panel-heading" role="tab" id="headingEight">
-							  <h4 class="panel-title">
-								<a class="collapsed" data-toggle="collapse" data-parent="#home-accordion" href="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
-								 BEST SELLER
-								  <span class="floatright"><i class="fa fa-angle-right"></i></span>
-								</a>
-							  </h4>
-							</div>
-							<div id="collapseEight" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEight">
-							  <div class="panel-body">
-
-							  </div>
-							</div>
-						  </div>
-						<!-- </div> -->
-					</div>
-				</div>
-				<div class="col-md-9 col-sm-8 col-xs-12">
-					<div class="main_category_right">
-						<div class="row">
-
-							<div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="product in searchResults | orderBy:sortBy:AscOrDesc">
-								<div class="main_cat_item">
-									<div class="item">
-										<div class="item-img">
-											<img  ui-jq="lazyload" data-original="{{product.product_img[0]}}" class='lazy'style="max-width:271px;max-height:250px;min-height:250px" alt="" />
-											<div class="tr-add-cart">
-
-												<ul>
-
-													<li ><a class="icon icon-handbag tr_cart add_to_cart" href></a></li>
-													<ngcart-addtocart ng-show="!ngCart.getItemById(product.product_id)" id="{{product.product_id}}" name="{{product.product_name}}" price="110" quantity="1" quantity-max="5" data="{ product_img: product.product_img[0], product_id: product.product_id }" ng-click ="showCounter()">Add to Cart
-
-															</ngcart-addtocart>
-													<li><a class="fa fa-heart-o tr_heart" ng-click="showAnimation(product,$event)"></a></li>
-													<li><a class="fa fa-search tr_search" ng-click="fetchProduct(product)" ></a></li>
-													<!-- <li><a class="tr_text" ng-click="ngCart.addItem(product.product_id, product.product_name, product.product_price, '1' , product )" >ADD TO CART</a></li> -->
-
-												</ul>
-											</div>
-										</div>
-										<div class="item-new">
-											<p>New</p>
-											<span>-10%</span>
-										</div>
-										<div class="item-sub">
-											<a href="product-detail.html"><h5>{{product.product_name }}</h5></a>
-											<p>$ 90.00 <span><del>$ 100</del></span> <span style="padding-left=10px"> size: </span>{{product.product_width}}*{{product.product_height}} {{product.product_w_unit}}</p>
-										</div>
-								  </div>
-								</div>
-							</div>
-
-
-
-						</div>
-						<div class="pagination-wrap">
-									<div class="row">
-										<div class="col-xs-7">
-											 <pagination total-items="totalResults" ng-model="temp" max-size="5" class="pagination-lg" items-per-page="20" boundary-links="true" ng-change="pagechange(temp)" direction-links="false" num-pages="numPages"></pagination>
-									   </div>
-									   <div class="col-xs-5 text-right">
-											<p >Showing {{searchCategory}} from {{ start + 1 }}-{{last}} of {{ totalResults }} results</p>
-									   </div>
-									</div>
-								</div>
-
-
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-
-<div class="clearfix quick-view " id="quickview-template" style="display:block" ng-show="showpopup">
-  <div class="overlay"></div>
-  <div class="content clearfix">
-		<div style=" display:block;
-		width:100px;
-		height: 100px;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		background:url(images/poploader.gif) no-repeat center #fff;
-		text-align:center;
-		padding:10px;
-		font:normal 16px Tahoma, Geneva, sans-serif;
-		margin-left: -50px;
-		margin-top: -50px;
-		z-index:2;
-		overflow: auto;" ng-show="showLoader">
-		</div>
-    <div class="product-img-box col-xs-5">
-      <div class="quickview-featured-image product-photo-container">
-			<a ><img  ng-elevate-zoom ui-if="popupProduct.product_img[0]"
-							ng-src="{{popupProduct.product_img[0]}}"
-							zoom-image="{{popupProduct.product_img[0]}}" title="{{popupProduct.product_name}}"><div style="height: 100%; width: 100%; top:0; left:0 z-index: 2000; position: absolute; display: none; background: url(//cdn.shopify.com/s/files/1/0675/0005/t/18/assets/loading.gif?18362838199248314162) 50% 50% no-repeat;"></div></a>
-			</div>
-      <div class="more-view-wrapper">
-        <ul class="product-photo-thumbs jcarousel-skin-tango  quickview-more-views-owlslider ">
-        </ul>
-      </div>
-    </div>
-
-    <div class="product-shop col-xs-7">
-      <div class="product-item">
-        <h2 class="product-title"><a>{{popupProduct.product_name}}</a></h2>
-
-
-        <div class="product-infor">
-
-          <p class="product-inventory"><label>Availability</label><span>Many in Stock</span></p>
-
-
-          <p class="product-type"><label>Product Type</label><span>{{popupProduct.product_type_id}}</span></p>
-
-
-          <p class="product-vendor"><label>Vendor</label><span></span></p>
-
+    <section class="breadcumb_top_area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="bread_top_box">
+                        <h2>{{rId}}</h2>
+                    </div>
+                </div>
+            </div>
         </div>
-
-
-        <div class="countdown" style="display:block"><span>Limited-Time Offers, End in:</span><div class="quickview-clock"></div></div>
-
-
-
-        <div class="details clearfix">
-          <form action="/cart/add" method="post" class="variants">
-            <select name='id' style="display:none"></select>
-            <div class="prices">
-              <span class="compare-price"></span>
-              <span class="price">{{popupProduct.product_price}}</span>
+    </section>
+    <div class="breadcumb_area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="bread_box">
+                        <ul class="breadcumb">
+                            <li><a href="index-2.html">home <span>|</span></a></li>
+                            <li><a href="category-1.html">Shop <span>|</span></a></li>
+                            <li><a href="category-2.html">{{rId}} <span>|</span></a></li>
+                            <li class="active"><a href="#">Products</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <label for="quantity">Quantity:</label>
-            <div class="dec button" ng-click="quantity = quantity-1">-</div>
-            <input type="number"  value="quantity" ng-model="quantity" class="quantity" style="padding: 5px 10px;
-  line-height: 1.35;
-  height: 36px;
-   border: 1px solid #cbcbcb;">
-            <div class="inc button" ng-click="quantity = quantity+1">+</div>
-
-
-            <div class="total-price">
-              <label>Subtotal: </label><span></span>
-            </div>
-
-
-            <div class="actions">
-							<!-- <ngcart-addtocart id="{{popupProduct.product_id}}" name="{{popupProduct.product_name}}" price="{{popupProduct.product_price}}" quantity="3" quantity-max="5" data="{ product_img: popupProduct.product_img, product_id: popupProduct.product_id }" ng-click ="showCounter()">Add to Cart
-
-									</ngcart-addtocart> -->
-              <button type="button" class="btn add-to-cart-btn" style="">Add to cart</button>
-            </div>
-          </form>
         </div>
-
-
-
-
-      </div>
     </div>
-        <a ng-click="showpopup = !showpopup"  class="close-window">Close</a>
-  </div>
+    <div class="filter_area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                    <div class="filter_box_left">
+                       <!--  <p>FILTERING:</p>
+                        <div class="filter_cont">
+                            <ul>
+                                <li><a ng-click="Reset = !Reset;resetAll()">on</a></li>
+                                <li ng-show="Reset"><img src="images/filter_ico.png" alt="" /></li>
+                                <li ng-show="!Reset"><img src="images/filter_ico_off.png" alt="" /></li>
+                                <li><a ng-click="Reset = !Reset">off</a></li>
+                            </ul>
+                        </div> -->
+                        <div class="s_results">
+
+                            <p> showing {{searchCategory}} from {{ start + 1 }}-{{last}} of {{ totalResults }} results {{showpopup}} </p>
+                        </div>
+                    </div>
+                </div>
+                <div  class="col-md-4 col-sm-4 col-xs-12">
+                  <!--   <div  class="row selectedFilters" ng-init='count1=0'>
+                       <span ng-show='count1!=0'> Brands {{$location.search()}}</span> 
+                    <div class='filtered' ng-repeat='brand in brandFilters'> <span ng-show='selectedBrands[$index]==true'> {{brandFilters[$index]}} <i class='fa fa-remove' /> </span></div>  
+                    </div> -->
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                    <div class="filter_box_right" ng-init="sortDropdown=true">
+                        <a class="dropdown-toggle" ng-click="sortDropdown=!sortDropdown" >SORT BY {{sortTypes[selectedSortIndex]}} <span class="caret"></span></a>
+                        <ul class="dropdown-menu"  ng-class="{'hidden':sortDropdown==true}">
+                            <li ng-repeat='sortType in sortTypes'>
+                                <a href ng-click='selectSortType($index);updateUrlChanges()' ng-class="{'active':selectedSortIndex==$index }"> {{sortType}} </a>
+                            </li>
+                            
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="main_category_area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-4 col-xs-12">
+                    <div class="main_category_left">
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading" ng-click="brandcollapse = !brandcollapse" style="cursor:pointer">
+                                <h4 class="panel-title">
+                                <a class="collapsed">
+                                  BRANDS
+                                  <span class="floatright" > <i class="fa fa-minus"  ng-show="!brandcollapse"></i><i class="fa fa-plus"  ng-show="brandcollapse"></i></span>
+                                </a>
+                              </h4>
+                            </div>
+                            <div ng-show="!brandcollapse">
+                                <div class="panel-body">
+                                    <ul id="c_tab2">
+
+                                        <li ng-repeat="brand in brandFilters">
+                                            <a ng-class="{'activeFilter': selectedBrands[$index]}" ng-click="selectedBrands[$index] = !selectedBrands[$index];updateUrlChanges();">
+                                                <div class="checkbox custom-checkbox">
+                                                    <label>
+
+                                                        <input type="checkbox" ng-model="selectedBrands[$index]" ng-checked="selectedBrands[$index]">
+                                                        <span class="fa fa-check"></span> {{brandFilters[$index]}} </label>
+
+                                                </div>
+
+                                        </li>F
+
+                                        </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading" ng-click="applicationcollapse = !applicationcollapse" style="cursor:pointer">
+                                <h4 class="panel-title">
+                                    <a class="collapsed">
+                                      Applications 
+                                      <span class="floatright" n><i class="fa fa-minus"  ng-show="!applicationcollapse"></i><i class="fa fa-plus"  ng-show="applicationcollapse"></i></span>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div ng-show="!applicationcollapse">
+                                <div class="panel-body">
+                                    <ul id="c_tab2">
+
+                                        <li ng-repeat="application in applicationFilters">
+                                            <a ng-class="{'activeFilter': selectedApplications[$index]}" ng-click="selectedApplications[$index] = !selectedApplications[$index];updateUrlChanges();">
+                                                <div class="checkbox custom-checkbox">
+                                                    <label>
+
+                                                        <input type="checkbox" ng-model="selectedApplications[$index]" ng-checked="selectedApplications[$index]">
+                                                        <span class="fa fa-check"></span> {{applicationFilters[$index]}} </label>
+
+                                                </div>
+
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading" ng-click="usagecollapse = !usagecollapse" style="cursor:pointer">
+                                <h4 class="panel-title">
+                                    <a class="collapsed">
+                                      Usages 
+                                      <span class="floatright" n><i class="fa fa-minus"  ng-show="!usagecollapse"></i><i class="fa fa-plus"  ng-show="usagecollapse"></i></span>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div ng-show="!usagecollapse">
+                                <div class="panel-body">
+                                    <ul id="c_tab2">
+
+                                        <li ng-repeat="usage in usageFilters">
+                                            <a ng-class="{'activeFilter': selectedUsages[$index]}" ng-click="selectedUsages[$index] = !selectedUsages[$index];updateUrlChanges();">
+                                                <div class="checkbox custom-checkbox">
+                                                    <label>
+
+                                                        <input type="checkbox" ng-model="selectedUsages[$index]" ng-checked="selectedUsages[$index]">
+                                                        <span class="fa fa-check"></span> {{usageFilters[$index]}} </label>
+
+                                                </div>
+
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" ng-click="finishcollapse = !finishcollapse" style="cursor:pointer">
+                                <h4 class="panel-title">
+                                    <a class="collapsed">
+                                      Finish Types
+                                      <span class="floatright" n><i class="fa fa-minus"  ng-show="!finishcollapse"></i><i class="fa fa-plus"  ng-show="finishcollapse"></i></span>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div ng-show="!finishcollapse">
+                                <div class="panel-body">
+                                    <ul id="c_tab2">
+
+                                        <li ng-repeat="finish in finishTypeFilters">
+                                            <a ng-class="{'activeFilter': selectedFinishTypes[$index]}" ng-click="selectedFinishTypes[$index] = !selectedFinishTypes[$index];updateUrlChanges();">
+                                                <div class="checkbox custom-checkbox">
+                                                    <label>
+
+                                                        <input type="checkbox" ng-model="selectedFinishTypes[$index]" ng-checked="selectedFinishTypes[$index]">
+                                                        <span class="fa fa-check"></span> {{finishTypeFilters[$index]}} </label>
+
+                                                </div>
+
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading" ng-click="materialcollapse = !materialcollapse" style="cursor:pointer">
+                                <h4 class="panel-title">
+                                    <a class="collapsed">
+                                      Material Type
+                                      <span class="floatright" n><i class="fa fa-minus"  ng-show="!materialcollapse"></i><i class="fa fa-plus"  ng-show="materialcollapse"></i></span>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div ng-show="!materialcollapse">
+                                <div class="panel-body">
+                                    <ul id="c_tab2">
+
+                                        <li ng-repeat="material in materialFilters">
+                                            <a ng-class="{'activeFilter': selectedMaterials[$index]}" ng-click="selectedMaterials[$index] = !selectedMaterials[$index];updateUrlChanges();">
+                                                <div class="checkbox custom-checkbox">
+                                                    <label>
+
+                                                        <input type="checkbox" ng-model="selectedMaterials[$index]" ng-checked="selectedMaterials[$index]">
+                                                        <span class="fa fa-check"></span> {{materialFilters[$index]}} </label>
+
+                                                </div>
+
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading" style="cursor:pointer" ng-click="pricecollapse = !pricecollapse">
+                                <h4 class="panel-title">
+                                <a class="collapsed" >
+                                  PRICE (per sq ft)
+                                  <span class="floatright" ><i class="fa fa-minus"  ng-show="!pricecollapse"></i><i class="fa fa-plus"  ng-show="pricecollapse"></i></span>
+                                </a>
+                              </h4>
+                            </div>
+                            <div>
+                                <div class="panel-body" ng-show="!pricecollapse" ng-click='callMe()'>
+                                   <!--  <div ui-jq="slider" class="slider form-control" ng-model="range" value="" data-slider-min="10" data-slider-max="2000" data-slider-step="5" data-slider-value="[10,2000]"></div>
+                                     -->
+                                     <div class='priceLabel clearfix'>
+                                        <div class='min'> Rs {{slider.min}} </div><div class='max'>Rs {{slider.max}} </div> </div>
+                                <div range-slider min="0" max="1000" model-min="slider.min" model-max="slider.max" disabled="false"></div> 
+                                <div style='border: 1px solid #E0E0E0' class='m-b-sm'>   </div>     <div class="cat_filter_box">
+                                        <div class='price'>
+                                        <div class='minprice'> <strong>From</strong> <br> <span> Rs</span>
+                                             <input type="text" class="input-small" ng-model="slider.min">  </div>
+                                         <div class='maxprice'>  <strong>To</strong>    <br>      <span> Rs</span>      
+                                            
+                                             <input type="text" class="input-small" ng-model="slider.max">
+                                         </div>
+                                         <div class='go'> <br><button class='btn btn-default' ng-click='updateUrlChanges()'> GO</button> </div>
+                                     </div>
+                                         
+                                    </div>                   
+
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading" ng-click="lookcollapse = !lookcollapse" style="cursor:pointer">
+                                <h4 class="panel-title">
+                                    <a class="collapsed">
+                                      Looks
+                                      <span class="floatright" n><i class="fa fa-minus"  ng-show="!lookcollapse"></i><i class="fa fa-plus"  ng-show="lookcollapse"></i></span>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div ng-show="!lookcollapse">
+                                <div class="panel-body">
+                                    <ul id="c_tab2">
+
+                                        <li ng-repeat="look in lookFilters">
+                                            <a ng-class="{'activeFilter': selectedLooks[$index]}" ng-click="selectedLooks[$index] = !selectedLooks[$index];updateUrlChanges();">
+                                                <div class="checkbox custom-checkbox">
+                                                    <label>
+
+                                                        <input type="checkbox" ng-model="selectedLooks[$index]" ng-checked="selectedLooks[$index]">
+                                                        <span class="fa fa-check"></span> {{lookFilters[$index]}} </label>
+
+                                                </div>
+
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading" ng-click="shapecollapse = !shapecollapse" style="cursor:pointer">
+                                <h4 class="panel-title">
+                                    <a class="collapsed">
+                                      Shapes 
+                                      <span class="floatright" n><i class="fa fa-minus"  ng-show="!shapecollapse"></i><i class="fa fa-plus"  ng-show="shapecollapse"></i></span>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div ng-show="!shapecollapse">
+                                <div class="panel-body">
+                                    <ul id="c_tab2">
+
+                                        <li ng-repeat="shape in shapeFilters">
+                                            <a ng-class="{'activeFilter': selectedShapes[$index]}" ng-click="selectedShapes[$index] = !selectedShapes[$index];updateUrlChanges();">
+                                                <div class="checkbox custom-checkbox">
+                                                    <label>
+
+                                                        <input type="checkbox" ng-model="selectedShapes[$index]" ng-checked="selectedShapes[$index]">
+                                                        <span class="fa fa-check"></span> {{shapeFilters[$index]}} </label>
+
+                                                </div>
+
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading" ng-click="colorscollapse = !colorscollapse" style="cursor:pointer;">
+                                <h4 class="panel-title">
+
+                                <a class="collapsed">
+                                  COLORS
+                                  <span class="floatright"><i class="fa fa-minus"  ng-show="!colorscollapse"></i><i class="fa fa-plus"  ng-show="colorscollapse"></i></span>
+                                </a>
+                              </h4>
+                            </div>
+                            <div id="collapseThree" ng-show="!colorscollapse">
+                                <div class="panel-body colors_cat">
+                                         
+                                        <ul id="cat_color"> 
+                                            <li ng-class="{'active':selectedColors[$index]}" ng-click="selectedColors[$index]=!selectedColors[$index];updateUrlChanges();" ng-repeat="color in colorFilters">
+                                                <a class="col-{{$index+1}}" val="{{$index+1}}" href></a>
+                                            </li>
+                                        </ul>  
+                                         
+
+                                 </div>
+                            </div>
+                        </div> 
+
+
+
+                    </div>
+                </div>
+                <div class="col-md-9 col-sm-8 col-xs-12">
+                    <div class="main_category_right">
+                        <div class="row">
+
+                            <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="product in searchResults">
+                                <div class="main_cat_item">
+                                   <!--  <div class="item">
+                                        <div class="item-img">
+                                            <img ui-jq="lazyload" data-original="{{product.product_img[0]}}" class='lazy' style="max-width:271px;max-height:250px;min-height:250px" alt="" />
+                                            <div class="tr-add-cart">
+
+                                                <ul>
+
+                                                    <li>
+                                                        <a class="icon icon-handbag tr_cart add_to_cart" href></a>
+                                                    </li>
+                                                    <ngcart-addtocart ng-show="!ngCart.getItemById(product.product_id)" id="{{product.product_id}}" name="{{product.product_name}}" price="110" quantity="1" quantity-max="5" data="{ product_img: product.product_img[0], product_id: product.product_id }" ng-click="showCounter()">Add to Cart
+
+                                                    </ngcart-addtocart>
+                                                    <li>
+                                                        <a class="fa fa-heart-o tr_heart" ng-click="showAnimation(product,$event)"></a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="fa fa-search tr_search" ng-click="fetchProduct(product)"></a>
+                                                    </li>
+                                                     
+                                                </ul>
+                                            </div>
+                                        </div>
+                                         
+                                        <div class="item-sub">
+                                            <a href="product-detail.html"><h5>{{product.product_name }}</h5></a>
+                                            <p>Rs 90.00 per sq ft  <span style="padding-left=10px"> size: </span>{{product.product_width}}*{{product.product_height}} {{product.product_w_unit}}</p>
+                                        </div>
+                                    </div> -->
+
+                                    <div class="add2cart_slide">
+                            <div class="add2cart_image">
+                                <a href="" class="cart_toltip_icon" data-text="Add For Sample">
+                                    <i class="fa fa-heart"></i>
+                                </a>
+                                <a data-rel="magnific-popup" href class="add2cart_img">
+                                     
+                                    <span class="add2cart_zoom"><i class="fa fa-plus"></i></span>
+                                    <img ui-jq="lazyload" data-original="{{product.product_img[0]}}" class='lazy'   alt="">
+                                </a>
+                        </div>
+                        <div class="add2cart_details">
+                        <div class="con_cont">
+                            <div class="add2cart_prod_name">{{product.product_name }}-{{product.product_brand}}  </div> 
+                                   <span ng-show='product.product_price!=0'>
+                                         Rs {{product.product_price}} per sq ft ,
+                                    </span>
+                                     
+                                     <span> size:{{product.product_width}}*{{product.product_height}} {{product.product_w_unit}}</span>
+                                   <!--  <div class="your_rate">
+                                        <span class="outline_stars" data-rate="40"></span>
+                                    </div> -->
+                                </div>
+                                <div class="add2cart_buttons clearfix">
+                                    <a href  class="pro_add2cart_add">
+
+
+                                        <ngcart-addtocart  id="{{product.product_id}}" name="{{product.product_name}}" price="{{boxPrice(product.product_width,product.product_height,product.product_w_unit,product.product_price)}}" quantity="1" quantity-max="5" data="{ product_img: product.product_img[0], product_id: product.product_id }" ng-click="showCounter()" ng-show='product.product_price!=0'>
+                                          <span ng-show="!ngCart.getItemById(product.product_id)"> <i class='icon icon-basket'> </i>Add to Cart </span>  
+                                          <span ng-show="ngCart.getItemById(product.product_id)" ui-sref="app.home.cart" > <i class='icon icon-basket'> </i> <i class="icon icon-plus" style="position: absolute;    margin: -6px 0 0 -15px;    color: #2ED0CD;"> </i> <span class='cart_info'data-text='View Cart'>Added to Cart </span> </span>  
+                                                    </ngcart-addtocart>
+                                            
+                                         <span ng-show="!ngCart.getItemById(product.product_id)&&product.product_price==0"> <i class='fa fa-search'> </i>Ask For Price</span>
+                                                  
+                                                </a>
+                                    <a href class="pro_add2cart_details" ng-click="fetchProduct(product)"> <i class="fa fa-angle-double-right"></i>Show Details</a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                        <div class="pagination-wrap">
+                            <div class="row">
+                                <div class="col-xs-7">
+                                    <pagination total-items="totalResults" ng-model="temp" max-size="5" class="pagination-lg" items-per-page="20" boundary-links="true" ng-change="pagechange(temp)" direction-links="false" num-pages="numPages"></pagination>
+                                </div>
+                                <div class="col-xs-5 text-right">
+                                    <p>Showing {{searchCategory}} from {{ start + 1 }}-{{last}} of {{ totalResults }} results</p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="clearfix quick-view " id="quickview-template" style="display:block" ng-show="showpopup">
+        <div class="overlay"></div>
+        <div class="content clearfix">
+            <div style=" display:block;
+        width:100px;
+        height: 100px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        background:url(images/poploader.gif) no-repeat center #fff;
+        text-align:center;
+        padding:10px;
+        font:normal 16px Tahoma, Geneva, sans-serif;
+        margin-left: -50px;
+        margin-top: -50px;
+        z-index:2;
+        overflow: auto;" ng-show="showLoader">
+            </div>
+            <div class="product-img-box col-xs-5">
+                <div class="quickview-featured-image product-photo-container">
+                    <a><img ng-elevate-zoom ui-if="popupProduct.product_img[0]" ng-src="{{popupProduct.product_img[0]}}" zoom-image="{{popupProduct.product_img[0]}}" title="{{popupProduct.product_name}}">
+                        <div style="height: 100%; width: 100%; top:0; left:0 z-index: 2000; position: absolute; display: none; background: url(//cdn.shopify.com/s/files/1/0675/0005/t/18/assets/loading.gif?18362838199248314162) 50% 50% no-repeat;"></div>
+                    </a>
+                </div>
+                <div class="more-view-wrapper">
+                    <ul class="product-photo-thumbs jcarousel-skin-tango  quickview-more-views-owlslider ">
+                    </ul>
+                </div>
+            </div>
+
+            <div class="product-shop col-xs-7">
+                <div class="product-item">
+                    <h2 class="product-title"><a>{{popupProduct.product_name}}</a></h2>
+
+
+                    <div class="product-infor">
+
+                        <p class="product-inventory">
+                            <label>Availability</label><span>Many in Stock</span></p>
+
+
+                        <p class="product-type">
+                            <label>Product Type</label><span>{{popupProduct.product_type_id}}</span></p>
+
+
+                        <p class="product-vendor">
+                            <label>Vendor</label><span></span></p>
+
+                    </div>
+
+
+                    <div class="countdown" style="display:block"><span>Limited-Time Offers, End in:</span>
+                        <div class="quickview-clock"></div>
+                    </div>
+
+
+
+                    <div class="details clearfix">
+                        <form action="/cart/add" method="post" class="variants">
+                            <select name='id' style="display:none"></select>
+                            <div class="prices">
+                                <span class="compare-price"></span>
+                                <span class="price">{{popupProduct.product_price}}</span>
+                            </div>
+                            <label for="quantity">Quantity:</label>
+                            <div class="dec button" ng-click="quantity = quantity-1">-</div>
+                            <input type="number" value="quantity" ng-model="quantity" class="quantity" style="padding: 5px 10px; line-height: 1.35;  height: 36px;   border: 1px solid #cbcbcb;">
+                            <div class="inc button" ng-click="quantity = quantity+1">+</div>
+
+
+                            <div class="total-price">
+                                <label>Subtotal: </label><span></span>
+                            </div>
+
+
+                            <div class="actions">
+                                <!-- <ngcart-addtocart id="{{popupProduct.product_id}}" name="{{popupProduct.product_name}}" price="{{popupProduct.product_price}}" quantity="3" quantity-max="5" data="{ product_img: popupProduct.product_img, product_id: popupProduct.product_id }" ng-click ="showCounter()">Add to Cart
+
+                                    </ngcart-addtocart> -->
+                                <button type="button" class="btn add-to-cart-btn" style="">Add to cart</button>
+                            </div>
+                        </form>
+                    </div>
+
+
+
+
+                </div>
+            </div>
+            <a ng-click="showpopup = !showpopup" class="close-window">Close</a>
+        </div>
+    </div>
 </div>
-</div></div>
+</div>

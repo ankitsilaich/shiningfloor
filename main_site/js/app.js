@@ -16,5 +16,6 @@ angular.module('app', [
     'oc.lazyLoad',
     'pascalprecht.translate',
     'angular-loading-bar',
-    'ngCart'
+    'ngCart',
+    'ui-rangeSlider'
 ]);
