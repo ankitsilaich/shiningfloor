@@ -131,6 +131,7 @@ a:hover { color: #000 }
 }
 .header_top_right p a {
   color: #e8e8e8;
+    cursor: pointer;
 }
 .header_top_right p a:hover {
   color: #183152;
@@ -814,7 +815,7 @@ nav.mainmenu::after {
    transition: all .3s ease;
    -moz-transition: all .3s ease;
    -webkit-transition: all .3s ease;
-   
+
    text-transform: uppercase;
    z-index: 1;
  }
@@ -1135,7 +1136,7 @@ nav.mainmenu::after {
       padding: 0;
     }
     ul.cat_nav li {
-      
+
     }
         ul.cat_nav li a, ul.cat_nav li a:before {
      border-top: 0!important;
@@ -5716,7 +5717,7 @@ label[for="productSelect"] {margin-bottom: 10px;}
   color: #ffffff;
   border-color: #000000;
 }
-  
+
 .content-box {
   /*background: none repeat scroll 0 0 #F4F5F6;*/
   url(../images/content-box-bg.jpg) center top repeat-x;
@@ -7184,7 +7185,7 @@ nav.std-menu ul.menu > li.parent:hover > a:after {
   }
   .cd-form label {
     font-size: 14px;
-    font-size: 0.875rem;
+    font-size: 0.875em;
   }
   .cd-form label.image-replace {
     /* replace text with an icon */
@@ -7209,20 +7210,20 @@ nav.std-menu ul.menu > li.parent:hover > a:after {
     background-position: 50% 0;
   }
   .cd-form label.cd-username {
-    background-image: url("../img/cd-icon-username.svg");
+    background-image: url("../images/cd-icon-username.svg");
   }
   .cd-form label.cd-email {
-    background-image: url("../img/cd-icon-email.svg");
+    background-image: url("../images/cd-icon-email.svg");
   }
   .cd-form label.cd-password {
-    background-image: url("../img/cd-icon-password.svg");
+    background-image: url("../images/cd-icon-password.svg");
   }
   .cd-form input {
     margin: 0;
     padding: 0;
     border-radius: 0.25em;
   }
-  .cd-form input.full-width {
+  .cd-form input.full-width, .cd-form button.full-width{
     width: 100%;
   }
   .cd-form input.has-padding {
@@ -7248,7 +7249,7 @@ nav.std-menu ul.menu > li.parent:hover > a:after {
     /* space left for the HIDE button */
     padding-right: 65px;
   }
-  .cd-form input[type=submit] {
+  .cd-form input[type=submit], .cd-form button {
     padding: 16px 0;
     cursor: pointer;
     background: #2f889a;
@@ -7261,7 +7262,7 @@ nav.std-menu ul.menu > li.parent:hover > a:after {
     -o-appearance: none;
     appearance: none;
   }
-  .no-touch .cd-form input[type=submit]:hover, .no-touch .cd-form input[type=submit]:focus {
+  .no-touch .cd-form input[type=submit]:hover, .no-touch .cd-form input[type=submit]:focus, .cd-form button {
     background: #3599ae;
     outline: none;
   }
@@ -7280,7 +7281,7 @@ nav.std-menu ul.menu > li.parent:hover > a:after {
     -o-transform: translateY(-50%);
     transform: translateY(-50%);
     font-size: 14px;
-    font-size: 0.875rem;
+    font-size: 0.875em;
     color: #343642;
   }
   .cd-form .cd-error-message {
@@ -7293,12 +7294,12 @@ nav.std-menu ul.menu > li.parent:hover > a:after {
     z-index: 2;
     color: #FFF;
     font-size: 13px;
-    font-size: 0.8125rem;
+    font-size: 0.8125em;
     border-radius: 0.25em;
     /* prevent click and touch events */
     pointer-events: none;
-    visibility: hidden;
-    opacity: 0;
+    /*visibility: hidden;*/
+    /*opacity: 0;*/
     -webkit-transition: opacity 0.2s 0, visibility 0 0.2s;
     -moz-transition: opacity 0.2s 0, visibility 0 0.2s;
     transition: opacity 0.2s 0, visibility 0 0.2s;
@@ -7345,7 +7346,7 @@ nav.std-menu ul.menu > li.parent:hover > a:after {
     .cd-form-message {
     padding: 1.4em 1.4em 0;
     font-size: 14px;
-    font-size: 0.875rem;
+    font-size: 0.875em;
     line-height: 1.4;
     text-align: center;
   }
@@ -7354,32 +7355,36 @@ nav.std-menu ul.menu > li.parent:hover > a:after {
       padding: 2em 2em 0;
     }
   }
-    .cd-form-bottom-message {
-    position: absolute;
-    width: 100%;
-    left: 0;
-    bottom: -30px;
-    text-align: center;
-    font-size: 14px;
-    font-size: 0.875rem;
+  .cd-form-bottom-message {   
+  color: #2F889A;
+  width: 100%; 
+  padding-bottom: 10px; 
+  text-align: center;
+  font-size: 14px;
+  font-size: 0.875em;
   }
   .cd-form-bottom-message a {
-    color: #FFF;
+    /*color: #FFF;*/
+    cursor: pointer;
     text-decoration: underline;
   }
     .cd-close-form {
-    /* form X button on top right */
     display: block;
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    right: 0;
-    top: -10px;
-    background: url("../images/close-icon.png") no-repeat center center;
-    text-indent: 100%;
-    white-space: nowrap;
-    overflow: hidden;
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  right: -4px;
+  top: 0px;
+  white-space: nowrap;
+  overflow: hidden; 
+  border-radius: 50%;
+
   }
+  .cd-close-form .fa.fa-close{
+  font-size: 25px;
+  padding: 1px 5px;
+
+}
   @media only screen and (min-width: 1170px) {
     .cd-close-form {
       /*display: none;*/
@@ -7391,7 +7396,7 @@ nav.std-menu ul.menu > li.parent:hover > a:after {
     #cd-login.is-selected, #cd-signup.is-selected, #cd-reset-password.is-selected {
     display: block;
   }
-  
+
   /*  960 / 16 */
   .gsWidth
   {
@@ -9209,7 +9214,7 @@ border-radius: 50%;
     -o-transition: all 0.4s ease 0s;
     -ms-transition: all 0.4s ease 0s;
       }
-      
+
   .services-box span:before {
    width: 0;
    height: 0;

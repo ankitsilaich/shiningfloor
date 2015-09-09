@@ -383,9 +383,14 @@
 
                                     <div class="add2cart_slide">
                             <div class="add2cart_image">
-                                <a href="" class="cart_toltip_icon" data-text="Add For Sample">
-                                    <i class="fa fa-heart"></i>
-                                </a>
+
+                                <ngcart-addtocart  id="{{product.product_id}}" name="{{product.product_name}}" price="0" quantity="1" quantity-max="5" data="{ product_img: product.product_img[0], product_id: product.product_id }"ng-show='product.product_price!=0'>                                             
+                                    <a href="" ng-show="!ngCart.getItemById(product.product_id)" class="cart_toltip_icon" data-text="Add For Sample">
+                                        <i class="fa fa-heart"></i>
+                                    </a>
+                                </ngcart-addtocart>
+
+                                
                                 <a data-rel="magnific-popup" href class="add2cart_img">
                                      
                                     <span class="add2cart_zoom"><i class="fa fa-plus"></i></span>

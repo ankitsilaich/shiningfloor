@@ -62,7 +62,8 @@
       <div class="col-md-6 col-sm-6 col-xs-12">
         <div class="header_top_right floatright">
           <p> <a href='../seller'> Sell on Buildcorner </a></p>
-          <p><a ng-click="login()">login</a> / <a ng-click="signup()">register</a></p>
+          <p ng-show='user==""'><a ng-click="showloginModel()">login</a> / <a ng-click="showsignupModel()">register</a></p>
+          <p ng-show='user!=""'><a ng-click="logout()"> {{user}} logout</a> </p>
           <!-- <nav class="currency alignleft">
                             <ul>
                                 <li><a href="#">USD</a>

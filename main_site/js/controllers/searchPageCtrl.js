@@ -305,7 +305,7 @@ $scope.makeUrl = function(selected, original) {
         $location.search('pageNo', '1');
     }
     $location.search('sortBy', $scope.sortBy);         
-    // $location.search('priceRange', $scope.slider.min+'-'+$scope.slider.max);
+    $location.search('priceRange', $scope.slider.min+'-'+$scope.slider.max);
     $scope.requestToSearchAPI();
     // url for changing product in search page.
     $scope.url = $stateParams.query; 

@@ -53,7 +53,7 @@
                                 <div class="form-group clearfix">
                                     <label class="col-sm-2 control-label">Product Type* </label>
                                     <div class="col-sm-8">
-                                    <label class='control-label f-s-md'> <b> {{selectedType}} </b> </label>
+                                    <label class='control-label f-s-md'> <b> {{selectedType.toUpperCase()}} </b> </label>
                                         <!-- <select class="form-control" name='type' ng-model="product.type" ng-click="selectType(product.type);">
                                             <option ng-repeat="product_type in product_types" value="{{product_type.value}}">{{product_type.name}}</option>
                                         </select> -->
@@ -92,10 +92,10 @@
                                     <div class="col-md-4 col-sm-12">
                                          <div class="input-group">
                                             <input placeholder='width' class="form-control" name='width'ng-model="product.width" ng-pattern="/^[0-9]+$/" required>
-                                        <div class="input-group-btn"> <select  class="form-control pull-right" name='w_unit' ng-model ="product.w_unit" placeholder="unit">
+                                        <div class="input-group-btn" style='display:none'> <select  class="form-control pull-right" name='w_unit' ng-model ="product.w_unit" placeholder="unit">
                                                 <option  value="ft"> ft</option> <option  value="inch">inch</option> <option  value="cm">cm</option> <option  value="mm">mm</option>
                                         </select> </div>
-                                        
+                                         
                                          </div>
                                      <div ng-show="generalDataChecked || editProductForm.width.$touched">
                                           <span class='form-error' ng-show="editProductForm.width.$error.required">provide width of product</span>

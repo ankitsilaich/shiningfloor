@@ -5,18 +5,31 @@
  */
 angular.module('app')
   .run(
-    [          '$rootScope', '$state', '$stateParams',
-      function ($rootScope,   $state,   $stateParams) {
+    [          '$rootScope', '$state', '$stateParams','LoginService','$http','$location',
+      function ($rootScope,   $state,   $stateParams,LoginService,$http,$location) {
 
           $rootScope.$state = $state;
           $rootScope.$stateParams = $stateParams;
-          $rootScope.$on('$stateChangeSuccess',
-  function(event, toState, toParams, fromState, fromParams) {
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
-    console.log(event);
-    $rootScope.currentstate = toState;
-  }
-)
+          $rootScope.isLoggedIn = false;
+          $rootScope.processGoingOn = false;
+          // var routesPermission = ['/userAccount'];
+          $rootScope.$on('$stateChangeSuccess',  function(event, toState, toParams, fromState, fromParams) {
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
+            console.log(event);
+            $rootScope.currentstate = toState;
+
+            var connected = LoginService.isLoggedIn();
+            connected.then(function(msg){
+              if(msg.data){
+                $rootScope.isLoggedIn = true;
+                console.log(msg.data);
+              }
+              // else
+                // $location.path('/home');
+
+            });
+   
+          });
       }
     ]
   )

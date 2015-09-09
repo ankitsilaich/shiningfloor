@@ -4,8 +4,8 @@
 
 angular.module('app')
 
-  .controller('AppCtrl', ['$scope', '$rootScope', '$translate', 'ngCart', '$localStorage', '$window',
-    function(              $scope, $rootScope,  $translate, ngCart,  $localStorage,   $window ) {
+  .controller('AppCtrl', ['$scope', '$rootScope', '$translate', 'ngCart', '$localStorage', '$window','$http','$state','$stateParams',
+    function(              $scope, $rootScope,  $translate, ngCart,  $localStorage,   $window ,$http , $state ,$stateParams) {
 
       // add 'ie' classes to html
       var isIE = !!navigator.userAgent.match(/MSIE/i);
@@ -101,6 +101,7 @@ angular.module('app')
     $scope.selectImg = function(img){
         $scope.selected_product_img = img;
  };
+
 
    $scope.types=['tiles','wood','marble','stone','wallpaper','artificial']
    // For search page left side navigation
