@@ -126,6 +126,26 @@ angular.module('app')
 
 
              })
+             .state('app.home.faq', {
+                url: '/faqs',
+                templateUrl: 'tpl/faq.html',
+                  resolve: {
+                    deps: ['$ocLazyLoad', 'uiLoad',
+                      function( $ocLazyLoad, uiLoad ){
+                        return uiLoad.load(
+                          [
+                            'css/faq.css',
+                             'js/others/faq.js'
+
+
+                            ]
+                        )
+                    }]
+                }
+
+
+
+            })
               .state('app.home.checkout', {
                  url: '/checkout',
                  templateUrl: 'tpl/checkout.html',
