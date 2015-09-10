@@ -31,6 +31,9 @@
 						<input type="checkbox" id="remember-me" checked>
 						<label for="remember-me">Remember me</label>
 					</p>
+					<p class='fieldset has-error' ng-show='loginError!=""'>
+						{{loginError}} 
+					</p>
 
 					<p class="fieldset">
 						 <button type="submit" class="btn btn-lg full-width" ng-click='login(user);' ng-disabled="loginForm.$invalid" > Login  </button>
@@ -58,7 +61,7 @@
 
 					<p class="fieldset">
 						<label class="image-replace cd-password" for="signup-password">Password</label>
-						<input class="full-width has-padding has-border" id="signup-password" type="password" name='password' ng-model='newuser.password' placeholder="Password" required>
+						<input class="full-width has-padding has-border" id="signup-password" type="password" name='password' ng-model='newuser.password' placeholder="Password"  required>
 						 
 						<span ng-show="signUpForm.password.$touched&&signUpForm.password.$error.required" class="cd-error-message">fill your password</span>
 
@@ -69,8 +72,11 @@
 						<label for="accept-terms">I agree to the <a href>Terms</a></label>
 					</p>
 
+					<p class='fieldset has-error' ng-show='signupError!=""'>
+						{{signupError}} 
+					</p>
 					<p class="fieldset">
-						 <button type="submit" class="btn btn-lg full-width has-padding" ng-click='signup(newuser);' ng-disabled="signUpForm.$invalid" > Login  </button>
+						 <button type="submit" class="btn btn-lg full-width has-padding" ng-click='signup(newuser);' ng-disabled="signUpForm.$invalid" > Create an Account  </button>
 
 					</p>
 				</form>

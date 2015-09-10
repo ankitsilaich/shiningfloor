@@ -259,8 +259,13 @@ function priceInfeet($basePrice, $unit){
   // $pricePerSqFt = 
 }
 
+function setOurMargin($price){
+  $percentMargin = 15;
+  return round(($price*$percentMargin)/100);
+}
 function updateMinPrice($product_id , $price){
     global $db;
+    $price = $price + setOurMargin($price);
     $productMinPrice = $db->products()->where('id',$product_id)->fetch()['product_price'];
     if($productMinPrice == 0)
         $db->products()->where('id',$product_id)->update(array('product_price'=>$price));

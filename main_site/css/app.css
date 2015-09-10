@@ -7229,6 +7229,12 @@ nav.std-menu ul.menu > li.parent:hover > a:after {
   .cd-form input.has-padding {
     padding: 12px 20px 12px 50px;
   }
+  .cd-form p.has-error {
+    text-align: center;
+    background-color: #d9534f;
+    color:#fff;
+    border-radius: 5px;
+  }
   .cd-form input.has-border {
     border: 1px solid #d2d8d8;
     -webkit-appearance: none;

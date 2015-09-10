@@ -3,6 +3,9 @@ app.controller('loginController', ['$scope', '$http', '$filter', '$location', '$
   $scope.showLogin = false;
   $scope.showSignup = false;
   $scope.resetPass = false;
+  $scope.loginError = "";
+  $scope.signupError = "";
+  
   $scope.showsignupModel = function() {
 
     $scope.showModal = true;
@@ -56,7 +59,8 @@ $scope.login = function(user) {
               }
               else{
                   // toaster.pop('error', 'Login Error', 'Either email or password incorrect');
-                  console.log('Either email or password incorrect');
+                  $scope.loginError = "Either email or password incorrect!"
+                  // console.log('Either email or password incorrect');
                 }
           }); 
       }          
@@ -68,6 +72,7 @@ $scope.login = function(user) {
       .then(function(response) {
         if ( response.data.signup_success == 'false') {
             console.log('signup error ' + response.data);
+            $scope.signupError = "Email already registered! ";
             // toaster.pop('error', 'Seller existed', 'Please login with this email...'); 
         }else{
 

@@ -238,7 +238,7 @@ $app->delete('/shiningfloor/seller/deleteproduct(/:product_id)', $authenticate_s
         $pricesAsc = $db->sellers_products()->where('products_id',$product_id)->order(' price ASC ')->fetch()  ;
         // echo $pricesAsc['price'];
         if($pricesAsc){
-          $minPrice = $pricesAsc['price'];
+          $minPrice = $pricesAsc['price'] + ourMargin($pricesAsc['price']);
           // echo $minPrice;
         } // if now no seller for product then price 0 else min from remaining.
         $db->products()->where('id',$product_id)->update(array('product_price'=>$minPrice));             
