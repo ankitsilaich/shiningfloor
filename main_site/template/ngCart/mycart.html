@@ -7,13 +7,70 @@
 					Your cart is empty
 				</div>
 
-					<div class="main_cart_left" ng-show="ngCart.getTotalItems() > 0">
+					
+
+				<div class="main_cart_left" ng-show="ngCart.getTotalItems()- ngCart.getTotalSamples() > 0">
+					<div class="cart_title"> <h3> Products</h3></div>
+					<div class="cart_heading">
+						<div class="h_item1">
+							<p>product</p>
+						</div>
+						<div class="h_item2">
+							<p>Price (Per Cartoon)</p>
+						</div>
+						<div class="h_item3">
+							<p>Quantity</p>
+						</div>
+						<div class="h_item4">
+							<p>total</p>
+						</div>
+					</div> 
+					<div class='cart_items'>
+						<div class="cart_item" ng-repeat="item in ngCart.getCart().items track by $index" ng-show='item.getPrice()!=0'>
+							<div class="cart_item_img">
+								<img src="{{ item.getData().product_img }}" style="width:92px;height:82px" alt="" />
+								<p>{{ item.getName() }}<br>{{ item.getData().product_type_id }}</p>
+							</div>
+							<div class="cart_price">
+								<p>Rs. {{ item.getPrice() }}</p>									
+							</div>
+							<div class="cart_quantity">
+								<ul>
+									<li><a  ng-class="{'disabled':item.getQuantity()==1}" ng-click="item.setQuantity(-1, true)"><i class="fa fa-minus"></i></a></li>
+									<li><a >  {{ item.getQuantity() | number }}</a></li>
+									<li><a ng-click="item.setQuantity(1, true)"><i class="fa fa-plus"></i></a></li>
+								</ul>
+								  
+							</div>
+							<div class="cart_total">
+								<p>
+									<span  > Rs. {{ item.getTotal() }} </span>  
+									<div class="close_icon_cart " style="margin-top:-20px;margin-right: 10px;font-size:20px;" ng-click="ngCart.removeItemById(item.getId())">
+        								<span class="icon-close" style="color:#EA2E49"></span>
+    								</div>
+    							</p>
+
+								
+								
+							</div>
+						</div>
+					</div>
+
+
+					<!-- <div class="coupon_box">
+						<input type="text" placeholder="coupon code"/>
+						<input type="submit" value="apply coupon">
+					</div> -->
+				</div>
+
+				<div class="main_cart_left" ng-show="ngCart.getTotalSamples() > 0">
+					<div class="cart_title"> <h3>Shortlisted Samples</h3></div>	
 						<div class="cart_heading">
 							<div class="h_item1">
 								<p>product</p>
 							</div>
 							<div class="h_item2">
-								<p>Price (Per Cartoon)</p>
+								<p>Sample Charges</p>
 							</div>
 							<div class="h_item3">
 								<p>Quantity</p>
@@ -23,34 +80,25 @@
 							</div>
 						</div> 
 						<div class='cart_items'>
-							<div class="cart_item" ng-repeat="item in ngCart.getCart().items track by $index">
+							<div class="cart_item" ng-repeat="item in ngCart.getCart().items track by $index" ng-show='item.getPrice()==0'>
 								<div class="cart_item_img">
 									<img src="{{ item.getData().product_img }}" style="width:92px;height:82px" alt="" />
 									<p>{{ item.getName() }}<br>{{ item.getData().product_type_id }}</p>
 								</div>
 								<div class="cart_price">
-									<p ng-show='item.getPrice()!=0&&$index<5'>Rs. {{ item.getPrice() }}</p>
-									<p ng-show='item.getPrice()!=0&&$index>=5'>Rs. {{ item.getPrice()}} + Rs. 50</p>								
-									<p ng-show='item.getPrice()==0&&$index<5'>Free</p>
-									<p ng-show='item.getPrice()==0&&$index>=5'>Rs. 50 (sample charges)</p>								
-
+									<p>Rs. {{ item.getPrice() }}</p>									
 								</div>
+
+								
 								<div class="cart_quantity">
-									<ul ng-show='item.getPrice()!=0'>
-										<li><a  ng-class="{'disabled':item.getQuantity()==1}" ng-click="item.setQuantity(-1, true)"><i class="fa fa-minus"></i></a></li>
-										<li><a >  {{ item.getQuantity() | number }}</a></li>
-										<li><a ng-click="item.setQuantity(1, true)"><i class="fa fa-plus"></i></a></li>
+									<ul>
+										<li> <p> 1 </p></li>
 									</ul>
-									<p ng-show='item.getPrice()==0&&$index<5'> Free sample </p>
-									<p ng-show='item.getPrice()==0&&$index>=5'> One Sample </p>
+									  
 								</div>
 								<div class="cart_total">
 									<p>
-										<span ng-show='item.getPrice()!=0&&$index<5' > Rs. {{ item.getTotal() }} </span>
-										<span ng-show='item.getPrice()!=0&&$index>=5' > Rs. {{ item.getTotal()+50 }} </span>
-										<span ng-show='item.getPrice()==0&&$index<5'>Free  </span>
-										<span ng-show='item.getPrice()==0&&$index>=5'>Rs. 50 (sample charges)</span>
-
+										<span  > Rs. {{ item.getTotal() }} </span>  
 										<div class="close_icon_cart " style="margin-top:-20px;margin-right: 10px;font-size:20px;" ng-click="ngCart.removeItemById(item.getId())">
 	        								<span class="icon-close" style="color:#EA2E49"></span>
 	    								</div>
@@ -60,14 +108,12 @@
 									
 								</div>
 							</div>
+
 						</div>
-
-
-						<!-- <div class="coupon_box">
-							<input type="text" placeholder="coupon code"/>
-							<input type="submit" value="apply coupon">
-						</div> -->
+ 
 					</div>
+
+
 				</div>
 				<div class="col-md-3 col-sm-4 col-xs-12">
 					<div class="main_cart_right">
@@ -95,7 +141,7 @@
 
 										<div class="c_single_item">
 										<p>Total Samples</p>
-										<span>  {{ ngCart.getItems().length  }}</span>
+										<span>  {{ ngCart.getTotalSamples()  }}</span>
 										</div>
 										
 

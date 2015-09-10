@@ -139,9 +139,12 @@ $app->post("/auth/signup/user", function() use ($app, $db)
     else
     {
       $array['password'] = md5(sha1($array['password']));
-      $joindate=getdate(date("U"));
+      
 //      echo  "$joindate[month] $joindate[mday], $joindate[year]";
-      $array['join_date'] = "$joindate[month] $joindate[mday], $joindate[year]" ;
+      $time = new DateTime("now", new DateTimeZone('Asia/Kolkata'));
+      $time = $time->format('Y-m-d H:i:s');
+
+      $array['join_date'] = $time ;
       $data = $db->users()->insert($array);
 //      echo $data;
       $_SESSION['user'] = $email;

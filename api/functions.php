@@ -270,8 +270,14 @@ function updateMinPrice($product_id , $price){
     if($productMinPrice == 0)
         $db->products()->where('id',$product_id)->update(array('product_price'=>$price));
     else{
-      if($productMinPrice > $price) 
-        $db->products()->where('id',$product_id)->update(array('product_price'=>$price));
+      // if($productMinPrice > $price) 
+      //   $db->products()->where('id',$product_id)->update(array('product_price'=>$price));
+      // after updation of products price find min price from sellers_products table
+      $minPriceSeller =  $db->sellers_products()->where('products_id',$product_id)->order(' price ASC ');
+      $minPrice = $minPriceSeller->fetch()['price'];
+      $minPrice = $minPrice + setOurMargin($minPrice);
+      $db->products()->where('id',$product_id)->update(array('product_price'=>$minPrice));
+ 
     }          
 }
 function fetchProductData($p){

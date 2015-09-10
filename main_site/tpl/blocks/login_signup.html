@@ -22,9 +22,9 @@
 
 					<p class="fieldset">
 						<label class="image-replace cd-password" for="signin-password">Password</label>
-						<input class="full-width has-padding has-border" id="signin-password" type="password"  placeholder="Password" name= "password"ng-model="user.password" required>
+						<input class="full-width has-padding has-border" id="signin-password" type="password"  placeholder="Password" name= "password"ng-model="user.password"  required>
 						 
-						<span ng-show="loginForm.password.$touched&&loginForm.password.$error.required" class="cd-error-message">fill your password</span>
+						<span ng-show="loginForm.password.$touched&&loginForm.password.$error.required" class="cd-error-message">please provide your password</span>
 					</p>
 
 					<p class="fieldset">
@@ -61,9 +61,9 @@
 
 					<p class="fieldset">
 						<label class="image-replace cd-password" for="signup-password">Password</label>
-						<input class="full-width has-padding has-border" id="signup-password" type="password" name='password' ng-model='newuser.password' placeholder="Password"  required>
+						<input class="full-width has-padding has-border" id="signup-password" type="password" name='password' ng-model='newuser.password' placeholder="Password(min password length is 7)" ng-minlength="7" required>
 						 
-						<span ng-show="signUpForm.password.$touched&&signUpForm.password.$error.required" class="cd-error-message">fill your password</span>
+						<span ng-show="signUpForm.password.$touched&&signUpForm.password.$error.required" class="cd-error-message">please provide your password</span>
 
 					</p>
 
@@ -73,7 +73,7 @@
 					</p>
 
 					<p class='fieldset has-error' ng-show='signupError!=""'>
-						{{signupError}} 
+						{{signupError}}  <a class='m-l-sm' ng-click="resetPassword()">Forgot your password?</a>
 					</p>
 					<p class="fieldset">
 						 <button type="submit" class="btn btn-lg full-width has-padding" ng-click='signup(newuser);' ng-disabled="signUpForm.$invalid" > Create an Account  </button>

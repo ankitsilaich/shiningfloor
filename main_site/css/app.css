@@ -3359,7 +3359,7 @@ ul#single_blog_nav {
 .cart_item {
  border-bottom: 1px solid #e8eaec;
  overflow: hidden;
- padding: 32px 0;
+ padding: 12px 0;
 }
 .cart_item .cart_item_img {
   float: left;
@@ -7235,6 +7235,10 @@ nav.std-menu ul.menu > li.parent:hover > a:after {
     color:#fff;
     border-radius: 5px;
   }
+  .cd-form p.has-error a{
+    color: #333333;
+    cursor: pointer;
+  }
   .cd-form input.has-border {
     border: 1px solid #d2d8d8;
     -webkit-appearance: none;
@@ -9404,24 +9408,6 @@ i.icon.angle.double.right:before {
 .ico-heart2:before {
   content: "\f004";
 }
-.cart_toltip_icon:after {
-  background: #fff;
-  border: 2px solid #ddd;
-  bottom: 41px;
-  color: #324545;
-  content: attr(data-text);
-  display: inline-block;
-  font-size: 12px;
-  height: auto;
-  left: -2px;
-  opacity: 0;
-  padding: 0 14px 0 37px;
-  pointer-events: none;
-  position: relative;
-  white-space: pre;
-  width: auto;
-  z-index: -1;
-}
 .add2cart_img {
   display: block;
   position: relative;
@@ -9501,6 +9487,8 @@ ins {
 .add2cart_slide {
   border: 1px solid #ddd;position: relative;margin-bottom: 30px
 }
+.add2cart_slide.tr_text{bottom: 0px;} 
+ 
 .add2cart_details {
   background: #F8FAFA;position: relative
 }
@@ -9562,18 +9550,19 @@ ins {
 .sidebar_slider:hover .cart_toltip_icon2{opacity:1}
 .pro_add2cart_details .text{position:relative;white-space:nowrap}
 .pro_add2cart_details .text i{margin-right:9px;font-size:14px}
-.cart_toltip_icon{background: #fff;   border: 2px solid #ddd;   color: #1F72BE; font-size:16px;height:40px;line-height:38px;opacity:0;position:absolute;left:20px;text-align:center;bottom:20px;width:40px;z-index:1}
+.cart_toltip_icon{background: #F8FAFA;   border: 2px solid #ddd;   color: #1F72BE; font-size:16px;height:40px;line-height:38px;opacity:0;position:absolute;left:20px;text-align:center;top:20px;width:40px;z-index:1;border-radius: 100px;}
 .cart_toltip_icon.cart_icon_on_right{left:auto;right:20px;direction:rtl}
 .cart_toltip_icon:hover{color:#1F72BE;}
 .cart_toltip_icon:hover:after{opacity:1;pointer-events:auto}
 .cart_toltip_icon.cart_icon_on_right:after{direction:ltr;left:auto;right:-2px;padding:0 37px 0 14px}
-.cart_toltip_icon:after{background:#fff;border: 2px solid #ddd;bottom: 41px;color: #1F72BE; content:attr(data-text);display:inline-block;font-size:12px;height:auto;left:-2px;opacity:0;padding:0 14px 0 37px;pointer-events:none;position:relative;white-space:pre;width:auto;z-index:-1}
-.cart_toltip_icon2{background:#fff;border: 2px solid #ddd;color: #1ccdca;font-size:14px;height:40px;line-height:40px;opacity:0;position:absolute;right:20px;text-align:center;bottom:20px;width:40px;z-index:1}
+.cart_toltip_icon:after{background:#F8FAFA;border: 2px solid #ddd;bottom: 41px;color: #1F72BE; content:attr(data-text);display:inline-block;font-size:12px;height:auto;left:-2px;opacity:0;padding:0 14px 0 37px;pointer-events:none;position:relative;white-space:pre;width:auto;z-index:-1;border-radius: 100px;  transition: .25s;}
+.cart_toltip_icon2{background:#F8FAFA;border: 2px solid #ddd;color: #1ccdca;font-size:14px;height:40px;line-height:40px;opacity:0;position:absolute;right:20px;text-align:center;top:20px;width:40px;z-index:1}
 .add2cart_details .your_rate{margin-bottom:5px;margin-top:10px}
 .centered .add2cart_details .your_rate{margin-right:auto;margin-left:auto}
 .your_rate{font-size:16px;height:20px;overflow:hidden;position:relative;width:80px}
 .your_rate:before{content:"\e6fe\e6fe\e6fe\e6fe\e6fe";font-family:idealtheme;left:-2px;position:absolute;top:0;color:#ccc
 }
+.visible{opacity: 1! important;}
 .outline_stars {
   height: 20px;left: 0;overflow: hidden;position: absolute;top: 0;width: 100%
 }

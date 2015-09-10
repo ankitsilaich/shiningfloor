@@ -79,11 +79,12 @@ $scope.login = function(user) {
           // toaster.pop('success', 'Seller added', 'Redirecting to update seller details ...');         
           // $timeout(redirectState, 3000);
            console.log('signup success ' + response.data);
-           $state.transitionTo($state.current, $stateParams, {
-              reload: true,
-              inherit: false,
-              notify: true
-           });
+           // $state.transitionTo($state.current, $stateParams, {
+           //    reload: true,
+           //    inherit: false,
+           //    notify: true
+           // });
+          $state.go('app.home', {}, {reload: true});
         }
       });         
   };

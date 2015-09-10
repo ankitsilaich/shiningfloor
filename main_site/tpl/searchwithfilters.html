@@ -381,14 +381,19 @@
                                         </div>
                                     </div> -->
 
-                                    <div class="add2cart_slide">
+                        <div class="add2cart_slide">
                             <div class="add2cart_image">
 
-                                <ngcart-addtocart  id="{{product.product_id}}" name="{{product.product_name}}" price="0" quantity="1" quantity-max="5" data="{ product_img: product.product_img[0], product_id: product.product_id }"ng-show='product.product_price!=0'>                                             
-                                    <a href="" ng-show="!ngCart.getItemById(product.product_id)" class="cart_toltip_icon" data-text="Add For Sample">
+                                <ngcart-addtocart  id="{{product.product_id}}{{'_0'}}" name="{{product.product_name}}{{'-'}}{{product.product_brand}}" price="0" quantity="1" quantity-max="5" data="{ product_img: product.product_img[0], product_id: product.product_id }"ng-show='product.product_price!=0'>                                             
+                                    <a href="" ng-show="!ngCart.getItemById(product.product_id+'_0')" class="cart_toltip_icon" style='margin-top:80px;'data-text="Add For Sample">
                                         <i class="fa fa-heart"></i>
                                     </a>
+                                    
                                 </ngcart-addtocart>
+                                <a href="" ng-show="ngCart.getItemById(product.product_id+'_0')" class="cart_toltip_icon visible" data-text="Sample Added">
+                                        <i class="fa fa-heart"></i>
+                                    </a>
+                                
 
                                 
                                 <a data-rel="magnific-popup" href class="add2cart_img">
@@ -396,7 +401,7 @@
                                     <span class="add2cart_zoom"><i class="fa fa-plus"></i></span>
                                     <img ui-jq="lazyload" data-original="{{product.product_img[0]}}" class='lazy'   alt="">
                                 </a>
-                        </div>
+                            </div>
                         <div class="add2cart_details">
                         <div class="con_cont">
                             <div class="add2cart_prod_name">{{product.product_name }}-{{product.product_brand}}  </div> 
@@ -414,12 +419,12 @@
                                     <a href  class="pro_add2cart_add">
 
 
-                                        <ngcart-addtocart  id="{{product.product_id}}" name="{{product.product_name}}" price="{{boxPrice(product.product_items_per_box,product.product_width,product.product_height,product.product_w_unit,product.product_price)}}" quantity="1" quantity-max="5" data="{ product_img: product.product_img[0], product_id: product.product_id }" ng-click="showCounter()" ng-show='product.product_price!=0'>
-                                          <span ng-show="!ngCart.getItemById(product.product_id)"> <i class='icon icon-basket'> </i>Add to Cart </span>  
-                                          <span ng-show="ngCart.getItemById(product.product_id)" ui-sref="app.home.cart" > <i class='icon icon-basket'> </i> <i class="icon icon-plus" style="position: absolute;    margin: -6px 0 0 -15px;    color: #2ED0CD;"> </i> <span class='cart_info'data-text='View Cart'>Added to Cart </span> </span>  
+                                        <ngcart-addtocart  id="{{product.product_id}}{{'_1'}}" name="{{product.product_name}}{{'-'}}{{product.product_brand}}" price="{{boxPrice(product.product_items_per_box,product.product_width,product.product_height,product.product_w_unit,product.product_price)}}" quantity="1" quantity-max="5" data="{ product_img: product.product_img[0], product_id: product.product_id }" ng-click="showCounter()" ng-show='product.product_price!=0'>
+                                          <span ng-show="!ngCart.getItemById(product.product_id+'_1')"> <i class='icon icon-basket'> </i>Add to Cart </span>  
+                                          <span ng-show="ngCart.getItemById(product.product_id+'_1')" ui-sref="app.home.cart" > <i class='icon icon-basket'> </i> <i class="icon icon-plus" style="position: absolute;    margin: -6px 0 0 -15px;    color: #2ED0CD;"> </i> <span class='cart_info'>Added to Cart </span> </span>  
                                                     </ngcart-addtocart>
                                             
-                                         <span ng-show="!ngCart.getItemById(product.product_id)&&product.product_price==0"> <i class='fa fa-search'> </i>Ask For Price</span>
+                                         <span ng-show="product.product_price==0"> <i class='fa fa-search'> </i>Ask For Price</span>
                                                   
                                                 </a>
                                     <a href class="pro_add2cart_details" ng-click="fetchProduct(product)"> <i class="fa fa-angle-double-right"></i>Show Details</a>
