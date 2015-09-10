@@ -10,11 +10,11 @@
   <div class="cart_items" ng-repeat="item in ngCart.getCart().items track by $index" ng-show="$index < 3">
 
     <div class="c_item_img floatleft">
-      <a href="product-detail.html"><img src="{{item.getData().product_img}}" style="width:70px;height:70px" alt="90 79"/></a>
+      <a href ><img src="{{item.getData().product_img}}" style="width:70px;height:70px" alt="90 79"/></a>
     </div>
     <div class="c_item_totals floatleft">
       <div class="c_item_totals_detail floatleft">
-        <a href="product-detail.html"><h5>{{item.getName()}}</h5></a>
+        <a href><h5>{{item.getName()}}</h5></a>
         <span ng-show='item.getPrice()!=0'>{{item.getQuantity()}} x Rs {{item.getPrice()}}</span>
         <span ng-show='item.getPrice()==0'> Free Sample</span>
       </div>

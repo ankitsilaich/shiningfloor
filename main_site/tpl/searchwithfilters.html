@@ -405,6 +405,7 @@
                                     </span>
                                      
                                      <span> size:{{product.product_width}}*{{product.product_height}} {{product.product_w_unit}}</span>
+                                     <span> , {{product.product_items_per_box}} pieces per box</span>
                                    <!--  <div class="your_rate">
                                         <span class="outline_stars" data-rate="40"></span>
                                     </div> -->
@@ -413,7 +414,7 @@
                                     <a href  class="pro_add2cart_add">
 
 
-                                        <ngcart-addtocart  id="{{product.product_id}}" name="{{product.product_name}}" price="{{boxPrice(product.product_width,product.product_height,product.product_w_unit,product.product_price)}}" quantity="1" quantity-max="5" data="{ product_img: product.product_img[0], product_id: product.product_id }" ng-click="showCounter()" ng-show='product.product_price!=0'>
+                                        <ngcart-addtocart  id="{{product.product_id}}" name="{{product.product_name}}" price="{{boxPrice(product.product_items_per_box,product.product_width,product.product_height,product.product_w_unit,product.product_price)}}" quantity="1" quantity-max="5" data="{ product_img: product.product_img[0], product_id: product.product_id }" ng-click="showCounter()" ng-show='product.product_price!=0'>
                                           <span ng-show="!ngCart.getItemById(product.product_id)"> <i class='icon icon-basket'> </i>Add to Cart </span>  
                                           <span ng-show="ngCart.getItemById(product.product_id)" ui-sref="app.home.cart" > <i class='icon icon-basket'> </i> <i class="icon icon-plus" style="position: absolute;    margin: -6px 0 0 -15px;    color: #2ED0CD;"> </i> <span class='cart_info'data-text='View Cart'>Added to Cart </span> </span>  
                                                     </ngcart-addtocart>

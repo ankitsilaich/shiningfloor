@@ -52,12 +52,12 @@ angular.module('app')
     },
     logout: function(){
       console.log('logout user');
-       var $promise = SessionService.destroy('user');
+     // var $promise = SessionService.destroy('user');
    
-      $promise.then(function(){
+      //$promise.then(function(){
           $rootScope.isLoggedIn = false;
          
-      });
+     // });
     },
     isLoggedIn: function(){
 

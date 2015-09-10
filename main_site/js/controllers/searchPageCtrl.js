@@ -17,17 +17,17 @@ app.controller('searchPageCtrl', ['$scope', '$http', '$stateParams', 'ngCart', '
 if($location.search().priceRange){
   $location.search('priceRange',null);
 }
-$scope.boxPrice = function(width,height,unit,priceSqFt){
+$scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
 //  console.log(width + height +  priceSqFt);
   unit = unit.trim().toLowerCase(); 
   if(unit ==='mm')
-    return Math.round((0.00328084*width)*(0.00328084*height)* priceSqFt) ;
+    return Math.round((0.00328084*width)*(0.00328084*height)* items_per_box *priceSqFt) ;
   else if(unit ==='cm')
-    return Math.round((0.0328084*width)*(0.0328084*height)* priceSqFt) ;
+    return Math.round((0.0328084*width)*(0.0328084*height)* items_per_box *priceSqFt) ;
   else if(unit ==='inch')
-    return Math.round((width*height * priceSqFt)/12) ;
+    return Math.round((width*height * items_per_box * priceSqFt)/144) ;
   else if(unit ==='ft')
-    return Math.round(width*height*priceSqFt) ;
+    return Math.round(width*height*items_per_box*priceSqFt) ;
 } 
 $scope.makeUrl = function(selected, original) {
         //this function is used to make the url

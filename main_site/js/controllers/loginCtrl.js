@@ -91,7 +91,7 @@ $scope.login = function(user) {
         console.log('logout called');
         LoginService.logout(); 
         $state.go('app.home', {}, {reload: true});
-        
+
       });
     };
 
