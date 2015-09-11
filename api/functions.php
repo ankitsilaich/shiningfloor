@@ -260,7 +260,7 @@ function priceInfeet($basePrice, $unit){
 }
 
 function setOurMargin($price){
-  $percentMargin = 15;
+  $percentMargin = 0;
   return round(($price*$percentMargin)/100);
 }
 function updateMinPrice($product_id , $price){

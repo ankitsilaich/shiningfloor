@@ -384,7 +384,7 @@
                         <div class="add2cart_slide">
                             <div class="add2cart_image">
 
-                                <ngcart-addtocart  id="{{product.product_id}}{{'_0'}}" name="{{product.product_name}}{{'-'}}{{product.product_brand}}" price="0" quantity="1" quantity-max="5" data="{ product_img: product.product_img[0], product_id: product.product_id }"ng-show='product.product_price!=0'>                                             
+                                <ngcart-addtocart  id="{{product.product_id}}{{'_0'}}" name="{{product.product_name}}{{'-'}}{{product.product_brand}}" price="0" quantity="1" type="sample" quantity-max="5" data="{ product_img: product.product_img[0], product_id: product.product_id }"ng-show='product.product_price!=0'>                                             
                                     <a href="" ng-show="!ngCart.getItemById(product.product_id+'_0')" class="cart_toltip_icon" style='margin-top:80px;'data-text="Add For Sample">
                                         <i class="fa fa-heart"></i>
                                     </a>
@@ -419,7 +419,7 @@
                                     <a href  class="pro_add2cart_add">
 
 
-                                        <ngcart-addtocart  id="{{product.product_id}}{{'_1'}}" name="{{product.product_name}}{{'-'}}{{product.product_brand}}" price="{{boxPrice(product.product_items_per_box,product.product_width,product.product_height,product.product_w_unit,product.product_price)}}" quantity="1" quantity-max="5" data="{ product_img: product.product_img[0], product_id: product.product_id }" ng-click="showCounter()" ng-show='product.product_price!=0'>
+                                        <ngcart-addtocart  id="{{product.product_id}}{{'_1'}}" name="{{product.product_name}}{{'-'}}{{product.product_brand}}" price="{{boxPrice(product.product_items_per_box,product.product_width,product.product_height,product.product_w_unit,product.product_price)}}" quantity="1" type="product" quantity-max="5" data="{ product_img: product.product_img[0], product_id: product.product_id }" ng-click="showCounter()" ng-show='product.product_price!=0'>
                                           <span ng-show="!ngCart.getItemById(product.product_id+'_1')"> <i class='icon icon-basket'> </i>Add to Cart </span>  
                                           <span ng-show="ngCart.getItemById(product.product_id+'_1')" ui-sref="app.home.cart" > <i class='icon icon-basket'> </i> <i class="icon icon-plus" style="position: absolute;    margin: -6px 0 0 -15px;    color: #2ED0CD;"> </i> <span class='cart_info'>Added to Cart </span> </span>  
                                                     </ngcart-addtocart>

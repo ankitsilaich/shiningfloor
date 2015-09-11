@@ -80,16 +80,18 @@
 							</div>
 						</div> 
 						<div class='cart_items'>
-							<div class="cart_item" ng-repeat="item in ngCart.getCart().items track by $index" ng-show='item.getPrice()==0'>
+							<div class="cart_item" ng-repeat="item in ngCart.getSamples() track by $index" >
 								<div class="cart_item_img">
 									<img src="{{ item.getData().product_img }}" style="width:92px;height:82px" alt="" />
-									<p>{{ item.getName() }}<br>{{ item.getData().product_type_id }}</p>
+									<p>{{ item.getName() }} <br>{{ item.getData().product_type_id }}</p>
 								</div>
-								<div class="cart_price">
+								<div class="cart_price" ng-show='$index < 5'>
 									<p>Rs. {{ item.getPrice() }}</p>									
 								</div>
+								<div class="cart_price" ng-show='$index >= 5'>
+									<p>Rs. {{ngCart.getPerSampleCharges()}}</p>									
+								</div>
 
-								
 								<div class="cart_quantity">
 									<ul>
 										<li> <p> 1 </p></li>
@@ -98,7 +100,9 @@
 								</div>
 								<div class="cart_total">
 									<p>
-										<span  > Rs. {{ item.getTotal() }} </span>  
+										<span ng-show='$index < 5' > Rs. {{ item.getTotal() }} </span>  
+										<span ng-show='$index >= 5' > Rs. {{ngCart.getPerSampleCharges()}} </span>  
+										
 										<div class="close_icon_cart " style="margin-top:-20px;margin-right: 10px;font-size:20px;" ng-click="ngCart.removeItemById(item.getId())">
 	        								<span class="icon-close" style="color:#EA2E49"></span>
 	    								</div>
