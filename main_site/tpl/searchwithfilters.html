@@ -74,11 +74,11 @@
                     <div class="main_category_left">
 
                         <div class="panel panel-default">
-                            <div class="panel-heading" ng-click="brandcollapse = !brandcollapse" style="cursor:pointer">
+                            <div class="panel-heading"  >
                                 <h4 class="panel-title">
                                 <a class="collapsed">
                                   BRANDS
-                                  <span class="floatright" > <i class="fa fa-minus"  ng-show="!brandcollapse"></i><i class="fa fa-plus"  ng-show="brandcollapse"></i></span>
+                                  <span class="floatright" > <span class='clear-filter'> clear </span><i class="fa fa-minus"  ng-show="!brandcollapse" ng-click="brandcollapse = !brandcollapse"></i><i class="fa fa-plus"  ng-show="brandcollapse" ng-click="brandcollapse = !brandcollapse"></i></span>
                                 </a>
                               </h4>
                             </div>
@@ -104,11 +104,11 @@
                         </div>
 
                         <div class="panel panel-default">
-                            <div class="panel-heading" ng-click="applicationcollapse = !applicationcollapse" style="cursor:pointer">
+                            <div class="panel-heading" >
                                 <h4 class="panel-title">
                                     <a class="collapsed">
                                       Applications 
-                                      <span class="floatright" n><i class="fa fa-minus"  ng-show="!applicationcollapse"></i><i class="fa fa-plus"  ng-show="applicationcollapse"></i></span>
+                                      <span class="floatright" > <span class='clear-filter'> clear </span><i class="fa fa-minus" ng-click="applicationcollapse = !applicationcollapse" ng-show="!applicationcollapse"></i><i class="fa fa-plus" ng-click="applicationcollapse = !applicationcollapse" ng-show="applicationcollapse"></i></span>
                                     </a>
                                 </h4>
                             </div>
@@ -134,11 +134,11 @@
                         </div>
 
                         <div class="panel panel-default">
-                            <div class="panel-heading" ng-click="usagecollapse = !usagecollapse" style="cursor:pointer">
+                            <div class="panel-heading"  >
                                 <h4 class="panel-title">
                                     <a class="collapsed">
                                       Usages 
-                                      <span class="floatright" n><i class="fa fa-minus"  ng-show="!usagecollapse"></i><i class="fa fa-plus"  ng-show="usagecollapse"></i></span>
+                                      <span class="floatright" > <span class='clear-filter'> clear </span> <i class="fa fa-minus"  ng-show="!usagecollapse" ng-click="usagecollapse = !usagecollapse"></i><i class="fa fa-plus"  ng-show="usagecollapse" ng-click="usagecollapse = !usagecollapse"></i></span>
                                     </a>
                                 </h4>
                             </div>
@@ -163,11 +163,11 @@
                             </div>
                         </div>
                         <div class="panel panel-default">
-                            <div class="panel-heading" ng-click="finishcollapse = !finishcollapse" style="cursor:pointer">
+                            <div class="panel-heading" >
                                 <h4 class="panel-title">
                                     <a class="collapsed">
                                       Finish Types
-                                      <span class="floatright" n><i class="fa fa-minus"  ng-show="!finishcollapse"></i><i class="fa fa-plus"  ng-show="finishcollapse"></i></span>
+                                      <span class="floatright" > <span class='clear-filter'> clear </span> <i class="fa fa-minus"  ng-show="!finishcollapse" ng-click="finishcollapse = !finishcollapse"></i><i class="fa fa-plus"  ng-show="finishcollapse" ng-click="finishcollapse = !finishcollapse"></i></span>
                                     </a>
                                 </h4>
                             </div>
@@ -193,11 +193,11 @@
                         </div>
 
                         <div class="panel panel-default">
-                            <div class="panel-heading" ng-click="materialcollapse = !materialcollapse" style="cursor:pointer">
+                            <div class="panel-heading"  >
                                 <h4 class="panel-title">
                                     <a class="collapsed">
                                       Material Type
-                                      <span class="floatright" n><i class="fa fa-minus"  ng-show="!materialcollapse"></i><i class="fa fa-plus"  ng-show="materialcollapse"></i></span>
+                                      <span class="floatright" ><span class='clear-filter'> clear </span> <i class="fa fa-minus"  ng-show="!materialcollapse" ng-click="materialcollapse = !materialcollapse"></i><i class="fa fa-plus"  ng-show="materialcollapse" ng-click="materialcollapse = !materialcollapse"></i></span>
                                     </a>
                                 </h4>
                             </div>
@@ -223,11 +223,11 @@
                         </div>
 
                         <div class="panel panel-default">
-                            <div class="panel-heading" style="cursor:pointer" ng-click="pricecollapse = !pricecollapse">
+                            <div class="panel-heading" >
                                 <h4 class="panel-title">
                                 <a class="collapsed" >
                                   PRICE (per sq ft)
-                                  <span class="floatright" ><i class="fa fa-minus"  ng-show="!pricecollapse"></i><i class="fa fa-plus"  ng-show="pricecollapse"></i></span>
+                                  <span class="floatright" > <span class='clear-filter'> clear </span> <i class="fa fa-minus"  ng-show="!pricecollapse"  ng-click="pricecollapse = !pricecollapse"></i><i class="fa fa-plus"  ng-show="pricecollapse"  ng-click="pricecollapse = !pricecollapse"></i></span>
                                 </a>
                               </h4>
                             </div>
@@ -257,11 +257,11 @@
                         </div>
 
                         <div class="panel panel-default">
-                            <div class="panel-heading" ng-click="lookcollapse = !lookcollapse" style="cursor:pointer">
+                            <div class="panel-heading"  >
                                 <h4 class="panel-title">
                                     <a class="collapsed">
                                       Looks
-                                      <span class="floatright" n><i class="fa fa-minus"  ng-show="!lookcollapse"></i><i class="fa fa-plus"  ng-show="lookcollapse"></i></span>
+                                      <span class="floatright" > <span class='clear-filter'> clear </span> <i class="fa fa-minus"  ng-show="!lookcollapse" ng-click="lookcollapse = !lookcollapse"></i><i class="fa fa-plus"  ng-show="lookcollapse" ng-click="lookcollapse = !lookcollapse"></i></span>
                                     </a>
                                 </h4>
                             </div>
@@ -288,11 +288,11 @@
 
 
                         <div class="panel panel-default">
-                            <div class="panel-heading" ng-click="shapecollapse = !shapecollapse" style="cursor:pointer">
+                            <div class="panel-heading"  >
                                 <h4 class="panel-title">
                                     <a class="collapsed">
                                       Shapes 
-                                      <span class="floatright" n><i class="fa fa-minus"  ng-show="!shapecollapse"></i><i class="fa fa-plus"  ng-show="shapecollapse"></i></span>
+                                      <span class="floatright" > <span class='clear-filter'> clear </span> <i class="fa fa-minus"  ng-show="!shapecollapse" ng-click="shapecollapse = !shapecollapse" ></i><i class="fa fa-plus"  ng-show="shapecollapse" ng-click="shapecollapse = !shapecollapse"></i></span>
                                     </a>
                                 </h4>
                             </div>
@@ -318,12 +318,12 @@
                         </div>
 
                         <div class="panel panel-default">
-                            <div class="panel-heading" ng-click="colorscollapse = !colorscollapse" style="cursor:pointer;">
+                            <div class="panel-heading"  style="cursor:pointer;">
                                 <h4 class="panel-title">
 
                                 <a class="collapsed">
                                   COLORS
-                                  <span class="floatright"><i class="fa fa-minus"  ng-show="!colorscollapse"></i><i class="fa fa-plus"  ng-show="colorscollapse"></i></span>
+                                  <span class="floatright"> <span class='clear-filter'> clear </span> <i class="fa fa-minus"  ng-show="!colorscollapse" ng-click="colorscollapse = !colorscollapse" ></i><i class="fa fa-plus"  ng-show="colorscollapse" ng-click="colorscollapse = !colorscollapse;"></i></span>
                                 </a>
                               </h4>
                             </div>
