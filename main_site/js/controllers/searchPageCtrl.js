@@ -327,6 +327,13 @@ $scope.makeUrl = function(selected, original) {
         $scope.searchQuery.text = '';
     };
 
+    $scope.isFilterBy = function(filterType){
+   
+      if($location.search().filterType)
+        return true;
+      else
+        return false;         
+    }
     $scope.resetBrands = function() {
       for (i = 0; i < $scope.totalBrands; i++)
           $scope.selectedBrands[i] = false;         
