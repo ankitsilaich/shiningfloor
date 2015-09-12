@@ -42,7 +42,10 @@
                         </div> -->
                         <div class="s_results">
 
-                            <p> showing {{searchCategory}} from {{ start + 1 }}-{{last}} of {{ totalResults }} results {{showpopup}} </p>
+                            <p ng-show="searchResults.length!=0"> showing {{searchCategory}} from {{ start + 1 }}-{{last}} of {{ totalResults }} results {{showpopup}} 
+                                <!-- <a class='reset-filter'> reset filters <i class='fa fa-refresh'></i></a> -->
+                            </p>
+                            <p ng-show="searchResults.length==0"> No Results. </p>
                         </div>
                     </div>
                 </div>
@@ -78,7 +81,7 @@
                                 <h4 class="panel-title">
                                 <a class="collapsed">
                                   BRANDS
-                                  <span class="floatright" > <span class='clear-filter'> clear </span><i class="fa fa-minus"  ng-show="!brandcollapse" ng-click="brandcollapse = !brandcollapse"></i><i class="fa fa-plus"  ng-show="brandcollapse" ng-click="brandcollapse = !brandcollapse"></i></span>
+                                  <span class="floatright" > <span class='clear-filter' ng-show="isFilteredByBrand" ng-click="resetFilters(selectedBrands)"> clear </span><i class="fa fa-minus"  ng-show="!brandcollapse" ng-click="brandcollapse = !brandcollapse"></i><i class="fa fa-plus"  ng-show="brandcollapse" ng-click="brandcollapse = !brandcollapse"></i></span>
                                 </a>
                               </h4>
                             </div>
@@ -96,7 +99,7 @@
 
                                                 </div>
 
-                                        </li>F
+                                        </li>
 
                                         </ul>
                                 </div>
@@ -106,9 +109,43 @@
                         <div class="panel panel-default">
                             <div class="panel-heading" >
                                 <h4 class="panel-title">
+                                <a class="collapsed" >
+                                  PRICE (per sq ft)
+                                  <span class="floatright" > <span class='clear-filter' ng-show="isFilteredByPrice" ng-click="resetPriceRange(selectedPrices)" > clear </span> <i class="fa fa-minus"  ng-show="!pricecollapse"  ng-click="pricecollapse = !pricecollapse"></i><i class="fa fa-plus"  ng-show="pricecollapse"  ng-click="pricecollapse = !pricecollapse"></i></span>
+                                </a>
+                              </h4>
+                            </div>
+                            <div>
+                                <div class="panel-body" ng-show="!pricecollapse" ng-click='callMe()'>
+                                   <!--  <div ui-jq="slider" class="slider form-control" ng-model="range" value="" data-slider-min="10" data-slider-max="2000" data-slider-step="5" data-slider-value="[10,2000]"></div>
+                                     -->
+                                     <div class='priceLabel clearfix'>
+                                        <div class='min'> Rs {{slider.min}} </div><div class='max'>Rs {{slider.max}} </div> </div>
+                                <div range-slider min="0" max="1000" model-min="slider.min" model-max="slider.max" disabled="false"></div> 
+                                <div style='border: 1px solid #E0E0E0' class='m-b-sm'>   </div>     <div class="cat_filter_box">
+                                        <div class='price'>
+                                        <div class='minprice'> <strong>From</strong> <br> <span> Rs</span>
+                                             <input type="text" class="input-small" ng-model="slider.min">  </div>
+                                         <div class='maxprice'>  <strong>To</strong>    <br>      <span> Rs</span>      
+                                            
+                                             <input type="text" class="input-small" ng-model="slider.max">
+                                         </div>
+                                         <div class='go'> <br><button class='btn btn-default' ng-click='updatePriceUrl()'> GO</button> </div>
+                                     </div>
+                                         
+                                    </div>                   
+
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading" >
+                                <h4 class="panel-title">
                                     <a class="collapsed">
                                       Applications 
-                                      <span class="floatright" > <span class='clear-filter'> clear </span><i class="fa fa-minus" ng-click="applicationcollapse = !applicationcollapse" ng-show="!applicationcollapse"></i><i class="fa fa-plus" ng-click="applicationcollapse = !applicationcollapse" ng-show="applicationcollapse"></i></span>
+                                      <span class="floatright" > <span class='clear-filter' ng-show="isFilteredByApplication" ng-click="resetFilters(selectedApplications)"  > clear </span><i class="fa fa-minus" ng-click="applicationcollapse = !applicationcollapse" ng-show="!applicationcollapse"></i><i class="fa fa-plus" ng-click="applicationcollapse = !applicationcollapse" ng-show="applicationcollapse"></i></span>
                                     </a>
                                 </h4>
                             </div>
@@ -138,7 +175,7 @@
                                 <h4 class="panel-title">
                                     <a class="collapsed">
                                       Usages 
-                                      <span class="floatright" > <span class='clear-filter'> clear </span> <i class="fa fa-minus"  ng-show="!usagecollapse" ng-click="usagecollapse = !usagecollapse"></i><i class="fa fa-plus"  ng-show="usagecollapse" ng-click="usagecollapse = !usagecollapse"></i></span>
+                                      <span class="floatright" > <span class='clear-filter' ng-show="isFilteredByUsage" ng-click="resetFilters(selectedUsages)" > clear </span> <i class="fa fa-minus"  ng-show="!usagecollapse" ng-click="usagecollapse = !usagecollapse"></i><i class="fa fa-plus"  ng-show="usagecollapse" ng-click="usagecollapse = !usagecollapse"></i></span>
                                     </a>
                                 </h4>
                             </div>
@@ -167,7 +204,7 @@
                                 <h4 class="panel-title">
                                     <a class="collapsed">
                                       Finish Types
-                                      <span class="floatright" > <span class='clear-filter'> clear </span> <i class="fa fa-minus"  ng-show="!finishcollapse" ng-click="finishcollapse = !finishcollapse"></i><i class="fa fa-plus"  ng-show="finishcollapse" ng-click="finishcollapse = !finishcollapse"></i></span>
+                                      <span class="floatright" > <span class='clear-filter' ng-show="isFilteredByFinish" ng-click="resetFilters(selectedFinishTypes)"> clear </span> <i class="fa fa-minus"  ng-show="!finishcollapse" ng-click="finishcollapse = !finishcollapse"></i><i class="fa fa-plus"  ng-show="finishcollapse" ng-click="finishcollapse = !finishcollapse"></i></span>
                                     </a>
                                 </h4>
                             </div>
@@ -197,7 +234,7 @@
                                 <h4 class="panel-title">
                                     <a class="collapsed">
                                       Material Type
-                                      <span class="floatright" ><span class='clear-filter'> clear </span> <i class="fa fa-minus"  ng-show="!materialcollapse" ng-click="materialcollapse = !materialcollapse"></i><i class="fa fa-plus"  ng-show="materialcollapse" ng-click="materialcollapse = !materialcollapse"></i></span>
+                                      <span class="floatright" ><span class='clear-filter' ng-show="isFilteredByMaterial" ng-click="resetFilters(selectedMaterials)"> clear </span> <i class="fa fa-minus"  ng-show="!materialcollapse" ng-click="materialcollapse = !materialcollapse"></i><i class="fa fa-plus"  ng-show="materialcollapse" ng-click="materialcollapse = !materialcollapse"></i></span>
                                     </a>
                                 </h4>
                             </div>
@@ -222,46 +259,14 @@
                             </div>
                         </div>
 
-                        <div class="panel panel-default">
-                            <div class="panel-heading" >
-                                <h4 class="panel-title">
-                                <a class="collapsed" >
-                                  PRICE (per sq ft)
-                                  <span class="floatright" > <span class='clear-filter'> clear </span> <i class="fa fa-minus"  ng-show="!pricecollapse"  ng-click="pricecollapse = !pricecollapse"></i><i class="fa fa-plus"  ng-show="pricecollapse"  ng-click="pricecollapse = !pricecollapse"></i></span>
-                                </a>
-                              </h4>
-                            </div>
-                            <div>
-                                <div class="panel-body" ng-show="!pricecollapse" ng-click='callMe()'>
-                                   <!--  <div ui-jq="slider" class="slider form-control" ng-model="range" value="" data-slider-min="10" data-slider-max="2000" data-slider-step="5" data-slider-value="[10,2000]"></div>
-                                     -->
-                                     <div class='priceLabel clearfix'>
-                                        <div class='min'> Rs {{slider.min}} </div><div class='max'>Rs {{slider.max}} </div> </div>
-                                <div range-slider min="0" max="1000" model-min="slider.min" model-max="slider.max" disabled="false"></div> 
-                                <div style='border: 1px solid #E0E0E0' class='m-b-sm'>   </div>     <div class="cat_filter_box">
-                                        <div class='price'>
-                                        <div class='minprice'> <strong>From</strong> <br> <span> Rs</span>
-                                             <input type="text" class="input-small" ng-model="slider.min">  </div>
-                                         <div class='maxprice'>  <strong>To</strong>    <br>      <span> Rs</span>      
-                                            
-                                             <input type="text" class="input-small" ng-model="slider.max">
-                                         </div>
-                                         <div class='go'> <br><button class='btn btn-default' ng-click='updateUrlChanges()'> GO</button> </div>
-                                     </div>
-                                         
-                                    </div>                   
-
-                                    
-                                </div>
-                            </div>
-                        </div>
+                        
 
                         <div class="panel panel-default">
                             <div class="panel-heading"  >
                                 <h4 class="panel-title">
                                     <a class="collapsed">
-                                      Looks
-                                      <span class="floatright" > <span class='clear-filter'> clear </span> <i class="fa fa-minus"  ng-show="!lookcollapse" ng-click="lookcollapse = !lookcollapse"></i><i class="fa fa-plus"  ng-show="lookcollapse" ng-click="lookcollapse = !lookcollapse"></i></span>
+                                      Looks 
+                                      <span class="floatright" > <span class='clear-filter' ng-show="isFilteredByLook" ng-click="resetFilters(selectedLooks)"> clear </span> <i class="fa fa-minus"  ng-show="!lookcollapse" ng-click="lookcollapse = !lookcollapse"></i><i class="fa fa-plus"  ng-show="lookcollapse" ng-click="lookcollapse = !lookcollapse"></i></span>
                                     </a>
                                 </h4>
                             </div>
@@ -292,7 +297,7 @@
                                 <h4 class="panel-title">
                                     <a class="collapsed">
                                       Shapes 
-                                      <span class="floatright" > <span class='clear-filter'> clear </span> <i class="fa fa-minus"  ng-show="!shapecollapse" ng-click="shapecollapse = !shapecollapse" ></i><i class="fa fa-plus"  ng-show="shapecollapse" ng-click="shapecollapse = !shapecollapse"></i></span>
+                                      <span class="floatright" > <span class='clear-filter' ng-show="isFilteredByShape" ng-click="resetFilters(selectedShapes)"> clear </span> <i class="fa fa-minus"  ng-show="!shapecollapse" ng-click="shapecollapse = !shapecollapse" ></i><i class="fa fa-plus"  ng-show="shapecollapse" ng-click="shapecollapse = !shapecollapse"></i></span>
                                     </a>
                                 </h4>
                             </div>
@@ -323,7 +328,7 @@
 
                                 <a class="collapsed">
                                   COLORS
-                                  <span class="floatright"> <span class='clear-filter'> clear </span> <i class="fa fa-minus"  ng-show="!colorscollapse" ng-click="colorscollapse = !colorscollapse" ></i><i class="fa fa-plus"  ng-show="colorscollapse" ng-click="colorscollapse = !colorscollapse;"></i></span>
+                                  <span class="floatright"> <span class='clear-filter' ng-show="isFilteredByColor" ng-click="resetFilters(selectedColors)"> clear </span> <i class="fa fa-minus"  ng-show="!colorscollapse" ng-click="colorscollapse = !colorscollapse" ></i><i class="fa fa-plus"  ng-show="colorscollapse" ng-click="colorscollapse = !colorscollapse;"></i></span>
                                 </a>
                               </h4>
                             </div>
@@ -351,95 +356,100 @@
 
                             <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="product in searchResults">
                                 <div class="main_cat_item">
-                                   <!--  <div class="item">
-                                        <div class="item-img">
-                                            <img ui-jq="lazyload" data-original="{{product.product_img[0]}}" class='lazy' style="max-width:271px;max-height:250px;min-height:250px" alt="" />
-                                            <div class="tr-add-cart">
+                                       <!--  <div class="item">
+                                            <div class="item-img">
+                                                <img ui-jq="lazyload" data-original="{{product.product_img[0]}}" class='lazy' style="max-width:271px;max-height:250px;min-height:250px" alt="" />
+                                                <div class="tr-add-cart">
 
-                                                <ul>
+                                                    <ul>
 
-                                                    <li>
-                                                        <a class="icon icon-handbag tr_cart add_to_cart" href></a>
-                                                    </li>
-                                                    <ngcart-addtocart ng-show="!ngCart.getItemById(product.product_id)" id="{{product.product_id}}" name="{{product.product_name}}" price="110" quantity="1" quantity-max="5" data="{ product_img: product.product_img[0], product_id: product.product_id }" ng-click="showCounter()">Add to Cart
+                                                        <li>
+                                                            <a class="icon icon-handbag tr_cart add_to_cart" href></a>
+                                                        </li>
+                                                        <ngcart-addtocart ng-show="!ngCart.getItemById(product.product_id)" id="{{product.product_id}}" name="{{product.product_name}}" price="110" quantity="1" quantity-max="5" data="{ product_img: product.product_img[0], product_id: product.product_id }" ng-click="showCounter()">Add to Cart
 
-                                                    </ngcart-addtocart>
-                                                    <li>
-                                                        <a class="fa fa-heart-o tr_heart" ng-click="showAnimation(product,$event)"></a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="fa fa-search tr_search" ng-click="fetchProduct(product)"></a>
-                                                    </li>
-                                                     
-                                                </ul>
+                                                        </ngcart-addtocart>
+                                                        <li>
+                                                            <a class="fa fa-heart-o tr_heart" ng-click="showAnimation(product,$event)"></a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="fa fa-search tr_search" ng-click="fetchProduct(product)"></a>
+                                                        </li>
+                                                         
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                             
+                                            <div class="item-sub">
+                                                <a href="product-detail.html"><h5>{{product.product_name }}</h5></a>
+                                                <p>Rs 90.00 per sq ft  <span style="padding-left=10px"> size: </span>{{product.product_width}}*{{product.product_height}} {{product.product_w_unit}}</p>
+                                            </div>
+                                        </div> -->
+
+                                    <div class="add2cart_slide">
+                                        <div class="add2cart_image">
+
+                                        <ngcart-addtocart  id="{{product.product_id}}{{'_0'}}" name="{{product.product_name}}{{'-'}}{{product.product_brand}}" price="0" quantity="1" type="sample" quantity-max="5" data="{ product_img: product.product_img[0], product_id: product.product_id }"ng-show='product.product_price!=0'>                                             
+                                            <a href="" ng-show="!ngCart.getItemById(product.product_id+'_0')" class="cart_toltip_icon" style='margin-top:80px;'data-text="Add For Sample">
+                                                <i class="fa fa-heart"></i>
+                                            </a>
+                                            
+                                        </ngcart-addtocart>
+                                        <a href="" ng-show="ngCart.getItemById(product.product_id+'_0')" class="cart_toltip_icon visible" data-text="Sample Added">
+                                                <i class="fa fa-heart"></i>
+                                        </a>
+                                    
+
+                                    
+                                    <a data-rel="magnific-popup" href class="add2cart_img">
+                                         
+                                        <span class="add2cart_zoom"><i class="fa fa-plus"></i></span>
+                                        <img ui-jq="lazyload" data-original="{{product.product_img[0]}}" class='lazy'   alt="">
+                                    </a>
+                                    </div>
+                                <div class="add2cart_details">
+                                    <div class="con_cont">
+                                        <div class="add2cart_prod_name">{{product.product_name }}-{{product.product_brand}}  </div> 
+                                               <span ng-show='product.product_price!=0'>
+                                                     Rs {{product.product_price}} per sq ft ,
+                                                </span>
+                                                 
+                                                 <span> size:{{product.product_width}}*{{product.product_height}} {{product.product_w_unit}}</span>
+                                                 <span> , {{product.product_items_per_box}} pieces per box</span>
+                                               <!--  <div class="your_rate">
+                                                    <span class="outline_stars" data-rate="40"></span>
+                                                </div> -->
+                                            </div>
+                                            <div class="add2cart_buttons clearfix">
+                                                <a href  class="pro_add2cart_add">
+
+
+                                                    <ngcart-addtocart  id="{{product.product_id}}{{'_1'}}" name="{{product.product_name}}{{'-'}}{{product.product_brand}}" price="{{boxPrice(product.product_items_per_box,product.product_width,product.product_height,product.product_w_unit,product.product_price)}}" quantity="1" type="product" quantity-max="5" data="{ product_img: product.product_img[0], product_id: product.product_id }" ng-click="showCounter()" ng-show='product.product_price!=0'>
+                                                      <span ng-show="!ngCart.getItemById(product.product_id+'_1')"> <i class='icon icon-basket'> </i>Add to Cart </span>  
+                                                      <span ng-show="ngCart.getItemById(product.product_id+'_1')" ui-sref="app.home.cart" > <i class='icon icon-basket'> </i> <i class="icon icon-plus" style="position: absolute;    margin: -6px 0 0 -15px;    color: #2ED0CD;"> </i> <span class='cart_info'>Added to Cart </span> </span>  
+                                                                </ngcart-addtocart>
+                                                        
+                                                     <span ng-show="product.product_price==0"> <i class='fa fa-search'> </i>Ask For Price</span>
+                                                              
+                                                            </a>
+                                                <a href class="pro_add2cart_details" ng-click="fetchProduct(product)"> <i class="fa fa-angle-double-right"></i>Show Details</a>
                                             </div>
                                         </div>
-                                         
-                                        <div class="item-sub">
-                                            <a href="product-detail.html"><h5>{{product.product_name }}</h5></a>
-                                            <p>Rs 90.00 per sq ft  <span style="padding-left=10px"> size: </span>{{product.product_width}}*{{product.product_height}} {{product.product_w_unit}}</p>
-                                        </div>
-                                    </div> -->
-
-                        <div class="add2cart_slide">
-                            <div class="add2cart_image">
-
-                                <ngcart-addtocart  id="{{product.product_id}}{{'_0'}}" name="{{product.product_name}}{{'-'}}{{product.product_brand}}" price="0" quantity="1" type="sample" quantity-max="5" data="{ product_img: product.product_img[0], product_id: product.product_id }"ng-show='product.product_price!=0'>                                             
-                                    <a href="" ng-show="!ngCart.getItemById(product.product_id+'_0')" class="cart_toltip_icon" style='margin-top:80px;'data-text="Add For Sample">
-                                        <i class="fa fa-heart"></i>
-                                    </a>
-                                    
-                                </ngcart-addtocart>
-                                <a href="" ng-show="ngCart.getItemById(product.product_id+'_0')" class="cart_toltip_icon visible" data-text="Sample Added">
-                                        <i class="fa fa-heart"></i>
-                                    </a>
-                                
-
-                                
-                                <a data-rel="magnific-popup" href class="add2cart_img">
-                                     
-                                    <span class="add2cart_zoom"><i class="fa fa-plus"></i></span>
-                                    <img ui-jq="lazyload" data-original="{{product.product_img[0]}}" class='lazy'   alt="">
-                                </a>
-                            </div>
-                        <div class="add2cart_details">
-                        <div class="con_cont">
-                            <div class="add2cart_prod_name">{{product.product_name }}-{{product.product_brand}}  </div> 
-                                   <span ng-show='product.product_price!=0'>
-                                         Rs {{product.product_price}} per sq ft ,
-                                    </span>
-                                     
-                                     <span> size:{{product.product_width}}*{{product.product_height}} {{product.product_w_unit}}</span>
-                                     <span> , {{product.product_items_per_box}} pieces per box</span>
-                                   <!--  <div class="your_rate">
-                                        <span class="outline_stars" data-rate="40"></span>
-                                    </div> -->
-                                </div>
-                                <div class="add2cart_buttons clearfix">
-                                    <a href  class="pro_add2cart_add">
+                                    </div>
 
 
-                                        <ngcart-addtocart  id="{{product.product_id}}{{'_1'}}" name="{{product.product_name}}{{'-'}}{{product.product_brand}}" price="{{boxPrice(product.product_items_per_box,product.product_width,product.product_height,product.product_w_unit,product.product_price)}}" quantity="1" type="product" quantity-max="5" data="{ product_img: product.product_img[0], product_id: product.product_id }" ng-click="showCounter()" ng-show='product.product_price!=0'>
-                                          <span ng-show="!ngCart.getItemById(product.product_id+'_1')"> <i class='icon icon-basket'> </i>Add to Cart </span>  
-                                          <span ng-show="ngCart.getItemById(product.product_id+'_1')" ui-sref="app.home.cart" > <i class='icon icon-basket'> </i> <i class="icon icon-plus" style="position: absolute;    margin: -6px 0 0 -15px;    color: #2ED0CD;"> </i> <span class='cart_info'>Added to Cart </span> </span>  
-                                                    </ngcart-addtocart>
-                                            
-                                         <span ng-show="product.product_price==0"> <i class='fa fa-search'> </i>Ask For Price</span>
-                                                  
-                                                </a>
-                                    <a href class="pro_add2cart_details" ng-click="fetchProduct(product)"> <i class="fa fa-angle-double-right"></i>Show Details</a>
-                                </div>
-                            </div>
-                        </div>
-
-
-                                </div>
+                                    </div>
                             </div>
 
 
 
                         </div>
-                        <div class="pagination-wrap">
+                        <div class="row no-result" ng-show='searchResults.length==0'>
+                            <div class='wrapper'> 
+                                <p> No product match for your search criteria! <br>  Double check your spelling or search other products.</p>
+                            </div>
+                        </div>
+                        <div class="pagination-wrap" ng-hide='searchResults.length==0'>
                             <div class="row">
                                 <div class="col-xs-7">
                                     <pagination total-items="totalResults" ng-model="temp" max-size="5" class="pagination-lg" items-per-page="20" boundary-links="true" ng-change="pagechange(temp)" direction-links="false" num-pages="numPages"></pagination>

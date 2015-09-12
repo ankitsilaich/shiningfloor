@@ -2918,6 +2918,13 @@ ul#single_blog_nav {
   text-transform: uppercase;
   width: 75px;
 }
+.filter_box_left a{
+  cursor: pointer;
+  
+}
+.filter_box_left a i{
+  color: #337ab7;
+}
 .filter_cont > ul {
   list-style: outside none none;
   margin: 0;
@@ -5246,6 +5253,11 @@ input[type="number"].hotfix::-webkit-inner-spin-button {
   }
     .page-links {
     padding:50px 0 0 0;
+  }
+  .no-result .wrapper{
+    padding-left: 20px;
+    text-align: center;
+    background-color: #fcf8e3;
   }
     .pagination-wrap {
     border-top: 2px solid #ededed;
