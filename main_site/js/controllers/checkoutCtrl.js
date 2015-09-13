@@ -1,9 +1,17 @@
 app.controller('checkoutCtrl', ['$scope', '$http', '$stateParams', 'ngCart', '$filter', '$state', '$location', function($scope, $http, $stateParams, ngCart, $filter, $state, $location) {
 
-	$scope.userDetails = $scope.currentUserDetails;
+	// $scope.userDetails = $scope.currentUserDetails;
 	console.log($scope.currentUserDetails); 
-
+	$scope.clickedMe = function(){
+		alert('ssss');
+	};
 	$scope.orderSubmit = function(){
-		return 0;
-	}
+		if($scope.detailsForm.$invalid){
+			console.log('invalid');
+			return false;
+		}
+		else{
+			
+		}
+	};
 }]);

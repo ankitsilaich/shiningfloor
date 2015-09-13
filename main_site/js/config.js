@@ -70,6 +70,12 @@ angular.module('app')
      var $checkSessionServer = $http.get('../api/slim.php/auth/process/user');
         return $checkSessionServer;
       // return true;
+    },
+    getloginData: function(){
+      if($rootScope.isLoggedIn){
+         var $checkSessionServer = $http.get('../api/slim.php//buildcorner/user/info');
+         return $checkSessionServer;
+      }
     }
 
   }

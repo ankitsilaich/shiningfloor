@@ -11,34 +11,51 @@ angular.module('app')
           $rootScope.$state = $state;
           $rootScope.$stateParams = $stateParams;
           $rootScope.isLoggedIn = false;
-          console.log($rootScope.isLoggedIn);
           $rootScope.loggedInUser = "";
           $rootScope.loggedInUserDetails = "";
           $rootScope.processGoingOn = false;
           // var routesPermission = ['/userAccount'];
           
-          $rootScope.setUserDetails = function(){
+          // $rootScope.setUserDetails = function(){
+            //   var connected = LoginService.isLoggedIn();
+            //   connected.then(function(msg){
+            //   if(msg.data){
+            //     console.log('connected');
+            //     $rootScope.isLoggedIn = true;
+            //     $rootScope.loggedInUser = msg.data ;                 
+            //     return $http.get('../api/slim.php//buildcorner/user/info').then(function(resp){
+            //       $rootScope.loggedInUserDetails = resp.data.user_data;   
+            //       console.log(resp.data.user_data);                
+            //       return;
+            //     }); 
+            //   }              
+            // });
+          // };
+          $rootScope.$on('$stateChangeStart', function() { 
               var connected = LoginService.isLoggedIn();
               connected.then(function(msg){
-              if(msg.data){
-                console.log('connected');
-                $rootScope.isLoggedIn = true;
-                $rootScope.loggedInUser = msg.data ;                 
-                $http.get('../api/slim.php//buildcorner/user/info').then(function(resp){
-                  $rootScope.loggedInUserDetails = resp.data.user_data;                   
+                if(msg.data){
+                  console.log('connected');
+                  $rootScope.isLoggedIn = true;
+                  $rootScope.loggedInUser = msg.data ;
+
+                  var userData = LoginService.getloginData();  
+                  userData.success(function(resp){
+                    console.log(resp);
+                      $rootScope.loggedInUserDetails = resp.user_data;                              
+                      console.log($rootScope.loggedInUserDetails);                              
+                      $rootScope.processGoingOn = false;
+                      return;
+                  });
+                 }      
                 }); 
-                console.log($rootScope.loggedInUserDetails);
-              }              
-            });
-          };
-          $rootScope.setUserDetails();  
+              
+           });
 
           $rootScope.$on('$stateChangeSuccess',  function(event, toState, toParams, fromState, fromParams) {
             document.body.scrollTop = document.documentElement.scrollTop = 0;
             console.log(event);
             $rootScope.currentstate = toState;
-            $rootScope.setUserDetails();
-
           });
       }
     ]

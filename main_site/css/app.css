@@ -2195,6 +2195,24 @@ ul.wid_social li a:hover {
   background: none repeat scroll 0 0 #183152;
   color: #fff;
 }
+
+.checkout_right .checkout_button, .coupon_box > input[type=submit] {
+  background: none repeat scroll 0 0 #fff;
+  border: 2px solid #183152;
+  color: #232323;
+  font-size: 13px;
+  font-weight: 700;
+  margin: 8px auto 15px;
+  padding: 7px;
+  text-align: center;
+  text-transform: uppercase;
+  width: 100%;
+}
+.checkout_right .checkout_button:hover {
+  background: none repeat scroll 0 0 #183152;
+  color: #fff;
+}
+
 .checkout_left > h2 {
   color: #212121;
   font-size: 18px;

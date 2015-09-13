@@ -28,7 +28,12 @@
 
 	<section class="checkout_area" ng-controller='checkoutCtrl'>
 		<div class="container">
-			<div class="row">
+			 
+			<div class="alert alert-warning" role="alert" ng-show="ngCart.getTotalItems() === 0">
+					Your cart is empty
+			</div>
+
+			<div class="row" ng-show="ngCart.getTotalItems() != 0">
 				<form name='detailsForm' id='detailsForm' class='form-validation'>
 				<div class="col-md-3 col-sm-3 col-xs-12">
 					<div class="checkout_left">
@@ -60,7 +65,7 @@
 								<div class="c_name_box_left">
 									<p>First Name <span>*</span></p>
 									<input type="text" ng-model='currentUserDetails.firstName' name='firstName' required>
-									<!-- <p class="error-message" ng-show='detailsForm.firstName.$touched&&(detailsForm.firstName.$error.required)'> name can't be empty</p> -->
+									<!-- <p class="error-message" ng-show='detailsForm.firstName.$touched&&(detailsForm.firstName.$error.)'> name can't be empty</p> -->
 								</div>
 								<div class="c_name_box_right">
 									<p>Last Name <span>*</span></p>
@@ -113,10 +118,11 @@
 							</div>
 							<div class="c_address">
 								<p> Preferred Time Slot<span>*</span></p>
-								<select ng-model='currentUserDetails.timeSlot' ng-init='currentUserDetails.timeSlot= "12-02 pm"' name='timeSlot'required> <option value='12-02 pm'> 12-02 pm</option><option value='02-04 pm'> 02-04 pm</option><option value='04-06 pm'> 04-06 pm</option> <option value='06-08 pm'> 06-08 pm</option>
+								<select ng-model='currentUserDetails.timeSlot' required name='timeSlot'> <option value='12-02 pm'> 12-02 pm</option><option value='02-04 pm'> 02-04 pm</option><option value='04-06 pm'> 04-06 pm</option> <option value='06-08 pm'> 06-08 pm</option>
 								</select>
-								<p class="error-message" ng-show='(detailsForm.timeSlot.$touched&&detailsForm.timeSlot.$error.required)||(detailsForm.submit()&&detailsForm.timeSlot.$error.required)'> choose a time slot</p>
+								 
 							</div>
+
 							 
 
 
@@ -124,9 +130,20 @@
  
 					</div>
 				</div>
-				  <ngcart-summarycart></ngcart-summarycart>
-
-		</form>
-		</div>
-	 
+				<div class="col-md-3 col-sm-4 col-xs-12">
+				    <div class="checkout_right">
+					  <ngcart-summarycart></ngcart-summarycart>
+					  <div class="checkbox">
+			                <label>
+			                    <input type="checkbox" ng-model='currentUserDetails.agree' required> I have Read & Accept <span>Terms & Conditions</span>
+			                </label>
+			           </div>
+			            
+			           <input type='submit' ng-click='orderSubmit()' value='Place order now' class='checkout_button'> </input>
+			           	</div>
+					</div>
+				</div>
+			</form>
+		  </div>
+	 	</div>
 	</section>
