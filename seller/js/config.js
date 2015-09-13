@@ -67,21 +67,16 @@ return $resource('api/index.php/subject/:subject_id', null,
      var $promise = SessionService.destroy('seller');
       $promise.then(function(){
         $rootScope.isLoggedIn = false;
+        $rootScope.loggedInUserDetails = "";
+        $rootScope.loggedInUser = "";
+        
         $location.path('/access/signin');
       });
     },
     isLoggedIn: function(){
 
      var $checkSessionServer = $http.get('../api/slim.php/auth/process/seller');
-   //  console.log($checkSessionServer);
-     // if($checkSessionServer!=false){
-     //  $http.get('../api/slim.php/shiningfloor/seller/info').then(function (resp) {
-     //       $rootScope.seller = resp.data.seller_data;
-     //        console.log(resp.data);
-     //      if($rootScope.seller.img=='') 
-     //      $rootScope.seller.img = 'img/a0.jpg';   
-     //    });
-     // }
+    
       return $checkSessionServer;
     }
   }

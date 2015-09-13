@@ -5,10 +5,10 @@ app.controller('searchPageCtrl', ['$scope', '$http', '$stateParams', 'ngCart', '
   $scope.pricecollapse = false ;
   $scope.lookcollapse = true ;
   $scope.shapecollapse = true ;
-  $scope.colorcollapse = false ;
+  $scope.colorcollapse = true ;
   $scope.applicationcollapse = false ;
   $scope.usagecollapse = true;
-
+  console.log($scope.brandcollapse);
  
  $scope.slider = {
     min: 0,

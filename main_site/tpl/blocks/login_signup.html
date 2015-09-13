@@ -12,11 +12,11 @@
 			</ul>
 
 			<div id="cd-login"  ng-class="{'is-selected' : showLogin}"> <!-- log in form -->
-				<form class="cd-form form-validation" name='loginForm'>
+				<form class="cd-form form-validation" name='loginForm' id="loginForm">
 					<p class="fieldset">
 						<label class="image-replace cd-email" for="signin-email">E-mail</label>
 						<input class="full-width has-padding has-border" id="signin-email" type="email" placeholder="E-mail" name= "email"ng-model="user.email" required>
-						<span ng-show="loginForm.email.$touched&&(loginForm.email.$error.required||loginForm.email.$error.email)" class="cd-error-message">provide correct email</span>
+						<!-- <span ng-show="loginForm.email.$touched&&(loginForm.email.$error.required||loginForm.email.$error.email)" class="cd-error-message">provide correct email</span> -->
 						 
 					</p>
 
@@ -46,11 +46,11 @@
 			</div> <!-- cd-login -->
 
 			<div id="cd-signup"  ng-class="{'is-selected' : showSignup}"> <!-- sign up form -->
-				<form class="cd-form" name="signUpForm">
+				<form class="cd-form" name="signUpForm" id="signUpForm">
 					<p class="fieldset">
-						<label class="image-replace cd-username" for="signup-username">Name</label>
-						<input class="full-width has-padding has-border" id="signup-username" type="text" name='name' ng-model='newuser.name' placeholder="Your Name" required>
-						<span ng-show="signUpForm.name.$touched&&signUpForm.name.$error.required" class="cd-error-message">provide a Name</span>
+						<label class="image-replace cd-username" for="signup-username">UserName</label>
+						<input class="full-width has-padding has-border" id="signup-username" type="text" name='name' ng-model='newuser.name' placeholder="Username" required>
+						<span ng-show="signUpForm.name.$touched&&signUpForm.name.$error.required" class="cd-error-message">provide a Username</span>
 					</p>
 
 					<p class="fieldset">
@@ -87,7 +87,7 @@
 			<div id="cd-reset-password" ng-class="{'is-selected' : resetPass}"> <!-- reset password form -->
 				<p class="cd-form-message">Lost your password? Please enter your email address. You will receive a link to create a new password.</p>
 
-				<form class="cd-form" name="forgotPwdForm">
+				<form class="cd-form" name="forgotPwdForm" id="forgotPwdForm">
 					<p class="fieldset">
 						<label class="image-replace cd-email" for="reset-email">E-mail</label>
 						<input class="full-width has-padding has-border" id="reset-email" type="email" name="email" ng-model="forgotPwd.Email"placeholder="E-mail">

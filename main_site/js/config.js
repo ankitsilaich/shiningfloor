@@ -37,9 +37,14 @@ angular.module('app')
         var responseData = msg.data;
         console.log(responseData);
         if(responseData['login_success'] == 'true'){
-          $rootScope.isLoggedIn = true;                    
-          $rootScope.processGoingOn = false;
-            return;
+          $rootScope.isLoggedIn = true;            
+          $rootScope.loggedInUser = responseData['login_attempt_by'];                 
+          return $http.get('../api/slim.php//buildcorner/user/info').then(function(resp){
+            $rootScope.loggedInUserDetails = resp.data.user_data;                              
+            console.log($rootScope.loggedInUserDetails);                              
+              $rootScope.processGoingOn = false;
+                return;
+          });  
         }
         else{
           $rootScope.isLoggedIn = false;
@@ -56,7 +61,8 @@ angular.module('app')
    
       //$promise.then(function(){
           $rootScope.isLoggedIn = false;
-         
+          $rootScope.loggedInUser = "";
+         $rootScope.loggedInUserDetails="";
      // });
     },
     isLoggedIn: function(){

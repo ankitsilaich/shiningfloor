@@ -9,7 +9,7 @@
 
 					
 
-				<div class="main_cart_left" ng-show="ngCart.getTotalItems()- ngCart.getTotalSamples() > 0">
+				<div class="main_cart_left" ng-show="ngCart.getTotalProducts()>0">
 					<div class="cart_title"> <h3> Products</h3></div>
 					<div class="cart_heading">
 						<div class="h_item1">
@@ -26,7 +26,7 @@
 						</div>
 					</div> 
 					<div class='cart_items'>
-						<div class="cart_item" ng-repeat="item in ngCart.getCart().items track by $index" ng-show='item.getPrice()!=0'>
+						<div class="cart_item" ng-repeat="item in ngCart.getProducts() track by $index" >
 							<div class="cart_item_img">
 								<img src="{{ item.getData().product_img }}" style="width:92px;height:82px" alt="" />
 								<p>{{ item.getName() }}<br>{{ item.getData().product_type_id }}</p>

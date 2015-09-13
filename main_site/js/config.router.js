@@ -11,24 +11,34 @@ angular.module('app')
           $rootScope.$state = $state;
           $rootScope.$stateParams = $stateParams;
           $rootScope.isLoggedIn = false;
+          console.log($rootScope.isLoggedIn);
+          $rootScope.loggedInUser = "";
+          $rootScope.loggedInUserDetails = "";
           $rootScope.processGoingOn = false;
           // var routesPermission = ['/userAccount'];
+          
+          $rootScope.setUserDetails = function(){
+              var connected = LoginService.isLoggedIn();
+              connected.then(function(msg){
+              if(msg.data){
+                console.log('connected');
+                $rootScope.isLoggedIn = true;
+                $rootScope.loggedInUser = msg.data ;                 
+                $http.get('../api/slim.php//buildcorner/user/info').then(function(resp){
+                  $rootScope.loggedInUserDetails = resp.data.user_data;                   
+                }); 
+                console.log($rootScope.loggedInUserDetails);
+              }              
+            });
+          };
+          $rootScope.setUserDetails();  
+
           $rootScope.$on('$stateChangeSuccess',  function(event, toState, toParams, fromState, fromParams) {
             document.body.scrollTop = document.documentElement.scrollTop = 0;
             console.log(event);
             $rootScope.currentstate = toState;
+            $rootScope.setUserDetails();
 
-            var connected = LoginService.isLoggedIn();
-            connected.then(function(msg){
-              if(msg.data){
-                $rootScope.isLoggedIn = true;
-                console.log(msg.data);
-              }
-              // else
-                // $location.path('/home');
-
-            });
-   
           });
       }
     ]
@@ -53,8 +63,6 @@ angular.module('app')
 
                               'js/others/jquery.elevatezoom.min.js',
                               'js/others/header.js'
-
-
 
                               ]
                           )
@@ -167,10 +175,8 @@ angular.module('app')
                        function( $ocLazyLoad, uiLoad ){
                          return uiLoad.load(
                            [
-                             'js/controllers/index.filterCtrl.js'
-
-
-
+                             'js/controllers/index.filterCtrl.js',
+                             'js/controllers/checkoutCtrl.js'
                              ]
                          )
                      }]

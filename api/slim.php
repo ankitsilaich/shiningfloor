@@ -176,9 +176,7 @@ $app->get("/auth/logout/user", function() use ($app)
 {
     unset($_SESSION['user']);
 });
-
-
-//------------ Seller Details --------------//
+ 
 
 $app->get('/buildcorner/user/info' , $authenticate_user($app) ,function() use ($app, $db)
 {       
@@ -189,7 +187,8 @@ $app->get('/buildcorner/user/info' , $authenticate_user($app) ,function() use ($
              
             $data = array(                  
                 
-                'name' => $user['name'],
+                'firstName' => $user['firstName'],
+                'lastName' => $user['lastName'],
                 'email' => $user['email'], 
                 'phone1' => $user['phone1'],
                 'phone2' => $user['phone2'],

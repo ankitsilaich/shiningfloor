@@ -136,6 +136,7 @@ angular.module('ngCart', ['ngCart.directives'])
             return products;
         };
 
+         
         this.getSamples = function(){
             var items = this.getCart().items;
             var samples = [];
@@ -147,6 +148,16 @@ angular.module('ngCart', ['ngCart.directives'])
             return samples;
         };
 
+        this.getProducts = function(){
+            var items = this.getCart().items;
+            var products = [];
+            angular.forEach(items, function(item){
+                // console.log(item.getType());
+                if(item.getType() === "product")                    
+                    products.push (item);
+            });
+            return products;
+        };
 
         this.getTotalItems = function () {
             var count = 0;
@@ -163,6 +174,19 @@ angular.module('ngCart', ['ngCart.directives'])
              
             angular.forEach(items, function (item) {
                 if  (item.getType() === 'sample') {
+                    count++;
+                }
+            });
+//            console.log(count+ ' samples added');
+            return count;              
+        };
+
+        this.getTotalProducts = function(){
+            var count = 0;
+            var items = this.getCart().items;
+             
+            angular.forEach(items, function (item) {
+                if  (item.getType() === 'product') {
                     count++;
                 }
             });
@@ -304,7 +328,6 @@ angular.module('ngCart', ['ngCart.directives'])
         item.prototype.getType = function(){
             return this._type;
         };
-
         item.prototype.setPrice = function(price){
 
             var priceFloat = parseFloat(price);

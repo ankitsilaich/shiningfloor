@@ -4,24 +4,40 @@
         <h4>3. Review of Your Order</h4>
         <div class="dotted_line"></div>
         <div class="product_form_total m-t-md">
-            <div class="c_main_item">
-                <p><b>Product</b></p>
-                <span><b>Total</b></span>
+            <div ng-show='ngCart.getTotalSamples()' class='m-b-sm' style='border-bottom: 2px solid #ccc;'>
+                <div class="c_main_item">
+                    <p><b>Sample</b></p>
+                    <span><b>Total</b></span>
+                </div>
+                <div class="c_single_item" ng-repeat="sample in ngCart.getSamples() track by $index">
+                     
+                    <p >{{ sample.getName() }} </p>
+                    <span ng-show="$index < 5"> Rs 0 </span>
+                    <span ng-show="$index >= 5"> Rs {{ngCart.getPerSampleCharges()}} </span>
+                </div>
+                <div class="c_single_item sp_single_item">
+                    <p> <b>Sample Charges </b></p>
+                    <span> Rs. {{ngCart.getSampleCharges()}} </span>
+                </div>
+
             </div>
-            <div class="c_single_item" ng-repeat="item in ngCart.getCart().items track by $index">
-                <p ng-show='item.getTotal()!=0'>{{ item.getName() }}  ({{ item.getQuantity() | number }} cartoons)</p>
-                <span ng-show='item.getTotal()!=0'>Rs. {{ item.getTotal() }}</span>
-                <p ng-show='item.getTotal()==0'>{{ item.getName() }} </p>
-                <span ng-show="item.getTotal()==0"> Sample </span>
-            </div>
-            <div class="c_single_item sp_single_item">
-                <p> <b>Sample Charges </b></p>
-                <span> Rs. {{ngCart.getSampleCharges()}} </span>
-            </div>
+
+            <div ng-show='ngCart.getTotalProducts()'>
+                <div class="c_main_item">
+                    <p><b>Product</b></p>
+                    <span><b>Total</b></span>
+                </div>
+                <div class="c_single_item" ng-repeat="item in ngCart.getProducts() track by $index">
+                    <p ng-show='item.getTotal()!=0'>{{ item.getName() }}  ({{ item.getQuantity() | number }} cartoons)</p>
+                    <span ng-show='item.getTotal()!=0'>Rs. {{ item.getTotal() }}</span>
+                    <p ng-show='item.getTotal()==0'>{{ item.getName() }} </p>
+                    <span ng-show="item.getTotal()==0"> Sample </span>
+                </div>
+            </div>             
 
             <div class="c_single_item">
                 <p> <b>subtotal </b></p>
-                <span>Rs. {{ ngCart.totalCost()  }}</span>
+                <span>Rs. {{ ngCart.totalCost()-ngCart.getSampleCharges()  }}</span>
             </div>
 
 
@@ -46,7 +62,7 @@
                     <input type="checkbox"> I have Read & Accept <span>Terms & Conditions</span>
                 </label>
             </div>
-            <input type="submit" value="Place order now" />
+            <input type="submit" value="Place order now" ng-disabled='detailsForm.$invalid' ng-click='orderSubmit()'/>
         </div>
     </div>
 </div>

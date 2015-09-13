@@ -129,6 +129,20 @@ a:hover { color: #000 }
   float: left;
   margin-right: 15px;
 }
+.form-validation input.ng-dirty.ng-invalid {
+  border-color: #f05050;
+}
+
+.form-validation input.ng-dirty.ng-valid,
+.form-validation input.ng-dirty.ng-valid:focus {
+  border-color: #27c24c;
+}
+
+.form-validation .i-checks .ng-invalid.ng-dirty + i {
+  border-color: #f05050;
+}
+
+
 .header_top_right p a {
   color: #e8e8e8;
     cursor: pointer;
@@ -2207,12 +2221,13 @@ ul.wid_social li a:hover {
   padding: 9px;
   width: 96.56%;
 }
-.company_name input[type="text"], .c_address input[type="text"], .s_town input[type="text"], .c_name_box input[type="text"], .c_state_box input[type="text"], .c_mail_box input[type="text"], .s_order textarea {
+.company_name input[type="text"], .c_address input[type="text"],.c_address input[type="email"],.c_address select, .s_town input[type="text"], .c_name_box input[type="text"], .c_state_box input[type="text"], .c_mail_box input[type="text"], .s_order textarea {
   background: none repeat scroll 0 0 #f7f8f9;
   border: 1px solid #E8E8E8;
   padding: 9px;
   width: 100%;
 }
+
 .btn.btn-primary.dropdown-toggle {
   background: none repeat scroll 0 0 #183152;
   border: medium none;
@@ -7316,7 +7331,7 @@ font-weight: 100;
     font-size: 0.875em;
     color: #343642;
   }
-  .cd-form .cd-error-message {
+  .cd-form .cd-error-message{
     display: inline-block;
     position: absolute;
     left: -5px;
@@ -7336,7 +7351,20 @@ font-weight: 100;
     -moz-transition: opacity 0.2s 0, visibility 0 0.2s;
     transition: opacity 0.2s 0, visibility 0 0.2s;
   }
-  .cd-form .cd-error-message::after {
+
+.error-message{
+  display: inline-block; 
+  background: rgba(215, 102, 102, 0.9);
+  padding: .4em;
+  z-index: 2;
+  color: #FFF;
+  font-size: 13px;
+  font-size: 0.8125em;
+  border-radius: 0.25em;
+  pointer-events: none;
+ text-transform: lowercase! important;
+}
+  .cd-form .cd-error-message::after  {
     /* triangle */
     content: '';
     position: absolute;

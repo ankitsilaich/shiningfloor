@@ -1,10 +1,14 @@
-app.controller('loginController', ['$scope', '$http', '$filter', '$location', '$rootScope','LoginService', '$state','$stateParams',function($scope, $http, $filter, $location,$rootScope,LoginService,$state,$stateParams) {
+app.controller('loginController', ['$scope', '$http', '$filter', '$location', '$rootScope','LoginService', '$state',function($scope, $http, $filter, $location,$rootScope,LoginService,$state) {
   $scope.showModal = false;
   $scope.showLogin = false;
   $scope.showSignup = false;
   $scope.resetPass = false;
   $scope.loginError = "";
   $scope.signupError = "";
+  $scope.currentUser = $rootScope.loggedInUser;
+  $scope.currentUserDetails = $rootScope.loggedInUserDetails;
+  console.log($scope.currentUser);
+  console.log($rootScope.loggedInUserDetails);
   
   $scope.showsignupModel = function() {
 
@@ -41,21 +45,22 @@ app.controller('loginController', ['$scope', '$http', '$filter', '$location', '$
     $scope.resetPass = true;
   }
 
- 
-  $http.get('../api/slim.php/auth/process/user').then(function(resp) {
-      $scope.user = resp.data;
-      console.log($scope.user);
-    });  
-
 $scope.login = function(user) {
       if(!$rootScope.isLoggedIn) {
           LoginService.login(user, $scope).then(function(){ 
               if($rootScope.isLoggedIn){
-                  // toaster.pop('success', 'Seller Login Successful', 'Redirecting to home page...');         
-                  // $timeout(redirectState, 3000);
                   console.log('Login Successful');
-                  $state.go('app.home', {}, {reload: true});
-
+                  
+                  $scope.currentUser = $rootScope.loggedInUser;
+                  $scope.currentUserDetails = $rootScope.loggedInUserDetails;
+                  $scope.showModal = false;
+                  $scope.showLogin = false;
+                  $scope.showSignup = false;                 
+                  
+                  console.log($scope.currentUser);
+                  console.log($rootScope.loggedInUserDetails);
+  
+                  // $window.location.reload();                  
               }
               else{
                   // toaster.pop('error', 'Login Error', 'Either email or password incorrect');
@@ -68,23 +73,26 @@ $scope.login = function(user) {
   $scope.signup = function(user) {
       $scope.authError = null;
       // Try to create
-      $http.post('../api/slim.php/auth/signup/user', {name: user.name, email: user.email, password: user.password})
+      $http.post('../api/slim.php/auth/signup/user', {username: user.name, email: user.email, password: user.password})
       .then(function(response) {
         if ( response.data.signup_success == 'false') {
             console.log('signup error ' + response.data);
             $scope.signupError = "Email already registered! ";
             // toaster.pop('error', 'Seller existed', 'Please login with this email...'); 
         }else{
-
-          // toaster.pop('success', 'Seller added', 'Redirecting to update seller details ...');         
-          // $timeout(redirectState, 3000);
            console.log('signup success ' + response.data);
-           // $state.transitionTo($state.current, $stateParams, {
-           //    reload: true,
-           //    inherit: false,
-           //    notify: true
-           // });
-          $state.go('app.home', {}, {reload: true});
+           $scope.currentUser = $rootScope.loggedInUser;
+           $scope.currentUserDetails = $rootScope.loggedInUserDetails;
+           // console.log($scope.currentUser);
+           //  console.log($scope.loggedInUserDetails);
+           $("input#signup-username").val(null) ;
+           $("input#signup-email").val(null);
+           $("input#signup-password").val(null);
+           $scope.showModal = false;
+            $scope.showLogin = false;
+            $scope.showSignup = false;
+           // $state.go($state.current, {}, {reload: true});
+            // $window.location.reload();
         }
       });         
   };
@@ -94,11 +102,20 @@ $scope.login = function(user) {
     $http.get('../api/slim.php/auth/logout/user').
       success(function() {
         $rootScope.isLoggedIn = false;
+        $rootScope.loggedInUser = "";
+        $rootScope.loggedInUserDetails = "";
+        $scope.currentUser = "";
+        $scope.currentUserDetails = {};
         console.log('logout called');
         LoginService.logout(); 
-        $state.go('app.home', {}, {reload: true});
-
+        $scope.user={};
+        $scope.newuser={};
+        $scope.loginError = "";
+        $scope.loginError = "";
+        $scope.signupError = "";
+        console.log($scope.currentUser);
+        console.log($scope.loggedInUserDetails);
       });
     };
-
+    // console.log($rootScope.loggedInUser);
 }]);
