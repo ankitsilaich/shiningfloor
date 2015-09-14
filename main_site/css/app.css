@@ -2239,7 +2239,7 @@ ul.wid_social li a:hover {
   padding: 9px;
   width: 96.56%;
 }
-.company_name input[type="text"], .c_address input[type="text"],.c_address input[type="email"],.c_address select, .s_town input[type="text"], .c_name_box input[type="text"], .c_state_box input[type="text"], .c_mail_box input[type="text"], .s_order textarea {
+.company_name input[type="text"], .c_address input[type="text"],.c_address input[type="email"],.c_address select, .s_town input[type="text"], .c_name_box input[type="text"], .c_state_box input[type="text"],.c_state_box select, .c_mail_box input[type="text"], .s_order textarea {
   background: none repeat scroll 0 0 #f7f8f9;
   border: 1px solid #E8E8E8;
   padding: 9px;
@@ -2934,7 +2934,7 @@ ul#single_blog_nav {
   border-top: 1px solid #eeeeee;
   padding: 20px 0;
 }
-.s_results > p, .filter_box_right a {
+.s_results > p, .filter_box_right a , .filter_box a{
  color: #777777;
  font-size: 13px;
  font-weight: 600;
@@ -2985,11 +2985,15 @@ ul#single_blog_nav {
   color: #ddd;
   margin-right: 30px;
 }
+
 .filter_box_right {
   margin-top: -2px;
   text-align: right;
 }
-.filter_box_right a:hover {
+.filter_box{
+  float: left;
+}
+.filter_box_right a:hover , .filter_box a:hover{
 	text-decoration:none;
 }
 .filter_box_right .dropdown-menu {
@@ -3001,7 +3005,18 @@ ul#single_blog_nav {
   width: 35%;
   display: block;
 }
+.filter_box .dropdown-menu {
+  float: right;
+  left: 0%;
+  margin: 0;
+  text-align: left;
+  top: 21px;
+  width: 35%;
+  display: block;
+}
+
 .filter_box_right .hidden{ display:none;}
+.filter_box .hidden{ display:none;}
 .dropdown-menu > li .active{background-color: #eee;}
 .main_category_area {
   /*background: none repeat scroll 0 0 #ecf1f5;*/

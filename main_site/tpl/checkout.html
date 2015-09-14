@@ -34,7 +34,7 @@
 			</div>
 
 			<div class="row" ng-show="ngCart.getTotalItems() != 0">
-				<form name='detailsForm' id='detailsForm' class='form-validation'>
+				<form name='detailsForm' id='detailsForm' class='form-validation' novalidate>
 				<div class="col-md-3 col-sm-3 col-xs-12">
 					<div class="checkout_left">
 
@@ -45,7 +45,16 @@
 
 						<div class="checkout_form cd-user-modal-container"> 
 							 <div class='mail_info'><p  > We will send order details to this email address </p></div>
-							<div class='btn btn-default checkout_signIn' ng-click="showloginModel()" ng-disabled='currentUser!=""'><a  >Sign in</a></div>
+							<div class='' ng-click="showloginModel()" ng-disabled='currentUser!=""'><a ng-disabled='currentUser!=""' class='btn btn-default checkout_signIn'  >Sign in</a>
+								<input type="email" name='userEmail' ng-model='currentUserDetails.email' required style='display:none'> 
+								<div ng-show='(submitted&&currentUser=="")'> 
+									<p class="error-message" > SIGNIN BEFORE CHECKOUT</p>
+								</div>
+
+
+							</div>
+							
+							
 							<div class='btn btn-info checkout_signUp' ng-click="showsignupModel()" ng-disabled='currentUser!=""'><a  >New account</a></div>	   
 						 
 						</div>
@@ -65,63 +74,86 @@
 								<div class="c_name_box_left">
 									<p>First Name <span>*</span></p>
 									<input type="text" ng-model='currentUserDetails.firstName' name='firstName' required>
-									<!-- <p class="error-message" ng-show='detailsForm.firstName.$touched&&(detailsForm.firstName.$error.)'> name can't be empty</p> -->
+									<p class="error-message" ng-show='(submitted&&detailsForm.firstName.$error.required)'> firstname can't be empty</p>
+
 								</div>
 								<div class="c_name_box_right">
 									<p>Last Name <span>*</span></p>
 									<input type="text" name='lastName' ng-model='currentUserDetails.lastName' required>
+									<p class="error-message" ng-show='(submitted&&detailsForm.lastName.$error.required)'> lastname can't be empty</p>
 								</div>
 							</div>
 							<div class="c_address">
 								 
 									<p>Email <span>*</span></p>
 									<input type="email" name='email' ng-model='currentUserDetails.email' required>
-								 							 
+								 	<p class="error-message" ng-show='(submitted&&detailsForm.email.$error.required)'> email is required</p> 
 							</div>
 							<div class="c_mail_box">
 								<div class="c_mail_box_left">
 									<p>Contact No <span>*</span></p>
 									<input type="text" name='phone1' ng-model='currentUserDetails.phone1' ng-maxlength="10" ng-minlength="10" ng-pattern="/^[0-9]+$/" required>
+									<p class="error-message" ng-show='(submitted&&detailsForm.phone1.$error.required)'> contact no is required</p>
 								</div>
 								<div class="c_mail_box_right">
 									<p> Other Contact No</p>
 									<input type="text" name='phone2' placeholder='if any(optional)' ng-model='currentUserDetails.phone2' ng-maxlength="10" ng-minlength="10" ng-pattern="/^[0-9]+$/">
+									 
 								</div>
 							</div> 
 
 							<div class="c_address">
 								<p>Address <span>*</span></p>
 								<input type="text" name='address' placeholder="Street Address" ng-model='currentUserDetails.address' required>
+								<p class="error-message" ng-show='(submitted&&detailsForm.address.$error.required)'> address can't be empty</p>
 							</div>
 							<div class="c_state_box">
 								<div class="c_state_box_left">
 									<p>Town/City <span>*</span></p>
 									<input name='city' type="text" ng-model='currentUserDetails.city' required>
+									<p class="error-message" ng-show='(submitted&&detailsForm.city.$error.required)'> city can't be empty</p>
 								</div>
 
 								<div class="c_state_box_right">
 									<p> State <span>*</span></p>
 									<input type="text" name='state' ng-model='currentUserDetails.state' required>
+									<p class="error-message" ng-show='(submitted&&detailsForm.state.$error.required)'> state can't be empty</p>
 								</div>
 							</div>
 							<div class="c_state_box">
 								<div class="c_state_box_left">
-									<p> Postcode/Zip <span>*</span></p>
+									<p> Pincode/Zip <span>*</span></p>
 									<input type="text" name='pincode' ng-model='currentUserDetails.pincode' ng-maxlength="6" ng-minlength="6" ng-pattern="/^[0-9]+$/" required>
+									 
+									<p class="error-message" ng-show='(submitted&&detailsForm.pincode.$error.required)'>invalid pincode </p>
 								</div>
 
 								<div class="c_state_box_right">									
 								<p> LandMark <span></span></p>
 								<input type="text" name='landmark' placeholder="if any (optional)" ng-model='currentUserDetails.landmark' >
+
 								</div>
 
 							</div>
-							<div class="c_address">
+							<div class="c_address"> 
 								<p> Preferred Time Slot<span>*</span></p>
-								<select ng-model='currentUserDetails.timeSlot' required name='timeSlot'> <option value='12-02 pm'> 12-02 pm</option><option value='02-04 pm'> 02-04 pm</option><option value='04-06 pm'> 04-06 pm</option> <option value='06-08 pm'> 06-08 pm</option>
+								<select ng-model='currentUserDetails.timeSlot' ng-init='currentUserDetails.timeSlot= "04-06 pm"'required name='timeSlot'> <option value='12-02 pm'> 12-02 pm</option><option value='02-04 pm'> 02-04 pm</option><option value='04-06 pm'> 04-06 pm</option> <option value='06-08 pm'> 06-08 pm</option>
 								</select>
 								 
 							</div>
+
+							<!-- <div class="c_address_box">
+							 
+								<p> Preferred Date<span>*{{currentUserDetails.preferedDate}}</span></p> 
+							 
+				             <div style="display:inline-block; min-height:290px;">
+						      <datepicker ng-model="dt" min-date="minDate" show-weeks="true" class="well well-sm" custom-class="getDayClass(date, mode)"></datepicker>
+						    </div>		               
+								             
+				            </div> -->
+				         
+							
+
 
 							 
 
@@ -135,11 +167,12 @@
 					  <ngcart-summarycart></ngcart-summarycart>
 					  <div class="checkbox">
 			                <label>
-			                    <input type="checkbox" ng-model='currentUserDetails.agree' required> I have Read & Accept <span>Terms & Conditions</span>
+			                    <input type="checkbox" name='agree'ng-model='currentUserDetails.agree' required> I have Read & Accept <span>Terms & Conditions</span>
+			                    <p class="error-message" ng-show='(submitted&&detailsForm.agree.$error.required)'> agree terms and conditions </p>
 			                </label>
 			           </div>
 			            
-			           <input type='submit' ng-click='orderSubmit()' value='Place order now' class='checkout_button'> </input>
+			           <input type='submit'  ng-click='submitted=true;orderSubmit(currentUserDetails)' value='Place order now' class='checkout_button'> </input>
 			           	</div>
 					</div>
 				</div>

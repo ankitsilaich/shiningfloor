@@ -2,7 +2,7 @@
 //  global $db;
 $sortFilters = [];
 function findAllFilters(){
-  global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$lookFilters,$materialFilters,$applicationFilters,$usageFilters,$shapeFilters,$sortFilters;
+  global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$lookFilters,$materialFilters,$applicationFilters,$usageFilters,$shapeFilters,$sortFilters,$sizeFilters;
   $get = filter_input_array(INPUT_GET);
   if(array_key_exists('pageNo', $get)){
       $pageNo = ( int )$get['pageNo'] ;
@@ -24,6 +24,12 @@ function findAllFilters(){
   if(array_key_exists('looks', $get)){
       $lookFilters =  explode(',', $get['looks']);
   }
+
+  if(array_key_exists('sizes', $get)){
+      $sizeFilters =  explode(',', $get['sizes']);
+      // print_r($sizeFilters);
+  }
+
   if(array_key_exists('shapes', $get)){
       $shapeFilters =  explode(',', $get['shapes']);
   }
@@ -113,6 +119,37 @@ function materialFilteredQuery($materialFilters , $query){
     }
     return $query->where($materialQuery);
 }
+
+function sizeFilteredQuery($sizeFilters , $query){
+    global $db;
+    $sizeQuery = '';
+    // echo $sizeFilters;
+    for($i = 0 ; $i < sizeof($sizeFilters); $i++){
+      // echo $sizeFilters[$i];
+      $size =  explode('*', $sizeFilters[$i]);
+      // print_r($size);
+      // $size[0] =12 ;$size[1] = 12;
+      $width = intval($size[0]);
+      $height = intval($size[1]);
+      
+     if($i>0)
+        $sizeQuery .= ' OR ' ;
+      // $sizeQuery .= ' (product_width_unit = "in" and ((product_width = '. $width. ' AND product_height = '.$height .') OR (product_width = '. $height. ' AND product_height = '.$width .')))';
+      $sizeQuery .= ' (((product_width > '. (intval($width*25.4)-15). ' AND product_width < '.(intval($width*25.4)+15).')';
+      $sizeQuery .=  ' AND (product_height > '. (intval($height*25.4)-15). ' AND product_height <'. (intval($height*25.4)+15).'))';
+
+      
+      if($width!=$height){
+        $sizeQuery .= ' OR ';
+        $sizeQuery .= ' ((product_width > '. (intval($height*25.4)-10). ' AND product_width < '.(intval($height*25.4)+10).')';
+        $sizeQuery .=  ' AND (product_height > '. (intval($width*25.4)-10). ' AND product_height <'. (intval($width*25.4)+10).')))';
+      }
+    }
+    // echo $sizeQuery;
+    return $query->where($sizeQuery);
+}
+
+
 //   function colorFilteredQuery($colorFilters , $query){
 //     global $db;
 //     $colorQuery = '';
@@ -215,10 +252,12 @@ function sortFilteredQuery($sortFilters , $query){
 }
 
 function setFinalFilterQuery($query){
-  global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$lookFilters,$materialFilters,$applicationFilters,$usageFilters,$shapeFilters,$sortFilters;
+  global $colorFilters, $priceFilters, $brandFilters,$finishTypeFilters,$lookFilters,$materialFilters,$applicationFilters,$usageFilters,$shapeFilters,$sortFilters,$sizeFilters;
   $get = filter_input_array(INPUT_GET);
-  if(array_key_exists('price_range', $get))
-      $query = priceFilteredQuery($priceFilters,$query);
+  // if(array_key_exists('price_range', $get))
+  //     $query = priceFilteredQuery($priceFilters,$query);
+  if(array_key_exists('priceRange', $get))
+      $query = priceFilteredQuery($get['priceRange'],$query);
   if(array_key_exists('brand_name', $get))
       $query = brandFilteredQuery($brandFilters,$query);
   if(array_key_exists('finish_types', $get))
@@ -229,15 +268,18 @@ function setFinalFilterQuery($query){
       $query = lookFilteredQuery($lookFilters,$query);
   if(array_key_exists('shapes', $get))
       $query = shapeFilteredQuery($shapeFilters,$query);
+  if(array_key_exists('sizes', $get))
+      $query = sizeFilteredQuery($sizeFilters,$query);
   if(array_key_exists('applications', $get))
       $query = applicationFilteredQuery($applicationFilters,$query);
   if(array_key_exists('usages', $get))
       $query = usageFilteredQuery($usageFilters,$query);  
   if(array_key_exists('colors', $get))
-      $query = colorFilteredQuery($colorFilters,$query);
-  if(array_key_exists('priceRange', $get))
-      $query = priceFilteredQuery($get['priceRange'],$query);      
+      $query = colorFilteredQuery($colorFilters,$query);      
+  // if(array_key_exists('colors', $get))
+  //     $query = colorFilteredQuery($colorFilters,$query);
 
+        
   if(array_key_exists('sortBy', $get))
       $query = sortFilteredQuery($get['sortBy'],$query);
 

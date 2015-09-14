@@ -48,6 +48,14 @@ angular.module('ngCart', ['ngCart.directives'])
                 //Update quantity of an item if it's already in the cart
                 inCart.setQuantity(quantity, false);
             } else {
+                // console.log(price);
+                // if(type=='sample'){
+                //     var count = this.getTotalSamples();
+                //     console.log(count);
+                //     if(count>=5){
+                //         price = this.$cart.perSampleCharge;
+                //     }
+                // }
                 var newItem = new ngCartItem(id, name, price, quantity, data,type);                 
                 this.$cart.items.push(newItem);
                 $rootScope.$broadcast('ngCart:itemAdded', newItem);
@@ -93,11 +101,10 @@ angular.module('ngCart', ['ngCart.directives'])
             return   this.getCart().sampleCharges; 
         };
 
-        this.getPerSampleCharges = function(){
-             
+        this.getPerSampleCharges = function(){             
             return   this.getCart().perSampleCharge; 
         };
-
+ 
 
         this.setTaxRate = function(taxRate){
             this.$cart.taxRate = +parseFloat(taxRate).toFixed(2);
@@ -207,7 +214,8 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         this.totalCost = function () { 
-            return +parseFloat(this.getSubTotal() + this.getShipping() + this.getSampleCharges()+ this.getTax()).toFixed(2);
+
+            return +parseFloat(this.getSubTotal() + this.getShipping() + this.getTax()).toFixed(2);
         };
 
         this.removeItem = function (index) {

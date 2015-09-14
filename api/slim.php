@@ -227,7 +227,58 @@ $app->post("/shiningfloor/contactus", function () use ($app, $db) {
       echo 'success';      
   });
 
-$app->get("/shiningfloor/userquery", function () use ($app, $db) {
+$app->post("/buildcorner/submitOrder",$authenticate_user($app), function () use ($app, $db) {
+
+  $array    = (array) json_decode($app->request()->getBody());
+  $userDetails = $array['userInfo'];
+  // print_r($userDetails);
+  $email = $_SESSION['user'];
+  $userId = $db->users()->where('email',$email)->fetch();
+  $orderDetails = $array['items'];
+  print_r($orderDetails);
+  $orderTotal = $array['orderTotal'];
+
+  // print_r($userDetails);
+  // print_r($orderTotal);
+  // print_r($orderDetails);    
+  // print("ssssssss\n");
+  // print_r($userDetails->firstName);
+  // print_r($orderDetails[0]->_id);
+  $time = new DateTime("now", new DateTimeZone('Asia/Kolkata'));
+  $orderTime = (string)$time->format('Y-m-d H:i:s');
+  $orderData = array('users_id' => $userId,
+                'name' => $userDetails->firstName . ' ' .$userDetails->lastName,
+                'contact_no1' => $userDetails->phone1,
+                'contact_no2' => $userDetails->phone2,
+                'address' => $userDetails->address ,
+                'city' => $userDetails->city,
+                'state' => $userDetails->state,
+                'pincode' => $userDetails->pincode,
+                'landmark' => $userDetails->landmark,
+                'prefered_time' => $userDetails->timeSlot,
+                'prefered_date' => $userDetails->prefereddate,
+                'order_total' => $orderTotal,
+                'order_date' => $orderTime                 
+    );
+  $orderNo = $db->orders()->insert($orderData);
+  // seller id , total  will be decided so his part is remaining.
+  foreach ($orderDetails as $order) {
+    $item = array(
+      'orders_id' => $orderNo,
+      'products_id' => $order->_data->product_id,
+      'sellers_id' => 0,
+      'order_type' => $order->_type,
+      'price_per_unit' => $order->_price,
+      'quantity' => $order->_quantity,
+      );     
+    // print_r($item);
+    $db->order_details->insert($item);
+  }
+
+  // echo $orderNo;
+});
+
+  $app->get("/shiningfloor/userquery", function () use ($app, $db) {
            
           $query = $db->contact_us()->order('date DESC');
           $data = array();

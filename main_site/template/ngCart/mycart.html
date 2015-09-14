@@ -100,8 +100,8 @@
 								</div>
 								<div class="cart_total">
 									<p>
-										<span ng-show='$index < 5' > Rs. {{ item.getTotal() }} </span>  
-										<span ng-show='$index >= 5' > Rs. {{ngCart.getPerSampleCharges()}} </span>  
+										<span > Rs. {{ item.getTotal() }} </span>  
+										<!-- <span ng-show='$index >= 5' > Rs. {{ngCart.getPerSampleCharges()}} </span>   -->
 										
 										<div class="close_icon_cart " style="margin-top:-20px;margin-right: 10px;font-size:20px;" ng-click="ngCart.removeItemById(item.getId())">
 	        								<span class="icon-close" style="color:#EA2E49"></span>

@@ -113,8 +113,8 @@ $scope.login = function(user) {
         $scope.loginError = "";
         $scope.loginError = "";
         $scope.signupError = "";
-        console.log($scope.currentUser);
-        console.log($scope.loggedInUserDetails);
+        // console.log($scope.currentUser);
+        // console.log($scope.loggedInUserDetails);
       });
     };
     // console.log($rootScope.loggedInUser);

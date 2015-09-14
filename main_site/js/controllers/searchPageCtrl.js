@@ -15,6 +15,10 @@ app.controller('searchPageCtrl', ['$scope', '$http', '$stateParams', 'ngCart', '
     max: 1000
 };
 
+
+$scope.budgetTypes=[{'name': 'Budget' ,'value':'0-50'},{'name': 'Premium' ,'value': '50-100'},{'name':'Luxury' ,'value':'100-above'}];
+// console.log($scope.sizes.length);
+
 $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
 //  console.log(width + height +  priceSqFt);
   unit = unit.trim().toLowerCase(); 
@@ -123,6 +127,13 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
             $location.search('applications', null);
             $scope.isFilteredByApplication = false;
         }
+        if ($scope.sizesUrl = $scope.makeUrl($scope.selectedSizes, $scope.sizeFilters)) {
+            $location.search('sizes', $scope.sizesUrl);
+            $scope.isFilteredBySize = true;
+        } else {
+            $location.search('sizes', null);
+            $scope.isFilteredBySize = false;
+        }
         if ($scope.usagesUrl = $scope.makeUrl($scope.selectedUsages, $scope.usageFilters)) {
             $location.search('usages', $scope.usagesUrl);
             $scope.isFilteredByUsage = true;
@@ -215,6 +226,10 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
       $scope.isFilteredByApplication = true;
       $scope.shapecollapse = !$scope.isFilteredByApplication;
     }
+    if( $scope.FilterUrl.sizes){
+      $scope.isFilteredBySize = true;
+      $scope.sizecollapse = !$scope.isFilteredBySize;
+    }
     if(  $scope.FilterUrl.usages){
       $scope.isFilteredByUsage = true;
       $scope.usagecollapse = !$scope.isFilteredByUsage;
@@ -294,6 +309,15 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
                   $scope.selectedApplications[i] = false;         
               $scope.findandselect($scope.applicationFilters, 'applications', $scope.selectedApplications, $scope.FilterUrl);
         });
+
+        $scope.sizes=[{'width':12 ,'height':12},{'width':12 ,'height':24},{'width':24 ,'height':24},{'width':24 ,'height':32} ];
+        $scope.sizeFilters=['12*12','12*24','24*24','24*32'];
+        $scope.selectedSizes = [];
+        $scope.sizesLength = $scope.sizes.length;
+        for (i = 0; i < $scope.sizesLength; i++)
+            $scope.selectedSizes[i] = false;         
+        $scope.findandselect($scope.sizeFilters, 'sizes', $scope.selectedSizes, $scope.FilterUrl);
+
         $http.get('../api/slim.php/shiningfloor/usages').then(function(resp) {
           $scope.usageFilters = resp.data.usages;
           $scope.usagesLength = $scope.usageFilters.length;
@@ -357,7 +381,7 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
     $scope.selectedSortType=[]; 
     for (i = 0; i < $scope.sortTypes.length; i++)
         $scope.selectedSortType[i] = false;
-    $scope.sortBy =$scope.sortTypeFilters[0];
+    $scope.sortBy =$scope.sortTypeFilters[2];
     if ($scope.pageNo == undefined) {
         $location.search('pageNo', '1');
     }
@@ -418,6 +442,8 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
             $scope.selectedLooks[i] = false;
         for (i = 0; i < $scope.applicationsLength; i++)
             $scope.selectedApplications[i] = false;
+        for (i = 0; i < $scope.sizesLength; i++)
+            $scope.selectedSizes[i] = false;  
         for (i = 0; i < $scope.usagesLength; i++)
             $scope.selectedUsages[i] = false;
         for (i = 0; i < $scope.colorsLength; i++)
