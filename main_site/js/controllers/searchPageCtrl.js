@@ -310,8 +310,8 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
               $scope.findandselect($scope.applicationFilters, 'applications', $scope.selectedApplications, $scope.FilterUrl);
         });
 
-        $scope.sizes=[{'width':12 ,'height':12},{'width':12 ,'height':24},{'width':24 ,'height':24},{'width':24 ,'height':32} ];
-        $scope.sizeFilters=['12*12','12*24','24*24','24*32'];
+        $scope.sizes=[{'width':12 ,'height':12},{'width':12 ,'height':24},{'width':24 ,'height':24},{'width':24 ,'height':32},{'width':32 ,'height':32} ];
+        $scope.sizeFilters=['12*12','12*24','24*24','24*32','32*32'];
         $scope.selectedSizes = [];
         $scope.sizesLength = $scope.sizes.length;
         for (i = 0; i < $scope.sizesLength; i++)
