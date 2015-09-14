@@ -81,19 +81,19 @@
                         </ul>
                     </div>
 
-                    <div class="col-md-4 filter_box" ng-init="sortDropdown=true">
-                        <a class="dropdown-toggle" ng-click="sortDropdown=!sortDropdown" >Budget<span class="caret"></span></a>
-                        <ul class="dropdown-menu"  ng-class="{'hidden':sortDropdown==true}">
+                    <div class="col-md-4 filter_box" ng-init="sortDropdown3=true">
+
+                        <a class="dropdown-toggle" ng-click="sortDropdown3=!sortDropdown3" >Budget<span class="caret"></span></a>
+                        <ul class="dropdown-menu"  ng-class="{'hidden':sortDropdown3==true}">
                             <li ng-repeat='budget in budgetTypes'>
                                 <div class="checkbox custom-checkbox">
-                                    <label>
-                                        <input type="checkbox" ng-model="selectedBudget[$index]" ng-checked="selectedBudget[$index]">
-                                        <span class="fa fa-check"></span> {{budget.name}}
+                                    <label ng-click='selectedBudgetTypes[$index]=!selectedBudgetTypes[$index];updateUrlChanges()'>
+                                        <input type="checkbox" ng-model="selectedBudgetTypes[$index]" ng-checked="selectedBudgetTypes[$index]">
+                                        <span class="fa fa-check"></span> {{budget}}
                                     </label>
 
                                 </div>
-
-                                <!-- <a href ng-click='selectSortType($index);updateUrlChanges()' ng-class="{'active':selectedSortIndex==$index }"> {{sortType}} </a> -->
+ 
                             </li>
                             
                             

@@ -144,6 +144,9 @@ function sizeFilteredQuery($sizeFilters , $query){
         $sizeQuery .= ' ((product_width > '. (intval($height*25.4)-10). ' AND product_width < '.(intval($height*25.4)+10).')';
         $sizeQuery .=  ' AND (product_height > '. (intval($width*25.4)-10). ' AND product_height <'. (intval($width*25.4)+10).')))';
       }
+      else{
+         $sizeQuery .= ')';
+      }
     }
     // echo $sizeQuery;
     return $query->where($sizeQuery);
