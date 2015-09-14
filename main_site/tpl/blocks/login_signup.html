@@ -7,32 +7,37 @@
 			    font: inherit;
 			    vertical-align: baseline;
 					list-style:none">
-				<li><a ng-class="{'selected' : loginTab}" ng-click="login()">Sign in</a></li>
-				<li><a ng-class="{'selected' : signupTab}" ng-click="signup()">New account</a></li>
+				<li><a ng-class="{'selected' : loginTab}" ng-click="showloginModel()">Sign in</a></li>
+				<li><a ng-class="{'selected' : signupTab}" ng-click="showsignupModel()">New account</a></li>
 			</ul>
 
 			<div id="cd-login"  ng-class="{'is-selected' : showLogin}"> <!-- log in form -->
-				<form class="cd-form">
+				<form class="cd-form form-validation" name='loginForm' id="loginForm">
 					<p class="fieldset">
 						<label class="image-replace cd-email" for="signin-email">E-mail</label>
-						<input class="full-width has-padding has-border" id="signin-email" type="email" placeholder="E-mail">
-						<span class="cd-error-message">Error message here!</span>
+						<input class="full-width has-padding has-border" id="signin-email" type="email" placeholder="E-mail" name= "email"ng-model="user.email" required>
+						<span ng-show="loginForm.email.$touched&&(loginForm.email.$error.required||loginForm.email.$error.email)" class="cd-error-message">provide correct email</span>
+						 
 					</p>
 
 					<p class="fieldset">
 						<label class="image-replace cd-password" for="signin-password">Password</label>
-						<input class="full-width has-padding has-border" id="signin-password" type="text"  placeholder="Password">
-						<a href="#0" class="hide-password">Hide</a>
-						<span class="cd-error-message">Error message here!</span>
+						<input class="full-width has-padding has-border" id="signin-password" type="password"  placeholder="Password" name= "password"ng-model="user.password"  required>
+						 
+						<span ng-show="loginForm.password.$touched&&loginForm.password.$error.required" class="cd-error-message">please provide your password</span>
 					</p>
 
 					<p class="fieldset">
 						<input type="checkbox" id="remember-me" checked>
 						<label for="remember-me">Remember me</label>
 					</p>
+					<p class='fieldset has-error' ng-show='loginError!=""'>
+						{{loginError}} 
+					</p>
 
 					<p class="fieldset">
-						<input class="full-width" type="submit" value="Login">
+						 <button type="submit" class="btn btn-lg full-width" ng-click='login(user);' ng-disabled="loginForm.$invalid" > Login  </button>
+ 
 					</p>
 				</form>
 
@@ -41,33 +46,38 @@
 			</div> <!-- cd-login -->
 
 			<div id="cd-signup"  ng-class="{'is-selected' : showSignup}"> <!-- sign up form -->
-				<form class="cd-form">
+				<form class="cd-form" name="signUpForm" id="signUpForm">
 					<p class="fieldset">
-						<label class="image-replace cd-username" for="signup-username">Username</label>
-						<input class="full-width has-padding has-border" id="signup-username" type="text" placeholder="Username">
-						<span class="cd-error-message">Error message here!</span>
+						<label class="image-replace cd-username" for="signup-username">UserName</label>
+						<input class="full-width has-padding has-border" id="signup-username" type="text" name='name' ng-model='newuser.name' placeholder="Username" required>
+						<span ng-show="signUpForm.name.$touched&&signUpForm.name.$error.required" class="cd-error-message">provide a Username</span>
 					</p>
 
 					<p class="fieldset">
 						<label class="image-replace cd-email" for="signup-email">E-mail</label>
-						<input class="full-width has-padding has-border" id="signup-email" type="email" placeholder="E-mail">
-						<span class="cd-error-message">Error message here!</span>
+						<input class="full-width has-padding has-border" id="signup-email" type="email" name='email' ng-model='newuser.email' placeholder="E-mail" required>
+						<span ng-show="signUpForm.email.$touched&&(signUpForm.email.$error.required||signUpForm.email.$error.email)" class="cd-error-message">enter a valid email</span>
 					</p>
 
 					<p class="fieldset">
 						<label class="image-replace cd-password" for="signup-password">Password</label>
-						<input class="full-width has-padding has-border" id="signup-password" type="text"  placeholder="Password">
-						<a href="#0" class="hide-password">Hide</a>
-						<span class="cd-error-message">Error message here!</span>
+						<input class="full-width has-padding has-border" id="signup-password" type="password" name='password' ng-model='newuser.password' placeholder="Password(min password length is 7)" ng-minlength="7" required>
+						 
+						<span ng-show="signUpForm.password.$touched&&signUpForm.password.$error.required" class="cd-error-message">please provide your password</span>
+
 					</p>
 
 					<p class="fieldset">
-						<input type="checkbox" id="accept-terms">
-						<label for="accept-terms">I agree to the <a href="#0">Terms</a></label>
+						<input type="checkbox" id="accept-terms" ng-model="newuser.acceptTerms" required>
+						<label for="accept-terms">I agree to the <a href>Terms</a></label>
 					</p>
 
+					<p class='fieldset has-error' ng-show='signupError!=""'>
+						{{signupError}}  <a class='m-l-sm' ng-click="resetPassword()">Forgot your password?</a>
+					</p>
 					<p class="fieldset">
-						<input class="full-width has-padding" type="submit" value="Create account">
+						 <button type="submit" class="btn btn-lg full-width has-padding" ng-click='signup(newuser);' ng-disabled="signUpForm.$invalid" > Create an Account  </button>
+
 					</p>
 				</form>
 
@@ -77,20 +87,22 @@
 			<div id="cd-reset-password" ng-class="{'is-selected' : resetPass}"> <!-- reset password form -->
 				<p class="cd-form-message">Lost your password? Please enter your email address. You will receive a link to create a new password.</p>
 
-				<form class="cd-form">
+				<form class="cd-form" name="forgotPwdForm" id="forgotPwdForm">
 					<p class="fieldset">
 						<label class="image-replace cd-email" for="reset-email">E-mail</label>
-						<input class="full-width has-padding has-border" id="reset-email" type="email" placeholder="E-mail">
-						<span class="cd-error-message">Error message here!</span>
+						<input class="full-width has-padding has-border" id="reset-email" type="email" name="email" ng-model="forgotPwd.Email"placeholder="E-mail">
+						<span ng-show="forgotPwdForm.email.$touched&&(forgotPwdForm.email.$error.required||forgotPwdForm.email.$error.email)" class="cd-error-message">invalid email address!</span>
 					</p>
 
 					<p class="fieldset">
-						<input class="full-width has-padding" type="submit" value="Reset password">
+						
+						<button type="submit" class="btn btn-lg full-width has-padding" ng-click='sendConfirmation(forgotPwd);' ng-disabled="forgotPwdForm.$invalid" > Reset Password </button>
+						 
 					</p>
 				</form>
 
-				<p class="cd-form-bottom-message"><a ng-click="login()">Back to log-in</a></p>
+				<p class="cd-form-bottom-message"><a ng-click="showloginModel()">Back to log-in</a></p>
 			</div> <!-- cd-reset-password -->
-			<a href ng-click='close()' class="cd-close-form"> X </a>
+			<a href ng-click='close()' class="cd-close-form"> <i class='fa fa-close'></i> </a>
 		</div> <!-- cd-user-modal-container -->
 	</div> <!-- cd-user-modal -->

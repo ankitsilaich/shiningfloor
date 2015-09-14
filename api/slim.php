@@ -48,10 +48,10 @@ $app->post("/shiningfloor/email_verification/:email", function ($email=null) use
     echo json_encode($data);
 });
 /**********************************  USER LOGIN SIGNUP CHECKING ******************************/
-$authenticate = function ($app) {
+$authenticate_user = function ($app) {
     return function () use ($app) {
         if (!isset($_SESSION['user'])) {
-            $app->redirect('/login.html');
+            $app->redirect('../index.html');
         }
     };
 };
@@ -61,62 +61,224 @@ session_start();
 
 
 
-$app->post("/auth/process", function () use ($app, $db) {
-    $email = $app->request()->post('email');
-    $password = $app->request()->post('password');
-    $user = $db->users()->where('email', $email)->where('pwd',md5(md5($password)));
-    $count = count($user);
-    if($count == 1){
-     $_SESSION['user'] = $email;
-     $data = array( "loginstatus" => "success",
-                        'user' => $email
-                    );
-     unset($_SESSION['loginAttempt']);
-    }else{
-        if(isset($_SESSION['loginAttempt'])){
-            $_SESSION['loginAttempt']++;
-            $loginAttempt = (int)  $_SESSION['loginAttempt'];
-            $data[] = array( "loginstatus" => "fail",
-                        'loginAttempt' => $loginAttempt
-                    );
-            header('Refresh: 3; URL=http://localhost/shiningfloor/shiningfloor/main_site/login.html?loginstatus=fail&loginAttempt='.$loginAttempt);
-        }
-        else{
-            $data[] = array( "loginstatus" => "login failure",
-                        'loginAttempt' => "1"
-                    );
-            $_SESSION['loginAttempt'] = 1;
-            header('Refresh: 3; URL=http://localhost/shiningfloor/shiningfloor/main_site/login.html?loginstatus=fail&loginAttempt=1');
-        }
+// $app->post("/auth/process", function () use ($app, $db) {
+//     $email = $app->request()->post('email');
+//     $password = $app->request()->post('password');
+//     $user = $db->users()->where('email', $email)->where('pwd',md5(md5($password)));
+//     $count = count($user);
+//     if($count == 1){
+//      $_SESSION['user'] = $email;
+//      $data = array( "loginstatus" => "success",
+//                         'user' => $email
+//                     );
+//      unset($_SESSION['loginAttempt']);
+//     }else{
+//         if(isset($_SESSION['loginAttempt'])){
+//             $_SESSION['loginAttempt']++;
+//             $loginAttempt = (int)  $_SESSION['loginAttempt'];
+//             $data[] = array( "loginstatus" => "fail",
+//                         'loginAttempt' => $loginAttempt
+//                     );
+//             header('Refresh: 3; URL=http://localhost/shiningfloor/shiningfloor/main_site/login.html?loginstatus=fail&loginAttempt='.$loginAttempt);
+//         }
+//         else{
+//             $data[] = array( "loginstatus" => "login failure",
+//                         'loginAttempt' => "1"
+//                     );
+//             $_SESSION['loginAttempt'] = 1;
+//             header('Refresh: 3; URL=http://localhost/shiningfloor/shiningfloor/main_site/login.html?loginstatus=fail&loginAttempt=1');
+//         }
+//     }
+//    $app->response()->header('Content-Type', 'application/json');
+//    echo json_encode($data);
+// });
+// $app->get("/auth/logout", function () use ($app) {
+//    unset($_SESSION['user']);
+// });
+
+
+//------------ Post method for seller to athenticate ------------------//
+$app->post("/auth/process/user", function() use ($app, $db)
+{
+    $array    = (array) json_decode($app->request()->getBody());
+    $email    = $array['email'];
+    $password = md5(sha1($array['password']));
+    $user   = $db->users()->where('email', $email)->where('password', $password);
+    $count    = count($user);
+    if ($count == 1) {
+        $_SESSION['user'] = $email;
+        $data = array(
+            'login_success' => "true",
+            'login_attempt_by' => $email,
+            'message' => "Successfull signin"
+        );
+    } else {
+        $data = array(
+            'login_success' => "false",
+            'login_attempt_by' => $email,
+            'message' => "please provide correct details"
+        );
     }
-   $app->response()->header('Content-Type', 'application/json');
-   echo json_encode($data);
+    $app->response()->header('Content-Type', 'application/json');
+    echo json_encode($data);
 });
-$app->get("/auth/logout", function () use ($app) {
-   unset($_SESSION['user']);
+
+//---------- User signup for the build corner --------------//
+$app->post("/auth/signup/user", function() use ($app, $db)
+{
+    $array    = (array) json_decode($app->request()->getBody());
+    $email    = $array['email'];
+    // $password = $array['password'];
+    $user = $db->users()->where('email',$email);
+    if($user->fetch()){
+        $data = array(
+            'signup_success' => "false",
+            'message' => "email already registered!"
+        );
+    }
+    else
+    {
+      $array['password'] = md5(sha1($array['password']));
+      
+//      echo  "$joindate[month] $joindate[mday], $joindate[year]";
+      $time = new DateTime("now", new DateTimeZone('Asia/Kolkata'));
+      $time = $time->format('Y-m-d H:i:s');
+
+      $array['join_date'] = $time ;
+      $data = $db->users()->insert($array);
+//      echo $data;
+      $_SESSION['user'] = $email;
+        $data             = array(
+            'signup_success' => "true",
+            'message' => "Successfull signup"
+        );
+    }
+    $app->response()->header('Content-Type', 'application/json');
+    echo json_encode($data);
 });
+
+//------ Get authentication details ------------------//
+
+$app->get('/auth/process/user', function() use ($app)
+{
+    if (isset($_SESSION['user'])) {
+        $data = $_SESSION['user'];
+    } else {
+        $data = false;
+    }
+    $app->response()->header('Content-Type', 'application/json');
+    echo json_encode($data);
+});
+
+// ----------   Logout Process --------------//
+
+$app->get("/auth/logout/user", function() use ($app)
+{
+    unset($_SESSION['user']);
+});
+ 
+
+$app->get('/buildcorner/user/info' , $authenticate_user($app) ,function() use ($app, $db)
+{       
+       $email = $_SESSION['user'];
+       //$id = $db
+        $data = null;
+        if ($user = $db->users()->where('email', $email)->fetch()) {
+             
+            $data = array(                  
+                
+                'firstName' => $user['firstName'],
+                'lastName' => $user['lastName'],
+                'email' => $user['email'], 
+                'phone1' => $user['phone1'],
+                'phone2' => $user['phone2'],
+                'address' => $user['address'],
+                'landmark' => $user['landmark'],                
+                'pincode' => $user['pincode'],
+                'city' => $user['city'],
+                'state' => $user['state']                 
+            );
+        }
+    $user = array(
+        'user_data' => $data
+    );
+    $app->response()->header('content-type', 'application/json');
+    echo json_encode($user);
+});
+
 
 // Contact us 
 $app->post("/shiningfloor/contactus", function () use ($app, $db) {
-          $email = $app->request()->post('email');  
-          $name = $app->request()->post('name');
-          $msg = $app->request()->post('msg');
-           // echo $msg . $name . $email ;
-          $time = new DateTime("now", new DateTimeZone('Asia/Kolkata'));
-          $time = $time->format('Y-m-d H:i:s');
-          $query = $db->contact_us()->insert(
-            array(
-              "name" => $name ,
-              "email"=> $email,
-              "msg" => $msg ,
-              "date" => (string)$time
-              )
-            );
-          if($query)
-            echo 'success';      
+    $email = $app->request()->post('email');  
+    $name = $app->request()->post('name');
+    $msg = $app->request()->post('msg');
+     // echo $msg . $name . $email ;
+    $time = new DateTime("now", new DateTimeZone('Asia/Kolkata'));
+    $time = $time->format('Y-m-d H:i:s');
+    $query = $db->contact_us()->insert(
+      array(
+        "name" => $name ,
+        "email"=> $email,
+        "msg" => $msg ,
+        "date" => (string)$time
+        )
+      );
+    if($query)
+      echo 'success';      
   });
 
-$app->get("/shiningfloor/userquery", function () use ($app, $db) {
+$app->post("/buildcorner/submitOrder",$authenticate_user($app), function () use ($app, $db) {
+
+  $array    = (array) json_decode($app->request()->getBody());
+  $userDetails = $array['userInfo'];
+  // print_r($userDetails);
+  $email = $_SESSION['user'];
+  $userId = $db->users()->where('email',$email)->fetch();
+  $orderDetails = $array['items'];
+  print_r($orderDetails);
+  $orderTotal = $array['orderTotal'];
+
+  // print_r($userDetails);
+  // print_r($orderTotal);
+  // print_r($orderDetails);    
+  // print("ssssssss\n");
+  // print_r($userDetails->firstName);
+  // print_r($orderDetails[0]->_id);
+  $time = new DateTime("now", new DateTimeZone('Asia/Kolkata'));
+  $orderTime = (string)$time->format('Y-m-d H:i:s');
+  $orderData = array('users_id' => $userId,
+                'name' => $userDetails->firstName . ' ' .$userDetails->lastName,
+                'contact_no1' => $userDetails->phone1,
+                'contact_no2' => $userDetails->phone2,
+                'address' => $userDetails->address ,
+                'city' => $userDetails->city,
+                'state' => $userDetails->state,
+                'pincode' => $userDetails->pincode,
+                'landmark' => $userDetails->landmark,
+                'prefered_time' => $userDetails->timeSlot,
+                'prefered_date' => $userDetails->prefereddate,
+                'order_total' => $orderTotal,
+                'order_date' => $orderTime                 
+    );
+  $orderNo = $db->orders()->insert($orderData);
+  // seller id , total  will be decided so his part is remaining.
+  foreach ($orderDetails as $order) {
+    $item = array(
+      'orders_id' => $orderNo,
+      'products_id' => $order->_data->product_id,
+      'sellers_id' => 0,
+      'order_type' => $order->_type,
+      'price_per_unit' => $order->_price,
+      'quantity' => $order->_quantity,
+      );     
+    // print_r($item);
+    $db->order_details->insert($item);
+  }
+
+  // echo $orderNo;
+});
+
+  $app->get("/shiningfloor/userquery", function () use ($app, $db) {
            
           $query = $db->contact_us()->order('date DESC');
           $data = array();

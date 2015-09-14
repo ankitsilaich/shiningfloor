@@ -26,10 +26,16 @@
 		</div>
 	</div>
 
-	<section class="checkout_area">
+	<section class="checkout_area" ng-controller='checkoutCtrl'>
 		<div class="container">
-			<div class="row">
-				<div class="col-md-4 col-sm-4 col-xs-12">
+			 
+			<div class="alert alert-warning" role="alert" ng-show="ngCart.getTotalItems() === 0">
+					Your cart is empty
+			</div>
+
+			<div class="row" ng-show="ngCart.getTotalItems() != 0">
+				<form name='detailsForm' id='detailsForm' class='form-validation' novalidate>
+				<div class="col-md-3 col-sm-3 col-xs-12">
 					<div class="checkout_left">
 
 
@@ -39,155 +45,138 @@
 
 						<div class="checkout_form cd-user-modal-container"> 
 							 <div class='mail_info'><p  > We will send order details to this email address </p></div>
-							<div class='btn btn-default checkout_signIn' ng-click="login()"><a  >Sign in</a></div>
-							<div class='btn btn-info checkout_signUp' ng-click="signup()"><a  >New account</a></div>
+							<div class='' ng-click="showloginModel()" ng-disabled='currentUser!=""'><a ng-disabled='currentUser!=""' class='btn btn-default checkout_signIn'  >Sign in</a>
+								<input type="email" name='userEmail' ng-model='currentUserDetails.email' required style='display:none'> 
+								<div ng-show='(submitted&&currentUser=="")'> 
+									<p class="error-message" > SIGNIN BEFORE CHECKOUT</p>
+								</div>
+
+
+							</div>
+							
+							
+							<div class='btn btn-info checkout_signUp' ng-click="showsignupModel()" ng-disabled='currentUser!=""'><a  >New account</a></div>	   
 						 
-
-							<div id="cd-login"  ng-class="{'is-selected' : showLogin}"> <!-- log in form -->
-								<form class="cd-form">
-									<p class="fieldset">
-										<label class="image-replace cd-email" for="signin-email">E-mail</label>
-										<input class="full-width has-padding has-border" id="signin-email" type="email" placeholder="E-mail">
-										<span class="cd-error-message">Error message here!</span>
-									</p>
-
-									<p class="fieldset">
-										<label class="image-replace cd-password" for="signin-password">Password</label>
-										<input class="full-width has-padding has-border" id="signin-password" type="text"  placeholder="Password">
-										<a href="#0" class="hide-password">Hide</a>
-										<span class="cd-error-message">Error message here!</span>
-									</p>
-
-									<p class="fieldset">
-										<input type="checkbox" id="remember-me" checked>
-										<label for="remember-me">Remember me</label>
-									</p>
-
-									<p class="fieldset">
-										<input class="full-width" type="submit" value="Login">
-									</p>
-								</form>
-
-								<p class="cd-form-bottom-message"><a ng-click="resetPassword()">Forgot your password?</a></p>
-								<!-- <a href="#0" class="cd-close-form">Close</a> -->
-							</div> <!-- cd-login -->
-
-							<div id="cd-signup"  ng-class="{'is-selected' : showSignup}"> <!-- sign up form -->
-								<form class="cd-form">
-									<p class="fieldset">
-										<label class="image-replace cd-username" for="signup-username">Username</label>
-										<input class="full-width has-padding has-border" id="signup-username" type="text" placeholder="Username">
-										<span class="cd-error-message">Error message here!</span>
-									</p>
-
-									<p class="fieldset">
-										<label class="image-replace cd-email" for="signup-email">E-mail</label>
-										<input class="full-width has-padding has-border" id="signup-email" type="email" placeholder="E-mail">
-										<span class="cd-error-message">Error message here!</span>
-									</p>
-
-									<p class="fieldset">
-										<label class="image-replace cd-password" for="signup-password">Password</label>
-										<input class="full-width has-padding has-border" id="signup-password" type="text"  placeholder="Password">
-										<a href="#0" class="hide-password">Hide</a>
-										<span class="cd-error-message">Error message here!</span>
-									</p>
-
-									<p class="fieldset">
-										<input type="checkbox" id="accept-terms">
-										<label for="accept-terms">I agree to the <a href="#0">Terms</a></label>
-									</p>
-
-									<p class="fieldset">
-										<input class="full-width has-padding" type="submit" value="Create account">
-									</p>
-								</form>
-
-								<!-- <a href="#0" class="cd-close-form">Close</a> -->
-							</div> <!-- cd-signup -->
-
-							<div id="cd-reset-password" ng-class="{'is-selected' : resetPass}"> <!-- reset password form -->
-								<p class="cd-form-message">Lost your password? Please enter your email address. You will receive a link to create a new password.</p>
-
-								<form class="cd-form">
-									<p class="fieldset">
-										<label class="image-replace cd-email" for="reset-email">E-mail</label>
-										<input class="full-width has-padding has-border" id="reset-email" type="email" placeholder="E-mail">
-										<span class="cd-error-message">Error message here!</span>
-									</p>
-
-									<p class="fieldset">
-										<input class="full-width has-padding" type="submit" value="Reset password">
-									</p>
-								</form>
-
-								<p class="cd-form-bottom-message"><a ng-click="login()">Back to log-in</a></p>
-							</div> <!-- cd-reset-password -->
 						</div>
  
 					</div>
 				</div>
-				<div class="col-md-5 col-sm-4 col-xs-12">
+				<div class="col-md-6 col-sm-4 col-xs-12">
 					<div class="checkout_left">
 
 
-						<h4>2. Confirm Address</h4>
-						<div class="dotted_line"></div>
-
+					 <h4>2. Confirm Address</h4>
+					 <div class="dotted_line"></div>
+					   
 						<div class="checkout_form">
-							 
+							 {{currentUserDetails}}
 							<div class="c_name_box">
 								<div class="c_name_box_left">
 									<p>First Name <span>*</span></p>
-									<input type="text">
+									<input type="text" ng-model='currentUserDetails.firstName' name='firstName' required>
+									<p class="error-message" ng-show='(submitted&&detailsForm.firstName.$error.required)'> firstname can't be empty</p>
+
 								</div>
 								<div class="c_name_box_right">
 									<p>Last Name <span>*</span></p>
-									<input type="text">
+									<input type="text" name='lastName' ng-model='currentUserDetails.lastName' required>
+									<p class="error-message" ng-show='(submitted&&detailsForm.lastName.$error.required)'> lastname can't be empty</p>
 								</div>
 							</div>
-							<div class="company_name">
-								<p>Company Name <span>*</span></p>
-								<input type="text">
+							<div class="c_address">
+								 
+									<p>Email <span>*</span></p>
+									<input type="email" name='email' ng-model='currentUserDetails.email' required>
+								 	<p class="error-message" ng-show='(submitted&&detailsForm.email.$error.required)'> email is required</p> 
 							</div>
+							<div class="c_mail_box">
+								<div class="c_mail_box_left">
+									<p>Contact No <span>*</span></p>
+									<input type="text" name='phone1' ng-model='currentUserDetails.phone1' ng-maxlength="10" ng-minlength="10" ng-pattern="/^[0-9]+$/" required>
+									<p class="error-message" ng-show='(submitted&&detailsForm.phone1.$error.required)'> contact no is required</p>
+								</div>
+								<div class="c_mail_box_right">
+									<p> Other Contact No</p>
+									<input type="text" name='phone2' placeholder='if any(optional)' ng-model='currentUserDetails.phone2' ng-maxlength="10" ng-minlength="10" ng-pattern="/^[0-9]+$/">
+									 
+								</div>
+							</div> 
+
 							<div class="c_address">
 								<p>Address <span>*</span></p>
-								<input type="text" placeholder="Street Address">
+								<input type="text" name='address' placeholder="Street Address" ng-model='currentUserDetails.address' required>
+								<p class="error-message" ng-show='(submitted&&detailsForm.address.$error.required)'> address can't be empty</p>
 							</div>
 							<div class="c_state_box">
 								<div class="c_state_box_left">
 									<p>Town/City <span>*</span></p>
-									<input type="text">
+									<input name='city' type="text" ng-model='currentUserDetails.city' required>
+									<p class="error-message" ng-show='(submitted&&detailsForm.city.$error.required)'> city can't be empty</p>
 								</div>
+
 								<div class="c_state_box_right">
-									<p>Postcode/Zip <span>*</span></p>
-									<input type="text">
+									<p> State <span>*</span></p>
+									<input type="text" name='state' ng-model='currentUserDetails.state' required>
+									<p class="error-message" ng-show='(submitted&&detailsForm.state.$error.required)'> state can't be empty</p>
 								</div>
 							</div>
-							<div class="c_mail_box">
-								<div class="c_mail_box_left">
-									<p>Email <span>*</span></p>
-									<input type="text">
+							<div class="c_state_box">
+								<div class="c_state_box_left">
+									<p> Pincode/Zip <span>*</span></p>
+									<input type="text" name='pincode' ng-model='currentUserDetails.pincode' ng-maxlength="6" ng-minlength="6" ng-pattern="/^[0-9]+$/" required>
+									 
+									<p class="error-message" ng-show='(submitted&&detailsForm.pincode.$error.required)'>invalid pincode </p>
 								</div>
-								<div class="c_mail_box_right">
-									<p>Phone <span>*</span></p>
-									<input type="text">
+
+								<div class="c_state_box_right">									
+								<p> LandMark <span></span></p>
+								<input type="text" name='landmark' placeholder="if any (optional)" ng-model='currentUserDetails.landmark' >
+
 								</div>
+
 							</div>
-							<div class="checkbox">
-								<label>
-								  <input type="checkbox"> Create An Account
-								</label><br>
-								<label>
-								  <input type="checkbox"> Shipping to a Different Address
-								</label>
+							<div class="c_address"> 
+								<p> Preferred Time Slot<span>*</span></p>
+								<select ng-model='currentUserDetails.timeSlot' ng-init='currentUserDetails.timeSlot= "04-06 pm"'required name='timeSlot'> <option value='12-02 pm'> 12-02 pm</option><option value='02-04 pm'> 02-04 pm</option><option value='04-06 pm'> 04-06 pm</option> <option value='06-08 pm'> 06-08 pm</option>
+								</select>
+								 
 							</div>
+
+							<!-- <div class="c_address_box">
+							 
+								<p> Preferred Date<span>*{{currentUserDetails.preferedDate}}</span></p> 
+							 
+				             <div style="display:inline-block; min-height:290px;">
+						      <datepicker ng-model="dt" min-date="minDate" show-weeks="true" class="well well-sm" custom-class="getDayClass(date, mode)"></datepicker>
+						    </div>		               
+								             
+				            </div> -->
+				         
+							
+
+
+							 
 
 
 						</div>
  
 					</div>
 				</div>
-				  <ngcart-summarycart></ngcart-summarycart>
-		</div>
+				<div class="col-md-3 col-sm-4 col-xs-12">
+				    <div class="checkout_right">
+					  <ngcart-summarycart></ngcart-summarycart>
+					  <div class="checkbox">
+			                <label>
+			                    <input type="checkbox" name='agree'ng-model='currentUserDetails.agree' required> I have Read & Accept <span>Terms & Conditions</span>
+			                    <p class="error-message" ng-show='(submitted&&detailsForm.agree.$error.required)'> agree terms and conditions </p>
+			                </label>
+			           </div>
+			            
+			           <input type='submit'  ng-click='submitted=true;orderSubmit(currentUserDetails)' value='Place order now' class='checkout_button'> </input>
+			           	</div>
+					</div>
+				</div>
+			</form>
+		  </div>
+	 	</div>
 	</section>

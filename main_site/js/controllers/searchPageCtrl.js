@@ -5,31 +5,33 @@ app.controller('searchPageCtrl', ['$scope', '$http', '$stateParams', 'ngCart', '
   $scope.pricecollapse = false ;
   $scope.lookcollapse = true ;
   $scope.shapecollapse = true ;
-  $scope.colorcollapse = false ;
+  $scope.colorcollapse = true ;
   $scope.applicationcollapse = false ;
   $scope.usagecollapse = true;
-
+  console.log($scope.brandcollapse);
  
  $scope.slider = {
     min: 0,
     max: 1000
 };
-if($location.search().priceRange){
-  $location.search('priceRange',null);
-}
-$scope.boxPrice = function(width,height,unit,priceSqFt){
+
+
+$scope.budgetTypes=[{'name': 'Budget' ,'value':'0-50'},{'name': 'Premium' ,'value': '50-100'},{'name':'Luxury' ,'value':'100-above'}];
+// console.log($scope.sizes.length);
+
+$scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
 //  console.log(width + height +  priceSqFt);
   unit = unit.trim().toLowerCase(); 
   if(unit ==='mm')
-    return Math.round((0.00328084*width)*(0.00328084*height)* priceSqFt) ;
+    return Math.round((0.00328084*width)*(0.00328084*height)* items_per_box *priceSqFt) ;
   else if(unit ==='cm')
-    return Math.round((0.0328084*width)*(0.0328084*height)* priceSqFt) ;
+    return Math.round((0.0328084*width)*(0.0328084*height)* items_per_box *priceSqFt) ;
   else if(unit ==='inch')
-    return Math.round((width*height * priceSqFt)/12) ;
+    return Math.round((width*height * items_per_box * priceSqFt)/144) ;
   else if(unit ==='ft')
-    return Math.round(width*height*priceSqFt) ;
+    return Math.round(width*height*items_per_box*priceSqFt) ;
 } 
-$scope.makeUrl = function(selected, original) {
+    $scope.makeUrl = function(selected, original) {
         //this function is used to make the url
         //console.log(selected);
         var url, count = 0;
@@ -45,6 +47,16 @@ $scope.makeUrl = function(selected, original) {
         //console.log(count);
         return url;
     };
+    $scope.makePriceUrl = function(){        
+        $scope.priceRangeUrl = $scope.slider.min+'-'+$scope.slider.max ;
+        // console.log($scope.priceRangeUrl);
+        $location.search('priceRange', $scope.priceRangeUrl);             
+        $scope.isFilteredByPrice = true;  
+        $scope.requestToSearchAPI();                
+    }
+
+    
+     
     $scope.pagechange = function(value) {
          console.log(typeof($scope.pageNo))
        if(value != 1){
@@ -52,8 +64,8 @@ $scope.makeUrl = function(selected, original) {
         // $scope.updateUrlChanges();
         $scope.requestToSearchAPI();}
     };
-     $scope.requestToSearchAPI = function() {
 
+     $scope.requestToSearchAPI = function() { 
         if ($stateParams.query) {
             final = $stateParams.query + $location.url().replace($location.path(), '');
         } else final = $location.url().replace($location.path(), '');
@@ -69,48 +81,81 @@ $scope.makeUrl = function(selected, original) {
         $scope.selectedSortIndex = index;
     };
 
+    $scope.updatePriceUrl = function(){
+      $scope.makePriceUrl();
+    }
       $scope.updateUrlChanges = function() {
-        $location.search("pageNo", '1');     
-        
-        $scope.sortBy = $scope.sortTypeFilters[$scope.selectedSortIndex] ;
-                               
-        $location.search('sortBy', $scope.sortBy);        
-        $scope.priceRangeUrl = $scope.slider.min+'-'+$scope.slider.max ;         
-        $location.search('priceRange', $scope.priceRangeUrl);
-           
+        $location.search("pageNo", '1');             
+        $scope.sortBy = $scope.sortTypeFilters[$scope.selectedSortIndex] ;                               
+        $location.search('sortBy', $scope.sortBy);                                  
+
         if ($scope.brandUrl = $scope.makeUrl($scope.selectedBrands, $scope.brandFilters)) {
             $location.search('brand_name', $scope.brandUrl);
-        } else $location.search('brand_name', null);
+            $scope.isFilteredByBrand = true;
+        } else{ 
+            $location.search('brand_name', null); 
+            $scope.isFilteredByBrand = false;
+        }
 
         if ($scope.finishTypesUrl = $scope.makeUrl($scope.selectedFinishTypes, $scope.finishTypeFilters)) {
             $location.search('finish_types', $scope.finishTypesUrl);
-        } else $location.search('finish_types', null);
+            $scope.isFilteredByFinish = true;
+        } else{ 
+            $location.search('finish_types', null);  
+            $scope.isFilteredByFinish = false;          
+        }
 
         if ($scope.materialsUrl = $scope.makeUrl($scope.selectedMaterials, $scope.materialFilters)) {
             $location.search('materials', $scope.materialsUrl);
-        } else $location.search('materials', null);
-
+            $scope.isFilteredByMaterial = true;
+        } else{
+            $location.search('materials', null);
+            $scope.isFilteredByMaterial = false;
+        }
         if ($scope.looksUrl = $scope.makeUrl($scope.selectedLooks, $scope.lookFilters)) {
             $location.search('looks', $scope.looksUrl);
-        } else $location.search('looks', null);
+            $scope.isFilteredByLook = true;
+        } else{
+            $location.search('looks', null);
+            $scope.isFilteredByLook = false;
+        } 
 
         if ($scope.applicationsUrl = $scope.makeUrl($scope.selectedApplications, $scope.applicationFilters)) {
             $location.search('applications', $scope.applicationsUrl);
-        } else $location.search('applications', null);
-
+            $scope.isFilteredByApplication = true;
+        } else {
+            $location.search('applications', null);
+            $scope.isFilteredByApplication = false;
+        }
+        if ($scope.sizesUrl = $scope.makeUrl($scope.selectedSizes, $scope.sizeFilters)) {
+            $location.search('sizes', $scope.sizesUrl);
+            $scope.isFilteredBySize = true;
+        } else {
+            $location.search('sizes', null);
+            $scope.isFilteredBySize = false;
+        }
         if ($scope.usagesUrl = $scope.makeUrl($scope.selectedUsages, $scope.usageFilters)) {
             $location.search('usages', $scope.usagesUrl);
-        } else $location.search('usages', null);
-
+            $scope.isFilteredByUsage = true;
+        } else {
+            $location.search('usages', null);
+            $scope.isFilteredByUsage = false;
+        }
 
         if ($scope.colorsUrl = $scope.makeUrl($scope.selectedColors, $scope.colorFilters)) {
             $location.search('colors', $scope.colorsUrl);
-        } else $location.search('colors', null);
-
+            $scope.isFilteredByColor = true;
+        } else {
+           $location.search('colors', null);
+           $scope.isFilteredByColor = false;
+        }
         if ($scope.shapesUrl = $scope.makeUrl($scope.selectedShapes, $scope.shapeFilters)) {
             $location.search('shapes', $scope.shapesUrl);
-        } else $location.search('shapes', null);
-
+            $scope.isFilteredByShape = true;
+        } else {
+          $location.search('shapes', null);
+          $scope.isFilteredByShape = false;
+        }
 
         if ($scope.categoryUrl = $scope.makeUrl($scope.selectedCategory, $scope.categoryFilters)) {
             $location.search('category', $scope.categoryUrl);
@@ -121,15 +166,15 @@ $scope.makeUrl = function(selected, original) {
             $location.search('query', $scope.queryUrl);
         } else $location.search('query', null);
 
-        $scope.categoryHTML =  (typeof $location.search().category == 'undefined') ? '' : '| Category = '+ $location.search().category    ;
-        $scope.brandHTML =  (typeof $location.search().brand_name == 'undefined') ? '' : '| Brands = '+ $location.search().brand_name    ;
-        $scope.finishTypeHTML =  (typeof $location.search().finish_types == 'undefined') ? '' : '| Finish Types = '+ $location.search().finish_types   ;
-        $scope.materialHTML =  (typeof $location.search().materials == 'undefined') ? '' : '| Material Types = '+ $location.search().materials   ;
-        $scope.lookHTML =  (typeof $location.search().looks == 'undefined') ? '' : '|  = Looks'+ $location.search().looks   ;
-        $scope.applicationusageHTML =  (typeof $location.search().applications == 'undefined') ? '' : '| Applications = '+ $location.search().applications   ;
-        $scope.usageHTML =  (typeof $location.search().usages == 'undefined') ? '' : '|  Usages = '+ $location.search().usages   ;
-        $scope.shapeHTML =  (typeof $location.search().shapes == 'undefined') ? '' : '| Shapes = '+ $location.search().shapes   ;
-        $scope.colorHTML =  (typeof $location.search().colors == 'undefined') ? '' : '| Colors = '+ $location.search().colors   ;
+        // $scope.categoryHTML =  (typeof $location.search().category == 'undefined') ? '' : '| Category = '+ $location.search().category    ;
+        // $scope.brandHTML =  (typeof $location.search().brand_name == 'undefined') ? '' : '| Brands = '+ $location.search().brand_name    ;
+        // $scope.finishTypeHTML =  (typeof $location.search().finish_types == 'undefined') ? '' : '| Finish Types = '+ $location.search().finish_types   ;
+        // $scope.materialHTML =  (typeof $location.search().materials == 'undefined') ? '' : '| Material Types = '+ $location.search().materials   ;
+        // $scope.lookHTML =  (typeof $location.search().looks == 'undefined') ? '' : '|  = Looks'+ $location.search().looks   ;
+        // $scope.applicationusageHTML =  (typeof $location.search().applications == 'undefined') ? '' : '| Applications = '+ $location.search().applications   ;
+        // $scope.usageHTML =  (typeof $location.search().usages == 'undefined') ? '' : '|  Usages = '+ $location.search().usages   ;
+        // $scope.shapeHTML =  (typeof $location.search().shapes == 'undefined') ? '' : '| Shapes = '+ $location.search().shapes   ;
+        // $scope.colorHTML =  (typeof $location.search().colors == 'undefined') ? '' : '| Colors = '+ $location.search().colors   ;
         
         $scope.requestToSearchAPI();
 
@@ -158,19 +203,46 @@ $scope.makeUrl = function(selected, original) {
             return params['pageNo'];
         }
     };
-
      
-    $scope.FilterUrl = $location.search();
-    $scope.categoryHTML =  (typeof $location.search().category == 'undefined') ? '' : '| Category = '+ $location.search().category    ;
-    $scope.brandHTML =  (typeof $location.search().brand_name == 'undefined') ? '' : '| Brands = '+ $location.search().brand_name    ;
-    $scope.finishTypeHTML =  (typeof $location.search().finish_types == 'undefined') ? '' : '| Finish Types = '+ $location.search().finish_types   ;
-    $scope.materialHTML =  (typeof $location.search().materials == 'undefined') ? '' : '| Material Types = '+ $location.search().materials ;
-    $scope.lookHTML =  (typeof $location.search().looks == 'undefined') ? '' : '| Looks = '+ $location.search().looks   ;
-    $scope.usageHTML =  (typeof $location.search().applications == 'undefined') ? '' : '| Applications = '+ $location.search().applications   ;
-    $scope.applicationHTML =  (typeof $location.search().usages == 'undefined') ? '' : '|  Usages = '+ $location.search().usages   ;
-    $scope.shapeHTML =  (typeof $location.search().shapes == 'undefined') ? '' : '| Shapes = '+ $location.search().shapes   ;
-    $scope.colorHTML =  (typeof $location.search().colors == 'undefined') ? '' : '| Colors = '+ $location.search().colors   ;
 
+    $scope.FilterUrl = $location.search();     
+    if( $scope.FilterUrl.brand_name){
+      $scope.isFilteredByBrand = true;
+      $scope.brandcollapse = !$scope.isFilteredByBrand;
+    }
+    if( $scope.FilterUrl.finish_types){
+      $scope.isFilteredByFinish = true;
+      $scope.finishcollapse = !$scope.isFilteredByFinish;
+    }
+    if( $scope.FilterUrl.materials){
+      $scope.isFilteredByMaterial = true;
+      $scope.materialcollapse = !$scope.isFilteredByMaterial;
+    }
+    if( $scope.FilterUrl.looks){
+      $scope.isFilteredByLook = true;
+      $scope.lookcollapse = !$scope.isFilteredByLook;
+    }
+    if( $scope.FilterUrl.applications){
+      $scope.isFilteredByApplication = true;
+      $scope.shapecollapse = !$scope.isFilteredByApplication;
+    }
+    if( $scope.FilterUrl.sizes){
+      $scope.isFilteredBySize = true;
+      $scope.sizecollapse = !$scope.isFilteredBySize;
+    }
+    if(  $scope.FilterUrl.usages){
+      $scope.isFilteredByUsage = true;
+      $scope.usagecollapse = !$scope.isFilteredByUsage;
+    }
+    if( $scope.FilterUrl.colors){
+      $scope.isFilteredByColor = true;
+      $scope.colorcollapse = !$scope.isFilteredByColor;
+    }
+    if($scope.FilterUrl.shapes){
+      $scope.isFilteredByShape = true;
+      $scope.shapecollapse = !$scope.isFilteredByShape;
+    }
+ 
   //  console.log($scope.FilterUrl);
     $scope.windowHeight = window.innerHeight;
     $scope.windowWidth = $(window).width();
@@ -237,6 +309,15 @@ $scope.makeUrl = function(selected, original) {
                   $scope.selectedApplications[i] = false;         
               $scope.findandselect($scope.applicationFilters, 'applications', $scope.selectedApplications, $scope.FilterUrl);
         });
+
+        $scope.sizes=[{'width':12 ,'height':12},{'width':12 ,'height':24},{'width':24 ,'height':24},{'width':24 ,'height':32} ];
+        $scope.sizeFilters=['12*12','12*24','24*24','24*32'];
+        $scope.selectedSizes = [];
+        $scope.sizesLength = $scope.sizes.length;
+        for (i = 0; i < $scope.sizesLength; i++)
+            $scope.selectedSizes[i] = false;         
+        $scope.findandselect($scope.sizeFilters, 'sizes', $scope.selectedSizes, $scope.FilterUrl);
+
         $http.get('../api/slim.php/shiningfloor/usages').then(function(resp) {
           $scope.usageFilters = resp.data.usages;
           $scope.usagesLength = $scope.usageFilters.length;
@@ -300,16 +381,21 @@ $scope.makeUrl = function(selected, original) {
     $scope.selectedSortType=[]; 
     for (i = 0; i < $scope.sortTypes.length; i++)
         $scope.selectedSortType[i] = false;
-    $scope.sortBy =$scope.sortTypeFilters[0];
-     if ($scope.pageNo == undefined) {
+    $scope.sortBy =$scope.sortTypeFilters[2];
+    if ($scope.pageNo == undefined) {
         $location.search('pageNo', '1');
     }
+    if($scope.priceRange = $location.search()['priceRange']) { 
+      $scope.slider.min = parseInt($scope.priceRange.split('-')[0]);
+      $scope.slider.max = parseInt($scope.priceRange.split('-')[1]); 
+      $scope.makePriceUrl();   
+      // console.log($scope.slider.min  + $scope.slider.max);
+    }
     $location.search('sortBy', $scope.sortBy);         
-    // $location.search('priceRange', $scope.slider.min+'-'+$scope.slider.max);
     $scope.requestToSearchAPI();
     // url for changing product in search page.
     $scope.url = $stateParams.query; 
-
+    console.log($scope.FilterUrl);
     //console.log($scope.url);
 
 
@@ -326,59 +412,24 @@ $scope.makeUrl = function(selected, original) {
         $scope.requestToSearchAPI();
         $scope.searchQuery.text = '';
     };
+ 
 
-    $scope.resetBrands = function() {
-      for (i = 0; i < $scope.totalBrands; i++)
-          $scope.selectedBrands[i] = false;         
-         $scope.updateUrlChanges();
-        $scope.requestToSearchAPI();
-    };
-    $scope.resetFinishTypes = function() {
-        for (i = 0; i < $scope.finish_typesLength; i++)
-            $scope.selectedFinishTypes[i] = false;         
-     
-         $scope.updateUrlChanges();
-        $scope.requestToSearchAPI();
-    };
-    $scope.resetMaterials = function() {
-        for (i = 0; i < $scope.materialsLength; i++)
-            $scope.selectedMaterials[i] = false;         
-     
-         $scope.updateUrlChanges();
-        $scope.requestToSearchAPI();
-    };
-    $scope.resetLooks = function() {
-        for (i = 0; i < $scope.looksLength; i++)
-            $scope.selectedLooks[i] = false;              
-         $scope.updateUrlChanges();
-        $scope.requestToSearchAPI();
-    };
-    $scope.resetApplications = function() {
-        for (i = 0; i < $scope.applicationsLength; i++)
-            $scope.selectedApplications[i] = false;              
-         $scope.updateUrlChanges();
-        $scope.requestToSearchAPI();
-    };
-    $scope.resetUsages = function() {
-        for (i = 0; i < $scope.usagesLength; i++)
-            $scope.selectedUsages[i] = false;              
-         $scope.updateUrlChanges();
-        $scope.requestToSearchAPI();
-    };
-    $scope.resetColors = function() {
-        for (i = 0; i < $scope.colorsLength; i++)
-            $scope.selectedColors[i] = false;              
-         $scope.updateUrlChanges();
-        $scope.requestToSearchAPI();
-    };
-    $scope.resetShapes = function() {
-        for (i = 0; i < $scope.shapesLength; i++)
-            $scope.selectedShapes[i] = false;         
-     
-         $scope.updateUrlChanges();
-        $scope.requestToSearchAPI();
-    };
-    $scope.resetAll = function() {
+    $scope.resetFilters =  function(selectedFilters){
+      for (i = 0; i < selectedFilters.length; i++)
+          selectedFilters[i] = false;         
+      $scope.updateUrlChanges();
+      $scope.requestToSearchAPI();
+      // return selectedFilters;
+    }
+    $scope.resetPriceRange =  function(selectedFilters){
+      $scope.slider.min = 0;
+      $scope.slider.max = 1000;
+      $scope.makePriceUrl();
+      $location.search('priceRange',null);
+      $scope.isFilteredByPrice = false; 
+      // return selectedFilters;
+    }
+     $scope.resetAll = function() {
          
         $scope.selectedCategory = [false];
         for (i = 0; i < $scope.totalBrands; i++)
@@ -391,12 +442,12 @@ $scope.makeUrl = function(selected, original) {
             $scope.selectedLooks[i] = false;
         for (i = 0; i < $scope.applicationsLength; i++)
             $scope.selectedApplications[i] = false;
+        for (i = 0; i < $scope.sizesLength; i++)
+            $scope.selectedSizes[i] = false;  
         for (i = 0; i < $scope.usagesLength; i++)
             $scope.selectedUsages[i] = false;
-
         for (i = 0; i < $scope.colorsLength; i++)
-            $scope.selectedColors[i] = false;
-                 
+            $scope.selectedColors[i] = false;                 
         for (i = 0; i < $scope.shapesLength; i++)
             $scope.selectedShapes[i] = false;                      
 
