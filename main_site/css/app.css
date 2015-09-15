@@ -1458,7 +1458,7 @@ nav.mainmenu::after {
   transition:.25s;
 }
 .tr_text {
-  bottom: -89px;
+  /*bottom: -89px;*/
   position: relative;
   transition:.25s;
 }
@@ -9720,3 +9720,20 @@ ins {
   color: #828282;  margin-left: 10px;
 }
 .add2cart_buttons a .tr_text {bottom: 0;  padding: 0px;}
+
+
+ 
+.queryInfo .icon-close,.filterInfo .icon-close { 
+    color:#EA2E49;
+      font-size: 18px;
+  }
+  .queryInfo .icon-close:hover ,.filterInfo .icon-close:hover {  -webkit-transition: all 200ms ease-in;
+    font-size: 20px;
+    transition: all 200ms ease-in;
+    
+  }
+  .search input{ font-size: 13px; font-weight: 100;} 
+  .search .searchButton{ background-color: #F8FAFA;color : #1F72BE;cursor: pointer;} 
+  /*.search .searchButton.i{ color : #1F72BE;} */
+   .search .searchButton:hover{ color: #F8FAFA;;background-color : #1F72BE;} 
+  /*.search .searchButton.i{ color : #1F72BE;}*/

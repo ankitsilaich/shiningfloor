@@ -542,7 +542,7 @@ $app->get('/shiningfloor/product(/:id)', function($id=null ) use ($app, $db){
     }
 });
 // Search product results
-$app->get('/shiningfloor/products/search(/:type)/(:input)', function($type=null,$input=null ) use ($app, $db){
+$app->get('/shiningfloor/products/search(/:type)/', function($type=null ) use ($app, $db){
         
         global $resultPerPage , $pageNo ;
         if(isset($_GET['pageNo'])){
@@ -556,10 +556,14 @@ $app->get('/shiningfloor/products/search(/:type)/(:input)', function($type=null,
             $query = $db->products();
         else
             $query = $db->products->where('type_id',$type_id);
-        if($input!=null)
-        {
-            $query = $query->where('product_name LIKE ?' ,"%".$input."%");
+        $get = filter_input_array(INPUT_GET);
+        if(array_key_exists('query', $get)){
+          $query = $query->where('product_name LIKE ?' ,"%".$get['query']."%");
         }
+        // if($input!=null)
+        // {
+            
+        // }
         $query = setFinalFilterQuery($query) ;
         $totalResults = count($query);
         $start = (($pageNo -1)*( int )$resultPerPage);
@@ -567,7 +571,7 @@ $app->get('/shiningfloor/products/search(/:type)/(:input)', function($type=null,
         if($last> $totalResults){
         $last = $totalResults;
         }
-        $get = filter_input_array(INPUT_GET);
+        
         if(!array_key_exists('sortBy', $get))
           $query = $query->order('product_price ASC');
         $query = $query->limit(30,$start) ;
