@@ -9763,3 +9763,12 @@ ins {
   /*.search .searchButton.i{ color : #1F72BE;} */
    .search .searchButton:hover{ color: #F8FAFA;;background-color : #1F72BE;} 
   /*.search .searchButton.i{ color : #1F72BE;}*/
+
+.block-display{
+  display: block! important;
+}
+
+#mydatepicker .dropdown-menu {
+  max-width: none;
+  z-index: 3000;
+}

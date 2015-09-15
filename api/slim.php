@@ -234,9 +234,26 @@ $app->post("/buildcorner/submitOrder",$authenticate_user($app), function () use 
   // print_r($userDetails);
   $email = $_SESSION['user'];
   $userId = $db->users()->where('email',$email)->fetch();
+
+  if(!($userId['firstName']&&$userId['phone1']&&$userId['address'])){
+    // JUGAD FOR RIGHT NOW.
+      $userInfo = array( 
+                'firstName' => $userDetails->firstName,
+                'lastName' => $userDetails->lastName,                 
+                'phone1' => $userDetails->phone1,
+                'phone2' => $userDetails->phone2,
+                'address' => $userDetails->address,                
+                'landmark' => $userDetails->landmark,
+                'city' => $userDetails->city,
+                'state' => $userDetails->state,
+                'pincode' => $userDetails->pincode
+                );
+    $db->users->where('email',$email)->update($userInfo);  
+  }
   $orderDetails = $array['items'];
-  print_r($orderDetails);
+  // print_r($orderDetails);
   $orderTotal = $array['orderTotal'];
+
 
   // print_r($userDetails);
   // print_r($orderTotal);
@@ -256,26 +273,35 @@ $app->post("/buildcorner/submitOrder",$authenticate_user($app), function () use 
                 'pincode' => $userDetails->pincode,
                 'landmark' => $userDetails->landmark,
                 'prefered_time' => $userDetails->timeSlot,
-                'prefered_date' => $userDetails->prefereddate,
+                'prefered_date' =>   explode('T',$userDetails->prefereddate)[0],
                 'order_total' => $orderTotal,
                 'order_date' => $orderTime                 
     );
+// print_r($orderData);
   $orderNo = $db->orders()->insert($orderData);
-  // seller id , total  will be decided so his part is remaining.
+  
   foreach ($orderDetails as $order) {
+    $itemTotal = ($order->_price) * ($order->_quantity);
+    $seller= ($db->sellers_products()->where('products_id',$order->_data->product_id)->order(' price ASC ')->fetch());
+    $minPrice = $seller['price'] + setOurMargin($seller['price']);
+    $seller = $seller['sellers_id'];
+    $total = ($order->_quantity)*($order->_price);
     $item = array(
       'orders_id' => $orderNo,
       'products_id' => $order->_data->product_id,
-      'sellers_id' => 0,
       'order_type' => $order->_type,
       'price_per_unit' => $order->_price,
       'quantity' => $order->_quantity,
+      'sellers_id' => $seller,
+      'total' => $itemTotal
       );     
     // print_r($item);
     $db->order_details->insert($item);
   }
 
-  // echo $orderNo;
+  // echo $orderNo; 
+    echo json_encode(array('orderStatus' => 'success'));
+
 });
 
   $app->get("/shiningfloor/userquery", function () use ($app, $db) {

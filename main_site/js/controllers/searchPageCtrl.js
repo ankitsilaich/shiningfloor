@@ -435,7 +435,7 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
       $scope.requestToSearchAPI();
       // return selectedFilters;
     }
-    $scope.resetPriceRange =  function(selectedFilters){
+    $scope.resetPriceRange =  function(){
       $scope.slider.min = 0;
       $scope.slider.max = 1000;
       $scope.makePriceUrl();
@@ -444,6 +444,8 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
       // return selectedFilters;
     }
      $scope.resetAll = function() {
+
+        $scope.resetPriceRange() ;          
          
         $scope.selectedCategory = [false];
         for (i = 0; i < $scope.totalBrands; i++)

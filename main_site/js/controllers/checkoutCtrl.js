@@ -8,11 +8,18 @@ $scope.cities = ['Noida','Delhi NCR' , 'East Delhi' , 'New Delhi' , 'North Delhi
 		alert('ssss');
 	};
 	
+if($scope.currentUser){
+  $http.get('../api/slim.php//buildcorner/user/info').then(function(resp){
+    console.log(resp);
+    $scope.currentUserDetails = resp.data.user_data;
+    $scope.currentUserDetails.timeSlot= "04-06 pm";
+  }); 
 
+}
 $scope.currentUserDetails.prefereddate = "";
 $scope.currentUserDetails.landmark = "";
 $scope.currentUserDetails.phone2 = ""; 	
-	 $scope.today = function() {
+ $scope.today = function() {
     $scope.dt = new Date();
   };
   $scope.today();
@@ -27,8 +34,7 @@ $scope.currentUserDetails.phone2 = "";
   };
 
   $scope.toggleMin = function() {
-    $scope.minDate = $scope.minDate ? null : (new Date())+1;
-    console.log($scope.minDate);
+    $scope.minDate = $scope.minDate ? null : new Date();
   };
   $scope.toggleMin();
   $scope.maxDate = new Date(2020, 5, 22);
@@ -43,7 +49,7 @@ $scope.currentUserDetails.phone2 = "";
   };
 
   $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-  $scope.format = $scope.formats[1];
+  $scope.format = $scope.formats[0];
 
   $scope.status = {
     opened: false
@@ -80,15 +86,33 @@ $scope.currentUserDetails.phone2 = "";
 
     return '';
   };
+
 	$scope.orderSubmit = function(userDetails){
 		if($scope.detailsForm.$invalid){
 			console.log('invalid');
 			return false;
 		}
 		else{
+      $scope.yyyymmdd = function(d) {
+         var yyyy = d.getFullYear().toString();
+         var mm = (d.getMonth()+1).toString(); // getMonth() is zero-based
+         var dd  = d.getDate().toString();
+         return yyyy + '-'+(mm[1]?mm:"0"+mm[0]) +'-'+ (dd[1]?dd:"0"+dd[0]); // padding
+        };
+         
+      userDetails.prefereddate  = $scope.yyyymmdd(userDetails.prefereddate) ;     
+      console.log(userDetails.prefereddate);
+
 			var orderDetails = {'userInfo':userDetails , 'items':ngCart.getItems(),'orderTotal':ngCart.totalCost()};
 			$http.post('../api/slim.php/buildcorner/submitOrder', orderDetails).success(function(data, status) {
+        console.log(data);
 
+        if(data.orderStatus=='success'){
+          ngCart.empty();
+          console.log('order done');
+          $scope.showLoader = false;
+          $scope.showpopupSuccess = true;
+        }
 			});
 		}
 	};
