@@ -54,7 +54,8 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
         //console.log(count);
         return url;
     };
-    $scope.makePriceUrl = function(){        
+    $scope.makePriceUrl = function(){
+      $location.search("pageNo", '1');         
         $scope.priceRangeUrl = $scope.slider.min+'-'+$scope.slider.max ;
         // console.log($scope.priceRangeUrl);
         $location.search('priceRange', $scope.priceRangeUrl);             
@@ -387,8 +388,8 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
     $scope.sortTypes = ['New','Price low to high','Price high to low'];    
     $scope.selectedSortType=[]; 
     for (i = 0; i < $scope.sortTypes.length; i++)
-        $scope.selectedSortType[i] = false;
-    $scope.sortBy =$scope.sortTypeFilters[2];
+        $scope.selectedSortType[i] = false;  
+    $scope.sortBy =$scope.sortTypeFilters[0];
     if ($scope.pageNo == undefined) {
         $location.search('pageNo', '1');
     }
