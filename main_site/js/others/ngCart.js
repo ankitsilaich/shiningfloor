@@ -48,14 +48,14 @@ angular.module('ngCart', ['ngCart.directives'])
                 //Update quantity of an item if it's already in the cart
                 inCart.setQuantity(quantity, false);
             } else {
-                // console.log(price);
-                // if(type=='sample'){
-                //     var count = this.getTotalSamples();
-                //     console.log(count);
-                //     if(count>=5){
-                //         price = this.$cart.perSampleCharge;
-                //     }
-                // }
+                console.log(price);
+                if(type=='sample'){
+                    var count = this.getTotalSamples();
+                    console.log(count);
+                    if(count>=5){
+                        price = this.$cart.perSampleCharge;
+                    }
+                }
                 var newItem = new ngCartItem(id, name, price, quantity, data,type);                 
                 this.$cart.items.push(newItem);
                 $rootScope.$broadcast('ngCart:itemAdded', newItem);

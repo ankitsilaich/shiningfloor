@@ -295,7 +295,7 @@ angular.module('app')
               })
 
               .state('app.home.search.type', {
-                  url: '/:routeId/:query?pageNo&priceRange&brand_name&usages&applications&colors&finish_types&materials&looks&shapes&sortBy',
+                  url: '/:routeId/?pageNo&priceRange&brand_name&usages&applications&colors&finish_types&materials&looks&shapes&sortBy',
                   templateUrl : 'tpl/searchwithfilters.html',
                   reloadOnSearch:false,
 

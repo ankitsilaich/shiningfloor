@@ -1,13 +1,15 @@
 app.controller('searchPageCtrl', ['$scope', '$http', '$stateParams', 'ngCart', '$filter', '$state', '$location','$timeout','$location', function($scope, $http, $stateParams, ngCart, $filter, $state, $location,$timeout,$location) {
-  $scope.brandcollapse = false ;  
+  $scope.brandcollapse = true ;  
   $scope.finishcollapse = true ;
   $scope.materialcollapse = true ;
-  $scope.pricecollapse = false ;
+  $scope.pricecollapse = true ;
   $scope.lookcollapse = true ;
   $scope.shapecollapse = true ;
   $scope.colorcollapse = true ;
-  $scope.applicationcollapse = false ;
-  $scope.usagecollapse = true;
+  $scope.applicationcollapse = true ;
+  $scope.usagecollapse = false;
+  $scope.sizecollapse = true;
+  
   console.log($scope.brandcollapse);
  
  $scope.slider = {
@@ -397,12 +399,12 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
     $scope.sortDropdown=true;
     $scope.selectedSortIndex = 0;    
 
-    $scope.sortTypeFilters = ['relevance','priceAsc','priceDesc'];
-    $scope.sortTypes = ['Relevance','Price  low to high','Price  high to low'];    
+    $scope.sortTypeFilters = ['new','priceAsc','priceDesc'];
+    $scope.sortTypes = ['New','Price low to high','Price high to low'];    
     $scope.selectedSortType=[]; 
     for (i = 0; i < $scope.sortTypes.length; i++)
         $scope.selectedSortType[i] = false;
-    $scope.sortBy =$scope.sortTypeFilters[2];
+    $scope.sortBy =$scope.sortTypeFilters[0];
     if ($scope.pageNo == undefined) {
         $location.search('pageNo', '1');
     }
@@ -416,24 +418,30 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
     $scope.requestToSearchAPI();
     // url for changing product in search page.
     $scope.url = $stateParams.query; 
+    console.log($scope.url);
     console.log($scope.FilterUrl);
     //console.log($scope.url);
 
-
-    $scope.searchProductResults = function(query, searchType) {
-        $stateParams.routeId = searchType;
-        queryStr = $scope.url.substring(0, $scope.url.indexOf('?'));
-        $scope.searchCategory = $scope.selectSearchCategory();
-        $scope.resetAllUrlAndClasses();
+    $scope.searchQuery='';
+    $scope.searchProductResults = function() {
+      console.log($scope.searchQuery);
+        // $stateParams.routeId = searchType;
+        // queryStr = $scope.url.substring(0, $scope.url.indexOf('?'));
+        // $scope.searchCategory = $scope.selectSearchCategory();
+        // $scope.resetAllUrlAndClasses();
         // var tmpIndx = $scope.url.indexOf('&');
         // if(tmpIndx !=-1)
         //     $scope.url = $scope.url.replace($scope.url.substring(tmpIndx, $scope.url.length) , '');
-        $scope.url = $scope.url.replace(queryStr, query);
-        $location.path('shiningFloor/search/' + searchType + '/' + $scope.url);
+        // if($scope.FilterUrl.query){
+          $location.search('query',$scope.searchQuery);
+        // }
+        // $scope.url = $scope.url.replace(queryStr, query);
+        // $location.path('shiningFloor/search/' + $stateParams.routeId + '/' + $scope.url);
         $scope.requestToSearchAPI();
         $scope.searchQuery.text = '';
     };
- 
+  
+
 
     $scope.resetFilters =  function(selectedFilters){
       for (i = 0; i < selectedFilters.length; i++)
@@ -478,7 +486,12 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
         $scope.requestToSearchAPI();
     };
 
-
+    $scope.isFiltersApplied = function(){
+      if($scope.isFilteredByUsage||$scope.isFilteredByLook||$scope.isFilteredBySize||$scope.isFilteredByApplication||$scope.isFilteredByBrand||$scope.isFilteredByMaterial||$scope.isFilteredByPrice||$scope.isFilteredByFinish||$scope.isFilteredByColor)
+        return true;
+      else
+        return false;
+    };
     $scope.showLeftSideFilters = function() {
         if ($('#leftSide').hasClass('expanded')) {
             $("#leftSide").removeClass("expanded");
