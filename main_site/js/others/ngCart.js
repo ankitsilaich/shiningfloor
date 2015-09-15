@@ -48,17 +48,17 @@ angular.module('ngCart', ['ngCart.directives'])
                 //Update quantity of an item if it's already in the cart
                 inCart.setQuantity(quantity, false);
             } else {
-                // console.log(price);
-                // if(type=='sample'){
-                //     var count = this.getTotalSamples();
-                //     console.log(count);
-                //     if(count>=5){
-                //         price = this.$cart.perSampleCharge;
-                //     }
-                // }
+                if(type=='sample'){
+                    var count = this.getTotalSamples();
+                    console.log(count);
+                    if(count>=5){
+                        price = this.$cart.perSampleCharge;
+                    }
+                }
                 var newItem = new ngCartItem(id, name, price, quantity, data,type);                 
-                this.$cart.items.push(newItem);
+                this.$cart.items.push(newItem);                 
                 $rootScope.$broadcast('ngCart:itemAdded', newItem);
+                
             }
  
             this.setSampleCharges(this.$cart.perSampleCharge);
@@ -155,6 +155,7 @@ angular.module('ngCart', ['ngCart.directives'])
             return samples;
         };
 
+
         this.getProducts = function(){
             var items = this.getCart().items;
             var products = [];
@@ -230,10 +231,19 @@ angular.module('ngCart', ['ngCart.directives'])
             angular.forEach(cart.items, function (item, index) {
                 if  (item.getId() === id) {
                     cart.items.splice(index, 1);
+
                     console.log('updated cart items = '  + cart.items);
-                    var count = 0, i = 0;
+                    var count = 0, i = 0,sampleCount=0;
                     for(i=0;i<cart.items.length;i++)
                     {
+                        if(cart.items[i]['_type']=='sample'){
+                            sampleCount++;
+                            console.log(sampleCount);
+                            if(sampleCount<=5){
+                            // console.log(cart.items[i]['_price']);
+                                cart.items[i]['_price'] = 0;
+                            }
+                        }
                         // count = cart.items[i].quantity;
                         count+= (cart.items[i]['_quantity']);
                     }
@@ -241,13 +251,14 @@ angular.module('ngCart', ['ngCart.directives'])
                 }
             });
             this.setCart(cart);
-             this.setSampleCharges(this.$cart.perSampleCharge);
+            this.setSampleCharges(this.$cart.perSampleCharge);
+
             $rootScope.$broadcast('ngCart:itemRemoved', {});
             $rootScope.$broadcast('ngCart:change', {});
         };
 
+         
         this.empty = function () {
-
             $rootScope.$broadcast('ngCart:change', {});
             this.$cart.items = [];
             localStorage.removeItem('cart');
@@ -296,6 +307,7 @@ angular.module('ngCart', ['ngCart.directives'])
     .factory('ngCartItem', ['$rootScope', '$log', function ($rootScope, $log) {
 
         var item = function (id, name, price, quantity, data,type) {
+
             this.setId(id);
             this.setName(name);
             this.setPrice(price);
@@ -357,11 +369,10 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
 
-
         item.prototype.setQuantity = function(quantity, relative){
-
-
+            
             var quantityInt = parseInt(quantity);
+            // console.log(quantityInt);            
             if (quantityInt % 1 === 0){
                 if (relative === true){
                     this._quantity  += quantityInt;
@@ -375,7 +386,11 @@ angular.module('ngCart', ['ngCart.directives'])
                 if (this._quantity < 1) this._quantity = 1;
 
             } else {
-                this._quantity = 1;
+                console.log(quantity);
+                if(quantity>1 )
+                    this._quantity = quantity;
+                else
+                    this._quantity = 1;
                 $log.info('Quantity must be an integer and was defaulted to 1');
             }
 

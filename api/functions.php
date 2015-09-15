@@ -144,6 +144,9 @@ function sizeFilteredQuery($sizeFilters , $query){
         $sizeQuery .= ' ((product_width > '. (intval($height*25.4)-10). ' AND product_width < '.(intval($height*25.4)+10).')';
         $sizeQuery .=  ' AND (product_height > '. (intval($width*25.4)-10). ' AND product_height <'. (intval($width*25.4)+10).')))';
       }
+      else{
+         $sizeQuery .= ')';
+      }
     }
     // echo $sizeQuery;
     return $query->where($sizeQuery);
@@ -223,9 +226,11 @@ function colorFilteredQuery($colorFilters , $query){
 function priceFilteredQuery($priceRange , $query){
   global $db;
    $priceFilters =  explode('-', $priceRange);
-   $lowPrice=0;$highPrice=1000;
-   $lowPrice = intval($priceFilters[0]); 
-   $highPrice = intval($priceFilters[1]);
+   $lowPrice=0;$highPrice=100000;
+   if($priceFilters[0]!='below')
+      $lowPrice = intval($priceFilters[0]); 
+   if($priceFilters[1]!='above')
+    $highPrice = intval($priceFilters[1]);
 
    $query = $query->where('product_price >= '.$lowPrice . ' AND product_price < '. $highPrice);
    return $query ;
@@ -235,12 +240,12 @@ function priceFilteredQuery($priceRange , $query){
 
 function sortFilteredQuery($sortFilters , $query){
 
-  $sortTypeFilters = ['relevance','priceAsc','priceDesc'];
+  $sortTypeFilters = ['new','priceAsc','priceDesc'];
   // for($i=0 ;$i< count($sortTypeFilters) ; $i++)
   // {
 
-      if($sortFilters=='relevance')
-          return $query->order(' product_rating DESC ');   
+      if($sortFilters=='new')
+          return $query->order(' product_addedOn DESC ');   
       if($sortFilters == 'priceAsc')
         return $query->order(' product_price ASC ');   
         
