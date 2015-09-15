@@ -102,6 +102,7 @@
                                         <span class="fa fa-check"></span> {{application}}
                                     </label>
 
+<<<<<<< HEAD
                                 </div>
  
                             </li>
@@ -113,15 +114,21 @@
                     
                         <!-- <a class="dropdown-toggle" ng-click="dropdown3=!dropdown3;dropdown1=false;dropdown2=false;" >Budget<span class="caret"></span></a>
                         <ul class="dropdown-menu"  ng-class="{'hidden':dropdown3==false}">
+=======
+                    <div class="col-md-4 filter_box" ng-init="sortDropdown=true">
+                        <a class="dropdown-toggle" ng-click="sortDropdown=!sortDropdown" >Budget<span class="caret"></span></a>
+                        <ul class="dropdown-menu"  ng-class="{'hidden':sortDropdown==true}">
+>>>>>>> master
                             <li ng-repeat='budget in budgetTypes'>
                                 <div class="checkbox custom-checkbox">
-                                    <label ng-click='selectedBudgetTypes[$index]=!selectedBudgetTypes[$index];updateUrlChanges()'>
-                                        <input type="checkbox" ng-model="selectedBudgetTypes[$index]" ng-checked="selectedBudgetTypes[$index]">
-                                        <span class="fa fa-check"></span> {{budget}}
+                                    <label>
+                                        <input type="checkbox" ng-model="selectedBudget[$index]" ng-checked="selectedBudget[$index]">
+                                        <span class="fa fa-check"></span> {{budget.name}}
                                     </label>
 
                                 </div>
- 
+
+                                  <a href ng-click='selectSortType($index);updateUrlChanges()' ng-class="{'active':selectedSortIndex==$index }"> {{sortType}} </a> 
                             </li>
                             
                             
@@ -567,7 +574,7 @@
                         <div class="pagination-wrap" ng-hide='searchResults.length==0'>
                             <div class="row">
                                 <div class="col-xs-7">
-                                    <pagination total-items="totalResults" ng-model="temp" max-size="5" class="pagination-lg" items-per-page="20" boundary-links="true" ng-change="pagechange(temp)" direction-links="false" num-pages="numPages"></pagination>
+                                    <pagination total-items="totalResults" ng-model="temp" max-size="5" class="pagination-lg" items-per-page="30" boundary-links="true" ng-change="pagechange(temp)" direction-links="false" num-pages="numPages"></pagination>
                                 </div>
                                 <div class="col-xs-5 text-right">
                                     <p>Showing {{searchCategory}} from {{ start + 1 }}-{{last}} of {{ totalResults }} results</p>
@@ -600,7 +607,7 @@
         z-index:2;
         overflow: auto;" ng-show="showLoader">
             </div>
-            <div class="product-img-box col-xs-5">
+            <div class="product-img-box col-sm-6 col-xs-12">
                 <div class="quickview-featured-image product-photo-container">
                     <a><img ng-elevate-zoom ui-if="popupProduct.product_img[0]" ng-src="{{popupProduct.product_img[0]}}" zoom-image="{{popupProduct.product_img[0]}}" title="{{popupProduct.product_name}}">
                         <div style="height: 100%; width: 100%; top:0; left:0 z-index: 2000; position: absolute; display: none; background: url(//cdn.shopify.com/s/files/1/0675/0005/t/18/assets/loading.gif?18362838199248314162) 50% 50% no-repeat;"></div>
@@ -612,56 +619,97 @@
                 </div>
             </div>
 
-            <div class="product-shop col-xs-7">
+            <div class="product-shop col-sm-6 col-xs-12">
                 <div class="product-item">
                     <h2 class="product-title"><a>{{popupProduct.product_name}}</a></h2>
 
 
-                    <div class="product-infor">
+                    <div class="product-infor col-xs-12">
 
                         <p class="product-inventory">
-                            <label>Availability</label><span>Many in Stock</span></p>
+                            <label>Product Brand: </label><span> {{popupProduct.product_brand}}</span></p>
 
 
-                        <p class="product-type">
-                            <label>Product Type</label><span>{{popupProduct.product_type_id}}</span></p>
+                        <p class="product-type" ng-show='popupProduct.product_width&&popupProduct.product_height'>
+                            <label>Cartoon Size: </label><span>{{popupProduct.product_width}}*{{popupProduct.product_height}} {{popupProduct.product_w_unit}} </span></p>
 
 
+                        <p class="product-box" ng-show='popupProduct.product_items_per_box!=0'>
+                            <label>Items per Cartoon: </label><span>{{popupProduct.product_items_per_box}}</span></p>
+
+                        <p class="product-vendor" ng-show='popupProduct.product_look'>
+                            <label>Look: </label><span>{{popupProduct.product_look}}</span></p>    
                         <p class="product-vendor">
-                            <label>Vendor</label><span></span></p>
+                            <label>Finish: </label><span>{{popupProduct.product_finish_type}}</span></p>    
+                        <p class="product-vendor" ng-show='popupProduct.product_material'>
+                            <label>Material: </label><span>{{popupProduct.product_material}}</span></p>    
 
                     </div>
+ 
 
-
-                    <div class="countdown" style="display:block"><span>Limited-Time Offers, End in:</span>
-                        <div class="quickview-clock"></div>
-                    </div>
-
-
-
-                    <div class="details clearfix">
+                    <div class="details clearfix col-xs-12" ng-show='popupProduct.product_price!=0'>
                         <form action="/cart/add" method="post" class="variants">
                             <select name='id' style="display:none"></select>
+                            <div class='col-md-6 col-xs-12 no-padder'>
+                                <ngcart-addtocart  id="{{popupProduct.product_id}}{{'_0'}}" name="{{popupProduct.product_name}}{{'-'}}{{popupProduct.product_brand}}" price="0" quantity="1" type="sample" quantity-max="5" data="{ product_img: popupProduct.product_img[0], product_id: popupProduct.product_id }"ng-show='popupProduct.product_price!=0'>         
+
+                                    <span ng-show="!ngCart.getItemById(popupProduct.product_id+'_0')"> 
+                                        <button type="button" class="btn add-to-sample-btn" style="">Add for Sample</button> 
+                                      </span>
+                                                                                                                                                           
+                                </ngcart-addtocart>
+   
+                                <span ng-show="ngCart.getItemById(popupProduct.product_id+'_0')" class="sample_added_info" style="">Sample Added!</span>  
+                                 
+
+                            </div>
+
                             <div class="prices">
                                 <span class="compare-price"></span>
-                                <span class="price">{{popupProduct.product_price}}</span>
+                                <span class="price">{{popupProduct.product_price}} per sq ft</span>
+                                <span>(Rs.{{popupProduct.price}} per cartoon)</span>
                             </div>
+
+                            <!-- <div class="total-price">
+                                <label>Price for Cartoon: </label><span>Rs. {{popupProduct.price}}</span>
+                            </div> -->
+
                             <label for="quantity">Quantity:</label>
                             <div class="dec button" ng-click="quantity = quantity-1">-</div>
                             <input type="number" value="quantity" ng-model="quantity" class="quantity" style="padding: 5px 10px; line-height: 1.35;  height: 36px;   border: 1px solid #cbcbcb;">
                             <div class="inc button" ng-click="quantity = quantity+1">+</div>
-
-
+                            
+                           <!--  <div class="cart_quantity">
+                                <ul>
+                                    <li><a  ng-class="{'disabled':ngCart.getItemById(popupProduct.product_id).getQuantity()==1}" ng-click="ngCart.getItemById(popupProduct.product_id).setQuantity(-1, true)"><i class="fa fa-minus"></i></a></li>
+                                    <li><a > {{ ngCart.getItemById(popupProduct.product_id).getQuantity() | number }}</a></li>
+                                    <li><a ng-click="ngCart.getItemById(popupProduct.product_id).setQuantity(1, true)"><i class="fa fa-plus"></i></a></li>
+                                </ul>
+                                  
+                            </div> -->
                             <div class="total-price">
-                                <label>Subtotal: </label><span></span>
+                                <label>Subtotal: </label><span>Rs.{{quantity*popupProduct.price}}</span>
                             </div>
 
 
-                            <div class="actions">
+                            <div class="actions clearfix col-md-6 col-xs-12 no-padder">
                                 <!-- <ngcart-addtocart id="{{popupProduct.product_id}}" name="{{popupProduct.product_name}}" price="{{popupProduct.product_price}}" quantity="3" quantity-max="5" data="{ product_img: popupProduct.product_img, product_id: popupProduct.product_id }" ng-click ="showCounter()">Add to Cart
 
                                     </ngcart-addtocart> -->
-                                <button type="button" class="btn add-to-cart-btn" style="">Add to cart</button>
+                                <!-- <button type="button" class="btn add-to-cart-btn" style="">Add to cart</button> -->
+                                
+                                <ngcart-addtocart  id="{{popupProduct.product_id}}" name="{{popupProduct.product_name}}{{'-'}}{{popupProduct.product_brand}}" price="{{popupProduct.price}}" quantity="parseInt({{quantity}})" type="product" quantity-max="5" data="{ product_img: popupProduct.product_img[0], product_id: popupProduct.product_id }" ng-click="showCounter()" ng-show='popupProduct.product_price!=0'>
+                                <!-- ngCart.removeItemById(item.getId()) -->
+                                          <span ng-show="!ngCart.getItemById(popupProduct.product_id)"> 
+                                        <button type="button" class="btn add-to-cart-btn" style="" >Add to cart</button> 
+                                      </span>   
+                                </ngcart-addtocart>
+                                   
+                                <button ng-show="ngCart.getItemById(popupProduct.product_id)" type="button" class="btn add-to-cart-btn" ui-sref="app.home.cart">View Cart</button>  
+                                 
+                                 
+
+
                             </div>
                         </form>
                     </div>
