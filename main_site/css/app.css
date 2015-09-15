@@ -9550,10 +9550,11 @@ a.img_popup>img, .related_posts_slide .related_img>img, .add2cart_image .add2car
   transition: transform .7s ease;
 }
 .add2cart_details .con_cont {
-  padding: 15px 22px 18px;
-  border-bottom: 1px solid #ddd;
+  padding: 15px 15px 10px;
+  /* border-bottom: 1px solid #ddd; */
   color: #858585;
-  height: 110px;
+  max-height: 120px;
+  min-height: 100px;
 }
 ins {
   color: #1ccdca;
