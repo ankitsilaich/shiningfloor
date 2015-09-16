@@ -97,13 +97,13 @@ session_start();
 // });
 
 
-//------------ Post method for seller to athenticate ------------------//
+//------------ Post method for user to athenticate ------------------//
 $app->post("/auth/process/user", function() use ($app, $db)
 {
     $array    = (array) json_decode($app->request()->getBody());
     $email    = $array['email'];
     $password = md5(sha1($array['password']));
-    $user   = $db->users()->where('email', $email)->where('password', $password);
+    $user   = $db->users()->where('email', $email)->where('password', $password)->where('isValid',1);
     $count    = count($user);
     if ($count == 1) {
         $_SESSION['user'] = $email;
@@ -139,15 +139,15 @@ $app->post("/auth/signup/user", function() use ($app, $db)
     else
     {
       $array['password'] = md5(sha1($array['password']));
-      
-//      echo  "$joindate[month] $joindate[mday], $joindate[year]";
+      $array['isValid'] = 0;
+ //      echo  "$joindate[month] $joindate[mday], $joindate[year]";
       $time = new DateTime("now", new DateTimeZone('Asia/Kolkata'));
       $time = $time->format('Y-m-d H:i:s');
 
       $array['join_date'] = $time ;
       $data = $db->users()->insert($array);
 //      echo $data;
-      $_SESSION['user'] = $email;
+      // $_SESSION['user'] = $email;
         $data             = array(
             'signup_success' => "true",
             'message' => "Successfull signup"
@@ -209,9 +209,12 @@ $app->get('/buildcorner/user/info' , $authenticate_user($app) ,function() use ($
 
 // Contact us 
 $app->post("/shiningfloor/contactus", function () use ($app, $db) {
-    $email = $app->request()->post('email');  
-    $name = $app->request()->post('name');
-    $msg = $app->request()->post('msg');
+  $array = (array) json_decode($app->request()->getBody());
+  $email = $array['email'];  
+  $name = $array['name'];
+  $msg = $array['msg'];
+  $phone = $array['phone'];
+  
      // echo $msg . $name . $email ;
     $time = new DateTime("now", new DateTimeZone('Asia/Kolkata'));
     $time = $time->format('Y-m-d H:i:s');
@@ -220,6 +223,7 @@ $app->post("/shiningfloor/contactus", function () use ($app, $db) {
         "name" => $name ,
         "email"=> $email,
         "msg" => $msg ,
+        "phone"=> $phone,
         "date" => (string)$time
         )
       );
@@ -322,8 +326,9 @@ $app->post("/buildcorner/submitOrder",$authenticate_user($app), function () use 
 // Subscribe user
 
 $app->post("/shiningfloor/subscribe", function () use ($app, $db) {
-          $email = $app->request()->post('email');  
-           
+          $array = (array) json_decode($app->request()->getBody()); 
+           $email = $array['email'];
+           // print_r($array);
 //           echo $msg . $name . $email ;
           $time = new DateTime("now", new DateTimeZone('Asia/Kolkata'));
           $time = $time->format('Y-m-d H:i:s');
@@ -338,7 +343,6 @@ $app->post("/shiningfloor/subscribe", function () use ($app, $db) {
           }
           else
             echo 'subscribed';
-
   });
 
 $app->get("/shiningfloor/subscribedUsers", function () use ($app, $db) {

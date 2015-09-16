@@ -83,6 +83,25 @@ angular.module('app')
 
     };
 
+    $scope.subscribeUser = function(email){
+      $scope.signupResp = "";
+      // console.log(email);
+      var form_data = {'email':email };
+      if(email){
+        $http.post('../api/slim.php/shiningfloor/subscribe',form_data).success(function(resp){
+          console.log(resp);
+            if(resp ==='success'){
+               $scope.signupResp = "We will be in touch soon!";
+            }
+            else{
+              $scope.signupResp = "Email already subscribed!";
+            }
+        });
+      }
+      else{
+        $scope.signupResp = "Email not valid!";
+      }
+    };
 
 
       $scope.showCounter = function(){
@@ -94,6 +113,7 @@ angular.module('app')
 
       };
 
+      $scope.signupMailError = '';
 
 
      // format {total_items: 5 , Items: {{item1_info} , {item2_info}}}

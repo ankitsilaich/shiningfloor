@@ -1,4 +1,4 @@
-app.controller('templateCtrl', ['$scope', '$http', '$filter','$location', function($scope, $http, $filter,$location) {
+app.controller('templateCtrl', ['$scope', '$http', '$filter','$location', '$state',function($scope, $http, $filter,$location,$state) {
   $scope.sliderOptions = {
   autoPlay: true,
   center: true,
@@ -62,9 +62,34 @@ color.current = true;
 $scope.superSearch = function(){
   console.log($scope.categoryurl)
   $location.path("Buildcorner/search/"+$scope.categoryurl+"/").search({brand_name:$scope.brandurl});
-
-
 }
+
+$scope.submitted = false;  
+$scope.searchUserQuery = function(uquery) {
+    // console.log(uquery);
+    $location.path("Buildcorner/search/"+$scope.categoryurl+"/").search({pageNo:'1',query:uquery});
+   
+   // $state.go("app.home.search.type", {'routeId': 'tiles','pageNo':1,'query':uquery},{reload:true});
+    $scope.submitted = true;
+
+        // final = $location.url().replace($location.path(), '');
+        // console.log(final);   
+        // $http.get('../api/slim.php/shiningfloor/products/' + 'search/' + $scope.categoryurl + '/' + final).then(function(resp) {
+        //     $scope.searchResults = resp.data.product_data;
+        //     $scope.totalResults = resp.data.totalResults;
+        //     $scope.start = resp.data.start;
+        //     $scope.last = resp.data.last;
+        // });
+
+};
+
+
+// $("#psearch").submit(function( event ) {
+//   console.log($scope.categoryurl);      
+//   $location.path("Buildcorner/search/"+$scope.categoryurl+"/").search({pageNo:1, query:$scope.userQuery});
+//   event.preventDefault();
+// });
+
   $http.get('data/filter.json').then(function (resp) {
 
     $scope.products = resp.data.products;

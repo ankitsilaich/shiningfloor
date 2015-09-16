@@ -153,9 +153,8 @@ angular.module('app')
                          return uiLoad.load(
                            [
                               'https://maps.googleapis.com/maps/api/js?callback=initialize',
-                              'js/others/contact.js'
-
-
+                              'js/others/contact.js',
+                              'js/controllers/contactCtrl.js'
                              ]
                          )
                      }]
@@ -294,9 +293,9 @@ angular.module('app')
               })
 
               .state('app.home.search.type', {
-                  url: '/:routeId/?pageNo&priceRange&brand_name&usages&applications&colors&finish_types&materials&looks&shapes&sortBy',
+                  url: '/:routeId/?pageNo&priceRange&brand_name&usages&applications&colors&finish_types&materials&looks&shapes&sortBy&query&sizes',
                   templateUrl : 'tpl/searchwithfilters.html',
-                  reloadOnSearch:false,
+                  // reloadOnSearch:false,
 
                   resolve: {
 
