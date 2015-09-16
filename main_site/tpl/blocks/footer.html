@@ -3,12 +3,15 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-7 col-sm-6 col-xs-12">
+                     <form name='signup-mail' ng-submit="subscribeUser(signupMail)" novalidate>
                         <div class="footer_top_left">
-                            <a href="#"><i class="fa fa-envelope"></i>signup newsletter</a>
-                            <input type="text" placeholder=""/>
+                            
+                            <a href><i class="fa fa-envelope"></i>signup newsletter</a>
+                            <input type="email" ng-model='signupMail' placeholder=""/>
                             <input type="submit" value="submit"/>
+                            <p class='signup_error'>{{signupResp}}</p>
                         </div>
-                    </div>
+                   </form> </div>
                     <div class="col-md-5 col-sm-6 col-xs-12">
                         <div class="footer_top_right">
                            <!--  <ul id="payment">
@@ -41,11 +44,11 @@
                             <h5>Quick Links</h5>
                             <div class="wid_line"></div>
                             <ul class="widget_nav">
-                                <li><a href="#">Bathroom Tiles</a></li>
-                                <li><a href="#">Floor Tiles</a></li>
-                                <li><a href="#">Vitrified Tiles</a></li>
-                                <li><a href="#">Stone Look Tiles</a></li>
-                                <li><a href="#">Kitchen Tiles</a></li>
+                                <li><a href ui-sref="app.home.search.type({routeId: 'tiles',pageNo: 1,applications:'Bathroom'})">Bathroom Tiles</a></li>
+                                <li><a href ui-sref="app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Wall'})">Floor Tiles</a></li>
+                                <li><a href ui-sref="app.home.search.type({routeId: 'tiles',pageNo: 1,finish_types:'Vitrified'})" >Vitrified Tiles</a></li>
+                                <li><a href ui-sref="app.home.search.type({routeId: 'tiles',pageNo: 1,looks:'Stone'})">Stone Look Tiles</a></li>
+                                <li><a href ui-sref="app.home.search.type({routeId: 'tiles',pageNo: 1,applications:'Kitchen'})">Kitchen Tiles</a></li>
 
                             </ul>
                         </div>
@@ -69,7 +72,7 @@
                             <h5>Help</h5>
                             <div class="wid_line"></div>
                             <ul class="widget_nav">
-                                <li><a href="#">Faq</a></li>
+                                <li><a href ui-sref="app.home.faq" >Faq</a></li>
                                 <li><a href="#">Knowledge Centre</a></li>
                                 <li><a href="#">Installation Insructions</a></li>
                                 <li><a href="#">Tile Features</a></li>

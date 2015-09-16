@@ -30,7 +30,7 @@
 			<div id="googleMap" class="container" style="width:100%;height:450px;"></div>
 		</div>
 	</section>
-  <section class="contact_p_area">
+  <section class="contact_p_area" ng-controller='contactusCtrl'>
   		<div class="container">
   			<div class="row">
   				<div class="col-md-8 col-sm-8 col-xs-12">
@@ -38,19 +38,23 @@
   						<h4>Leave A message</h4>
   						<div class="multi_line"></div>
   					</div>
-  					<form action="contact_process.php" method="post">
+  					<form name='contactusForm' class='form-validation'ng-submit='contactQuery(person)' novalidate>
   						<div class="input_form">
   							<div class="input_left">
-  								<input type="text" placeholder="Name *" required="" name="name">
-  								<input type="text" placeholder="Your Email *" required="" name="email">
-  								<input type="text" placeholder="Phone *" required="" name="phone">
+  								<input type="text" placeholder="Name *" required  name="name" ng-model="person.name">
+                  <p class='error' ng-show='isSubmited&&contactusForm.name.$error.required'> name is required</p>
+  								<input type="email" placeholder="Your Email *" required  name="email" ng-model="person.email">
+  								<p class='error' ng-show='isSubmited&&(contactusForm.email.$error.required||contactusForm.email.$error.email)'> invalid email</p>
+                  <input type="text" placeholder="10 digit no *" required ng-minlength='10' ng-maxlength='10' name="phone" ng-model="person.phone">
+                  <p class='error' ng-show='isSubmited&&contactusForm.phone.$error.required'> invalid phone no</p>
   							</div>
   							<div class="input_right">
-  								<textarea name="message" placeholder="Message" required=""></textarea>
+  								<textarea name="message" placeholder="Message" ng-model="person.msg"></textarea>
   							</div>
   						</div>
   						<div class="submit_btn form-group submitRow">
-  							<input type="submit" name="submit" value="Submit form">
+                <p class='success'>  {{contactusResp}}</p>
+  							<input type="submit" name="submit" ng-click='isSubmited=true'value="Submit Info">
   						</div>
 
   					</form>

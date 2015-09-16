@@ -75,7 +75,7 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
 
      $scope.requestToSearchAPI = function() { 
         if ($stateParams.query) {
-            final = $stateParams.query + $location.url().replace($location.path(), '');
+            final = $location.url().replace($location.path(), '');
         } else final = $location.url().replace($location.path(), '');
         $http.get('../api/slim.php/shiningfloor/products/' + 'search/' + $stateParams.routeId + '/' + final).then(function(resp) {
             $scope.searchResults = resp.data.product_data;
@@ -318,8 +318,8 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
               $scope.findandselect($scope.applicationFilters, 'applications', $scope.selectedApplications, $scope.FilterUrl);
         });
 
-        $scope.sizes=[{'width':12 ,'height':12},{'width':12 ,'height':24},{'width':24 ,'height':24},{'width':24 ,'height':32} ];
-        $scope.sizeFilters=['12*12','12*24','24*24','24*32'];
+        $scope.sizes=[{'width':10 ,'height':13},{'width':10 ,'height':15},{'width':12 ,'height':12},{'width':12 ,'height':18},{'width':12 ,'height':24},{'width':24 ,'height':24},{'width':24 ,'height':32},{'width':32 ,'height':32},{'width':24 ,'height':48} ];
+        $scope.sizeFilters=['10*10','12*15','12*12','12*12','12*18','12*24','12*12','24*24','24*32'];
         $scope.selectedSizes = [];
         $scope.sizesLength = $scope.sizes.length;
         for (i = 0; i < $scope.sizesLength; i++)

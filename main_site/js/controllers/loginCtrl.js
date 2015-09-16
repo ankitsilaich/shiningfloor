@@ -72,6 +72,7 @@ $scope.login = function(user) {
   };
   $scope.signup = function(user) {
       $scope.authError = null;
+      $scope.signupMsg = "";
       // Try to create
       $http.post('../api/slim.php/auth/signup/user', {username: user.name, email: user.email, password: user.password})
       .then(function(response) {
@@ -81,18 +82,20 @@ $scope.login = function(user) {
             // toaster.pop('error', 'Seller existed', 'Please login with this email...'); 
         }else{
            console.log('signup success ' + response.data);
-           $scope.currentUser = $rootScope.loggedInUser;
-           $scope.currentUserDetails = $rootScope.loggedInUserDetails;
+           // $scope.currentUser = $rootScope.loggedInUser;
+           // $scope.currentUserDetails = $rootScope.loggedInUserDetails;
            // console.log($scope.currentUser);
            //  console.log($scope.loggedInUserDetails);
            $("input#signup-username").val(null) ;
            $("input#signup-email").val(null);
            $("input#signup-password").val(null);
-           $scope.showModal = false;
-            $scope.showLogin = false;
-            $scope.showSignup = false;
+           // $scope.showModal = false;
+            // $scope.showLogin = false;
+            // $scope.showSignup = false;
            // $state.go($state.current, {}, {reload: true});
             // $window.location.reload();
+            $scope.signupError = "";
+            $scope.signupMsg = "Email sent to your email, please verify your account! ";
         }
       });         
   };

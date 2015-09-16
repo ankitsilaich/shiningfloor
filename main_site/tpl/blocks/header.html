@@ -1,4 +1,4 @@
-<div id="super-search" class="sf-super-search clearfix" ng-show="personalsearch">
+<div id="super-search" class="sf-super-search clearfix" ng-show="1==0">
   <div class="container">
     <div class="search-options" style="font-family: Dosis;
   line-height: 35px;
@@ -89,8 +89,15 @@
     <div class="row">
       <div class="col-md-4 col-sm-3 col-xs-12">
         <div class="header_left floatleft" ng-click="personalsearch = !personalsearch">
+          <!-- <form name='personal-search' id='psearch' ng-submit="alert(1)">
           <a class="fa fa-search" href></a>
-          <input type="text" placeholder=" Personal search" />
+          <input type="text" ng-model='userQuery' placeholder=" Personal search" />
+          <input type="submit" value='s' />
+        </form> -->
+        <form id="myform" ng-submit="searchUserQuery(userQuery)"> 
+          <a class="fa fa-search" href></a>    
+          <input type="text" ng-model='userQuery' placeholder='search products'name="userquery">
+        </form>  
         </div>
       </div>
       <div class="col-md-4 col-sm-5 col-xs-12">

@@ -75,6 +75,9 @@
 					<p class='fieldset has-error' ng-show='signupError!=""'>
 						{{signupError}}  <a class='m-l-sm' ng-click="resetPassword()">Forgot your password?</a>
 					</p>
+					<p class='fieldset' ng-show='signupMsg!=""'>
+						{{signupMsg}}  
+					</p>
 					<p class="fieldset">
 						 <button type="submit" class="btn btn-lg full-width has-padding" ng-click='signup(newuser);' ng-disabled="signUpForm.$invalid" > Create an Account  </button>
 

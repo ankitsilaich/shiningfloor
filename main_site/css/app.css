@@ -574,8 +574,8 @@ nav.currency {
   font-weight: 500;
   margin-left: 13px;
   padding-left: 10px;
-  padding-top: 3px;
-  text-transform: uppercase;
+  padding-top: 3px; 
+  padding: 2px 10px;
 }
 .header_right ul.checkout {
   list-style: outside none none;
@@ -1064,7 +1064,7 @@ nav.mainmenu::after {
     }
     .cat_mega_menu {
       background: none repeat scroll 0 0 #fff;
-      box-shadow: 0 10px 15px #ddd;
+        box-shadow: 0 5px 10px #B2B2B2;
       overflow: hidden;
       padding: 0 30px;
       position: absolute;
@@ -1080,9 +1080,30 @@ nav.mainmenu::after {
       transition: all 0.5s ease 0s;
       z-index: 99;
     }
+    .cat_mega_menu1 {
+      background: none repeat scroll 0 0 #fff;
+        box-shadow: 0 5px 10px #B2B2B2;
+      overflow: hidden;
+      padding: 0 30px;
+      position: absolute;
+      top: 100px;
+      width: 1139px;
+      opacity:0;
+      transition: all 0.5s ease 0s;
+      z-index: -100;
+      visibility: hidden;
+    }
+    .tilemenu1:hover .cat_mega_menu1 {
+      opacity: 1;
+      top:50px;
+      left: -100px;
+      transition: all 0.5s ease 0s;
+      z-index: 99;
+      visibility:visible;
+    }
     .cat_mega_menu2 {
       background: none repeat scroll 0 0 #fff;
-      box-shadow: 0 10px 15px #ddd;
+        box-shadow: 0 5px 10px #B2B2B2;
       overflow: hidden;
       padding: 0 30px;
       position: absolute;
@@ -1100,6 +1121,28 @@ nav.mainmenu::after {
       z-index: 99;
       visibility:visible;
     }
+  .cat_mega_menu3 {
+      background: none repeat scroll 0 0 #fff;
+        box-shadow: 0 5px 10px #B2B2B2;
+      overflow: hidden;
+      padding: 0 30px;
+      position: absolute;
+      top: 100px;
+      width: 1139px;
+      opacity:0;
+      transition: all 0.5s ease 0s;
+      z-index: -100;
+      visibility: hidden;
+    }
+    .tilemenu3:hover .cat_mega_menu3 {
+      opacity: 1;
+      top:50px;
+      left: -100px;
+      transition: all 0.5s ease 0s;
+      z-index: 99;
+      visibility:visible;
+    }
+    .underline{  text-decoration: underline! important;}
     .cat_left {
       float: left;
       margin-right: 100px;
@@ -1540,7 +1583,7 @@ nav.mainmenu::after {
   margin-right: 22px;
   text-transform: uppercase;
 }
-.footer_top_left > input[type="text"] {
+.footer_top_left > input[type="email"] {
  background: #5c5d5f none repeat scroll 0 0;
  border: medium none;
  color: #fff;
@@ -1560,6 +1603,7 @@ nav.mainmenu::after {
 /*border: 1px solid #183152;
 */color: #fff;
 }
+.footer_top_left .signup_error{float: right;  color: #C29824;  line-height: 22px;position: absolute;  left: 213px;}
 .footer_top_right > ul#payment {
   list-style: outside none none;
   margin: 0;
@@ -1954,7 +1998,7 @@ ul.wid_social li a:hover {
   width: 12px;
 }
 #branding_caro {
- padding-top: 109px;
+ padding-top: 30px;
 }
 #branding_caro .owl-prev i {
   color: #000;
@@ -2768,7 +2812,7 @@ ul#single_blog_nav {
 8. contact page css
 ===============================================*/
 .contact_banner_area {
-  background: url("images/contact_bg.jpg") no-repeat scroll 0 0 / cover  rgba(0, 0, 0, 0);
+  background: url("images/contact-us.jpg") no-repeat scroll 0 0 / cover  rgba(0, 0, 0, 0);
   padding: 92px 0;
   position: relative;
   z-index: -1;
@@ -2809,7 +2853,12 @@ ul#single_blog_nav {
   margin-right: 3%;
   width: 41%;
 }
-.input_left > input[type="text"] {
+.input_left .error{
+    color: #D71717;
+  margin-top: -7px;
+  font-size: 13px;
+}
+.input_left > input[type="text"] , .input_left > input[type="email"] {
   background: none repeat scroll 0 0 #f7f8f9;
   border: 1px solid #e8e8e8;
   color: #777777;
@@ -2989,6 +3038,8 @@ ul#single_blog_nav {
 .filter_box_right {
   margin-top: -2px;
   text-align: right;
+    min-width: 120px;
+  float: right;
 }
 .filter_box{
   float: left;
@@ -3004,6 +3055,7 @@ ul#single_blog_nav {
   top: 21px;
   width: 35%;
   display: block;
+  opacity: 0;
 }
 .filter_box .dropdown-menu {
   float: right;
@@ -3013,8 +3065,9 @@ ul#single_blog_nav {
   top: 21px;
   width: 35%;
   display: block;
+  
 }
-
+.filter_box_right:hover >.dropdown-menu{opacity: 1;z-index: 99;}
 .filter_box_right .hidden{ display:none;}
 .filter_box .hidden{ display:none;}
 .dropdown-menu > li .active{background-color: #eee;}
@@ -9750,7 +9803,7 @@ ins {
 
  
 .queryInfo .icon-close,.filterInfo .icon-close { 
-    color:#EA2E49;
+    color:#1F72BE;
       font-size: 18px;
   }
   .queryInfo .icon-close:hover ,.filterInfo .icon-close:hover {  -webkit-transition: all 200ms ease-in;
@@ -9764,10 +9817,7 @@ ins {
    .search .searchButton:hover{ color: #F8FAFA;;background-color : #1F72BE;} 
   /*.search .searchButton.i{ color : #1F72BE;}*/
 
-.block-display{
-  display: block! important;
-}
-
+ 
 #mydatepicker .dropdown-menu {
   max-width: none;
   z-index: 3000;
