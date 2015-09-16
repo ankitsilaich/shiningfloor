@@ -8,7 +8,7 @@
 				</div>
 			</div>
 		</div>
-	</section>
+</section>
 	<div class="breadcumb_area">
 		<div class="container">
 			<div class="row">
@@ -86,8 +86,8 @@
 							<div class="c_address">
 								 
 									<p>Email <span>*</span></p>
-									<input type="email" name='email' ng-model='currentUserDetails.email' required>
-								 	<p class="error-message" ng-show='(submitted&&detailsForm.email.$error.required)'> email is required</p> 
+									<input type="email" name='email' ng-disabled='1==1' ng-model='currentUserDetails.email' required>
+								 	<p class="error-message" ng-show='(submitted&&detailsForm.email.$error.required)'> signup for email</p> 
 							</div>
 							<div class="c_mail_box">
 								<div class="c_mail_box_left">
@@ -135,13 +135,14 @@
 								</div>
 
 							</div>
-							<div class="c_address"> 
+							<div class="c_state_box">
+									<div class="c_state_box_left">
 								<p> Preferred Time Slot<span>*</span></p>
-								<select ng-model='currentUserDetails.timeSlot' ng-init='currentUserDetails.timeSlot= "04-06 pm"'required name='timeSlot'> <option value='12-02 pm'> 12-02 pm</option><option value='02-04 pm'> 02-04 pm</option><option value='04-06 pm'> 04-06 pm</option> <option value='06-08 pm'> 06-08 pm</option>
+								<select ng-model='currentUserDetails.timeSlot' required name='timeSlot'> <option value='12-02 pm'> 12-02 pm</option><option value='02-04 pm'> 02-04 pm</option><option value='04-06 pm'> 04-06 pm</option> <option value='06-08 pm'> 06-08 pm</option>
 								</select>
 								 
-							</div>
-
+									</div>
+					 
 							<!-- <div class="c_address_box">
 							 
 								<p> Preferred Date<span>*{{currentUserDetails.preferedDate}}</span></p> 
@@ -150,15 +151,29 @@
 						      <datepicker ng-model="dt" min-date="minDate" show-weeks="true" class="well well-sm" custom-class="getDayClass(date, mode)"></datepicker>
 						    </div>		               
 								             
-				            </div> -->
-				         
-							
+				            </div> --> 
+				          
+							<div class="c_state_box_right">
+								<p> Preferred Date<span>*</span></p>
+								<input type="text" 
+							       datepicker-popup="dd-MMMM-yyyy"
+							       timezone: { convert: true,    original: '+4'}
+							       ng-model="currentUserDetails.prefereddate"
+							       is-open="cdate.customStartDate.open"
+							       ng-click = "cdate.customStartDate.open = true"
+							       min-date = "minDate"
+							       max-date="maxDate"
+							       datepicker-options=" {    formatYear: 'yy',    startingDay: 0  }"
+							       date-disabled="disabled(date, mode)" 
+							       ng-required="true"
+							       close-text="Close"
+							       class="input-md" />
 
 
-							 
-
-
+							 </div>
 						</div>
+						</div>
+						 
  
 					</div>
 				</div>
@@ -177,6 +192,40 @@
 					</div>
 				</div>
 			</form>
+    <div class="clearfix quick-view " id="quickview-template" style="display:block" ng-show="showpopupSuccess">
+        <div class="overlay"></div>
+        <div class="content clearfix" style='  position: relative;
+  width: 300px;
+  margin: 30px auto;
+  background: #fff;
+  padding: 50px;
+  min-height: 250px;'>
+            <div style=" display:block;
+        width:100px;
+        height: 100px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        background:url(images/poploader.gif) no-repeat center #fff;
+        text-align:center;
+        padding:10px;
+        font:normal 16px Tahoma, Geneva, sans-serif;
+        margin-left: -50px;
+        margin-top: -50px;
+        z-index:2;
+        overflow: auto;" ng-show="showLoader">
+            </div>
+            	<p> Your Order is submitted and details mailed to your mail.  </p>  
+            	<a class='btn btn-lg btn-success' ui-sref='app.home' style='width: 100%;
+  margin-top: 20px;'> Continue  </a>       	
+            <a ng-click="showpopupSuccess = !showpopupSuccess" ui-sref='app.home'class="close-window">Close</a>
+        </div>
+    </div>
+
 		  </div>
 	 	</div>
 	</section>
+
+
+ 
+

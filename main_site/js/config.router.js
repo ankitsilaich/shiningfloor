@@ -291,7 +291,6 @@ angular.module('app')
                           )
                       }]
                   }
-
               })
 
               .state('app.home.search.type', {

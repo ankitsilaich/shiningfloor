@@ -358,7 +358,7 @@
                                 <h4 class="panel-title">
                                 <a class="collapsed" >
                                   PRICE (per sq ft)
-                                  <span class="floatright" > <span class='clear-filter' ng-show="isFilteredByPrice" ng-click="resetPriceRange(selectedPrices)" > clear </span> <i class="fa fa-minus"  ng-show="!pricecollapse"  ng-click="pricecollapse = !pricecollapse"></i><i class="fa fa-plus"  ng-show="pricecollapse"  ng-click="pricecollapse = !pricecollapse"></i></span>
+                                  <span class="floatright" > <span class='clear-filter' ng-show="isFilteredByPrice" ng-click="resetPriceRange()" > clear </span> <i class="fa fa-minus"  ng-show="!pricecollapse"  ng-click="pricecollapse = !pricecollapse"></i><i class="fa fa-plus"  ng-show="pricecollapse"  ng-click="pricecollapse = !pricecollapse"></i></span>
                                 </a>
                               </h4>
                             </div>
@@ -710,7 +710,7 @@
                                     </ngcart-addtocart> -->
                                 <!-- <button type="button" class="btn add-to-cart-btn" style="">Add to cart</button> -->
                                 
-                                <ngcart-addtocart  id="{{popupProduct.product_id}}" name="{{popupProduct.product_name}}{{'-'}}{{popupProduct.product_brand}}" price="{{popupProduct.price}}" quantity="parseInt({{quantity}})" type="product" quantity-max="5" data="{ product_img: popupProduct.product_img[0], product_id: popupProduct.product_id }" ng-click="showCounter()" ng-show='popupProduct.product_price!=0'>
+                                <ngcart-addtocart  id="{{popupProduct.product_id}}" name="{{popupProduct.product_name}}{{'-'}}{{popupProduct.product_brand}}" price="{{popupProduct.price}}" quantity="{{parseInt(quantity)}}" type="product" quantity-max="5" data="{ product_img: popupProduct.product_img[0], product_id: popupProduct.product_id }" ng-click="showCounter()" ng-show='popupProduct.product_price!=0'>
                                 <!-- ngCart.removeItemById(item.getId()) -->
                                           <span ng-show="!ngCart.getItemById(popupProduct.product_id)"> 
                                         <button type="button" class="btn add-to-cart-btn" style="" >Add to cart</button> 

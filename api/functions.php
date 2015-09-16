@@ -307,7 +307,7 @@ function priceInfeet($basePrice, $unit){
 }
 
 function setOurMargin($price){
-  $percentMargin = 0;
+  $percentMargin = 8;
   return round(($price*$percentMargin)/100);
 }
 function updateMinPrice($product_id , $price){
@@ -340,7 +340,7 @@ function fetchProductData($p){
                 'product_id' => $p['id'],
                 'product_brand' =>   $p['product_brand'],
                 'product_name' => $p['product_name'],
-                'product_min_price' => $p['product_min_price'],
+                'product_price' => $p['product_price'],
                 'product_category' => $product_category ,
                 'product_type_id' => $p['type_id'],
                 'product_desc' =>  $p['product_desc'],
@@ -401,6 +401,7 @@ function fetchOtherProductData($p){
 }
 // For finding all products of type say tiles or marbles Removed on 14 june 2015.
 function findAllProducts($query,$usage_location){
+  global $db;
     $data = array();
     global $resultPerPage;
     global $priceFilters,$colorFilters,$brandFilters;
@@ -409,6 +410,12 @@ function findAllProducts($query,$usage_location){
     $count3= 0;    // for counting brand filter products
     foreach($query as $p)
     {
+      $minPrice = 0;
+      $seller= ($db->sellers_products()->where('products_id',$p['id'])->order(' price ASC ')->fetch());
+      // print_r($seller);
+      if($seller){
+        $minPrice = $seller['price'] + setOurMargin($seller['price']); //find minimum price form sellers_products table data
+      }
       if(filter_input(INPUT_GET, 'details')){
           if(filter_input(INPUT_GET, 'details') == 'false')
           {
@@ -423,7 +430,7 @@ function findAllProducts($query,$usage_location){
                                'product_id' => $p['id'],
                               'product_brand' =>   $p['product_brand'],
                               'product_name' => $p['product_name'],
-                              'product_price' => $p['product_price'],
+                              'product_price' => $minPrice,
                               'product_category' => $product_category ,
                               'product_type_id' => $p['type_id'],
                               'product_width' =>  $p['product_width'],
@@ -472,7 +479,7 @@ function findAllProducts($query,$usage_location){
                          'product_id' => $p['id'],
                         'product_brand' =>   $p['product_brand'],
                         'product_name' => $p['product_name'],
-                        'product_price' => $p['product_price'],
+                        'product_price' => $minPrice,
                         'product_category' => $product_category ,
                         'product_type_id' => $p['type_id'],
                         'product_desc' =>  $p['product_desc'],

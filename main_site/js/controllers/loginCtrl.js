@@ -7,8 +7,8 @@ app.controller('loginController', ['$scope', '$http', '$filter', '$location', '$
   $scope.signupError = "";
   $scope.currentUser = $rootScope.loggedInUser;
   $scope.currentUserDetails = $rootScope.loggedInUserDetails;
-  console.log($scope.currentUser);
-  console.log($rootScope.loggedInUserDetails);
+  // console.log($scope.currentUser);
+  // console.log($rootScope.loggedInUserDetails);
   
   $scope.showsignupModel = function() {
 
