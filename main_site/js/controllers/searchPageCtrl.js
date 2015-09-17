@@ -496,7 +496,7 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
           $scope.showpopup = true;
           $scope.popupProduct = product;
           if(product.product_price!=0)  
-            $scope.popupProduct.price = $scope.boxPrice(product.product_items_per_box,product.product_width,product.product_height,product.product_w_unit,product.product_price)
+            $scope.popupProduct.price = $scope.product_box_price
           else
             $scope.popupProduct.price = 0;
           $scope.quantity = 1;
