@@ -232,8 +232,8 @@ function priceFilteredQuery($priceRange , $query){
    if(intval($priceFilters[1]))
     $highPrice = intval($priceFilters[1]);
 // min price from sellers table
-   $query = $query->where('ROUND(product_price,0) >= '.$lowPrice . ' AND ROUND(product_price,0)< '. $highPrice);
-   print_r($query);
+   $query = $query->where('product_price >= '.$lowPrice . ' AND product_price < '. $highPrice);
+   // print_r($query);
    return $query ;
 }
 
@@ -247,10 +247,10 @@ function sortFilteredQuery($sortFilters , $query){
       if($sortFilters=='new')
           return $query->order(' product_addedOn DESC ');   
       if($sortFilters == 'priceAsc')
-        return $query->order(' product_price ASC ');   
+        return $query->order(' product_box_price ASC ');   
         
       if($sortFilters == 'priceDesc')      
-        return $query->order(' product_price DESC ');   
+        return $query->order(' product_box_price DESC ');   
       
       // }   
 
@@ -410,14 +410,14 @@ function findAllProducts($query,$usage_location){
     $count3= 0;    // for counting brand filter products
     foreach($query as $p)
     {
-      $minPrice = 0;
-      $minBoxPrice = 0;
-      $seller= ($db->sellers_products()->where('products_id',$p['id'])->order(' price ASC ')->fetch());
-      // print_r($seller);
-      if($seller){
-        $minPrice = round(($seller['price'] + ($seller['price']*$seller['margin'])/100),2); //find minimum price form sellers_products table data
-        $minBoxPrice = round($seller['box_price']+ ($seller['box_price']*$seller['margin'])/100);
-      }
+      // $minPrice = 0;
+      // $minBoxPrice = 0;
+      // $seller= ($db->sellers_products()->where('products_id',$p['id'])->order(' price ASC ')->fetch());
+      // // print_r($seller);
+      // if($seller){
+      //   $minPrice = round(($seller['price'] + ($seller['price']*$seller['margin'])/100),2); //find minimum price form sellers_products table data
+      //   $minBoxPrice = round($seller['box_price']+ ($seller['box_price']*$seller['margin'])/100);
+      // }
       if(filter_input(INPUT_GET, 'details')){
           if(filter_input(INPUT_GET, 'details') == 'false')
           {
@@ -432,8 +432,8 @@ function findAllProducts($query,$usage_location){
                                'product_id' => $p['id'],
                               'product_brand' =>   $p['product_brand'],
                               'product_name' => $p['product_name'],
-                              'product_price' => $minPrice,
-                              'product_box_price' => $minBoxPrice,
+                              'product_price' => $p['product_price'],
+                              'product_box_price' => $p['product_box_price'],
                               'product_category' => $product_category ,
                               'product_type_id' => $p['type_id'],
                               'product_width' =>  $p['product_width'],
@@ -483,8 +483,8 @@ function findAllProducts($query,$usage_location){
                          'product_id' => $p['id'],
                         'product_brand' =>   $p['product_brand'],
                         'product_name' => $p['product_name'],
-                        'product_price' => $minPrice,
-                        'product_box_price' => $minBoxPrice,
+                        'product_price' => $p['product_price'],
+                        'product_box_price' => $p['product_box_price'],
                         'product_category' => $product_category ,
                         'product_type_id' => $p['type_id'],
                         'product_desc' =>  $p['product_desc'],

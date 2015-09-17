@@ -30,11 +30,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-3 col-sm-3 col-xs-12">
-                    <div class="filter_box_left">
-                        <div class='col-md-12 input-group search'>
-                        <input class='form-control' ng-model='searchQuery' placeholder='type name of product'> </input>
-                        <span  ng-click='searchProductResults()' class='input-group-addon searchButton'> <i class='fa fa-search'> </i></span>
-                        </div>
+                    <div class="filter_box_left"> <form name='searchProducts' ng-submit='searchProductResults()'>
+                        <div class='col-md-12 search'>
+                        <div style='float:left'>    
+                        <input class='form-control' ng-model='searchQuery' placeholder='type name of product'> </input> </div>
+                        <div style='float:right'> <button class='btn btn-sm searchButton' type='submit'><i class='fa fa-search'> </i></button>  </div>
+                        </div></form>
                        <!--  <p>FILTERING:</p>
                         <div class="filter_cont">
                             <ul>
@@ -679,7 +680,7 @@
                             <div class="prices">
                                 <span class="compare-price"></span>
                                 <span class="price">{{popupProduct.product_price}} per sq ft</span>
-                                <span>(Rs.{{popupProduct.price}} per cartoon)</span>
+                                <span>(Rs.{{popupProduct.product_box_price}} per cartoon)</span>
                             </div>
 
                             <!-- <div class="total-price">
@@ -700,9 +701,8 @@
                                   
                             </div> -->
                             <div class="total-price">
-                                <label>Subtotal: </label><span>Rs.{{quantity*popupProduct.price}}</span>
+                                <label>Subtotal: </label><span>Rs.{{quantity*popupProduct.product_box_price}}</span>
                             </div>
-
 
                             <div class="actions clearfix col-md-6 col-xs-12 no-padder">
                                 <!-- <ngcart-addtocart id="{{popupProduct.product_id}}" name="{{popupProduct.product_name}}" price="{{popupProduct.product_price}}" quantity="3" quantity-max="5" data="{ product_img: popupProduct.product_img, product_id: popupProduct.product_id }" ng-click ="showCounter()">Add to Cart
@@ -710,7 +710,7 @@
                                     </ngcart-addtocart> -->
                                 <!-- <button type="button" class="btn add-to-cart-btn" style="">Add to cart</button> -->
                                 
-                                <ngcart-addtocart  id="{{popupProduct.product_id}}" name="{{popupProduct.product_name}}{{'-'}}{{popupProduct.product_brand}}" price="{{popupProduct.price}}" quantity="{{parseInt(quantity)}}" type="product" quantity-max="5" data="{ product_img: popupProduct.product_img[0], product_id: popupProduct.product_id }" ng-click="showCounter()" ng-show='popupProduct.product_price!=0'>
+                                <ngcart-addtocart  id="{{popupProduct.product_id}}" name="{{popupProduct.product_name}}{{'-'}}{{popupProduct.product_brand}}" price="{{popupProduct.product_box_price}}" quantity="{{parseInt(quantity)}}" type="product" quantity-max="5" data="{ product_img: popupProduct.product_img[0], product_id: popupProduct.product_id }" ng-click="showCounter()" ng-show='popupProduct.product_price!=0'>
                                 <!-- ngCart.removeItemById(item.getId()) -->
                                           <span ng-show="!ngCart.getItemById(popupProduct.product_id)"> 
                                         <button type="button" class="btn add-to-cart-btn" style="" >Add to cart</button> 

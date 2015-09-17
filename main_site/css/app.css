@@ -564,18 +564,18 @@ nav.currency {
 .header_left a {
   color: #333333;
   font-size: 17px;
-  left: 0px;
+  left: 20px;
   position: absolute;
   top: 4px;
+  /* border-right: 1px solid #eee; */
 }
 .header_left input[type="text"] {
-  border: medium none;
+    border: medium none;
   color: #000;
   font-weight: 500;
   margin-left: 13px;
-  padding-left: 10px;
   padding-top: 3px; 
-  padding: 2px 10px;
+  padding-left: 26px;
 }
 .header_right ul.checkout {
   list-style: outside none none;
@@ -3007,6 +3007,7 @@ ul#single_blog_nav {
 .filter_box_left a i{
   color: #337ab7;
 }
+
 .filter_cont > ul {
   list-style: outside none none;
   margin: 0;
@@ -5840,7 +5841,7 @@ label[for="productSelect"] {margin-bottom: 10px;}
   float: left;
   clear: both;
   margin: 20px 0px;
-  padding-left:0px 
+  padding-left:10px 
 }
 .add-to-sample-btn :hover{
   background-color: #fff;
@@ -9811,8 +9812,9 @@ ins {
     transition: all 200ms ease-in;
     
   }
-  .search input{ font-size: 13px; font-weight: 100;} 
-  .search .searchButton{ background-color: #F8FAFA;color : #1F72BE;cursor: pointer;} 
+  .search input{ font-size: 13px; font-weight: 100; background-color: #fff;} 
+  .search .searchButton{ background-color: #F8FAFA;color : #1F72BE;cursor: pointer;  font-size: 14px;
+  border: 1px solid #ddd;} 
   /*.search .searchButton.i{ color : #1F72BE;} */
    .search .searchButton:hover{ color: #F8FAFA;;background-color : #1F72BE;} 
   /*.search .searchButton.i{ color : #1F72BE;}*/

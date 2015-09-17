@@ -495,10 +495,6 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
           $scope.popupProduct = {}
           $scope.showpopup = true;
           $scope.popupProduct = product;
-          if(product.product_price!=0)  
-            $scope.popupProduct.price = $scope.product_box_price
-          else
-            $scope.popupProduct.price = 0;
           $scope.quantity = 1;
           if(ngCart.getItemById($scope.popupProduct.product_id).getQuantity())
             $scope.quantity = ngCart.getItemById($scope.popupProduct.product_id).getQuantity();
