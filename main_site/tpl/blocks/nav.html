@@ -21,55 +21,94 @@
                       <div class="collapse navbar-collapse" id="cat-nav">
 
                           <ul class="nav navbar-nav main" >
-                              <li class="active tilemenu mainli"><a>FLOOR TILES</a>
-																<div class="cat_mega_menu">
-																		<div class="cat_left">
-																			<h5>Glazed Vitrified Tiles</h5>
-																			<div class="cat_menu_line"></div>
-																			<ul class="cat_nav">
-																				<li ><a ng-mouseover="itemsrc='http://www.hindwarehomes.com/images/products/Tiles_Ambience/Irene/2.jpg'" href>Irene</a></li>
-																				<li><a ng-mouseover="itemsrc='http://www.hindwarehomes.com/images/products/Tiles_Ambience/Garnet/2.jpg'" href>Garnet</a></li>
-																				<li><a ng-mouseover="itemsrc='http://www.hindwarehomes.com/images/products/Tiles_Ambience/Legno/2.jpg'" href>Legno</a></li>
-																				<li><a ng-mouseover="itemsrc='http://www.hindwarehomes.com/images/products/Tiles_Ambience/Lycra/2.jpg'" href>Lycra</a></li>
-																				<li><a  ng-mouseover="itemsrc='http://www.hindwarehomes.com/images/products/Tiles_Ambience/Pietra/2.jpg'" href>Pietra</a></li>
-																			</ul>
-																		</div>
-																		<div class="cat_middle">
-																			<h5>Floor Tiles</h5>
-																			<div class="cat_menu_line"></div>
-																			<ul class="cat_nav">
-																				<li><a href="#">Travertine</a></li>
-																				<li><a href="#">Marble</a></li>
-																				<li><a href="#">Slate</a></li>
-																				<li><a href="#">Ceramic</a></li>
-																				<li><a href="#">Porcelain</a></li>
-																			</ul>
-																		</div>
-																		<div class="cat_middle_right">
-																			<h5>Wall Tiles</h5>
-																			<div class="cat_menu_line"></div>
-																			<ul class="cat_nav">
-																				<li><a href="#">Travertine</a></li>
-																				<li><a href="#">Granite</a></li>
-																				<li><a href="#">Pebbles and Stones</a></li>
-																				<li><a href="#">Glass</a></li>
-																				<li><a href="#">Marble</a></li>
-																			</ul>
-																		</div>
-																		<div class="cat_img" style="margin-top:50px;margin-bottom:50px" ng-init="itemsrc = 'http://www.hindwarehomes.com/images/products/Tiles_Ambience/Irene/2.jpg'">
-																			<img ng-src="{{itemsrc}}" src=""  style="height:222px;width:300px"alt="" />
-																		</div>
-																</div>
-															</li>
-															  <li class="mainli"><a href="contact.html">WAll tiles</a></li>
-                                <li class="mainli"><a href="contact.html">Wall Decor </a></li>
-                              <li class="dropdown menu-large mainli">
-                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Concepts<i class="fa fa-angle-down"></i></a>
+                              <li class="active tilemenu mainli"><a ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Wall'})">WALL TILES</a>
+								<div class="cat_mega_menu">
+									<div class="cat_left">
+										<h5>Find by Brands</h5>
+										<div class="cat_menu_line"></div>
+										<ul class="cat_nav">
+											<li ><a ng-mouseover="itemsrc='images/johnson_nav.jpg'" ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Wall',brand_name:'Johnson'})">Johnson</a></li>
+											<li><a ng-mouseover="itemsrc='images/kajaria_nav.jpg'" ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Wall',brand_name:'Kajaria'})">Kajaria</a></li>
+											<li><a ng-mouseover="itemsrc='images/somany_nav.jpg'" ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Wall',brand_name:'Somany'})">Somany</a></li>
+											<li><a ng-mouseover="itemsrc='images/orient_nav.jpg'" ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Wall',brand_name:'Orient Bell'})">Orient Bell</a></li>
+											<li><a  class='underline' ng-mouseover="itemsrc='images/johnson_nav.jpg'" ui-sref= "app.home.search.type({routeId: 'tiles',usages:'Wall'})">View All</a></li>
+										</ul>
+									</div>
+									<div class="cat_middle">
+										<h5>Find by Finish </h5>
+										<div class="cat_menu_line"></div>
+										<ul class="cat_nav">
+											<li><a ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Wall',finish_types:'Rustic'})">Rustic</a></li>
+											<li><a ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Wall',finish_types:'Stone'})">Stone</a></li>
+											<li><a ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Wall',finish_types:'Wooden'})">Wood</a></li>
+											<li><a ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Wall',finish_types:'Matt'})">Matt</a></li>
+											<li><a class='underline' ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Wall'})">View All</a></li>
+										</ul>
+									</div>
+									<div class="cat_middle_right">
+										<h5>Find by Size</h5>
+										<div class="cat_menu_line"></div>
+										<ul class="cat_nav">
+											<li><a ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Wall',sizes:'12*24'})">12*24 in</a></li>
+											<li><a ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Wall',sizes:'12*18'})">12*18 in</a></li>
+											<li><a ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Wall',sizes:'10*15'})">10*15 in</a></li>
+											<li><a ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Wall',sizes:'10*13'})">10*13 in</a></li>
+											<li><a class='underline' ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Wall'})">View All</a></li>
+										</ul>
+									</div>
+									<div class="cat_img" style="margin-top:50px;margin-bottom:50px" ng-init="itemsrc = 'images/johnson_nav.jpg'">
+										<img ng-src="{{itemsrc}}" src=""  style="height:222px;width:300px"alt="" />
+									</div>
+								</div>
+							</li>
+ 							<li class="tilemenu1 mainli"><a ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Floor'})">Floor TILES</a>
+								<div class="cat_mega_menu1">
+									<div class="cat_left">
+										<h5>Find by Brands</h5>
+										<div class="cat_menu_line"></div>
+										<ul class="cat_nav">
+											<li ><a ng-mouseover="itemsrc='images/johnson_nav.jpg'" ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Floor',brand_name:'Johnson'})">Johnson</a></li>
+											<li><a ng-mouseover="itemsrc='images/kajaria_nav.jpg'" ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Floor',brand_name:'Kajaria'})">Kajaria</a></li>
+											<li><a ng-mouseover="itemsrc='images/somany_nav.jpg'" ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Floor',brand_name:'Somany'})">Somany</a></li>
+											<li><a ng-mouseover="itemsrc='images/orient_nav.jpg'" ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Floor',brand_name:'Orient Bell'})">Orient Bell</a></li>
+											<li><a  class='underline' ng-mouseover="itemsrc='images/johnson_nav.jpg'" ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Floor'})">View All</a></li>
+										</ul>
+									</div>
+									<div class="cat_middle">
+										<h5>Find by Material </h5>
+										<div class="cat_menu_line"></div>
+										<ul class="cat_nav">
+											<li><a ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Floor',materials:'Vitrified'})">Vitrified Tile</a></li>
+											<li><a ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Floor',materials:'Vitrified'})">Glazed Vitrified</a></li>
+											<li><a ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Floor',materials:'Ceramic'})">Ceramic Tile</a></li>
+											<li><a ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Floor',materials:'Mosaic'})">Mosaic Tile</a></li>
+											<li><a class='underline' ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Floor'})">View All</a></li>
+										</ul>
+									</div>
+									<div class="cat_middle_right">
+										<h5>Find by Size</h5>
+										<div class="cat_menu_line"></div>
+										<ul class="cat_nav">
+											 
+											<li><a ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Floor',sizes:'24*24'})">24*24 in</a></li>
+											<li><a ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Floor',sizes:'32*32'})">32*32 in</a></li>
+											<li><a ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Floor',sizes:'24*48'})">24*48 in</a></li>
+											<li><a ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Floor',sizes:'12*12'})">12*12 in</a></li>
+											<li><a class='underline' ui-sref= "app.home.search.type({routeId: 'tiles',pageNo: 1,usages:'Floor'})">View All</a></li>
+										</ul>
+									</div>
+									<div class="cat_img" style="margin-top:50px;margin-bottom:50px" ng-init="itemsrc = 'images/johnson_nav.jpg'">
+										<img ng-src="{{itemsrc}}" src=""  style="height:222px;width:300px"alt="" />
+									</div>
+								</div>
+							</li>
+                            
+                            <li class="dropdown menu-large mainli">
+                                  <a href  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Concepts</i></a>
 
-                              </li>
-                              <li class="mainli"><a href="blog.html">Visualization</a></li>
+                              </li> 
 
-                              <li class="mainli"><a href="contact.html">Blog </a></li>
+                              <li class="mainli"><a href>Blog </a></li>
                               <li class="mainli"><a ui-sref="app.home.faq" style="cursor:pointer">FAQ </a></li>
                               <li class="mainli"><a ui-sref="app.home.contact" style="cursor:pointer">Contact Us</a></li>
 

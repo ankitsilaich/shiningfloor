@@ -16,10 +16,10 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="bread_box">
                         <ul class="breadcumb">
-                            <li><a href="index-2.html">home <span>|</span></a></li>
-                            <li><a href="category-1.html">Shop <span>|</span></a></li>
-                            <li><a href="category-2.html">{{rId}} <span>|</span></a></li>
-                            <li class="active"><a href="#">Products</a></li>
+                            <li><a href="app.home">home <span>|</span></a></li>
+                            <li><a href>Shop <span>|</span></a></li>
+                            <li><a href>{{rId}} <span>|</span></a></li>
+                            <li class="active"><a href>Products</a></li>
                         </ul>
                     </div>
                 </div>
@@ -148,9 +148,9 @@
 
 
                     <div class="col-md-4 col-sm-4 col-xs-12">
-                        <div class="filter_box_right" ng-init="sortDropdown=true">
-                          <a class="dropdown-toggle" ng-click="sortDropdown=!sortDropdown" >SORT BY {{sortTypes[selectedSortIndex]}} <span class="caret"></span></a>
-                          <ul class="dropdown-menu"  ng-class="{'hidden':sortDropdown==true}">
+                        <div class="filter_box_right" >
+                          <a class="dropdown-toggle"   >SORT BY {{sortTypes[selectedSortIndex]}} <span class="caret"></span></a>
+                          <ul class="dropdown-menu"  >
                             <li ng-repeat='sortType in sortTypes'>
                                 <a href ng-click='selectSortType($index);updateUrlChanges()' ng-class="{'active':selectedSortIndex==$index }"> {{sortType}} </a>
                             </li>
@@ -452,7 +452,7 @@
                             </div>
                         </div>
 
-                        <div class="panel panel-default">
+                        <div class="panel panel-default" ng-show='1==0'>
                             <div class="panel-heading"  style="cursor:pointer;">
                                 <h4 class="panel-title">
 

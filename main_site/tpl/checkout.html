@@ -16,7 +16,7 @@
 					<div class="bread_box">
 						<ul class="breadcumb">
 							<li><a ui-sref="app.home">home <span>|</span></a></li>
-							<li><a ui-sref="app.home" >Shop <span>|</span></a></li>
+							<li><a ui-sref="app.home.tile" >Shop <span>|</span></a></li>
 							<li><a ui-sref= "app.home.cart">Cart <span>|</span></a></li>
 							<li class="active"><a href >checkout</a></li>
 						</ul>
@@ -46,7 +46,7 @@
 						<div class="checkout_form cd-user-modal-container"> 
 							 <div class='mail_info'><p  > We will send order details to this email address </p></div>
 							<div class='' ng-click="showloginModel()" ng-disabled='currentUser!=""'><a ng-disabled='currentUser!=""' class='btn btn-default checkout_signIn'  >Sign in</a>
-								<input type="email" name='userEmail' ng-model='currentUserDetails.email' required style='display:none'> 
+								<input type="email" name='userEmail' placeholder=''ng-model='currentUserDetails.email' required style='display:none'> 
 								<div ng-show='(submitted&&currentUser=="")'> 
 									<p class="error-message" > SIGNIN BEFORE CHECKOUT</p>
 								</div>
@@ -69,7 +69,7 @@
 					 <div class="dotted_line"></div>
 					   
 						<div class="checkout_form">
-							 {{currentUserDetails}}
+							 
 							<div class="c_name_box">
 								<div class="c_name_box_left">
 									<p>First Name <span>*</span></p>
@@ -86,7 +86,7 @@
 							<div class="c_address">
 								 
 									<p>Email <span>*</span></p>
-									<input type="email" name='email' ng-disabled='1==1' ng-model='currentUserDetails.email' required>
+									<input type="email" name='email' placeholder='signin for email' ng-disabled='1==1' ng-model='currentUserDetails.email' required>
 								 	<p class="error-message" ng-show='(submitted&&detailsForm.email.$error.required)'> signup for email</p> 
 							</div>
 							<div class="c_mail_box">
@@ -216,7 +216,7 @@
         overflow: auto;" ng-show="showLoader">
             </div>
             	<p> Your Order is submitted and details mailed to your mail.  </p>  
-            	<a class='btn btn-lg btn-success' ui-sref='app.home' style='width: 100%;
+            	<a class='btn btn-lg btn-primary' ui-sref='app.home' style='width: 100%;
   margin-top: 20px;'> Continue  </a>       	
             <a ng-click="showpopupSuccess = !showpopupSuccess" ui-sref='app.home'class="close-window">Close</a>
         </div>
