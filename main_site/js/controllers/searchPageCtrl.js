@@ -387,9 +387,13 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
     $scope.sortTypeFilters = ['new','priceAsc','priceDesc'];
     $scope.sortTypes = ['New','Price low to high','Price high to low'];    
     $scope.selectedSortType=[]; 
-    for (i = 0; i < $scope.sortTypes.length; i++)
-        $scope.selectedSortType[i] = false;  
-    $scope.sortBy =$scope.sortTypeFilters[0];
+    for (i = 0; i < $scope.sortTypes.length; i++){
+      if($scope.sortTypeFilters[i]===$location.search()['sortBy'])
+        $scope.selectedSortIndex = i       
+    }
+    
+    $scope.findandselect($scope.sortTypeFilters, 'sortBy', $scope.selectedSortType, $scope.FilterUrl);
+
     if ($scope.pageNo == undefined) {
         $location.search('pageNo', '1');
     }
@@ -399,7 +403,7 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
       $scope.makePriceUrl();   
       // console.log($scope.slider.min  + $scope.slider.max);
     }
-    $location.search('sortBy', $scope.sortBy);         
+
     $scope.requestToSearchAPI();
     // url for changing product in search page.
     $scope.url = $stateParams.query; 

@@ -94,12 +94,35 @@ $scope.login = function(user) {
             // $scope.showSignup = false;
            // $state.go($state.current, {}, {reload: true});
             // $window.location.reload();
-            $scope.signupError = "";
-            $scope.signupMsg = "Email sent to your email, please verify your account! ";
+            $http.post('../api/slim.php/shiningfloor/email_verification/'+ user.email ).then(function(response) {
+            
+    if(response.data.status==='success'){ 
+console.log('email sent');            
+              $scope.signupError = "";            
+              $scope.signupMsg = "Email sent to your email, please verify your account! ";
+              }
+              
+            });
+            
         }
       });         
   };
 
+  $scope.sendConfirmation= function(useremail){
+  console.log(useremail);
+      $http.post('../api/slim.php/user/forgotpwd/' + useremail) 
+        .then(function(response) {
+ 
+          if(response.data.status==='success'){
+
+            $scope.forgotpwdResp = 'password reset send to your email address, please check your email!';
+          }
+          else{
+            $scope.forgotpwdResp = 'email not registered!';
+          }
+      });
+ 
+    };
 
   $scope.logout = function(){
     $http.get('../api/slim.php/auth/logout/user').

@@ -1,0 +1,27 @@
+<div class='container' ng-controller='resetpwdCtrl' style='min-height:400px;margin-top:20px;'>
+
+	<form class="cd-form form-validation" name='resetpwdForm' id="resetpwdForm" novalidate>
+		<div class='container'>
+			<h3 class='color-primary'> Please Enter your new password.</h3>
+		</div>
+		<div class='container'>		
+			<div class='col-md-4 col-sm-6 col-xs-6 no-padder'>
+					<p class="fieldset">
+						<label class="image-replace cd-password" for="signin-password">Password</label>
+						<input class="full-width has-padding has-border" id="signin-password" type="password"  placeholder="password min length is 7" name= "password" ng-model="resetaccount.password" ng-minlength="7" required>
+						 
+						<span ng-show="resetpwdError" class="cd-error-message"> {{resetpwdError}} </span>
+					</p>
+					<p ng-show='failuremsg' class='failure-msg'> {{failuremsg}}</p>
+					<p ng-show='successmsg' class='success-msg'> {{successmsg}}</p>
+    	    </div>
+       		 <div class='col-md-2 col-sm-4 col-xs-6'>
+
+					<p class="fieldset">
+						 <button type="submit" class="btn btn-lg full-width" ng-click='resetpwd()'> Login  </button> 
+					</p>
+			</div>
+		</div>
+	</form>
+
+</div>

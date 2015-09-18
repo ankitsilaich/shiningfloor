@@ -820,6 +820,9 @@ nav.mainmenu::after {
   .mainmenu ul#nav li ul#sub-menu5 li a:hover {
     color:#183152;
   }
+  .color-primary{
+  color: #3599ae;;
+  } 
   .mainmenu ul#nav li a {
    color:#ffffff;
    font-size: 13px;
@@ -5204,7 +5207,7 @@ input[type="number"].hotfix::-webkit-inner-spin-button {
    #cat-nav ul.main{
     margin:0;
     padding:0;
-  }
+  } 
   #cat-nav ul.main li.mainli{
     list-style:none;
     float:left;
@@ -5213,6 +5216,11 @@ input[type="number"].hotfix::-webkit-inner-spin-button {
     -webkit-transition: all .3s ease;
     position:relative;
       }
+ 
+#cat-nav ul.main li.mainli a:hover{
+  background-color: #183152;
+  color: #fff! important;
+}
   #cat-nav ul.main li.mainli a{
     background: #ffffff;
     color:#3c3d41;
@@ -5246,9 +5254,7 @@ input[type="number"].hotfix::-webkit-inner-spin-button {
     -moz-transition: all .3s ease;
     -webkit-transition: all .3s ease;
   }
-  #cat-nav ul.main li.mainli:first-child a{
-    padding-left:0;
-  }
+   
   #cat-nav ul.main li.mainli{
     }
     #cat-nav ul.main li.mainli:last-child{
