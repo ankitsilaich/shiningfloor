@@ -4,8 +4,8 @@
 
 angular.module('app')
 
-  .controller('AppCtrl', ['$scope', '$rootScope', '$translate', 'ngCart', '$localStorage', '$window','$http','$state','$stateParams','LoginService',
-    function(              $scope, $rootScope,  $translate, ngCart,  $localStorage,   $window ,$http , $state ,$stateParams,LoginService) {
+  .controller('AppCtrl', ['$scope', '$rootScope', '$translate', 'ngCart', '$localStorage', '$window','$http','$state','$stateParams','LoginService','$location',
+    function(              $scope, $rootScope,  $translate, ngCart,  $localStorage,   $window ,$http , $state ,$stateParams,LoginService,$location) {
 
       // add 'ie' classes to html
       var isIE = !!navigator.userAgent.match(/MSIE/i);
@@ -102,7 +102,6 @@ angular.module('app')
         $scope.signupResp = "Email not valid!";
       }
     };
-
 
       $scope.showCounter = function(){
 

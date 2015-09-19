@@ -242,13 +242,11 @@ function sortFilteredQuery($sortFilters , $query){
 
   $sortTypeFilters = ['new','priceAsc','priceDesc'];
   // for($i=0 ;$i< count($sortTypeFilters) ; $i++)
-  // {
-
+  // { 
       if($sortFilters=='new')
           return $query->order(' product_addedOn DESC ');   
       if($sortFilters == 'priceAsc')
-        return $query->order(' product_box_price ASC ');   
-        
+        return $query->order(' product_box_price ASC ');           
       if($sortFilters == 'priceDesc')      
         return $query->order(' product_box_price DESC ');   
       

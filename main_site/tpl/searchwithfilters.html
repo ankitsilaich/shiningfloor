@@ -71,9 +71,9 @@
                         </ul>
                     </div> -->
 
-                    <div class="col-md-8 col-sm-8 filter_box" ng-init="dropdown1=false">
+                    <div class="col-md-8 col-sm-8 filter_box" ng-init="dropdown1=false">   
                         <div class="col-md-12 col-sm-12" style='  line-height: 30px;'>
-                             <div class="col-md-6 col-sm-6 queryInfo" ng-show='FilterUrl.query'>Showing results: {{FilterUrl.query}} <span class='icon-close' ng-click='searchQuery=null;searchProductResults()'></span> </div>
+                             <div class="col-md-6 col-sm-6 queryInfo" ng-show='userQuery'>Showing results: {{userQuery}} <span class='icon-close' ng-click='userQuery=null;clearQuery()'></span> </div>
                              <div class="col-md-6 col-sm-6 filterInfo" ng-show='isFilteredByUsage||isFilteredByLook||isFilteredBySize||isFilteredByApplication||isFilteredByBrand||isFilteredByMaterial||isFilteredByPrice||isFilteredByFinish||isFilteredByColor'>Clear Filters:  <span class='icon-close' ng-click='resetAll()'></span> </div>
                         </div>
                        <!--  <a class="dropdown-toggle" ng-click="dropdown1=!dropdown1;dropdown2=false;dropdown3=false;" >Usages<span class="caret"></span></a>

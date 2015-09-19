@@ -73,18 +73,7 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
         $scope.requestToSearchAPI();}
     };
 
-     $scope.requestToSearchAPI = function() { 
-        if ($stateParams.query) {
-            final = $location.url().replace($location.path(), '');
-        } else final = $location.url().replace($location.path(), '');
-        $http.get('../api/slim.php/shiningfloor/products/' + 'search/' + $stateParams.routeId + '/' + final).then(function(resp) {
-            $scope.searchResults = resp.data.product_data;
-            $scope.totalResults = resp.data.totalResults;
-            $scope.start = resp.data.start;
-            $scope.last = resp.data.last;
-
-        });
-    };
+     
     $scope.selectSortType = function(index){
         $scope.selectedSortIndex = index;
     };
@@ -169,8 +158,8 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
             $location.search('category', $scope.categoryUrl);
         } else $location.search('category', null);
         //console.log($scope.searchQuery);
-        if ($scope.searchQuery!=''){
-            $scope.queryUrl = $scope.searchQuery ;
+        if ($scope.userQuery!=''){
+            $scope.queryUrl = $scope.userQuery ;
             $location.search('query', $scope.queryUrl);
         } else $location.search('query', null);
 
@@ -407,30 +396,24 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
     $scope.requestToSearchAPI();
     // url for changing product in search page.
     $scope.url = $stateParams.query; 
-    console.log($scope.url);
-    console.log($scope.FilterUrl);
+   
     //console.log($scope.url);
 
     $scope.searchQuery='';
     $scope.searchProductResults = function() {
-      console.log($scope.searchQuery);
-        // $stateParams.routeId = searchType;
-        // queryStr = $scope.url.substring(0, $scope.url.indexOf('?'));
-        // $scope.searchCategory = $scope.selectSearchCategory();
-        // $scope.resetAllUrlAndClasses();
-        // var tmpIndx = $scope.url.indexOf('&');
-        // if(tmpIndx !=-1)
-        //     $scope.url = $scope.url.replace($scope.url.substring(tmpIndx, $scope.url.length) , '');
-        // if($scope.FilterUrl.query){
-          $location.search('query',$scope.searchQuery);
+      console.log($scope.searchQuery);         
+      $location.search('query',$scope.searchQuery); 
         // }
         // $scope.url = $scope.url.replace(queryStr, query);
         // $location.path('shiningFloor/search/' + $stateParams.routeId + '/' + $scope.url);
         $scope.requestToSearchAPI();
-        $scope.searchQuery.text = '';
+        $scope.searchQuery= '';
     };
-  
-
+    $scope.clearQuery = function() {
+      $scope.userQuery = null;          
+      $location.search('query',$scope.userQuery);  
+        $scope.requestToSearchAPI(); 
+    };
 
     $scope.resetFilters =  function(selectedFilters){
       for (i = 0; i < selectedFilters.length; i++)
@@ -506,9 +489,6 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
       //     $scope.showLoader = false;
 
       // }, 3000);
-
-
-
 
     };
     

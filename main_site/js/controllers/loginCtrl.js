@@ -99,7 +99,7 @@ $scope.login = function(user) {
     if(response.data.status==='success'){ 
 console.log('email sent');            
               $scope.signupError = "";            
-              $scope.signupMsg = "Email sent to your email, please verify your account! ";
+              $scope.signupMsg = "An email sent to your email-id, please verify your account! ";
               }
               
             });
@@ -115,7 +115,7 @@ console.log('email sent');
  
           if(response.data.status==='success'){
 
-            $scope.forgotpwdResp = 'password reset send to your email address, please check your email!';
+            $scope.forgotpwdResp = 'password reset link sent to your email address, please check your email!';
           }
           else{
             $scope.forgotpwdResp = 'email not registered!';

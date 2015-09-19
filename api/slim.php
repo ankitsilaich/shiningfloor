@@ -37,8 +37,8 @@ $app->post("/shiningfloor/email_verification/:email", function ($email=null) use
     $headersr = 'From: '.$email_fromr."\r\n".
      'Reply-To: '.$email_fromr."\r\n" .
      'X-Mailer: PHP/' . phpversion();
-     mail($email_tor, $email_subjectr, $body , $headers3);
-    //     // echo "sent";
+   //  mail($email_tor, $email_subjectr, $body , $headers3);
+     
         $data = array("status"=> "success");
      }
      else{
@@ -60,7 +60,7 @@ $app->get("/user/confirmEmail", function () use ($app, $db) {
              $time = new DateTime("now", new DateTimeZone('Asia/Kolkata'));
              $time = $time->format('Y-m-d H:i:s');
              $db->users()->where('email',$email)->update(array('isValid'=> 1 ,'pwd_update_time' => $time));
-             echo 'Email Confirmed!';
+             echo 'Email Confirmed! Now you can login.';
            header( "refresh:3;url='http://buildcorner.com/'" );
      }  
 else{
@@ -79,8 +79,7 @@ $app->post("/user/forgotpwd/:email", function ($email=null) use ($app, $db) {
      $data ;
      $count  = count($user);
      if($count==1){
-         $pwd_update_time = $user->fetch()['pwd_update_time'];
-         // http://localhost/websites/shiningfloor-1/shiningfloor/main_site/#/Buildcorner/resetpwd
+         $pwd_update_time = $user->fetch()['pwd_update_time']; 
          $send_url='http://buildcorner.com/marwadi/main_site/#/Buildcorner/resetpwd/';
          $send_url .= ''.$email.'/'.md5($email.sha1($pwd_update_time));
          //echo $send_url;
@@ -93,8 +92,8 @@ $app->post("/user/forgotpwd/:email", function ($email=null) use ($app, $db) {
         $headersr = 'From: '.$email_fromr."\r\n".
         'Reply-To: '.$email_fromr."\r\n" .
         'X-Mailer: PHP/' . phpversion();
-        mail($email_tor, $email_subjectr, $body , $headers3);
-    //     // echo "sent";
+  //      mail($email_tor, $email_subjectr, $body , $headers3);
+     
        $data = array("status"=> "success");
      }
      else{
@@ -150,42 +149,7 @@ $authenticate_user = function ($app) {
 session_start();
 
 
-
-// $app->post("/auth/process", function () use ($app, $db) {
-//     $email = $app->request()->post('email');
-//     $password = $app->request()->post('password');
-//     $user = $db->users()->where('email', $email)->where('pwd',md5(md5($password)));
-//     $count = count($user);
-//     if($count == 1){
-//      $_SESSION['user'] = $email;
-//      $data = array( "loginstatus" => "success",
-//                         'user' => $email
-//                     );
-//      unset($_SESSION['loginAttempt']);
-//     }else{
-//         if(isset($_SESSION['loginAttempt'])){
-//             $_SESSION['loginAttempt']++;
-//             $loginAttempt = (int)  $_SESSION['loginAttempt'];
-//             $data[] = array( "loginstatus" => "fail",
-//                         'loginAttempt' => $loginAttempt
-//                     );
-//             header('Refresh: 3; URL=http://localhost/shiningfloor/shiningfloor/main_site/login.html?loginstatus=fail&loginAttempt='.$loginAttempt);
-//         }
-//         else{
-//             $data[] = array( "loginstatus" => "login failure",
-//                         'loginAttempt' => "1"
-//                     );
-//             $_SESSION['loginAttempt'] = 1;
-//             header('Refresh: 3; URL=http://localhost/shiningfloor/shiningfloor/main_site/login.html?loginstatus=fail&loginAttempt=1');
-//         }
-//     }
-//    $app->response()->header('Content-Type', 'application/json');
-//    echo json_encode($data);
-// });
-// $app->get("/auth/logout", function () use ($app) {
-//    unset($_SESSION['user']);
-// });
-
+ 
 
 //------------ Post method for user to athenticate ------------------//
 $app->post("/auth/process/user", function() use ($app, $db)
@@ -405,7 +369,8 @@ $app->post("/buildcorner/submitOrder",$authenticate_user($app), function () use 
       $headersr = 'From: '.$email_fromr."\r\n".
      'Reply-To: '.$email_fromr."\r\n" .
      'X-Mailer: PHP/' . phpversion();
-     mail($email_tor, $email_subjectr,$body, $headers3);
+   //  mail($email_tor, $email_subjectr,$body, $headers3);
+     //  mail('aamir@buildcorner.com', $email_subjectr,$body, $headers3);
         
     echo json_encode(array('orderStatus' => 'success'));
 

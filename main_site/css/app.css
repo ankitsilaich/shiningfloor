@@ -574,8 +574,8 @@ nav.currency {
   color: #000;
   font-weight: 500;
   margin-left: 13px;
-  padding-top: 3px; 
-  padding-left: 26px;
+  padding-top: 5px; 
+  padding-left: 28px;
 }
 .header_right ul.checkout {
   list-style: outside none none;
@@ -1170,7 +1170,7 @@ nav.mainmenu::after {
       width: 27%;
     }
     .cat_left > h5, .cat_middle > h5, .cat_middle_right > h5{
-      font-size: 13px;
+      font-size: 14px;
       margin-bottom: 10px;
       text-align: left;
       text-transform: uppercase;
@@ -1205,7 +1205,7 @@ nav.mainmenu::after {
      text-transform: uppercase!important;
      color: #212121!important;
      display: block!important;
-     font-size: 12px!important;
+     font-size: 13px!important;
      padding: 10px 0!important;
    }
    ul.cat_nav li a:hover {
@@ -2987,10 +2987,9 @@ ul#single_blog_nav {
   padding: 20px 0;
 }
 .s_results > p, .filter_box_right a , .filter_box a{
- color: #777777;
- font-size: 13px;
- font-weight: 600;
- margin-bottom: 0;
+ font-size: 14px; 
+  margin-bottom: 0;
+  color: #393333;
 }
 .row.selectedFilters .filtered{float:left;}
 .filter_box_left > p {
@@ -3040,10 +3039,11 @@ ul#single_blog_nav {
 }
 
 .filter_box_right {
-  margin-top: -2px;
   text-align: right;
-    min-width: 120px;
+  min-width: 125px;
   float: right;
+  border: 1px solid #E8E8E8;
+  padding: 5px 10px;
 }
 .filter_box{
   float: left;
@@ -3053,11 +3053,11 @@ ul#single_blog_nav {
 }
 .filter_box_right .dropdown-menu {
   float: right;
-  left: 63%;
+  left: 40%;
   margin: 0;
   text-align: left;
-  top: 21px;
-  width: 35%;
+  top: 35px;
+  width: 42%;
   display: block;
   opacity: 0;
 }
@@ -5217,14 +5217,14 @@ input[type="number"].hotfix::-webkit-inner-spin-button {
     position:relative;
       }
  
-#cat-nav ul.main li.mainli a:hover{
+#cat-nav ul.main li.mainli:hover > a{
   background-color: #183152;
   color: #fff! important;
 }
   #cat-nav ul.main li.mainli a{
     background: #ffffff;
     color:#3c3d41;
-    font-size:14px;
+    font-size:15px;
     font-weight:700;
     padding:14px 17px;
     display:block;
