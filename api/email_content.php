@@ -1,230 +1,371 @@
-<?php
-$email_html_code1 = '
-            <html lang="en"><head>
-<meta charset="utf-8">
-<title>Make email template</title>
-<link rel="shortcut icon" href="images/favicon.png" type="image/png">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Cache-Control" content="cache">
-<meta http-equiv="Pragma" content="cache">
-<meta http-equiv="Expires" content="1000">
+<?php 
+function orderConfirmEmailBody($userDetails , $orderDetails , $orderTotal ,$orderTime ){
+ $userDetails = (array) $userDetails ;
+ $orderDetails =  (array) $orderDetails;
+
+
+
+$template = '
+<html>
+<head>
+
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;" />
+<title>Dimo</title>
+
 <style type="text/css">
-  @import url(http://fonts.googleapis.com/css?family=Open+Sans);
-  body{overflow: hidden}
-  img{max-width:600px;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic}
-  a{text-decoration:none;border:0;outline:none;color:#bbb}
-  a img{border:none}
-  p{margin-top: 0;margin-bottom: 0;text-align:left;}
-  td,h1,h2,h3{font-family:Helvetica,Arial,sans-serif;font-weight:400}
-  td{text-align:center}
-  body{-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;width:100%;height:100%;color:#37302d;background:#fff;font-size:16px}
-  table{border-collapse:collapse!important}
-  .headline{color:#fff;font-size:36px}
-  .force-full-width{width:100%!important}
-  .force-width-80{width:80%!important}
-  .force-width-40{width:50%!important}
-  @media screen {
-    td,h1,h2,h3{font-family:"Open Sans","Helvetica Neue",Arial",sans-serif"!important}
+
+      body{width: 100%; background-color: #E2E2E2; margin:0; padding:0; -webkit-font-smoothing: antialiased;mso-margin-top-alt:0px; mso-margin-bottom-alt:0px; mso-padding-alt: 0px 0px 0px 0px;}
+        
+        p,h1,h2,h3,h4{margin-top:0;margin-bottom:0;padding-top:0;padding-bottom:0;}
+        
+        span.preheader{display: none; font-size: 1px;}
+        
+        html{width: 100%;}
+        
+        table{font-size: 12px;border: 0;}
+    
+    .menu-space{padding-right:25px;}
+
+
+@media only screen and (max-width:640px)
+
+{
+  body{width:auto!important;}
+  body[yahoo] .main {width:440px !important;}
+  body[yahoo] .two-left{width:420px !important; margin:0px auto;}
+  body[yahoo] .full{width:100% !important; margin:0px auto;}
+  body[yahoo] .alaine{ text-align:center;}
+  body[yahoo] .menu-space{padding-right:0px;}
+
   }
-   @media only screen and (max-width: 600px) {
-    table[class="w290"]{width:290px!important}
-    table[class="w300"]{width:300px!important}
-    table[class="w320"]{width:480px!important}
-    table[class*="w100p"]{width:100%!important}
-    td[class="w320"]{width:4800px!important}
-    td[class="mobile-center"]{text-align:center!important}
-    td[class*="mobile-padding"]{padding-left:20px!important;padding-right:20px!important;padding-bottom:20px!important}
-    td[class*="mobile-block"]{display:block!important;width:100%!important;text-align:left!important;padding-bottom:20px!important}
-    td[class*="mobile-border"]{border:0!important}
-    td[class*="reveal"]{display:block!important}
-    td[class*="mobile-spacing"]{padding-top:10px!important;padding-bottom:10px!important}
-    *[class*="mobile-hide"]{display:none!important}
-    *[class*="mobile-br"]{font-size:12px!important}
-    td[class*="mobile-w20"]{width:20px!important}
-    img[class*="mobile-w20"]{width:20px!important}
-    img[class*="w320"]{width:250px!important;height:67px!important}
-    .mobile-padding {padding:10px 30px !important;;}
-  }
-  @media only screen and (max-width: 480px) {
-    table[class="w290"]{width:290px!important}
-    table[class="w300"]{width:300px!important}
-    table[class="w320"]{width:300px!important}
-    table[class*="w100p"]{width:100%!important}
-    td[class="w320"]{width:300px!important}
-    td[class="mobile-center"]{text-align:center!important}
-    td[class*="mobile-padding"]{padding-left:20px!important;padding-right:20px!important;padding-bottom:20px!important}
-    td[class*="mobile-block"]{display:block!important;width:100%!important;text-align:left!important;padding-bottom:20px!important}
-    td[class*="mobile-border"]{border:0!important}
-    td[class*="reveal"]{display:block!important}
-    td[class*="mobile-spacing"]{padding-top:10px!important;padding-bottom:10px!important}
-    *[class*="mobile-hide"]{display:none!important}
-    *[class*="mobile-br"]{font-size:12px!important}
-    td[class*="mobile-w20"]{width:20px!important}
-    img[class*="mobile-w20"]{width:20px!important}
-    img[class*="w320"]{width:250px!important;height:67px!important}
-    td[class*="activate-now"]{padding-right:0!important;padding-top:20px!important}
-    td[class*="mobile-align"]{text-align:left!important}
-    td[class*="mobile-center"]{text-align:center!important}
-    .mobile-padding {padding:10px 10px !important;}
-  }
+
+@media only screen and (max-width:479px)
+{
+  body{width:auto!important;}
+  body[yahoo] .main {width:280px !important;}
+  body[yahoo] .two-left{width:270px !important; margin:0px auto;}
+  body[yahoo] .full{width:100% !important; margin:0px auto;}
+  body[yahoo] .alaine{ text-align:center;}
+  body[yahoo] .menu-space{padding-right:0px;}  
+}
+
+
 </style>
-<style type="text/css"></style></head>
-<body offset="0" class="body" style="padding:0; margin:0; display:block; background:#eeebeb; -webkit-text-size-adjust:none" bgcolor="#eeebeb">
-  <table align="center" cellpadding="0" cellspacing="0" width="100%" height="100%">
-    <tbody><tr>
-      <td align="center" valign="top" style="background-image: url(images/background/13.jpg);background-size: auto 100%;background-position: top center;background-repeat:no-repeat" width="100%">
-        <center>
-          <table style="margin:0 auto;" cellspacing="0" height="60" cellpadding="0" width="100%">
-            <tbody><tr>
-              <td style="text-align: center;">
-                <a href="#"><img width="91" height="28" src="../../images/logo-white.png" alt="company logo"></a>
-              </td>
-            </tr>
-          </tbody></table>
-          <table cellspacing="0" cellpadding="0" width="600" class="w320" style="border-radius: 4px;overflow: hidden;">
-            <tbody><tr>
-              <td align="center" valign="top">
-                <table cellspacing="0" cellpadding="0" class="force-full-width">
-                  <tbody><tr>
-                    <td class="bg bg1" style="background-color:#F1F2F5;">
-                      <table cellspacing="0" cellpadding="0" class="force-full-width">
-                        <tbody><tr>
-                          <td style="font-size:24px; font-weight: 600; color: #121212; text-align:center;" class="mobile-spacing">
-                            <div class="mobile-br">&nbsp;</div>
-                            <span319db5>Welcome to Themes Lab
-                            <br>
-                          </span319db5></td>
-                        </tr>
-                        <tr>
-                          <td style="font-size:17px; text-align:center; padding: 10px 75px 0; color:#6E6E6E;" class="w320 mobile-spacing mobile-padding">
-                            <span319db5>We are happy to meet you and hope you have an amazing time with us.<br><br>
-                          </span319db5></td>
-                        </tr>
-                      </tbody></table>
-                      <table cellspacing="0" cellpadding="0" width="100%" style="background-color:#F1F2F5">
-                        <tbody><tr>
-                          <td>
-                            <img src="../../images/phone-mockup2.png" style="max-width:100%; display:block;">
-                          </td>
-                        </tr>
-                      </tbody></table>
-                    </td>
-                  </tr>
-                </tbody></table>
-                <table cellspacing="0" cellpadding="0" class="force-full-width">
-                  <tbody><tr>
-                    <td class="bg bg1" style="background-color:#F1F2F5;">
-                      <center>
-                        <br><br><table style="margin: 0 auto" cellpadding="0" cellspacing="0" class="force-width-80">
-                          <tbody><tr>
 
-                            <td class="mobile-resize" style="color:#172838; font-size: 20px; font-weight: 600; text-align: left; vertical-align: top;">
-                              <span319db5>Activate your account now
-                            </span319db5></td>
-                          </tr>
-                        </tbody></table>
-                        <table style="margin: 0 auto;" cellspacing="0" cellpadding="0" class="force-width-80">
-                          <tbody><tr>
-                            <td style="text-align:left; color: #6f6f6f;">
-                              <br>
-                              <p319db5>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit.<br>Sed do eiusmod tempor ullamco laboris.
-                                Quis nostrud exercitation nisi ut aliquip ex ea commodo!
-                              <p></p>
-                          </p319db5></td></tr>
-                        </tbody></table>
-                      </center>
-                      <table style="margin:0 auto;" cellspacing="0" cellpadding="10" width="100%">
-                        <tbody><tr>
-                          <td style="text-align:center; margin:0 auto;">
-                            <br>
-                            <div>
+</head>
 
-                                  <a class="btn" href="' ;
-$email_html_code2 =  '" style="background-color:#172838;color:#ffffff;display:inline-block;font-family:"Source Sans Pro", Helvetica, Arial, sans-serif;font-size:18px;font-weight:400;line-height:45px;text-align:center;text-decoration:none;width:240px;-webkit-text-size-adjust:none;
-                                    -webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;">Confirm Email Address</a>
+<body yahoo="fix" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 
-                            </div>
-                            <br>
-                          </td>
-                        </tr>
-                      </tbody></table>
-                    </td>
-                  </tr>
-                </tbody></table>
-              </td>
-            </tr>
-          </tbody></table>
-          <table cellspacing="0" cellpadding="0" width="600" class="w320" style="border-radius: 4px;overflow: hidden;">
-            <tbody><tr>
-              <td align="center" valign="top">
-                <table cellspacing="0" cellpadding="0" class="force-full-80" style="width:80%;margin:auto">
-                  <tbody><tr>
-                    <td style="text-align:center;">
-                      &nbsp;
-                  </td></tr>
+<!--Main Table start-->
+
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#fff" style="background:#fff;">
+  <tr>
+    <td align="center" valign="top">
+    
+      
+    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+      <tr>
+        <td align="center" valign="top"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" >
+          <tr>
+            <td align="left" valign="top" bgcolor="#000000" style="background:#FFF;"><table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
+              <tr>
+                <td height="18" align="left" valign="top">&nbsp;</td>
+              </tr>
+              <tr>
+                <td align="left" valign="top">
+                
+                
+                <table width="180" border="0" align="left" cellpadding="0" cellspacing="0">
                   <tr>
-                    <td style="color:#D2D2D2;;color:rgba(255,255,255,0.7); font-size: 14px;padding-bottom:4px;">
-                      <table border="0" align="left" cellpadding="0" cellspacing="0" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="force-width-50 w100p">
-                        <tbody><tr>
-                          <td style="text-decoration:underline;height:30px;text-align:left" class="mobile-center">
-                            <span319db5>Update subscription preferences
-                          </span319db5></td>
-                        </tr>
-                      </tbody></table>
-                      <table border="0" align="right" cellpadding="0" cellspacing="0" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="force-width-50 w100p">
-                        <tbody><tr>
-                          <td style="text-decoration:underline;height:30px;text-align:right" class="mobile-center">
-                            <span319db5>Unsubscribe from this list
-                          </span319db5></td>
-                        </tr>
-                      </tbody></table>
-                    </td>
-                  </tr>
-                </tbody></table>
-                <table cellspacing="0" cellpadding="0" class="force-full-80" style="width:80%;margin:auto">
-                  <tbody><tr>
-                    <td style="text-align:center;">
-                      &nbsp;
-                  </td></tr>
-                  <tr>
-                    <td style="color:#D2D2D2;color:rgba(255,255,255,0.5); font-size: 14px;padding-bottom:4px;">
-                      <table border="0" align="center" cellpadding="0" cellspacing="0" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="force-width-50">
-                        <tbody><tr>
-                          <td style="height:21px;text-align:center;font-size:12px;" class="mobile-center">
-                            <span319db5>Copyright © 2015 Your Company, All Right Reserved.
-                          </span319db5></td>
-                        </tr>
-                        <tr>
-                          <td style="height:21px;text-align:center;font-size:12px;" class="mobile-center">
-                            <span319db5>795 Folsom Avenue, Suite 600. San Francisco, CA 94107, United State
-                          </span319db5></td>
-                        </tr>
-                      </tbody></table>
-                    </td>
+                    <td align="left" valign="top"> </td>
                   </tr>
                   <tr>
-                    <td style="font-size:12px;">
-                      &nbsp;
-                    </td>
-                  </tr>
-                </tbody></table>
-              </td>
-            </tr>
-          </tbody></table>
-          <table cellspacing="0" cellpadding="0" class="force-full-width">
-          <tbody><tr>
-            <td style="font-size:12px;">
-              &nbsp;
-              <br>
-            </td>
+    <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:14px; font-weight:bold; color:#454343;"></td>
+  </tr>
+                </table>
+                              
+                </td>
+              </tr>
+
+            </table></td>
           </tr>
-        </tbody></table>
-        </center>
-      </td>
-    </tr>
-  </tbody></table>
+        </table></td>
+      </tr>
+    </table>
+    
+    <!--Invoice date End-->
+    
+    
+    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+      <tr>
+        <td align="center" valign="top"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" >
+          <tr>
+            <td align="left" valign="top" bgcolor="#000000" style="background:#FFF;"><table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
 
-</body></html>
-            ';
+               
+              <tr>
+                <td align="center" valign="top" style="border-top:#edebeb solid 1px;">&nbsp;</td>
+              </tr>
+            </table></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table>
+    
+    <!--Invoice Billing start-->
+    
+    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+      <tr>
+        <td align="center" valign="top"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" >
+          <tr>
+            <td align="left" valign="top" bgcolor="#FFFFFF" style="background:#FFF;"><table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
+              <tr>
+                <td align="left" valign="top">&nbsp;</td>
+              </tr>
+              <tr>
+                <td align="left" valign="top">
+                
+                
+                <table width="45%" border="0" align="left" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td align="left" valign="top"><img src="http://buildcorner.com/marwadi/main_site/images/logo1.png" width="175px" height="75px" </td>
+                  </tr>
+                  <tr>
+                    <td align="left" valign="top">&nbsp;</td>
+                  </tr>
+                </table>
+                
+                
+                <table width="55%" border="0" align="right" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:18px; font-weight:bold; color:#454343;">Shipping Address</td>
+                  </tr>
+                  <tr>
+                    <td align="left" valign="top"><table width="100%" border="0" align="left" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td height="6" align="left" valign="top"> </td>
+                      </tr>
+                      <tr>
+                        <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#4a4a4a; font-weight:normal; line-height:20px; padding-right:2px;">';
+
+          $template .=   $userDetails['firstName'] . ' ' .$userDetails['lastName']. '<br />' .  $userDetails['address']. ', '.  $userDetails['city'] . ', '. $userDetails['state']. ', '. $userDetails['pincode'].
+          
+                        '<br /> </td>
+                      </tr>
+                    </table></td>
+                  </tr>
+                </table>
+                
+                
+                </td>
+              </tr>
+               
+            </table></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table>
+    
+       <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+      <tr>
+        <td align="center" valign="top"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" >
+          <tr>
+            <td align="left" valign="top" bgcolor="#000000" style="background:#FFF;"><table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
+
+              <tr>
+                <td height="20" align="left" valign="top">&nbsp;</td>
+              </tr>
+              <tr>
+                <td align="center" valign="top" style="border-top:#edebeb solid 1px;">&nbsp;</td>
+              </tr>
+            </table></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table>
+    
+    
+    <!--Invoice summary start-->
+    
+     <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+      <tr>
+        <td align="center" valign="top"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" >
+          <tr>
+            <td align="left" valign="top" bgcolor="#FFFFFF" style="background:#FFF;"><table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
+              <tr>
+                <td align="left" valign="top">&nbsp;</td>
+              </tr>
+              <tr>
+                <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:24px; font-weight:normal; color:#1F72BE; text-transform:uppercase;">Order Summary</td>
+              </tr>
+              <tr>
+                <td align="left" valign="top">&nbsp;</td>
+              </tr>
+            </table></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table>
+    
+     <!--Invoice summary End-->
+    
+    
+     <!--Invoice title start-->
+    
+    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+      <tr>
+        <td align="center" valign="top"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" >
+          <tr>
+            <td align="left" valign="top" bgcolor="#FFFFFF" style="background:#FFF;"><table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
+
+              <tr>
+                <td align="left" valign="top"><table width="90%" border="0" align="left" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td width="50%" align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:16px; font-weight:bold; color:#454343;">Description</td>
+                    <td width="15%" align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:16px; font-weight:bold; color:#454343;">Box Price</td>
+                    <td width="15%" align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:16px; font-weight:bold; color:#454343;">Qty</td>
+                    <td width="20%" align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:16px; font-weight:bold; color:#454343;">Total</td>
+                  </tr>
+                  <tr>
+                    <td height="12" colspan="4" align="left" valign="top" style="border-bottom:#e2e2e2 solid 1px;"> </td>
+                  </tr>
+                </table></td>
+              </tr>
+              <tr>
+                <td align="left" valign="top">&nbsp;</td>
+              </tr>
+            </table></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table>
+    
+      <!--Invoice title End-->
+    ';
+  $products='';
+   foreach ($orderDetails as $orderObj) {
+    $order = (array)$orderObj;
+    $itemTotal = ($order['_price']) * ($order['_quantity']); 
+    $products .= 
+          '     
+     <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+      <tr>
+        <td align="center" valign="top"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" >
+          <tr>
+            <td align="left" valign="top" bgcolor="#FFFFFF" style="background:#FFF;"><table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
+
+              <tr>
+                <td align="left" valign="top"><table width="90%" border="0" align="left" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td width="50%" align="left" valign="top"><table width="100%" border="0" align="left" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:13px; font-weight:bold; color:#454343; line-height:20px;">'. $order['_name'];
+if($order['_type']=='sample')
+$products .= ' (Sample) ' ;
+$products .= '</td>
+                      </tr>
+ 
+                    </table></td>
+
+                    <td width="15%" align="left" valign="middle" style="font-family:Arial, Helvetica, sans-serif; font-size:14px; font-weight:bold; color:#1F72BE;"> Rs.'.$order['_price'].'</td>
+                    <td width="15%" align="left" valign="middle" style="font-family:Arial, Helvetica, sans-serif; font-size:14px; font-weight:bold; color:#1F72BE;">'.$order['_quantity'].'</td>
+                    <td width="20%" align="left" valign="middle" style="font-family:Arial, Helvetica, sans-serif; font-size:14px; font-weight:bold; color:#1F72BE;"> Rs.'.$itemTotal.'</td>
+                  </tr>
+                  <tr>
+                    <td height="12" colspan="4" align="left" valign="top" style="border-bottom:#e2e2e2 solid 1px;"> </td>
+                  </tr>
+                </table></td>
+              </tr>
+              <tr>
+                <td align="left" valign="top">&nbsp;</td>
+              </tr>
+            </table></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table>';
+ 
+  }
+  $template .= $products;
+  $template .=    '     
+             
+    <!--Invoice total start-->
+    
+    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+      <tr>
+        <td align="center" valign="top"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" >
+          <tr>
+            <td align="left" valign="top" bgcolor="#FFFFFF" style="background:#FFF;"><table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
+              <tr>
+                <td align="left" valign="top"><table width="100%" border="0" align="right" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td align="left" valign="top" style="border:#e2e2e2 solid 1px; border-top:none;"><table width="50%" border="0" align="center" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td width="35%" height="50" align="center" valign="middle" style="border-right:#e2e2e2 solid 1px; font-family:Arial, Helvetica, sans-serif; font-size:13px; font-weight:bold; color:#454343; line-height:20px;">Total</td>
+                        <td width="65%" align="left"  valign="middle" style="font-family:Arial, Helvetica, sans-serif; font-size:16px; font-weight:bold; color:#454343; line-height:20px;padding-left:20px; border-right:none;"> Rs. '.$orderTotal.'</td>
+                      </tr>
+                      <tr>
+                        <td width="35%" height="50" align="center" valign="middle" style="border:#e2e2e2 solid 1px; border-left:none; font-family:Arial, Helvetica, sans-serif; font-size:13px; font-weight:bold; color:#454343; line-height:20px;">Shipping</td>
+                        <td width="65%" align="left"   valign="middle" style="border:#e2e2e2 solid 1px; border-right:none; border-right:none; font-family:Arial, Helvetica, sans-serif; padding-left:20px;font-size:16px; font-weight:bold; color:#454343; line-height:20px;  ">Rs. 0</td>
+                      </tr>
+                      <tr>
+                        <td height="50" colspan="2" align="right" valign="middle" style="font-family:Arial, Helvetica, sans-serif; font-size:30px; font-weight:bold; color:#454343; line-height:20px; padding-right:17px;"> Rs.'.$orderTotal.'</td>
+                      </tr>
+                    </table></td>
+                  </tr>
+                  </table></td>
+              </tr>
+              <tr>
+                <td height="50" align="left" valign="top">&nbsp;</td>
+              </tr>
+            </table></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table>
+    
+    <!--Invoice total End-->
+    
+    
+    <!--Copyright start-->
+
+    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+      <tr>
+        <td align="center" valign="top"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" >
+          <tr>
+            <td align="left" valign="top" bgcolor="#e76046" style="background:#1F72BE; -moz-border-radius: 0px 0px 15px 15px; border-radius: 0px 0px 15px 15px;"><table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
+              <tr>
+                <td height="20" align="left" valign="top">&nbsp;</td>
+              </tr>
+              <tr>
+                <td align="left" valign="top"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+                   <tr>
+                    <td align="center" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#FFF; font-weight:normal;">Copyright 2015 &copy; Buildcorner.com. All rights reserved</td>
+                  </tr>
+                  <tr>
+                  </tr>
+                </table></td>
+              </tr>
+              <tr>
+                <td align="left" valign="top">&nbsp;</td>
+              </tr>
+            </table></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table>
+    
+    <!--Copyright End-->
+    
+    </td>
+  </tr>
+</table>
+
+<!--Main Table End-->
+
+</body>
+</html>';
+ 
+return $template;
+}
 ?>

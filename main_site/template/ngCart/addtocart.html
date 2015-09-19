@@ -5,13 +5,23 @@
 
 </div>
 
+<!-- <li><a class="tr_text" ng-click="ngCart.addItem(product.product_id, product.product_name, product.product_price, '1' , product )" >ADD TO CART</a></li> -->
+
 <div ng-show="attrs.id">
 
+       <!-- <span ng-show="quantityMax">
+            <select name="quantity" id="quantity" ng-model="q"
+                    ng-options=" v for v in qtyOpt"></select>
+
+        </span>  -->
 
         <a class="tr_text" style="cursor:pointer"
-           ng-click="ngCart.addItem(id, name, price, quantity, data, type )"
+           ng-click="ngCart.addItem(id, name, price, q, data, type )"
            ng-transclude></a>
 
 
+    <!-- <mark  ng-show="inCart()">
+        This item is in your cart. <a  ng-click="ngCart.removeItemById(id)"style="cursor: pointer;">Remove</a>
+    </mark> -->
 
 </div>

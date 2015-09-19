@@ -93,14 +93,14 @@
 				<form class="cd-form" name="forgotPwdForm" id="forgotPwdForm">
 					<p class="fieldset">
 						<label class="image-replace cd-email" for="reset-email">E-mail</label>
-						<input class="full-width has-padding has-border" id="reset-email" type="email" name="email" ng-model="forgotPwd.Email"placeholder="E-mail">
+						<input class="full-width has-padding has-border" id="reset-email" type="email" name="email" ng-model="forgotPwd.email"placeholder="E-mail">
 						<span ng-show="forgotPwdForm.email.$touched&&(forgotPwdForm.email.$error.required||forgotPwdForm.email.$error.email)" class="cd-error-message">invalid email address!</span>
 					</p>
-
-					<p class="fieldset">
-						
-						<button type="submit" class="btn btn-lg full-width has-padding" ng-click='sendConfirmation(forgotPwd);' ng-disabled="forgotPwdForm.$invalid" > Reset Password </button>
-						 
+					<p class='fieldset' ng-show='forgotpwdResp'>
+						{{forgotpwdResp}}  
+					</p>
+					<p class="fieldset">						
+						<button type="submit" class="btn btn-lg full-width has-padding" ng-click='sendConfirmation(forgotPwd.email);' ng-disabled="forgotPwdForm.$invalid" > Reset Password </button>						 
 					</p>
 				</form>
 

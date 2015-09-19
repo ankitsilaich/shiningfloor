@@ -94,9 +94,9 @@
           <input type="text" ng-model='userQuery' placeholder=" Personal search" />
           <input type="submit" value='s' />
         </form> -->
-        <form id="myform" ng-submit="searchUserQuery(userQuery)"> 
+        <form id="myform" ng-submit="searchUserQuery(query);query=null"> 
           <a class="fa fa-search" href></a>    
-          <input type="text" ng-model='userQuery' placeholder='search products'name="userquery">
+          <input type="text" ng-model='query' class='input-sm' placeholder='search products' name="userquery">
         </form>  
         </div>
       </div>

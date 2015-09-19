@@ -564,18 +564,18 @@ nav.currency {
 .header_left a {
   color: #333333;
   font-size: 17px;
-  left: 0px;
+  left: 20px;
   position: absolute;
   top: 4px;
+  /* border-right: 1px solid #eee; */
 }
 .header_left input[type="text"] {
-  border: medium none;
+    border: medium none;
   color: #000;
   font-weight: 500;
   margin-left: 13px;
-  padding-left: 10px;
-  padding-top: 3px; 
-  padding: 2px 10px;
+  padding-top: 5px; 
+  padding-left: 28px;
 }
 .header_right ul.checkout {
   list-style: outside none none;
@@ -820,6 +820,9 @@ nav.mainmenu::after {
   .mainmenu ul#nav li ul#sub-menu5 li a:hover {
     color:#183152;
   }
+  .color-primary{
+  color: #3599ae;;
+  } 
   .mainmenu ul#nav li a {
    color:#ffffff;
    font-size: 13px;
@@ -1167,7 +1170,7 @@ nav.mainmenu::after {
       width: 27%;
     }
     .cat_left > h5, .cat_middle > h5, .cat_middle_right > h5{
-      font-size: 13px;
+      font-size: 14px;
       margin-bottom: 10px;
       text-align: left;
       text-transform: uppercase;
@@ -1202,7 +1205,7 @@ nav.mainmenu::after {
      text-transform: uppercase!important;
      color: #212121!important;
      display: block!important;
-     font-size: 12px!important;
+     font-size: 13px!important;
      padding: 10px 0!important;
    }
    ul.cat_nav li a:hover {
@@ -2984,10 +2987,9 @@ ul#single_blog_nav {
   padding: 20px 0;
 }
 .s_results > p, .filter_box_right a , .filter_box a{
- color: #777777;
- font-size: 13px;
- font-weight: 600;
- margin-bottom: 0;
+ font-size: 14px; 
+  margin-bottom: 0;
+  color: #393333;
 }
 .row.selectedFilters .filtered{float:left;}
 .filter_box_left > p {
@@ -3007,6 +3009,7 @@ ul#single_blog_nav {
 .filter_box_left a i{
   color: #337ab7;
 }
+
 .filter_cont > ul {
   list-style: outside none none;
   margin: 0;
@@ -3036,10 +3039,11 @@ ul#single_blog_nav {
 }
 
 .filter_box_right {
-  margin-top: -2px;
   text-align: right;
-    min-width: 120px;
+  min-width: 125px;
   float: right;
+  border: 1px solid #E8E8E8;
+  padding: 5px 10px;
 }
 .filter_box{
   float: left;
@@ -3049,11 +3053,11 @@ ul#single_blog_nav {
 }
 .filter_box_right .dropdown-menu {
   float: right;
-  left: 63%;
+  left: 40%;
   margin: 0;
   text-align: left;
-  top: 21px;
-  width: 35%;
+  top: 35px;
+  width: 42%;
   display: block;
   opacity: 0;
 }
@@ -5203,7 +5207,7 @@ input[type="number"].hotfix::-webkit-inner-spin-button {
    #cat-nav ul.main{
     margin:0;
     padding:0;
-  }
+  } 
   #cat-nav ul.main li.mainli{
     list-style:none;
     float:left;
@@ -5212,10 +5216,15 @@ input[type="number"].hotfix::-webkit-inner-spin-button {
     -webkit-transition: all .3s ease;
     position:relative;
       }
+ 
+#cat-nav ul.main li.mainli:hover > a{
+  background-color: #183152;
+  color: #fff! important;
+}
   #cat-nav ul.main li.mainli a{
     background: #ffffff;
     color:#3c3d41;
-    font-size:14px;
+    font-size:15px;
     font-weight:700;
     padding:14px 17px;
     display:block;
@@ -5245,9 +5254,7 @@ input[type="number"].hotfix::-webkit-inner-spin-button {
     -moz-transition: all .3s ease;
     -webkit-transition: all .3s ease;
   }
-  #cat-nav ul.main li.mainli:first-child a{
-    padding-left:0;
-  }
+   
   #cat-nav ul.main li.mainli{
     }
     #cat-nav ul.main li.mainli:last-child{
@@ -5840,7 +5847,7 @@ label[for="productSelect"] {margin-bottom: 10px;}
   float: left;
   clear: both;
   margin: 20px 0px;
-  padding-left:0px 
+  padding-left:10px 
 }
 .add-to-sample-btn :hover{
   background-color: #fff;
@@ -9811,8 +9818,9 @@ ins {
     transition: all 200ms ease-in;
     
   }
-  .search input{ font-size: 13px; font-weight: 100;} 
-  .search .searchButton{ background-color: #F8FAFA;color : #1F72BE;cursor: pointer;} 
+  .search input{ font-size: 13px; font-weight: 100; background-color: #fff;} 
+  .search .searchButton{ background-color: #F8FAFA;color : #1F72BE;cursor: pointer;  font-size: 14px;
+  border: 1px solid #ddd;} 
   /*.search .searchButton.i{ color : #1F72BE;} */
    .search .searchButton:hover{ color: #F8FAFA;;background-color : #1F72BE;} 
   /*.search .searchButton.i{ color : #1F72BE;}*/

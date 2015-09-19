@@ -140,10 +140,23 @@ angular.module('app')
                           )
                       }]
                   }
-
-
-
               })
+
+               .state('app.home.resetpwd', {
+                  url: '/resetpwd/:email/:token',
+                  templateUrl: 'tpl/resetpwd.html',
+                    resolve: {
+                      deps: ['$ocLazyLoad', 'uiLoad',
+                        function( $ocLazyLoad, uiLoad ){
+                          return uiLoad.load(
+                            [
+                              'js/controllers/resetpwdcontroller.js'
+                              ]
+                          )
+                      }]
+                  }
+
+              }) 
               .state('app.home.contact', {
                  url: '/contacts',
                  templateUrl: 'tpl/contact.html',
@@ -295,7 +308,7 @@ angular.module('app')
               .state('app.home.search.type', {
                   url: '/:routeId/?pageNo&priceRange&brand_name&usages&applications&colors&finish_types&materials&looks&shapes&sortBy&query&sizes',
                   templateUrl : 'tpl/searchwithfilters.html',
-                  // reloadOnSearch:false,
+                  reloadOnSearch:false,
 
                   resolve: {
 

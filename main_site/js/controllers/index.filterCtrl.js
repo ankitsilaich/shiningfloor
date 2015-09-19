@@ -1,4 +1,4 @@
-app.controller('templateCtrl', ['$scope', '$http', '$filter','$location', '$state',function($scope, $http, $filter,$location,$state) {
+app.controller('templateCtrl', ['$scope', '$http', '$filter','$location', '$state','$stateParams',function($scope, $http, $filter,$location,$state,$stateParams) {
   $scope.sliderOptions = {
   autoPlay: true,
   center: true,
@@ -20,7 +20,7 @@ app.controller('templateCtrl', ['$scope', '$http', '$filter','$location', '$stat
    $scope.Brand_name = 'Any';
    $scope.Size_name = '300 * 300';
    $scope.Color_name = 'Red';
-   $scope.categoryurl = 'tiles'
+  $scope.categoryurl = 'tiles'
   $scope.selectProductCategory = function(category){
      angular.forEach($scope.product_categories, function(item) {
       item.current = false;
@@ -63,25 +63,6 @@ $scope.superSearch = function(){
   console.log($scope.categoryurl)
   $location.path("Buildcorner/search/"+$scope.categoryurl+"/").search({brand_name:$scope.brandurl});
 }
-
-$scope.submitted = false;  
-$scope.searchUserQuery = function(uquery) {
-    // console.log(uquery);
-    $location.path("Buildcorner/search/"+$scope.categoryurl+"/").search({pageNo:'1',query:uquery});
-   
-   // $state.go("app.home.search.type", {'routeId': 'tiles','pageNo':1,'query':uquery},{reload:true});
-    $scope.submitted = true;
-
-        // final = $location.url().replace($location.path(), '');
-        // console.log(final);   
-        // $http.get('../api/slim.php/shiningfloor/products/' + 'search/' + $scope.categoryurl + '/' + final).then(function(resp) {
-        //     $scope.searchResults = resp.data.product_data;
-        //     $scope.totalResults = resp.data.totalResults;
-        //     $scope.start = resp.data.start;
-        //     $scope.last = resp.data.last;
-        // });
-
-};
 
 
 // $("#psearch").submit(function( event ) {
@@ -161,7 +142,29 @@ $scope.searchUserQuery = function(uquery) {
   };
 
 
+$scope.submitted = false; 
+$scope.searchUserQuery = function(uquery) {
+    // console.log(uquery);
+    $scope.query='';
+    $location.path("Buildcorner/search/"+$scope.categoryurl+"/").search({pageNo:'1',query:uquery});
+    $scope.requestToSearchAPI();
+    $scope.submitted = true;
+};
 
+    $scope.requestToSearchAPI = function() { 
+      $scope.userQuery = $location.search()['query'];
+       var final;
+        if ($scope.userQuery) {
+           final = $location.url().replace($location.path(), '');
+        } else final = $location.url().replace($location.path(), '');
+        $http.get('../api/slim.php/shiningfloor/products/' + 'search/' + $stateParams.routeId + '/' + final).then(function(resp) {
+            $scope.searchResults = resp.data.product_data;
+            $scope.totalResults = resp.data.totalResults;
+            $scope.start = resp.data.start;
+            $scope.last = resp.data.last;
+
+        });
+     };
 
 }]);
 
@@ -170,37 +173,14 @@ app.controller('allcategoryCtrl', ['$scope', '$http', '$filter', function($scope
     $http.get('data/allcategories.json').then(function (resp) {
 
     $scope.categories = resp.data.categories;
-       console.log($scope.categories);});
+       // console.log($scope.categories);
+     });
 
  //   console.log($scope.categories[0].details.type);
 
   }]);
 
-// app.controller('emailConfirmCtrl', ['$scope', '$http', '$filter', '$templateCache', function($scope, $http, $filter, $templateCache) {
-// //     $http.post('api/slim.php/shiningfloor/email_verification', {email : 'sahil@gmail.com'}).then(function (resp) {
-
-// //     $scope.emailResponse = resp.data.categories;
-// //     console.log(resp.data);
-// //  //   console.log($scope.categories[0].details.type);
-// // });
-
-//   $http({
-//       method: 'POST',
-//       url: 'api/slim.php/shiningfloor/email_verification',
-//       data: $.param({'email' : 'sahil@gmail.com'}),
-//       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-//       cache: $templateCache
-//     }).
-//     success(function(response) {
-//         $scope.codeStatus = response.data;
-//     }).
-//     error(function(response) {
-//         $scope.codeStatus = response || "Request failed";
-//     });
-
-//   }]);
-
-
+ 
 app.controller('emailConfirmCtrl', function ($scope, $http) {
 /*
 * This method will be called on click event of button.

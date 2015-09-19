@@ -1,5 +1,5 @@
 app.controller('searchPageCtrl', ['$scope', '$http', '$stateParams', 'ngCart', '$filter', '$state', '$location','$timeout','$location', function($scope, $http, $stateParams, ngCart, $filter, $state, $location,$timeout,$location) {
-  $scope.brandcollapse = true ;
+  $scope.brandcollapse = true ;  
   $scope.finishcollapse = true ;
   $scope.materialcollapse = true ;
   $scope.pricecollapse = true ;
@@ -9,9 +9,9 @@ app.controller('searchPageCtrl', ['$scope', '$http', '$stateParams', 'ngCart', '
   $scope.applicationcollapse = true ;
   $scope.usagecollapse = false;
   $scope.sizecollapse = true;
-
+  
   console.log($scope.brandcollapse);
-
+ 
  $scope.slider = {
     min: 0,
     max: 1000
@@ -28,7 +28,7 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
   console.log(unit);
   console.log(priceSqFt);
 //  console.log(width + height +  priceSqFt);
-  unit = unit.trim().toLowerCase();
+  unit = unit.trim().toLowerCase(); 
   if(unit ==='mm')
     return Math.round((0.00328084*width)*(0.00328084*height)* items_per_box *priceSqFt) ;
   else if(unit ==='cm')
@@ -37,7 +37,7 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
     return Math.round((width*height * items_per_box * priceSqFt)/144) ;
   else if(unit ==='ft')
     return Math.round(width*height*items_per_box*priceSqFt) ;
-}
+} 
     $scope.makeUrl = function(selected, original) {
         //this function is used to make the url
         //console.log(selected);
@@ -55,16 +55,16 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
         return url;
     };
     $scope.makePriceUrl = function(){
-      $location.search("pageNo", '1');
+      $location.search("pageNo", '1');         
         $scope.priceRangeUrl = $scope.slider.min+'-'+$scope.slider.max ;
         // console.log($scope.priceRangeUrl);
-        $location.search('priceRange', $scope.priceRangeUrl);
-        $scope.isFilteredByPrice = true;
-        $scope.requestToSearchAPI();
+        $location.search('priceRange', $scope.priceRangeUrl);             
+        $scope.isFilteredByPrice = true;  
+        $scope.requestToSearchAPI();                
     }
 
-
-
+    
+     
     $scope.pagechange = function(value) {
          console.log(typeof($scope.pageNo))
        if(value != 1){
@@ -73,18 +73,7 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
         $scope.requestToSearchAPI();}
     };
 
-     $scope.requestToSearchAPI = function() {
-        if ($stateParams.query) {
-            final = $location.url().replace($location.path(), '');
-        } else final = $location.url().replace($location.path(), '');
-        $http.get('../api/slim.php/shiningfloor/products/' + 'search/' + $stateParams.routeId + '/' + final).then(function(resp) {
-            $scope.searchResults = resp.data.product_data;
-            $scope.totalResults = resp.data.totalResults;
-            $scope.start = resp.data.start;
-            $scope.last = resp.data.last;
-
-        });
-    };
+     
     $scope.selectSortType = function(index){
         $scope.selectedSortIndex = index;
     };
@@ -93,24 +82,24 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
       $scope.makePriceUrl();
     }
       $scope.updateUrlChanges = function() {
-        $location.search("pageNo", '1');
-        $scope.sortBy = $scope.sortTypeFilters[$scope.selectedSortIndex] ;
-        $location.search('sortBy', $scope.sortBy);
+        $location.search("pageNo", '1');             
+        $scope.sortBy = $scope.sortTypeFilters[$scope.selectedSortIndex] ;                               
+        $location.search('sortBy', $scope.sortBy);                                  
 
         if ($scope.brandUrl = $scope.makeUrl($scope.selectedBrands, $scope.brandFilters)) {
             $location.search('brand_name', $scope.brandUrl);
             $scope.isFilteredByBrand = true;
-        } else{
-            $location.search('brand_name', null);
+        } else{ 
+            $location.search('brand_name', null); 
             $scope.isFilteredByBrand = false;
         }
 
         if ($scope.finishTypesUrl = $scope.makeUrl($scope.selectedFinishTypes, $scope.finishTypeFilters)) {
             $location.search('finish_types', $scope.finishTypesUrl);
             $scope.isFilteredByFinish = true;
-        } else{
-            $location.search('finish_types', null);
-            $scope.isFilteredByFinish = false;
+        } else{ 
+            $location.search('finish_types', null);  
+            $scope.isFilteredByFinish = false;          
         }
 
         if ($scope.materialsUrl = $scope.makeUrl($scope.selectedMaterials, $scope.materialFilters)) {
@@ -126,7 +115,7 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
         } else{
             $location.search('looks', null);
             $scope.isFilteredByLook = false;
-        }
+        } 
 
         if ($scope.applicationsUrl = $scope.makeUrl($scope.selectedApplications, $scope.applicationFilters)) {
             $location.search('applications', $scope.applicationsUrl);
@@ -169,8 +158,8 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
             $location.search('category', $scope.categoryUrl);
         } else $location.search('category', null);
         //console.log($scope.searchQuery);
-        if ($scope.searchQuery!=''){
-            $scope.queryUrl = $scope.searchQuery ;
+        if ($scope.userQuery!=''){
+            $scope.queryUrl = $scope.userQuery ;
             $location.search('query', $scope.queryUrl);
         } else $location.search('query', null);
 
@@ -183,7 +172,7 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
         // $scope.usageHTML =  (typeof $location.search().usages == 'undefined') ? '' : '|  Usages = '+ $location.search().usages   ;
         // $scope.shapeHTML =  (typeof $location.search().shapes == 'undefined') ? '' : '| Shapes = '+ $location.search().shapes   ;
         // $scope.colorHTML =  (typeof $location.search().colors == 'undefined') ? '' : '| Colors = '+ $location.search().colors   ;
-
+        
         $scope.requestToSearchAPI();
 
     };
@@ -203,17 +192,17 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
         }
 
     };
-
-
+   
+     
     $scope.findpageNo = function() {
         var params = $location.search();
         if (params['pageNo']) {
             return params['pageNo'];
         }
     };
+     
 
-
-    $scope.FilterUrl = $location.search();
+    $scope.FilterUrl = $location.search();     
     if( $scope.FilterUrl.brand_name){
       $scope.isFilteredByBrand = true;
       $scope.brandcollapse = !$scope.isFilteredByBrand;
@@ -250,7 +239,7 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
       $scope.isFilteredByShape = true;
       $scope.shapecollapse = !$scope.isFilteredByShape;
     }
-
+ 
   //  console.log($scope.FilterUrl);
     $scope.windowHeight = window.innerHeight;
     $scope.windowWidth = $(window).width();
@@ -279,15 +268,15 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
 
       $http.get('../api/slim.php/shiningfloor/' + $stateParams.routeId + '/brands').then(function(resp) {
           $scope.brandFilters = resp.data.brands;
-
+           
           var index = $scope.brandFilters.indexOf("Other");
           $scope.brandFilters.splice(index, 1);
           $scope.brandFilters.push("Other"); // put other to last in filter
-          $scope.totalBrands = $scope.brandFilters.length;
+          $scope.totalBrands = $scope.brandFilters.length;            
           $scope.selectedBrands = [];
           for (i = 0; i < $scope.totalBrands; i++)
               $scope.selectedBrands[i] = false;
-          $scope.findandselect($scope.brandFilters, 'brand_name', $scope.selectedBrands, $scope.FilterUrl);
+          $scope.findandselect($scope.brandFilters, 'brand_name', $scope.selectedBrands, $scope.FilterUrl);      
       });
 
         $http.get('../api/slim.php/shiningfloor/'+'materials').then(function(resp) {
@@ -295,8 +284,8 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
           $scope.materialsLength = $scope.materialFilters.length;
           $scope.selectedMaterials = [];
               for (i = 0; i < $scope.materialsLength; i++)
-                  $scope.selectedMaterials[i] = false;
-              $scope.findandselect($scope.materialFilters, 'materials', $scope.selectedMaterials, $scope.FilterUrl);
+                  $scope.selectedMaterials[i] = false;         
+              $scope.findandselect($scope.materialFilters, 'materials', $scope.selectedMaterials, $scope.FilterUrl);    
 
         });
         $http.get('../api/slim.php/shiningfloor/looks').then(function(resp) {
@@ -305,16 +294,16 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
           console.log($scope.looksLength);
           $scope.selectedLooks = [];
               for (i = 0; i < $scope.looksLength; i++)
-                  $scope.selectedLooks[i] = false;
+                  $scope.selectedLooks[i] = false;         
               $scope.findandselect($scope.lookFilters, 'looks', $scope.selectedLooks, $scope.FilterUrl);
         });
         $http.get('../api/slim.php/shiningfloor/applications').then(function(resp) {
           $scope.applicationFilters = resp.data.applications;
           $scope.applicationsLength = $scope.applicationFilters.length;
-
+           
           $scope.selectedApplications = [];
               for (i = 0; i < $scope.applicationsLength; i++)
-                  $scope.selectedApplications[i] = false;
+                  $scope.selectedApplications[i] = false;         
               $scope.findandselect($scope.applicationFilters, 'applications', $scope.selectedApplications, $scope.FilterUrl);
         });
 
@@ -323,25 +312,25 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
         $scope.selectedSizes = [];
         $scope.sizesLength = $scope.sizes.length;
         for (i = 0; i < $scope.sizesLength; i++)
-            $scope.selectedSizes[i] = false;
+            $scope.selectedSizes[i] = false;         
         $scope.findandselect($scope.sizeFilters, 'sizes', $scope.selectedSizes, $scope.FilterUrl);
 
         $http.get('../api/slim.php/shiningfloor/usages').then(function(resp) {
           $scope.usageFilters = resp.data.usages;
           $scope.usagesLength = $scope.usageFilters.length;
-
+        
           $scope.selectedUsages = [];
               for (i = 0; i < $scope.usagesLength; i++)
-                  $scope.selectedUsages[i] = false;
+                  $scope.selectedUsages[i] = false;         
               $scope.findandselect($scope.usageFilters, 'usages', $scope.selectedUsages, $scope.FilterUrl);
-        });
+        });        
         $http.get('../api/slim.php/shiningfloor/colors').then(function(resp) {
           $scope.colorFilters = resp.data.colors;
           $scope.colorsLength = $scope.colorFilters.length;
-
+          
           $scope.selectedColors = [];
               for (i = 0; i < $scope.colorsLength; i++)
-                  $scope.selectedColors[i] = false;
+                  $scope.selectedColors[i] = false;         
               $scope.findandselect($scope.colorFilters, 'colors', $scope.selectedColors, $scope.FilterUrl);
         });
         $http.get('../api/slim.php/shiningfloor/finish_types').then(function(resp) {
@@ -349,16 +338,16 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
               $scope.finish_typesLength = $scope.finishTypeFilters.length;
               $scope.selectedFinishTypes = [];
               for (i = 0; i < $scope.finish_typesLength; i++)
-                  $scope.selectedFinishTypes[i] = false;
-             $scope.findandselect($scope.finishTypeFilters, 'finish_types', $scope.selectedFinishTypes, $scope.FilterUrl);
+                  $scope.selectedFinishTypes[i] = false;         
+             $scope.findandselect($scope.finishTypeFilters, 'finish_types', $scope.selectedFinishTypes, $scope.FilterUrl);    
         });
         $http.get('../api/slim.php/shiningfloor/shapes').then(function(resp) {
           $scope.shapeFilters = resp.data.shapes;
           $scope.shapesLength = $scope.shapeFilters.length;
-
+           
           $scope.selectedShapes = [];
               for (i = 0; i < $scope.shapesLength; i++)
-                  $scope.selectedShapes[i] = false;
+                  $scope.selectedShapes[i] = false;         
               $scope.findandselect($scope.shapeFilters, 'shapes', $scope.selectedShapes, $scope.FilterUrl);
         });
 
@@ -380,57 +369,55 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
 
     // $scope.categoryFilters = ['tiles', 'marble', 'wood','artificial','stone','wallpaper'];
 
-
+   
     $scope.sortDropdown=true;
-    $scope.selectedSortIndex = 0;
+    $scope.selectedSortIndex = 0;    
 
     $scope.sortTypeFilters = ['new','priceAsc','priceDesc'];
-    $scope.sortTypes = ['New','Price low to high','Price high to low'];
-    $scope.selectedSortType=[];
-    for (i = 0; i < $scope.sortTypes.length; i++)
-        $scope.selectedSortType[i] = false;
-    $scope.sortBy =$scope.sortTypeFilters[0];
+    $scope.sortTypes = ['New','Price low to high','Price high to low'];    
+    $scope.selectedSortType=[]; 
+    for (i = 0; i < $scope.sortTypes.length; i++){
+      if($scope.sortTypeFilters[i]===$location.search()['sortBy'])
+        $scope.selectedSortIndex = i       
+    }
+    
+    $scope.findandselect($scope.sortTypeFilters, 'sortBy', $scope.selectedSortType, $scope.FilterUrl);
+
     if ($scope.pageNo == undefined) {
         $location.search('pageNo', '1');
     }
-    if($scope.priceRange = $location.search()['priceRange']) {
+    if($scope.priceRange = $location.search()['priceRange']) { 
       $scope.slider.min = parseInt($scope.priceRange.split('-')[0]);
-      $scope.slider.max = parseInt($scope.priceRange.split('-')[1]);
-      $scope.makePriceUrl();
+      $scope.slider.max = parseInt($scope.priceRange.split('-')[1]); 
+      $scope.makePriceUrl();   
       // console.log($scope.slider.min  + $scope.slider.max);
     }
-    $location.search('sortBy', $scope.sortBy);
+
     $scope.requestToSearchAPI();
     // url for changing product in search page.
-    $scope.url = $stateParams.query;
-    console.log($scope.url);
-    console.log($scope.FilterUrl);
+    $scope.url = $stateParams.query; 
+   
     //console.log($scope.url);
 
     $scope.searchQuery='';
     $scope.searchProductResults = function() {
-      console.log($scope.searchQuery);
-        // $stateParams.routeId = searchType;
-        // queryStr = $scope.url.substring(0, $scope.url.indexOf('?'));
-        // $scope.searchCategory = $scope.selectSearchCategory();
-        // $scope.resetAllUrlAndClasses();
-        // var tmpIndx = $scope.url.indexOf('&');
-        // if(tmpIndx !=-1)
-        //     $scope.url = $scope.url.replace($scope.url.substring(tmpIndx, $scope.url.length) , '');
-        // if($scope.FilterUrl.query){
-          $location.search('query',$scope.searchQuery);
+      console.log($scope.searchQuery);         
+      $location.search('query',$scope.searchQuery); 
         // }
         // $scope.url = $scope.url.replace(queryStr, query);
         // $location.path('shiningFloor/search/' + $stateParams.routeId + '/' + $scope.url);
         $scope.requestToSearchAPI();
-        $scope.searchQuery.text = '';
+        $scope.searchQuery= '';
     };
-
-
+    $scope.clearQuery = function() {
+      $scope.userQuery = null;          
+      $location.search('query',$scope.userQuery);  
+        $scope.requestToSearchAPI(); 
+    };
 
     $scope.resetFilters =  function(selectedFilters){
       for (i = 0; i < selectedFilters.length; i++)
-          selectedFilters[i] = false;
+          selectedFilters[i] = false;         
       $scope.updateUrlChanges();
       $scope.requestToSearchAPI();
       // return selectedFilters;
@@ -440,32 +427,32 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
       $scope.slider.max = 1000;
       $scope.makePriceUrl();
       $location.search('priceRange',null);
-      $scope.isFilteredByPrice = false;
+      $scope.isFilteredByPrice = false; 
       // return selectedFilters;
     }
      $scope.resetAll = function() {
 
-        $scope.resetPriceRange() ;
-
+        $scope.resetPriceRange() ;          
+         
         $scope.selectedCategory = [false];
         for (i = 0; i < $scope.totalBrands; i++)
           $scope.selectedBrands[i] = false;
         for (i = 0; i < $scope.finish_typesLength; i++)
-            $scope.selectedFinishTypes[i] = false;
+            $scope.selectedFinishTypes[i] = false;                  
         for (i = 0; i < $scope.materialsLength; i++)
-            $scope.selectedMaterials[i] = false;
+            $scope.selectedMaterials[i] = false;                  
         for (i = 0; i < $scope.looksLength; i++)
             $scope.selectedLooks[i] = false;
         for (i = 0; i < $scope.applicationsLength; i++)
             $scope.selectedApplications[i] = false;
         for (i = 0; i < $scope.sizesLength; i++)
-            $scope.selectedSizes[i] = false;
+            $scope.selectedSizes[i] = false;  
         for (i = 0; i < $scope.usagesLength; i++)
             $scope.selectedUsages[i] = false;
         for (i = 0; i < $scope.colorsLength; i++)
-            $scope.selectedColors[i] = false;
+            $scope.selectedColors[i] = false;                 
         for (i = 0; i < $scope.shapesLength; i++)
-            $scope.selectedShapes[i] = false;
+            $scope.selectedShapes[i] = false;                      
 
         $scope.updateUrlChanges();
         $scope.requestToSearchAPI();
@@ -495,23 +482,16 @@ $scope.boxPrice = function(items_per_box,width,height,unit,priceSqFt){
           $scope.popupProduct = {}
           $scope.showpopup = true;
           $scope.popupProduct = product;
-          if(product.product_price!=0)
-            $scope.popupProduct.price = $scope.boxPrice(product.product_items_per_box,product.product_width,product.product_height,product.product_w_unit,product.product_price)
-          else
-            $scope.popupProduct.price = 0;
           $scope.quantity = 1;
-          if(ngCart.getItemById($scope.popupProduct.product_id))
+          if(ngCart.getItemById($scope.popupProduct.product_id).getQuantity())
             $scope.quantity = ngCart.getItemById($scope.popupProduct.product_id).getQuantity();
       // $timeout(function(){
       //     $scope.showLoader = false;
 
       // }, 3000);
 
-
-
-
     };
-
+    
     $scope.showHideColors = $scope.showHidePrices = $scope.showHideBrands = 1;
     $scope.showSuggestions = function() {
         $('#search-items').removeClass('hidden');

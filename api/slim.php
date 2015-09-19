@@ -1,8 +1,9 @@
 <?php
 include 'functions.php';
 require_once 'NotORM.php';
-$pdo = new PDO('mysql:dbname=buildcorner;host=localhost', 'root', '');
-// $pdo = new PDO('mysql:dbname=shiningfloor;host=localhost', 'shiningfloor', 'Shiningfloor');
+$pdo = new PDO('mysql:dbname=testbuild;host=localhost', 'root', '');
+
+// $pdo = new PDO('mysql:dbname=buildcorner;host=localhost', 'shiningfloor', 'Shiningfloor');
 $db = new NotORM($pdo);
 global $db;
 require 'Slim/Slim.php';
@@ -13,31 +14,32 @@ require_once 'admin.php';
 
 /*************************************  EMAIL VERIFICATION ***********************************/
 include 'email_content.php';
+
 $app->post("/shiningfloor/email_verification/:email", function ($email=null) use ($app, $db) {
      global $email_html_code1,$email_html_code2;
-     $email_fromr = "sahilsolanki07@gmail.com";
-     $email_subjectr = "Follow link to change password";
+     $email_fromr = "support@buildcorner.com";
+     $email_subjectr = "Buildcorner Confirmation for registration.";
      $email_tor = $email;
      $user = $db->users()->where('email', $email);
      $data ;
      $count  = count($user);
      if($count==1){
-         $pwd_update_time = $user->fetch()['pwd_update_time'];
-         $send_url='http://ankitsilaich.in/shiningfloor-master/main_site/change_pwd.php?';
-         $send_url .= 'email='.$email.'&token='.md5($email.md5($pwd_update_time));
+       $pwd_update_time = $user->fetch()['pwd_update_time'];
+       $send_url='http://buildcorner.com/marwadi/api/slim.php/user/confirmEmail?';
+       $send_url .= 'email='.$email.'&token='.md5($email.sha1($pwd_update_time));
          //echo $send_url;
-     $headers3 = 'From:' .'Shining Floor'. " ".'<'.'support@shiningfloor.com'.'>'."\r\n";
+     $headers3 = 'From:' .'Buildcorner'. " ".'<'.'support@buildcorner.com'.'>'."\r\n";
      $headers3 .= 'Reply-To: '. $email_fromr. "\r\n";
     $headers3 .= "MIME-Version: 1.0\r\n";
      $headers3 .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
-        $body  = $email_html_code1. $send_url. $email_html_code2;
+        $body  = "Thanks for registering with Buildcorner. <br> Follow this link to complete your registration ".  $send_url;
     //     // echo $body;
     $headersr = 'From: '.$email_fromr."\r\n".
      'Reply-To: '.$email_fromr."\r\n" .
      'X-Mailer: PHP/' . phpversion();
-     mail($email_tor, $email_subjectr, $body , $headers3);
-    //     // echo "sent";
-        $data = array("status"=> "email sent success");
+   //  mail($email_tor, $email_subjectr, $body , $headers3);
+     
+        $data = array("status"=> "success");
      }
      else{
          $data =  array("status"=>"not registered",
@@ -47,6 +49,94 @@ $app->post("/shiningfloor/email_verification/:email", function ($email=null) use
         $app->response()->header('Content-Type', 'application/json');
     echo json_encode($data);
 });
+
+$app->get("/user/confirmEmail", function () use ($app, $db) {
+     $get = filter_input_array(INPUT_GET);
+     $email = $get['email'];
+     $token = $get['token'];
+     $user = $db->users()->where('email',$email)->fetch();
+     $pwdUpdate = $user['pwd_update_time'];
+     if($token == md5($email.md5($pwdUpdate))){
+             $time = new DateTime("now", new DateTimeZone('Asia/Kolkata'));
+             $time = $time->format('Y-m-d H:i:s');
+             $db->users()->where('email',$email)->update(array('isValid'=> 1 ,'pwd_update_time' => $time));
+             echo 'Email Confirmed! Now you can login.';
+           header( "refresh:3;url='http://buildcorner.com/'" );
+     }  
+else{
+echo 'email is wrong or token is expired!';
+ header( "refresh:3;url='http://buildcorner.com/'" );
+}
+
+});
+
+$app->post("/user/forgotpwd/:email", function ($email=null) use ($app, $db) {
+      
+     $email_fromr = "support@buildcorner.com";
+     $email_subjectr = "Buildcorner password reset email";
+     $email_tor = $email;
+     $user = $db->users()->where('email', $email);
+     $data ;
+     $count  = count($user);
+     if($count==1){
+         $pwd_update_time = $user->fetch()['pwd_update_time']; 
+         $send_url='http://buildcorner.com/marwadi/main_site/#/Buildcorner/resetpwd/';
+         $send_url .= ''.$email.'/'.md5($email.sha1($pwd_update_time));
+         //echo $send_url;
+        $headers3 = 'From:' .'Buildcorner'. " ".'<'.'support@buildcorner.com'.'>'."\r\n";
+        $headers3 .= 'Reply-To: '. $email_fromr. "\r\n";
+        $headers3 .= "MIME-Version: 1.0\r\n";
+        $headers3 .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+        $body  = "<br> Follow this link to reset your password ".  $send_url;
+        //     // echo $body;
+        $headersr = 'From: '.$email_fromr."\r\n".
+        'Reply-To: '.$email_fromr."\r\n" .
+        'X-Mailer: PHP/' . phpversion();
+  //      mail($email_tor, $email_subjectr, $body , $headers3);
+     
+       $data = array("status"=> "success");
+     }
+     else{
+         $data =  array("status"=>"fail",
+                         "email" => $email
+           );
+     }
+    $app->response()->header('Content-Type', 'application/json');
+    echo json_encode($data);
+});
+
+$app->post("/user/verifyPwdResetUrl", function () use ($app, $db) {
+     
+});
+$app->post("/user/resetpwd", function () use ($app, $db) {
+     $array    = (array) json_decode($app->request()->getBody());
+     $time = new DateTime("now", new DateTimeZone('Asia/Kolkata'));
+     $time = $time->format('Y-m-d H:i:s');
+     $token = $array['token'];
+     $email = $array['email']; 
+     $pwd = $array['pwd'];
+     $user = $db->users()->where('email', $email) ;
+       
+     $data ; 
+     if( count($user)){
+         $pwd_update_time = $user->fetch()['pwd_update_time'];
+         if($token== md5($email.sha1($pwd_update_time))){
+          $userInfo = array('password'=> md5(sha1($pwd)),'pwd_update_time' => $time);
+          $db->users()->where('email',$email)->update($userInfo);
+          $data = array("status"=> "success");
+         }
+         else{
+          $data = array("status"=> "fail","error"=>"token mismatch");
+         }         
+     }
+     else{
+         $data =  array("status"=>"fail" ,"error"=>"email invalid"  );
+     }
+    $app->response()->header('Content-Type', 'application/json');
+    echo json_encode($data);
+});
+
+ 
 /**********************************  USER LOGIN SIGNUP CHECKING ******************************/
 $authenticate_user = function ($app) {
     return function () use ($app) {
@@ -56,46 +146,10 @@ $authenticate_user = function ($app) {
     };
 };
 
-
 session_start();
 
 
-
-// $app->post("/auth/process", function () use ($app, $db) {
-//     $email = $app->request()->post('email');
-//     $password = $app->request()->post('password');
-//     $user = $db->users()->where('email', $email)->where('pwd',md5(md5($password)));
-//     $count = count($user);
-//     if($count == 1){
-//      $_SESSION['user'] = $email;
-//      $data = array( "loginstatus" => "success",
-//                         'user' => $email
-//                     );
-//      unset($_SESSION['loginAttempt']);
-//     }else{
-//         if(isset($_SESSION['loginAttempt'])){
-//             $_SESSION['loginAttempt']++;
-//             $loginAttempt = (int)  $_SESSION['loginAttempt'];
-//             $data[] = array( "loginstatus" => "fail",
-//                         'loginAttempt' => $loginAttempt
-//                     );
-//             header('Refresh: 3; URL=http://localhost/shiningfloor/shiningfloor/main_site/login.html?loginstatus=fail&loginAttempt='.$loginAttempt);
-//         }
-//         else{
-//             $data[] = array( "loginstatus" => "login failure",
-//                         'loginAttempt' => "1"
-//                     );
-//             $_SESSION['loginAttempt'] = 1;
-//             header('Refresh: 3; URL=http://localhost/shiningfloor/shiningfloor/main_site/login.html?loginstatus=fail&loginAttempt=1');
-//         }
-//     }
-//    $app->response()->header('Content-Type', 'application/json');
-//    echo json_encode($data);
-// });
-// $app->get("/auth/logout", function () use ($app) {
-//    unset($_SESSION['user']);
-// });
-
+ 
 
 //------------ Post method for user to athenticate ------------------//
 $app->post("/auth/process/user", function() use ($app, $db)
@@ -140,10 +194,11 @@ $app->post("/auth/signup/user", function() use ($app, $db)
     {
       $array['password'] = md5(sha1($array['password']));
       $array['isValid'] = 0;
+
  //      echo  "$joindate[month] $joindate[mday], $joindate[year]";
       $time = new DateTime("now", new DateTimeZone('Asia/Kolkata'));
       $time = $time->format('Y-m-d H:i:s');
-
+      $array['pwd_update_time'] = $time;
       $array['join_date'] = $time ;
       $data = $db->users()->insert($array);
 //      echo $data;
@@ -240,7 +295,7 @@ $app->post("/buildcorner/submitOrder",$authenticate_user($app), function () use 
   $userId = $db->users()->where('email',$email)->fetch();
 
   if(!($userId['firstName']&&$userId['phone1']&&$userId['address'])){
-    // JUGAD FOR RIGHT NOW.
+    // Temporary RIGHT NOW.
       $userInfo = array( 
                 'firstName' => $userDetails->firstName,
                 'lastName' => $userDetails->lastName,                 
@@ -257,14 +312,7 @@ $app->post("/buildcorner/submitOrder",$authenticate_user($app), function () use 
   $orderDetails = $array['items'];
   // print_r($orderDetails);
   $orderTotal = $array['orderTotal'];
-
-
-  // print_r($userDetails);
-  // print_r($orderTotal);
-  // print_r($orderDetails);    
-  // print("ssssssss\n");
-  // print_r($userDetails->firstName);
-  // print_r($orderDetails[0]->_id);
+ 
   $time = new DateTime("now", new DateTimeZone('Asia/Kolkata'));
   $orderTime = (string)$time->format('Y-m-d H:i:s');
   $orderData = array('users_id' => $userId,
@@ -284,11 +332,11 @@ $app->post("/buildcorner/submitOrder",$authenticate_user($app), function () use 
 // print_r($orderData);
   $orderNo = $db->orders()->insert($orderData);
   
+  $orderDetailsContent = "";
   foreach ($orderDetails as $order) {
     $itemTotal = ($order->_price) * ($order->_quantity);
-    $seller= ($db->sellers_products()->where('products_id',$order->_data->product_id)->order(' price ASC ')->fetch());
-    $minPrice = $seller['price'] + setOurMargin($seller['price']);
-    $seller = $seller['sellers_id'];
+    $seller= ($db->sellers_products()->where('products_id',$order->_data->product_id)->order(' box_price ASC ')->fetch());
+    $seller = $seller['sellers_id']; // minimum price seller
     $total = ($order->_quantity)*($order->_price);
     $item = array(
       'orders_id' => $orderNo,
@@ -301,9 +349,29 @@ $app->post("/buildcorner/submitOrder",$authenticate_user($app), function () use 
       );     
     // print_r($item);
     $db->order_details->insert($item);
+    $orderDetailsContent .=  " <tr>
+        <td>".$order->_data->product_id ."</td>
+        <td>".$order->_type."</td>
+        <td>".$order->_price."</td>
+        <td>".$order->_quantity."</td> 
+        <td>".$itemTotal."</td>
+      </tr>";
   }
 
-  // echo $orderNo; 
+     $email_fromr = "support@buildcorner.com";
+     $email_subjectr = "Buildcorner order details";
+     $email_tor = $email;      
+     $headers3 = 'From:' .'Buildcorner'. " ".'<'.'support@buildcorner.com'.'>'."\r\n";
+     $headers3 .= 'Reply-To: '. $email_fromr. "\r\n";
+     $headers3 .= "MIME-Version: 1.0\r\n";
+     $headers3 .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+     $body =orderConfirmEmailBody($userDetails , $orderDetails , $orderTotal ,$orderTime);
+      $headersr = 'From: '.$email_fromr."\r\n".
+     'Reply-To: '.$email_fromr."\r\n" .
+     'X-Mailer: PHP/' . phpversion();
+   //  mail($email_tor, $email_subjectr,$body, $headers3);
+     //  mail('aamir@buildcorner.com', $email_subjectr,$body, $headers3);
+        
     echo json_encode(array('orderStatus' => 'success'));
 
 });
@@ -704,6 +772,7 @@ $app->get('/shiningfloor/materials', function() use ($app, $db){
     echo json_encode(array('materials'=>$product_materials));
 });
 $app->get('/shiningfloor/shapes', function() use ($app, $db){
+ 
     $product_shapes = array();
     // $query = $db->products()->group('product_material');
     $query = $db->shapes()->order('shape_name ASC');
