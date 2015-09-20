@@ -14346,9 +14346,7 @@ CREATE TABLE IF NOT EXISTS `sellers` (
 
 --
 -- Dumping data for table `sellers`
---
-
-INSERT INTO `sellers` (`id`, `email`, `password`, `name`, `image_name`, `address`, `phone`, `storename`, `comments`, `owner_name`, `owner_phone`, `pincode`, `city`, `state`, `join_date`) VALUES
+--INSERT INTO `sellers` (`id`, `email`, `password`, `name`, `image_name`, `address`, `phone`, `storename`, `comments`, `owner_name`, `owner_phone`, `pincode`, `city`, `state`, `join_date`) VALUES
 (1, 'attal005@gmail.com', '123', 'Abhishek Attal', '../seller/uploads/profile\\25.jpg', 'C-113, Hall-1 ,IIT KANPUR', '8960274028', 'ATTAL BROTHERS AND SONS', 'Largest shop in IIT KANPUR , Even in Kanpur', '', '', '', '', '', ''),
 (2, 'solaknki03@gmail.com', '123', 'Aamir', '../seller/uploads/profile\\25.jpg', 'random address', '3324324432', 'Nazia sons and brothers', 'sddsad,dsa\ndsadsa\ndsadsad\nsadas', '', '', '', '', '', ''),
 (3, 'pd99@gmail.com', '123', 'pradumn', '../seller/uploads/profile\\21.jpg', 'f-308', '32432432423', 'Pradumn brothers', 'dsadsadsadadasdsadsad', '', '', '', '', '', ''),
@@ -14364,7 +14362,9 @@ INSERT INTO `sellers` (`id`, `email`, `password`, `name`, `image_name`, `address
 (36, 'shellcoreceramics@gmail.com', '19e0c1702a2a874ee220204c85831e94', 'Ashiesh Mittal', '', '247-B, Shivaji Market, Pitampura Village', '1145509052', 'SHELLCORE CERAMICS', '', 'Ashiesh Mittal', '9312252769', '110034', 'Delhi', 'Delhi', 'September 1, 2015'),
 (37, 'gauravmarmo@gmail.com', '91bb930858cff8e9fff2e12f60b4477b', 'Mr Narendra', '', '70/1/1,Marble market,Mangol Pur Kalan, New Delhi', '9312210245', 'Tile Bazaar', 'Deals in Kajaria eternity, kohler, rak, gebrit, Naveen, Anupam,Rocera, Azteca,Grohe, Glocera, Neo', 'Mr Narendra', '9868964343', '110085', 'New Delhi', 'Delhi', 'September 5, 2015'),
 (38, 'neelgiri_7011@yahoo.com', 'af6674a0f1919822db457b595fb154bd', 'Mr Rakesh Gpta', '', '70/1/1, Marble Market, Near Allahabad Bank, Mangolpur Kalan', '9811811266', 'Neelgiri Marbles', 'Deals in Kajaria eternity, ceramics, Varmora', 'Mr Rakesh Gupta', '9811811266', '110085', 'New Delhi', 'Delhi', 'September 5, 2015'),
-(39, 'pse.kajaria@gmail.com', 'c2551d0d69d237b7174f23de304b8a91', 'Mr Shailesh', '', 'Showroom no 29, Vats Market, Near Shiva Market, Pitampura', '9873779595', 'Kajaria Tiles', 'Exclusive dealer of Kajaria', 'Mr Shailesh', '9873779595', '110034', 'New Delhi', 'Delhi', 'September 6, 2015');
+(39, 'pse.kajaria@gmail.com', 'c2551d0d69d237b7174f23de304b8a91', 'Mr Shailesh', '', 'Showroom no 29, Vats Market, Near Shiva Market, Pitampura', '9873779595', 'Kajaria Tiles', 'Exclusive dealer of Kajaria', 'Mr Shailesh', '9873779595', '110034', 'New Delhi', 'Delhi', 'September 6, 2015'),
+(40, 'scgimpex@gmail.com', '0273fe35dd8f7be0a8ce9511a15ebd50', 'Mr Arun Gupta', '', '4621/51,Regharpura, Karol Bagh, New Delhi', '1128721452', 'Subhash Chand Gupta & Bros', 'Deals in Somany, hindware and Gujarat items', 'Mr Arun Gupta', '9811838888', '110005', 'New Delhi', 'Delhi', 'September 18, 2015'),
+(41, 'shrijitilesmarbles@gmail.com', '8d0c429de704488718eba553b211ee6b', 'Mr Pranav Sharma', '', '70/1/1, Marble Market, Mangolpur Kalan, Delhi', '9958584437', 'Shriji Tiles & Marbles', 'Deals in Gujarat( Diliso) and Simpolo', 'Mr Pranav Sharma', '9958584437', '110085', 'New delhi', 'Delhi', 'September 18, 2015');
 
 -- --------------------------------------------------------
 
